@@ -1,0 +1,104 @@
+# locale.yaml — the Lisbon city Locale (content-expansion task 9.8).
+#
+# Validates against LocaleSchema (packages/content/src/kinds/locale.ts):
+#   { scope, date, currency, honorifics, address, terms, allowNames }.
+#
+# This is the city override the formatter prefers over the era default field by
+# field (design, city-then-era fallback chain). It fixes Lisbon's register: the
+# escudo money pattern, Portuguese honorifics ("Senhor"/"Senhora"), a
+# street-first address, the Local Terms that join the help glossary (Req 8.5)
+# and the names the Specifics Guard allows (Req 8.6). Output stays English and
+# the date names are the era's; the city supplies the money layout and the
+# local register over the top.
+#
+# The escudo was written with the "cifrão" sign between escudos and centavos
+# (12$50 = twelve escudos fifty centavos); the City Definition's currency fixes
+# the symbol and subunit, and this Locale lays out the amount and symbol as the
+# plain `{amount} {symbol}` the money formatter renders.
+#
+# `scope.city` names this pack's City Definition (`lisbon`); the loader reads
+# the one city-scoped Locale as the city override.
+#
+# allowNames: Lisbon place and institution names the Specifics Guard may let
+# through in player-facing text. None equals a distinctive alias of a service
+# or organisation (CE-ALLOWLIST), so the allowlist cannot hide an entity name
+# from the guards.
+- scope:
+    city: lisbon
+  date:
+    long: '{weekday}, {day} {month} {year}'
+    short: '{day}/{month}/{year}'
+    months:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    weekdays:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+  currency:
+    pattern: '{amount} {symbol}'
+  honorifics:
+    f: [Senhora, Senhora Dona, Menina]
+    m: [Senhor, Senhor Doutor]
+  address: '{street}, {number} — {district}'
+  terms:
+    - term: bica
+      definition: >-
+        A small strong black coffee, the measure of an idle hour in a Lisbon
+        café.
+    - term: eléctrico
+      definition: >-
+        A Lisbon street tram, the yellow cars that climb and clatter through
+        the old quarters.
+    - term: elevador
+      definition: >-
+        A hill funicular or street lift that climbs between the lower town and
+        the heights above.
+    - term: miradouro
+      definition: >-
+        A terraced belvedere giving a view over the roofs and the river; a
+        public lookout and meeting ground.
+    - term: pensão
+      definition: >-
+        A boarding house or lodging where transients and refugees took rooms
+        while they waited for passage.
+    - term: alfarrabista
+      definition: >-
+        A dealer in old and second-hand books; an antiquarian bookshop.
+    - term: cais
+      definition: >-
+        A quay or river landing-stage on the Tagus, where the ferries and
+        steamers put in.
+    - term: tabacaria
+      definition: >-
+        A tobacconist's kiosk that also sells newspapers, postcards and lottery
+        slips.
+    - term: fado
+      definition: >-
+        The mournful song of the Lisbon taverns, sung to the guitar in the
+        small hours.
+    - term: cifrão
+      definition: >-
+        The escudo currency sign, written between the escudos and the centavos
+        of a price.
+  allowNames:
+    - Lisbon
+    - Lisboa
+    - the Tagus
+    - the Rossio
+    - the Terreiro do Paço
+    - the Praça do Comércio

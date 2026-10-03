@@ -1,0 +1,70 @@
+# The lib-descriptors Library Pack manifest (content-expansion task 8.4).
+#
+# A Library Pack supplies the shared `descriptor-fragment` pool the World
+# Generator assembles a one-line physical description from when it dresses an
+# Unidentified Subject (Req 6.3, 6.4, 6.5; design, "Library content"). Fragments
+# are not City-Scoped: any City Pack a scenario loads draws on this pool, and
+# the descriptor generator (task 3.5) filters the pool by the drawn NPC's
+# gender, the city's climate and the Game Year before assembling a descriptor.
+#
+# This pack ships at least 150 Descriptor Fragments spread across all six slots
+# the DescriptorFragment kind defines (packages/content/src/kinds/library.ts):
+#
+#   * build    — physical build and carriage.
+#   * age      — the apparent age band.
+#   * clothing — period dress (the largest slot; a 1945–1965 wardrobe).
+#   * headwear — hats, caps, headscarves and bare-headedness.
+#   * feature  — a distinguishing feature; the namer appends these until a
+#                descriptor is unique (Req 6.5), so the slot is deliberately
+#                large and varied.
+#   * carried  — something the subject is holding or carrying.
+#
+# Each fragment validates against DescriptorFragmentSchema: an `id`, a `slot`,
+# the `text` that fills it, and the optional filters `gender` (`f`/`m`), a
+# `years` Year Range and a `climate` Tag list. A fragment with no `gender` reads
+# as suiting either; one with no `years` fits the whole Period Window.
+#
+# PERIOD. Everything here is early-Cold-War dress and texture (1945–1965): no
+# later fashions, no synthetics named by brand, no anachronisms. The clothing
+# slot carries Year Ranges where a garment belongs to only part of the window —
+# wartime army-surplus and ration-era patching early (1945–1952), the fuller
+# New Look and smarter postwar tailoring once rationing eased (1948 on), and the
+# cleaner early-1960s cut late (1958–1965). Fragments with no `years` are
+# period-neutral across the whole window.
+#
+# CLIMATE. The `climate` field references `climate:*` Tags from the Tag
+# Vocabulary, but the core pack ships no `climate:*` Tag yet (see
+# packs/core/tags.yaml and the era pack's `climateDefault` note), and the Tag
+# check (tag-check.ts, step 7) refuses a Tag that is not in the vocabulary.
+# Attaching a climate Tag here would therefore fail the loader. The field is
+# optional, and the descriptor generator falls back to a city's own climate
+# Tags when a fragment carries none (task 3.5), so every fragment is left
+# climate-neutral. Cold- and warm-weather dress is still represented (and
+# year-ranged seasonally-neutral) through the garment text and the `headwear`
+# slot; a later task that adds `climate:*` Tags to the vocabulary can tag the
+# fur hats and the straw boaters without reshaping this pack. The `climate`
+# facet in the core vocabulary already lists `descriptor-fragment` among the
+# kinds it applies to, so that task is purely additive.
+#
+# GENDER. Grooming and garments that read as one gender carry `gender`; a
+# clipped moustache is `m`, a marcel wave `f`. Build, age, most carried items
+# and gender-neutral dress carry no `gender` and suit either subject.
+#
+# All text is original flavour; none describes a real individual, and the
+# fragments name no real brands, people or organisations (Req 3.4, 3.8). This
+# pack complements the slice `core` pack's descriptor pools (packs/core/
+# descriptors.yaml), which the archetype `descriptorPools` still reference; the
+# fragments here feed the new slot-based descriptor generator rather than those
+# archetype pools.
+#
+# It declares `role: library` and `contentSchema: 2`, and requires only the core
+# pack. The loader merges its fragments into `ContentSet.descriptorFragments`
+# (content-set-build.ts) with any Era and City Packs a scenario loads.
+id: lib-descriptors
+version: 1.0.0
+contentSchema: 2
+role: library
+requires:
+  - id: core
+    range: '^1.0.0'
+overrides: []

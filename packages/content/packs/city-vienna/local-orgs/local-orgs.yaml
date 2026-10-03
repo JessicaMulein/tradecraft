@@ -1,0 +1,102 @@
+# local-orgs.yaml — the fictional local organisations of occupied Vienna
+# (content-expansion task 9.2).
+#
+# Each entry is a LocalOrg (LocalOrgSchema, packages/content/src/kinds/city.ts):
+#   { id, city, name, aliases, kind, tags, members: TagQuery[], years? }
+# `city` references the Vienna City Definition by its bare id (namespaced to
+# city-vienna/vienna by the loader). The generator adds these to WorldState as
+# non-player organisations — employers and Rumour subjects (design, "Organisa-
+# tions and documents").
+#
+# `tags` draws from the core `org:*` facet (the kind of institution). `members`
+# is a list of Tag Queries describing the archetypes an organisation's members
+# are drawn from; the only populated archetype facet is `role:*`, so the member
+# queries bind against the archetype roster by role.
+#
+# EVERYTHING IS FICTIONAL. No real Viennese ministry, bank, union, paper or
+# business of the period is named. Officials are referred to by office, never by
+# a personal name. Period: 1945–1955 occupied Vienna.
+
+# A municipal office of the city administration: ration cards, residence
+# permits, the registry of persons — the counter every Viennese must visit and
+# the clerks who see everyone's papers.
+- id: stadtmagistrat
+  city: vienna
+  name: The Municipal Registry Office
+  aliases:
+    - { text: the Magistrat, distinctive: true }
+    - { text: the registry office, distinctive: false }
+    - { text: the ration office, distinctive: false }
+  kind: municipal government office
+  tags: [org:government]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1945, to: 1955 }
+
+# The city's own security apparatus: the uniformed police and the plain-clothes
+# officers who work the sectors under the eye of the occupying powers. Members
+# are drawn widely; a few are contacts, most are background figures.
+- id: sicherheitswache
+  city: vienna
+  name: The City Security Watch
+  aliases:
+    - { text: the Watch, distinctive: true }
+    - { text: the city police, distinctive: false }
+    - { text: the Sicherheitswache, distinctive: false }
+  kind: municipal police and security body
+  tags: [org:security, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1945, to: 1955 }
+
+# A Danube trading house: freight, warehousing and the import-export traffic
+# that moves through the river port and the sidings. A plausible employer and a
+# natural cover, and a source of talk about what crosses the sector lines.
+- id: donau-handelskontor
+  city: vienna
+  name: Donau Trading House
+  aliases:
+    - { text: the Handelskontor, distinctive: true }
+    - { text: the trading house, distinctive: false }
+  kind: shipping and trading firm
+  tags: [org:commercial, access-to:transit]
+  members: [[role:civilian], [role:contact], [role:cell]]
+  years: { from: 1945, to: 1955 }
+
+# The tramwaymen's and railwaymen's association: conductors, drivers, porters
+# and signalmen who know every timetable and every face that rides the lines.
+- id: verkehrsbund
+  city: vienna
+  name: The Transport Workers' Association
+  aliases:
+    - { text: the Verkehrsbund, distinctive: true }
+    - { text: the transport union, distinctive: false }
+  kind: trade union
+  tags: [org:labour, access-to:transit]
+  members: [[role:civilian]]
+  years: { from: 1945, to: 1955 }
+
+# A relief and welfare committee for the displaced: the queues of refugees and
+# returnees, the clerks who process them, and the volunteers who know who has
+# just arrived and who is trying to move on.
+- id: fluechtlingshilfe
+  city: vienna
+  name: The Committee for Displaced Persons' Relief
+  aliases:
+    - { text: the Relief Committee, distinctive: true }
+    - { text: the welfare committee, distinctive: false }
+  kind: relief and welfare committee
+  tags: [org:cultural, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1945, to: 1955 }
+
+# A loose black-market ring that works the markets and the goods yards: cigarettes,
+# penicillin, ration coupons and hard currency. A source of rumour and a danger.
+- id: schleichhandel-ring
+  city: vienna
+  name: The Market-Lane Ring
+  aliases:
+    - { text: the Ring, distinctive: false }
+    - { text: the Schleichhändler, distinctive: true }
+  kind: black-market ring
+  tags: [org:criminal, access-to:black-market]
+  members: [[role:cell], [role:civilian]]
+  years: { from: 1945, to: 1955 }

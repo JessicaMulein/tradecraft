@@ -1,0 +1,470 @@
+# location-types.yaml — Vienna's city-specific slice Location Types
+# (content-expansion task 9.1).
+#
+# These are ordinary slice Location Types (LocationTypeSchema), City-Scoped by
+# living in this City Pack. A City Location's `type` references one of these by
+# its bare id (the loader namespaces it `city-vienna/<id>`). A Location's
+# Effective Tags are its own Tags plus its Location Type's Tags, so the Tags
+# below carry the `function:*` / `venue:*` / `access:*` / `setting:*` slots the
+# core Required Queries bind against; the Locations in `locations/` then satisfy
+# every Required Query with margin.
+#
+# Period: 1945–1955 occupied Vienna. Everything is of its time — trams, coal
+# smoke, the fairground wheel, newspapers, the telegraph. No anachronisms. The
+# description and name pools are original to this pack.
+#
+# Actions follow the slice Action union. Opening hours use the phase order
+# early-morning → morning → midday → afternoon → evening → night → late-night →
+# dead-of-night, and weekdays monday … sunday.
+
+# --- Kaffeehaus (coffee house) ---------------------------------------------
+- id: kaffeehaus
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: night }
+  crowdCurve:
+    - { weekday: monday, phase: midday, level: 0.7 }
+    - { weekday: monday, phase: afternoon, level: 0.8 }
+    - { weekday: saturday, phase: afternoon, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.25 }
+    - { weather: snow, crowdMultiplier: 1.3 }
+  baseRisk: 0.15
+  allowsDeadDrops: false
+  namePatterns:
+    - Café Mohnblume
+    - Café Zur Alten Linde
+  descriptionPool:
+    - Steam off the great brass urn hangs under a smoke-yellowed ceiling; a waiter in a worn tailcoat ferries small coffees on a silver tray.
+    - Day-old papers hang from their wooden holders by the window, and a regular reads each one cover to cover before the next arrives.
+    - The marble tops are cold under the hand; a chess clock ticks in the corner and nobody is in any hurry to leave.
+  atmosphereTags: [smoky, genteel, unhurried, public]
+  tags: [venue:cafe, function:cafe, function:meeting-spot, function:newspaper-outlet, access:public]
+
+# --- Trafik (tobacconist kiosk) --------------------------------------------
+- id: trafik
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.35 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.8 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - Tabak-Trafik am Eck
+    - Trafik Kolar
+  descriptionPool:
+    - A booth no wider than a wardrobe, its glass front crowded with lottery slips, stamps and postcards faded by the sun.
+    - The proprietor leans through the hatch with a cigarette already lit, making change from a worn leather apron.
+    - Bundled editions land on the step before dawn; by midday only the evening papers and a tray of loose matches remain.
+  atmosphereTags: [cramped, everyday, watchful, public]
+  tags: [venue:kiosk, function:kiosk, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- Reading hall / public library -----------------------------------------
+- id: lesehalle
+  public: true
+  allowedActions: [travel, talk, confront, turn-agent, surveil, follow, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: saturday, phase: midday, level: 0.6 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+  baseRisk: 0.1
+  allowsDeadDrops: true
+  namePatterns:
+    - Städtische Lesehalle
+    - Bezirksbücherei
+  descriptionPool:
+    - Rows of green-shaded lamps burn over long tables where readers bend to their books in a silence broken only by turning pages.
+    - A ticking radiator and the smell of warm dust; a clerk behind a brass grille stamps each request without looking up.
+    - Bound runs of periodicals line the walls, chained to their stands, and a wall of drawered catalogue cards guards the door.
+  atmosphereTags: [hushed, studious, discreet, public]
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+
+# --- Antiquarian bookshop --------------------------------------------------
+- id: antiquariat
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: thursday, phase: afternoon, level: 0.35 }
+    - { weekday: saturday, phase: morning, level: 0.45 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.15 }
+  baseRisk: 0.15
+  allowsDeadDrops: true
+  namePatterns:
+    - Antiquariat Lindner
+    - Buchhandlung Vorwald
+  descriptionPool:
+    - Shelves climb to a pressed-tin ceiling, so close in places a reader must turn sideways between them.
+    - The proprietor peers over half-moon spectacles and names a price for a volume without once rising from the ledger.
+    - Boxes of unsorted stock block the back aisle, where the serious buyers are taken and the door is left on the latch.
+  atmosphereTags: [dusty, quiet, bookish, public]
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+
+# --- Hotel bar -------------------------------------------------------------
+- id: hotelbar
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: tuesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: wednesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: thursday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: friday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: evening, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: night, level: 0.6 }
+    - { weekday: friday, phase: night, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.1 }
+  baseRisk: 0.3
+  allowsDeadDrops: false
+  namePatterns:
+    - the Marmorbar
+    - the Blue Danube Bar
+  descriptionPool:
+    - Lamplight pools on polished walnut; a pianist works through a slow number while the barman mixes and forgets with equal discretion.
+    - Deep leather chairs ring low tables, and a page in a buttoned jacket waits by the revolving door for a nod.
+    - Cut glass and a blue haze of cigarettes; a bowl of salted almonds travels the length of the counter and back.
+  atmosphereTags: [cosmopolitan, smoky, loose-tongued, public]
+  tags: [venue:hotel, function:hotel-bar, function:meeting-spot, access:public]
+
+# --- Park ------------------------------------------------------------------
+- id: park
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: sunday, phase: afternoon, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.4 }
+    - { weather: clear, crowdMultiplier: 1.3 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - the Stadtpark
+    - the Augarten
+  descriptionPool:
+    - Gravel walks thread between bare plane trees to an empty bandstand, and the cold has driven everyone but the pigeons indoors.
+    - A nursemaid rocks a pram beside the pond while a solitary man turns the pages of a paper he does not seem to read.
+    - A chestnut seller works his brazier at the gate, and the smoke drifts flat across a rank of stacked deck chairs.
+  atmosphereTags: [open-air, exposed, meeting-ground, public]
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- River port / Danube wharf ---------------------------------------------
+- id: donauhafen
+  public: true
+  allowedActions: [travel, talk, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.7 }
+    - { weekday: monday, phase: evening, level: 0.2 }
+  weatherModifiers:
+    - { weather: fog, crowdMultiplier: 0.7 }
+  baseRisk: 0.45
+  allowsDeadDrops: true
+  namePatterns:
+    - the Winterhafen
+    - the Handelskai wharf
+  descriptionPool:
+    - A crane swings a laden net over the coal barges and nobody on the quay below spares it a glance.
+    - Stevedores haul crates up the gangways while a tug sounds somewhere out past the moorings in the fog.
+    - A striped pole and a sentry box mark the sector gate, where a soldier checks a bargeman's papers by the light of a hurricane lamp.
+  atmosphereTags: [industrial, exposed, rough, riverine]
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+
+# --- Warehouse / depot ------------------------------------------------------
+- id: lagerhaus
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, surveil, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.4 }
+    - { weekday: monday, phase: night, level: 0.05 }
+  weatherModifiers:
+    - { weather: snow, crowdMultiplier: 0.8 }
+  baseRisk: 0.5
+  allowsDeadDrops: true
+  namePatterns:
+    - Lagerhaus Brunner & Söhne
+    - Speditionslager Hartl
+  descriptionPool:
+    - A single bulb swings over the loading door of a hall stacked to the rafters with crates, sacking and the cold.
+    - Rain drums on the corrugated roof while chains and tackle hang in the dark like something waiting to be put to use.
+    - A tally clerk's desk stands abandoned among the pallets, its ledgers furred with the dust of a slow season.
+  atmosphereTags: [industrial, deserted, risky, concealing]
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+
+# --- Safehouse (rented flat) -----------------------------------------------
+- id: safehouse
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: night, level: 0.05 }
+  weatherModifiers: []
+  baseRisk: 0.1
+  allowsDeadDrops: false
+  namePatterns:
+    - a rented flat on Berggasse
+    - an attic on Porzellangasse
+  descriptionPool:
+    - Dust sheets drape the furniture of someone long gone, and the air smells of cold ash and other people's absence.
+    - A gas ring, a kettle and a wireless kept low; nothing in the room would survive a second glance as evidence.
+    - Two mortice locks and a chain hold the door, and the one window gives onto a courtyard that nobody overlooks.
+  atmosphereTags: [private, secure, spare, concealed]
+  tags: [function:safehouse, access:private]
+
+# --- Legation / mission (embassy) ------------------------------------------
+- id: legation
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, cable, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: afternoon }
+    - { weekday: tuesday, openPhase: morning, closePhase: afternoon }
+    - { weekday: wednesday, openPhase: morning, closePhase: afternoon }
+    - { weekday: thursday, openPhase: morning, closePhase: afternoon }
+    - { weekday: friday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: midday, level: 0.6 }
+  weatherModifiers: []
+  baseRisk: 0.25
+  allowsDeadDrops: false
+  namePatterns:
+    - the Allied Trade Mission
+    - the Four-Power Liaison Office
+  descriptionPool:
+    - A commissionaire in a braided coat checks the visitors' book twice before the inner door is unlocked.
+    - Frosted-glass corridors carry the clatter of typewriters past a waiting room of hard chairs and old magazines.
+    - A staff car idles in the courtyard under a flag that hangs limp in the still air of the quarter.
+  atmosphereTags: [official, guarded, bureaucratic, cover-friendly]
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+
+# --- Railway terminus ------------------------------------------------------
+- id: bahnhof
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: dead-of-night, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.8 }
+    - { weekday: friday, phase: evening, level: 0.95 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.1 }
+  baseRisk: 0.35
+  allowsDeadDrops: true
+  namePatterns:
+    - the Westbahnhof
+    - the Südbahnhof
+  descriptionPool:
+    - Steam drifts the length of the platforms under a sooty glass vault, and a departures board clatters as it turns over.
+    - A great clock presides over a ring of ticket queues that thicken and thin with every train that comes and goes.
+    - The left-luggage lockers line a cold corridor where a case set down and walked away from waits unremarked for hours.
+  atmosphereTags: [crowded, transient, anonymous, public]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- Station headquarters (the player's own Station) -----------------------
+- id: station-hq
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, intercept, cable, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: morning, closePhase: night }
+    - { weekday: sunday, openPhase: morning, closePhase: night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.4 }
+    - { weekday: monday, phase: night, level: 0.15 }
+  weatherModifiers: []
+  baseRisk: 0.05
+  allowsDeadDrops: false
+  namePatterns:
+    - the Station office
+  descriptionPool:
+    - Steel cabinets and a strongroom door stand behind an unmarked entrance where the duty officer logs every arrival by hand.
+    - A window painted over against the building opposite, a safe in the corner, and the sharp smell of carbon paper.
+    - The teleprinter chatters out the overnight traffic through the small hours while a clerk tears and spikes the sheets by priority.
+  atmosphereTags: [secure, official, concealed, guarded]
+  tags: [venue:station-office, function:station, access:private]
+
+# --- Tram stop / street corner ---------------------------------------------
+- id: haltestelle
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.8 }
+    - { weekday: monday, phase: evening, level: 0.8 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.9 }
+  baseRisk: 0.2
+  allowsDeadDrops: false
+  namePatterns:
+    - the Ring tram stop
+    - the corner of Mariahilfer Straße
+  descriptionPool:
+    - A red tram grinds to the kerb and the waiting crowd shuffles aside and reforms as it pulls away up the rails.
+    - A pasted timetable peels under cracked glass while commuters hold their papers against a wind that funnels down the street.
+    - The overhead wires spark blue at the junction, and the queue leans out as one to look up the line for the next car.
+  atmosphereTags: [transient, crowded, exposed, public]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+
+# --- Heuriger (wine tavern) ------------------------------------------------
+- id: heuriger
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: wednesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: thursday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: friday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: midday, closePhase: late-night }
+  crowdCurve:
+    - { weekday: friday, phase: night, level: 0.85 }
+    - { weekday: sunday, phase: afternoon, level: 0.8 }
+  weatherModifiers:
+    - { weather: clear, crowdMultiplier: 1.3 }
+    - { weather: rain, crowdMultiplier: 0.5 }
+  baseRisk: 0.2
+  allowsDeadDrops: false
+  namePatterns:
+    - Heuriger Zum Alten Presshaus
+    - a Grinzing wine garden
+  descriptionPool:
+    - A bush of pine hung over the gate says the new wine is poured, and the trestle tables under the arbour are already full.
+    - Jugs of cloudy young wine come and go while a zither player works the far corner and nobody listens too closely.
+    - Strings of lamps sway over the garden, and the hum of a hundred conversations swallows anything said at arm's length.
+  atmosphereTags: [convivial, open-air, loose-tongued, public]
+  tags: [venue:tavern, function:hotel-bar, function:meeting-spot, access:public]
+
+# --- Cinema (picture house) ------------------------------------------------
+- id: kino
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: midday, closePhase: late-night }
+    - { weekday: tuesday, openPhase: midday, closePhase: late-night }
+    - { weekday: wednesday, openPhase: midday, closePhase: late-night }
+    - { weekday: thursday, openPhase: midday, closePhase: late-night }
+    - { weekday: friday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: midday, closePhase: late-night }
+  crowdCurve:
+    - { weekday: friday, phase: night, level: 0.8 }
+    - { weekday: sunday, phase: afternoon, level: 0.7 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - Kino Elysium
+    - the Gloria-Kino
+  descriptionPool:
+    - The projector's beam swims with cigarette smoke above the heads of the audience in the warm dark.
+    - The newsreel grinds through its items while latecomers feel along the rows for an empty seat.
+    - Worn plush seats and a frayed velvet curtain; the back row sits a comfortable distance from the usher's torch.
+  atmosphereTags: [dark, anonymous, flickering, public]
+  tags: [venue:cinema, function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- Covered market --------------------------------------------------------
+- id: markt
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: thursday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.7 }
+    - { weekday: saturday, phase: morning, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.7 }
+  baseRisk: 0.25
+  allowsDeadDrops: true
+  namePatterns:
+    - the Naschmarkt
+    - the Brunnenmarkt
+  descriptionPool:
+    - The cries of the sellers echo under the glass roof amid the smell of pickles, smoked fish and spilled coffee.
+    - Barrows of root vegetables crowd the aisles, and at the back of the fish hall a ration coupon changes hands in a whisper.
+    - A crush of baskets and prams fills the lane between the stalls, and a word passed hand to hand is lost in the din.
+  atmosphereTags: [bustling, pungent, crowded, public]
+  tags: [venue:market, function:kiosk, function:meeting-spot, function:dead-drop-site, function:materiel-store, access:public]

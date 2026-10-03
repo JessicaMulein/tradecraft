@@ -1,0 +1,70 @@
+# anthology-verse.yaml — a public-text verse ANTHOLOGY record (task 7.4).
+#
+# Validates against PublicTextSchema (packages/content/src/kinds/era.ts):
+#   { id, title, kind, provenance: { kind, source? }, body: string[], city? }
+#
+# `kind: anthology`. A pocket anthology of ORIGINAL verse (provenance kind
+# `original`): short poems in a plain, period-neutral idiom, each a run of
+# lines, so the slice BOOK CIPHER has line-rich pages to key across. The merged
+# content loader ignores `public-texts/`; this record is validated only by
+# PublicTextSchema. The filename avoids the slice's reserved `anthology.yaml`
+# (the engine's verse/prose book-cipher corpus, a different shape). All verses
+# are invented; no real poet or work is named or quoted.
+- id: anthology-pocket-verses
+  title: A Pocket Anthology of Verses for the Traveller
+  kind: anthology
+  provenance:
+    kind: original
+  body:
+    - 'A Pocket Anthology of Verses, gathered for the idle hour on train and tram.'
+    - 'The verses here are new and the author unknown; take them as you find them.'
+    - 'I. The Morning Platform'
+    - 'The lamps go out along the shed,'
+    - 'the first grey pigeon leaves the beam,'
+    - 'a porter wheels the mailbags down'
+    - 'and whistles at a half-held dream.'
+    - 'The signal drops; the rails go white;'
+    - 'the long cold carriages draw near,'
+    - 'and all the night that stood so still'
+    - 'breaks up and scatters, year by year.'
+    - 'II. The River in Winter'
+    - 'Grey water under a greyer sky,'
+    - 'the barges strung like beads of lead,'
+    - 'a gull that will not say goodbye,'
+    - 'the willows standing stripped and dead.'
+    - 'Yet somewhere past the farthest bend'
+    - 'the current keeps its patient run,'
+    - 'and carries, to no certain end,'
+    - 'the broken light of the low sun.'
+    - 'III. The Border Café'
+    - 'Two cups, two saucers, and the steam'
+    - 'that writes and rubs its message out;'
+    - 'a clock that measures someone else time,'
+    - 'a door that lets the cold wind out.'
+    - 'We do not speak of where we go,'
+    - 'nor name the secret we came to say;'
+    - 'we watch the sugar melt below'
+    - 'and let the slow hour drain away.'
+    - 'IV. Lamplighter'
+    - 'He walks the dusk from post to post'
+    - 'and leaves a small gold coin of light,'
+    - 'a thrifty and a patient ghost'
+    - 'who spends the evening into night.'
+    - 'And where he passes, windows wake,'
+    - 'and children press the misted glass,'
+    - 'and shadows lengthen for his sake'
+    - 'and shorten, grateful, as they pass.'
+    - 'V. The Last Tram'
+    - 'The last tram grinds around the square,'
+    - 'its one lit window swinging wide;'
+    - 'a weary conductor counts the fare'
+    - 'and lets the empty seats decide.'
+    - 'It carries no one anywhere'
+    - 'but round and round the sleeping town,'
+    - 'and when at last it stops, the air'
+    - 'is colder, and the lamps are down.'
+    - 'VI. Envoi'
+    - 'Reader, the station clock is slow,'
+    - 'the train is late, the night is long;'
+    - 'take these few verses where you go,'
+    - 'and make of them your travelling song.'

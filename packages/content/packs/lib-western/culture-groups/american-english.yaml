@@ -1,0 +1,370 @@
+# culture-groups/american-english.yaml — the American English group.
+#
+# A CultureGroup (CultureGroupSchema). English surnames are not gender-inflected,
+# so family names are plain strings and the Naming Rule uses the generic
+# {given} {family} display the engine renders. Quantity (Req 11.4): at least 100
+# given and 100 family names, at least 300 distinct total. All names are
+# generic, common American names of the mid-century in fictional use; none names
+# a real individual, and famous full-name combinations are avoided.
+- id: american-english
+  name: American English
+  languages:
+    - en
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Mary
+      - Dorothy
+      - Helen
+      - Betty
+      - Margaret
+      - Ruth
+      - Virginia
+      - Doris
+      - Mildred
+      - Frances
+      - Evelyn
+      - Marie
+      - Alice
+      - Jean
+      - Shirley
+      - Barbara
+      - Patricia
+      - Joan
+      - Carol
+      - Nancy
+      - Gloria
+      - Joyce
+      - Lois
+      - Phyllis
+      - Beverly
+      - Rose
+      - Florence
+      - Edna
+      - Thelma
+      - Irene
+      - Lucille
+      - Gladys
+      - Eleanor
+      - Grace
+      - Louise
+      - Pauline
+      - Wanda
+      - Norma
+      - Marjorie
+      - Marion
+      - Vivian
+      - Audrey
+      - Geraldine
+      - Rita
+      - Harriet
+      - Bernice
+      - Agnes
+      - Esther
+      - Ethel
+      - Hazel
+      - Darlene
+      - Janet
+      - Sylvia
+      - Lorraine
+      - Muriel
+      - Opal
+      - Verna
+      - Myrtle
+      - Clara
+      - Faye
+    m:
+      - James
+      - Robert
+      - John
+      - William
+      - Charles
+      - George
+      - Thomas
+      - Frank
+      - Harold
+      - Walter
+      - Albert
+      - Donald
+      - Raymond
+      - Edward
+      - Henry
+      - Arthur
+      - Clarence
+      - Earl
+      - Richard
+      - Herbert
+      - Ralph
+      - Howard
+      - Fred
+      - Eugene
+      - Carl
+      - Russell
+      - Louis
+      - Lawrence
+      - Francis
+      - Clifford
+      - Leonard
+      - Chester
+      - Harry
+      - Lester
+      - Theodore
+      - Floyd
+      - Wallace
+      - Vernon
+      - Melvin
+      - Marvin
+      - Roland
+      - Gerald
+      - Warren
+      - Everett
+      - Clyde
+      - Leroy
+      - Milton
+      - Harvey
+      - Norman
+      - Dale
+      - Glenn
+      - Elmer
+      - Alvin
+      - Virgil
+      - Horace
+      - Delbert
+      - Orville
+      - Roscoe
+      - Wilbur
+      - Otis
+  family:
+    - Carter
+    - Bennett
+    - Hayes
+    - Morgan
+    - Reed
+    - Sullivan
+    - Fletcher
+    - Dawson
+    - Mercer
+    - Prescott
+    - Whitfield
+    - Harlan
+    - Donovan
+    - Ashby
+    - Caldwell
+    - Easton
+    - Marsh
+    - Holloway
+    - Sutton
+    - Barlow
+    - Kendall
+    - Lofton
+    - Rhodes
+    - Vance
+    - Winslow
+    - Abernathy
+    - Blackwood
+    - Chandler
+    - Driscoll
+    - Ellison
+    - Farrow
+    - Gaines
+    - Hargrove
+    - Ingram
+    - Jennings
+    - Kingsley
+    - Larkin
+    - Macon
+    - Nolan
+    - Osborne
+    - Pennington
+    - Quigley
+    - Ramsey
+    - Shelton
+    - Thorne
+    - Underwood
+    - Varney
+    - Whitaker
+    - Yeager
+    - Alcott
+    - Brennan
+    - Colfax
+    - Deming
+    - Everhart
+    - Faulkner
+    - Garrison
+    - Halstead
+    - Isham
+    - Jarrett
+    - Kessler
+    - Langford
+    - Merritt
+    - Nash
+    - Orton
+    - Pickering
+    - Rawlins
+    - Stoddard
+    - Tillman
+    - Vickery
+    - Waverly
+    - Yarborough
+    - Ackerman
+    - Bosworth
+    - Castleton
+    - Doyle
+    - Emerson
+    - Fairfax
+    - Granger
+    - Haskell
+    - Ivey
+    - Jessup
+    - Keaton
+    - Lindsey
+    - Maddox
+    - Norwood
+    - Overton
+    - Paxton
+    - Radcliffe
+    - Sheffield
+    - Tolliver
+    - Upton
+    - Verity
+    - Winters
+    - Yancey
+    - Alderman
+    - Boone
+    - Calloway
+    - Dunmore
+    - Easterbrook
+    - Flannery
+    - Goddard
+    - Hollis
+    - Appleton
+    - Barrington
+    - Covington
+    - Deerfield
+    - Ellsworth
+    - Fenwick
+    - Galloway
+    - Hadley
+    - Ingersoll
+    - Jarvis
+    - Kimball
+    - Ludlow
+    - Monroe
+    - Needham
+    - Ogden
+    - Parrish
+    - Quimby
+    - Redfield
+    - Shackleford
+    - Trowbridge
+    - Underhill
+    - Vandergrift
+    - Waverley
+    - Yarnell
+    - Alderton
+    - Beaumont
+    - Chamberlain
+    - Dunlap
+    - Everson
+    - Forsythe
+    - Grimsley
+    - Harrington
+    - Isbell
+    - Jernigan
+    - Kirkland
+    - Lathrop
+    - Middleton
+    - Nickerson
+    - Ormsby
+    - Pelham
+    - Quarles
+    - Rutherford
+    - Stockton
+    - Thurston
+    - Updike
+    - Vreeland
+    - Wadsworth
+    - Yoakum
+    - Ambrose
+    - Burnside
+    - Comstock
+    - Delancey
+    - Edgerton
+    - Fairbanks
+    - Gorham
+    - Hollister
+    - Ivers
+    - Jessamine
+    - Kellerman
+    - Lindquist
+    - Mathewson
+    - Northrop
+    - Ollinger
+    - Pennywell
+    - Quade
+    - Rockhill
+    - Standifer
+    - Templeton
+    - Ustick
+    - Voorhees
+    - Wetherell
+    - Yantis
+    - Allerton
+    - Birchfield
+    - Castellan
+    - Dinsmore
+    - Edmondson
+    - Faircloth
+    - Garnett
+    - Hathaway
+  voiceTraits:
+    - open and easy, quick to use a first name
+    - sells optimism even when the facts are thin
+    - name-drops a hometown and a ballclub to warm a room
+    - talks fast, promises more than caution would allow
+    - keeps a jovial surface over a careful listener
+  mannerisms:
+    - sticks out a hand before the introduction is finished
+    - lights the other person's cigarette first
+    - leans back and props an ankle on a knee
+    - laughs a beat too long to buy a moment
+    - checks a wristwatch as if the day were full
+  backgrounds:
+    - text: Came over with the occupation and stayed on with a trade mission.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Files copy for a wire service and knows which bars the stories start in.
+      tags: []
+    - text: Keeps the books for an aid program and never asks where the surplus goes.
+      tags: []
+    - text: Sells industrial machinery and travels with a sample case and an expense account.
+      tags: []
+    - text: Teaches English at a cultural center and collects more than tuition.
+      tags: []
+    - text: Flew bombers in the war and now flies a desk at the attache's office.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Runs the motor pool for a legation and remembers every requisition.
+      tags: []
+    - text: Came for the engineering contract and married into a local family.
+      tags: []
+    - text: Stringers for a magazine back in the States and files features no editor cuts.
+      tags: []
+    - text: Manages a relief warehouse and knows the gray market better than the ledger.
+      tags: []
+    - text: Buys surplus from the quartermaster and sells it on with a clean invoice.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Reports for an armed-forces paper and files the stories the brass approve.
+      tags: []
+    - text: Runs a trade fair booth and shakes every hand that passes the stand.
+      tags: []
+    - text: Keeps a bar near the station that caters to homesick servicemen.
+      tags: []
+    - text: Advises a reconstruction board and knows which contracts were steered.
+      tags: []
+    - text: Came to study on the GI Bill and stayed for a job no one quite named.
+      tags: []
+      years: { from: 1945, to: 1960 }

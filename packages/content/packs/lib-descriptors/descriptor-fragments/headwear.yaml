@@ -1,0 +1,44 @@
+# descriptor-fragments/headwear.yaml — the `headwear` slot.
+#
+# Hats, caps, headscarves and bare-headedness — the single most-noticed detail
+# of a 1945–1965 silhouette, when nearly everyone wore something on the street.
+# Each fragment validates against DescriptorFragmentSchema with `slot: headwear`.
+#
+# GENDER. A homburg or a flat cloth cap reads `m`; a small veiled hat or a
+# headscarf knotted under the chin reads `f`. A felt trilby, a woollen muffler
+# cap or a bare head suit either, and carry no `gender`.
+#
+# CLIMATE. Fur hats and summer straws both appear; no `climate` Tag is attached
+# (the vocabulary ships none yet — see pack.yaml), so the generator leans on the
+# city's climate to choose between them. A later vocabulary task can tag them.
+#
+# PERIOD. Hats were period-stable across the window; only the bare-headed
+# younger look carries a late `years`, as going hatless spread toward the early
+# 1960s.
+#
+# A `text` that contains a comma is quoted so the YAML flow mapping does not
+# read the comma as a key separator.
+- { id: head-grey-felt, slot: headwear, text: a soft grey felt hat }
+- { id: head-narrow-trilby, slot: headwear, text: a narrow-brimmed trilby }
+- { id: head-homburg, slot: headwear, gender: m, text: a homburg hat worn level }
+- { id: head-flat-cloth-cap, slot: headwear, gender: m, text: a flat cloth cap }
+- { id: head-trilby-pushed-back, slot: headwear, gender: m, text: a trilby pushed back off the forehead }
+- { id: head-black-homburg-formal, slot: headwear, gender: m, text: a formal black homburg }
+- { id: head-tweed-cap-check, slot: headwear, gender: m, text: a checked tweed cap }
+- { id: head-headscarf-chin, slot: headwear, gender: f, text: a headscarf knotted under the chin }
+- { id: head-cloth-hat-flower, slot: headwear, gender: f, text: a small cloth hat with a felt flower }
+- { id: head-veiled-hat, slot: headwear, gender: f, text: a small veiled hat }
+- { id: head-pillbox-forward, slot: headwear, gender: f, text: a neat pillbox hat worn forward }
+- { id: head-wide-brim-summer, slot: headwear, gender: f, text: a wide-brimmed summer hat }
+- { id: head-turban-scarf, slot: headwear, gender: f, text: a turban-wrapped scarf }
+- { id: head-wool-headscarf-plain, slot: headwear, gender: f, text: a plain woollen headscarf }
+- { id: head-persian-lamb, slot: headwear, text: a Persian-lamb hat }
+- { id: head-fur-ushanka, slot: headwear, text: a fur hat with the flaps tied up }
+- { id: head-astrakhan-cap, slot: headwear, text: a black astrakhan cap }
+- { id: head-knitted-pulled-low, slot: headwear, text: a knitted cap pulled low }
+- { id: head-peaked-cap-worn, slot: headwear, text: a worn peaked cap }
+- { id: head-beret-tilted, slot: headwear, text: a dark beret tilted to one side }
+- { id: head-straw-boater, slot: headwear, text: a straw boater against the sun }
+- { id: head-panama-cream, slot: headwear, text: "a cream panama, brim turned down" }
+- { id: head-bare-greying, slot: headwear, text: "bare-headed, hair greying at the temples" }
+- { id: head-bare-hatless-young, slot: headwear, text: "hatless, in the younger fashion", years: { from: 1958, to: 1965 } }

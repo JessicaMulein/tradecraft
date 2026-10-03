@@ -1,0 +1,31 @@
+# The lib-western Library Pack manifest (content-expansion task 8.2).
+#
+# A Library Pack supplies the shared `culture-group` records (each a Name Pool,
+# Naming Rule, voice traits, mannerisms and Year-ranged persona backgrounds) the
+# World Generator draws NPC names, voices and cover biographies from (Req 6.1,
+# 7.1). It is not City-Scoped: a City Pack's Culture Weights reference these
+# groups by their namespaced id (e.g. `lib-western/french`).
+#
+# This pack covers the Western groups of the early Cold War: American English,
+# British English and French. These supply the embassy, press, trade-mission and
+# émigré cover identities that recur across the Vienna, Berlin, Istanbul, Lisbon
+# and Trieste City Packs (task 9). None of the three languages inflects the
+# surname by gender, so family names are plain strings and the Naming Rule is
+# the generic `{given} {family}` (design, FamilyName, NamingRule).
+#
+# Every name here is a generic, common period name of its culture in a
+# FICTIONAL combination; none names a real individual, and famous full-name
+# combinations are avoided (cross-checked against the era Real-Person Blocklist,
+# Req 3.3, 11.4).
+#
+# It declares `role: library` and `contentSchema: 2`, and requires only the core
+# pack (the Tag Vocabulary and slice kinds). The loader merges it with any Era
+# and City Packs a scenario loads (tasks 2.1, 2.4).
+id: lib-western
+version: 1.0.0
+contentSchema: 2
+role: library
+requires:
+  - id: core
+    range: '^1.0.0'
+overrides: []

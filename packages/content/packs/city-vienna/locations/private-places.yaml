@@ -1,0 +1,112 @@
+# locations/private-places.yaml — Vienna's private City Locations
+# (content-expansion task 9.1), part 2 of 2.
+#
+# The private, restricted-access places: the warehouses and the river depots
+# used for materiel and quiet handovers, the deniable rented safehouses, the
+# legations and liaison offices (the city's diplomatic settings), and the
+# player's own Station headquarters. Each is a CityLocation stamped from a city
+# Location Type; Effective Tags come from the Location Type plus the Location's
+# own `tags`. All organisations and people in play are fictional.
+
+# --- Lagerhäuser (warehouses / depots) -------------------------------------
+- id: lagerhaus-brunner
+  name: Lagerhaus Brunner & Söhne
+  type: lagerhaus
+  district: brigittenau
+  public: false
+  description: >-
+    A cold forwarding depot in the harbour hinterland, stacked to the rafters
+    with crates and sacking; stencilled consignments bound for a dozen cities
+    crowd the loading bay with their consignee names half painted out.
+  atmosphere: [stacked to the rafters, coal-dusted and cold, easily emptied unseen]
+  city: vienna
+  tags: [access:private]
+  basis: fictional
+
+- id: zollfreilager-nord
+  name: Zollfreilager Nord
+  type: lagerhaus
+  district: favoriten
+  public: false
+  description: >-
+    A bonded customs store among the rail sidings, a freight lift with a
+    concertina gate and ledgers furred with dust, where a crate can sit unopened
+    for weeks and no one asks.
+  atmosphere: [bonded and padlocked, among the sidings, slow and unwatched]
+  city: vienna
+  tags: [access:private]
+  basis: fictional
+
+# --- Safehouses (rented flats) ---------------------------------------------
+- id: wohnung-berggasse
+  name: a rented flat on Berggasse
+  type: safehouse
+  district: alsergrund
+  public: false
+  description: >-
+    A dull back-room flat up three flights, its one window giving onto a
+    courtyard no one overlooks; the kind of address a landlady forgets the
+    moment the rent is paid.
+  atmosphere: [three flights up, deliberately forgettable, overlooked by nobody]
+  city: vienna
+  tags: [access:private]
+  basis: fictional
+
+- id: wohnung-zirkusgasse
+  name: an attic on Zirkusgasse
+  type: safehouse
+  district: leopoldstadt
+  public: false
+  description: >-
+    A Soviet-sector attic kept deliberately dull — a table, two chairs, a bed,
+    curtains always half-drawn — the stair creaking on the fourth tread as a
+    free warning.
+  atmosphere: [curtains half-drawn, a creaking stair for a warning, kept dull on purpose]
+  city: vienna
+  tags: [access:private]
+  basis: fictional
+
+# --- Legations / liaison offices (diplomatic settings) ---------------------
+- id: allied-trade-mission
+  name: the Allied Trade Mission
+  type: legation
+  district: landstrasse
+  public: false
+  description: >-
+    A guarded mission in the legation quarter under a flag, corridors of frosted
+    glass and typewriter clatter, a commissionaire in a braided coat and a
+    courtyard where a staff car idles.
+  atmosphere: [flag over the door, swept pavement, a staff car idling]
+  city: vienna
+  tags: [access:private]
+  basis: fictional
+
+- id: four-power-liaison-office
+  name: the Four-Power Liaison Office
+  type: legation
+  district: innere-stadt
+  public: false
+  description: >-
+    An inter-allied office in the international zone where the four occupying
+    powers keep their joint liaison staff; high-ceilinged rooms smelling of
+    floor wax and sealing wax, telephones ringing behind closed doors.
+  atmosphere: [four flags on one wall, floor wax and sealing wax, telephones behind closed doors]
+  city: vienna
+  tags: [access:private]
+  basis: real-inspired
+  sources: [src-four-power]
+
+# --- Station headquarters --------------------------------------------------
+- id: station-office
+  name: the Station
+  type: station-hq
+  district: innere-stadt
+  public: false
+  description: >-
+    The player's own Station behind an unmarked door in the Inner City: steel
+    cabinets, a cipher room, blackout curtains and a teleprinter chattering out
+    the overnight traffic while a clerk spikes the sheets by priority.
+  atmosphere: [an unmarked door, carbon paper and cold tea, the teleprinter never quite stops]
+  city: vienna
+  tags: [access:private]
+  basis: fictional

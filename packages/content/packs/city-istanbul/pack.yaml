@@ -1,0 +1,41 @@
+# The city-istanbul City Pack manifest (content-expansion task 9.5 / 9.6).
+#
+# A City Pack supplies one city's City-Scoped Content: its `city.yaml`
+# definition, Districts, Locations, Routes, city Location Types, street-name
+# pools, monthly weather tables and the Sources bibliography (the geography
+# half, task 9.5), plus its newspapers, local organisations, local-security
+# service, local Cover Identities, Locale and Template Variants (the
+# institutions-and-voice half, task 9.6). Everything a `city`-role pack ships is
+# owned by this one city (design, "City-Scoped Content"); the loader enforces
+# that ownership and refuses cross-city references (task 2.1).
+#
+# This pack is Istanbul in the early Cold War, 1950–1965: the European shore
+# around Beyoğlu, Galata, Sirkeci and Eminönü, the Asian shore at Kadıköy and
+# Üsküdar, the ferries that stitch them across the Bosphorus and the Golden
+# Horn, the covered bazaars, and the foreign consulates that lingered in Pera
+# after the embassies moved to Ankara. A great neutral crossroads where the
+# services of several powers brushed past each other among the dragomans,
+# émigrés and wagon-lit travellers.
+#
+# Real landmarks (the Galata Bridge, the ferries, the Grand and Spice Bazaars,
+# the Pera consulates, Haydarpaşa and Sirkeci stations) are named for texture
+# and attested in `sources.yaml`; every organisation, newspaper and person in
+# play is fictional, and the prose is original and period-correct.
+#
+# It declares `role: city` and `contentSchema: 2`, and requires the core pack
+# (the Tag Vocabulary and slice kinds), exactly one Era Pack
+# (`era-cold-war-early`, whose shared services this city references) and the
+# `lib-eastern-mediterranean` Library Pack (the Turkish, Istanbul-Greek,
+# Armenian, Sephardic and Levantine Culture Groups the city weights for naming).
+id: city-istanbul
+version: 1.0.0
+contentSchema: 2
+role: city
+requires:
+  - id: core
+    range: '^1.0.0'
+  - id: era-cold-war-early
+    range: '^1.0.0'
+  - id: lib-eastern-mediterranean
+    range: '^1.0.0'
+overrides: []

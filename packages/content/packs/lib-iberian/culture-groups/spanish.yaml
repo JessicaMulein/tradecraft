@@ -1,0 +1,370 @@
+# culture-groups/spanish.yaml — the Spanish group.
+#
+# A CultureGroup (CultureGroupSchema). Spanish names carry two surnames (the
+# father's family name then the mother's), so the Naming Rule turns on
+# `parts.family2: true` and the display pattern renders {given} {family} {family2};
+# the generator draws the second surname from the same family pool (engine
+# `nameNpc`). The formal pattern uses the first (paternal) surname. Spanish
+# surnames are invariant in form, so family names are plain strings (not
+# gendered pairs). Quantity (Req 11.4): at least 100 given and 100 family names,
+# at least 300 distinct total. All names are generic, common Spanish names of
+# the period in fictional use; none names a real individual.
+- id: spanish
+  name: Spanish
+  languages:
+    - es
+  naming:
+    display: '{given} {family} {family2}'
+    formal: '{honorific} {family}'
+    parts:
+      family2: true
+  given:
+    f:
+      - María
+      - Carmen
+      - Josefa
+      - Dolores
+      - Francisca
+      - Antonia
+      - Isabel
+      - Pilar
+      - Teresa
+      - Rosario
+      - Mercedes
+      - Concepción
+      - Encarnación
+      - Ángeles
+      - Manuela
+      - Ana
+      - Juana
+      - Rosa
+      - Luisa
+      - Catalina
+      - Amparo
+      - Begoña
+      - Consuelo
+      - Dolorosa
+      - Esperanza
+      - Felisa
+      - Gloria
+      - Herminia
+      - Inmaculada
+      - Juliana
+      - Lourdes
+      - Milagros
+      - Natividad
+      - Obdulia
+      - Purificación
+      - Remedios
+      - Soledad
+      - Trinidad
+      - Visitación
+      - Amalia
+      - Benita
+      - Casilda
+      - Dionisia
+      - Eulalia
+      - Fuensanta
+      - Guadalupe
+      - Hortensia
+      - Inés
+      - Jacinta
+      - Leocadia
+      - Marina
+      - Nieves
+      - Olalla
+      - Petra
+      - Raimunda
+      - Saturnina
+      - Tomasa
+      - Úrsula
+      - Vicenta
+      - Zoraida
+    m:
+      - José
+      - Antonio
+      - Manuel
+      - Francisco
+      - Juan
+      - Pedro
+      - Luis
+      - Miguel
+      - Ángel
+      - Rafael
+      - Jesús
+      - Vicente
+      - Andrés
+      - Ramón
+      - Enrique
+      - Agustín
+      - Baltasar
+      - Celestino
+      - Damián
+      - Eusebio
+      - Fulgencio
+      - Gregorio
+      - Hilario
+      - Ignacio
+      - Jacinto
+      - Leandro
+      - Marcelino
+      - Nicasio
+      - Onofre
+      - Pascual
+      - Quirino
+      - Rodrigo
+      - Saturnino
+      - Teodoro
+      - Ubaldo
+      - Valentín
+      - Wenceslao
+      - Zacarías
+      - Amadeo
+      - Bonifacio
+      - Casimiro
+      - Dionisio
+      - Emeterio
+      - Faustino
+      - Genaro
+      - Herminio
+      - Isidro
+      - Joaquín
+      - Lorenzo
+      - Mauricio
+      - Nemesio
+      - Octavio
+      - Prudencio
+      - Román
+      - Severino
+      - Tiburcio
+      - Urbano
+      - Victoriano
+      - Anselmo
+      - Benigno
+  family:
+    - García
+    - Fernández
+    - González
+    - Rodríguez
+    - López
+    - Martínez
+    - Sánchez
+    - Pérez
+    - Gómez
+    - Martín
+    - Jiménez
+    - Ruiz
+    - Hernández
+    - Díaz
+    - Moreno
+    - Muñoz
+    - Álvarez
+    - Romero
+    - Alonso
+    - Gutiérrez
+    - Navarro
+    - Torres
+    - Domínguez
+    - Vázquez
+    - Ramos
+    - Gil
+    - Ramírez
+    - Serrano
+    - Blanco
+    - Molina
+    - Morales
+    - Suárez
+    - Ortega
+    - Delgado
+    - Castro
+    - Ortiz
+    - Rubio
+    - Marín
+    - Sanz
+    - Núñez
+    - Iglesias
+    - Medina
+    - Garrido
+    - Cortés
+    - Castillo
+    - Santos
+    - Lozano
+    - Guerrero
+    - Cano
+    - Prieto
+    - Méndez
+    - Cruz
+    - Calvo
+    - Gallego
+    - Vidal
+    - León
+    - Herrera
+    - Márquez
+    - Peña
+    - Flores
+    - Cabrera
+    - Campos
+    - Vega
+    - Fuentes
+    - Carrasco
+    - Caballero
+    - Nieto
+    - Aguilar
+    - Pascual
+    - Santana
+    - Herrero
+    - Lorenzo
+    - Montero
+    - Hidalgo
+    - Giménez
+    - Ibáñez
+    - Ferrer
+    - Durán
+    - Santiago
+    - Benítez
+    - Mora
+    - Vicente
+    - Vargas
+    - Arias
+    - Carmona
+    - Crespo
+    - Román
+    - Pastor
+    - Soto
+    - Sáez
+    - Velasco
+    - Moya
+    - Soler
+    - Esteban
+    - Parra
+    - Bravo
+    - Gallardo
+    - Rojas
+    - Pardo
+    - Merino
+    - Abad
+    - Bermúdez
+    - Carranza
+    - Dávila
+    - Escrivá
+    - Figueroa
+    - Galán
+    - Henares
+    - Izquierdo
+    - Jaén
+    - Lara
+    - Maldonado
+    - Nájera
+    - Oliveros
+    - Palomares
+    - Quintana
+    - Robledo
+    - Salcedo
+    - Trujillo
+    - Urbina
+    - Vilar
+    - Yáñez
+    - Zamora
+    - Alcázar
+    - Barrios
+    - Cepeda
+    - Dorado
+    - Escalante
+    - Franca
+    - Guzmán
+    - Hinojosa
+    - Ibarra
+    - Jurado
+    - Lema
+    - Montes
+    - Narváez
+    - Olmedo
+    - Pelayo
+    - Quiroga
+    - Rioja
+    - Sedano
+    - Tirado
+    - Ulloa
+    - Vera
+    - Zúñiga
+    - Alcaraz
+    - Benavides
+    - Carrillo
+    - Delgadillo
+    - Espinosa
+    - Fajardo
+    - Garcés
+    - Heredia
+    - Ibáñez-Soto
+    - Jiménez-Vega
+    - Lozada
+    - Montesinos
+    - Noriega
+    - Olvera
+    - Pizarro
+    - Quevedo
+    - Rentería
+    - Saavedra
+    - Toledo
+    - Umbral
+    - Valdés
+    - Zapata
+    - Alfaro
+    - Bustamante
+    - Cordero
+    - Dueñas
+    - Encinas
+    - Ferreras
+    - Granados
+    - Huertas
+    - Isla
+    - Jáuregui
+    - Larrea
+    - Mendoza
+    - Nebreda
+  voiceTraits:
+    - formal and proud, courteous to a careful degree
+    - speaks of politics in guarded, roundabout terms
+    - warms slowly, then with great loyalty
+    - laces conversation with proverb and dry wit
+    - defers to rank and the Church out of long habit
+  mannerisms:
+    - takes a long midday pause no business interrupts
+    - greets with a firm handshake and a steady look
+    - lowers the voice to name the authorities
+    - lets a point rest over a cigarette before pressing it
+    - sees a guest to the door with elaborate courtesy
+  backgrounds:
+    - text: Clerks at a shipping office on the quay and knows the sailings by heart.
+      tags: []
+    - text: Keeps a pensión in the old town where travellers stay longer than planned.
+      tags: []
+    - text: Represents an import house and travels on its letterhead across the border.
+      tags: []
+    - text: Teaches at a seminary school and weighs each word against who might report it.
+      tags: []
+    - text: Keeps the books for a sherry exporter and the exporter's silent partners.
+      tags: []
+    - text: Came from the south for work and kept the village wariness of strangers.
+      tags: []
+    - text: Tends the reception at a hotel the diplomats favour for its discretion.
+      tags: []
+    - text: Fled north in the war years and settled where no one asks the old questions.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Repairs motorcars for the legations and overhears more than the engines.
+      tags: []
+    - text: Works the telegraph counter and marks which names cable one another often.
+      tags: []
+    - text: Keeps a tobacconist's by the bullring where the touts trade more than tickets.
+      tags: []
+    - text: Buys olives and almonds for export and travels the border roads freely.
+      tags: []
+    - text: Runs a boarding house near the port that fills when a ship is delayed.
+      tags: []
+    - text: Clerks for a bank's foreign desk and sees which transfers never clear.
+      tags: []
+    - text: Keeps a café by the cathedral where the civil servants take their mornings.
+      tags: []
+    - text: Guides foreign visitors through the old town and files a note on each.
+      tags: []

@@ -1,0 +1,82 @@
+# personas/soviet.yaml — Soviet occupation persona library.
+#
+# Occupation staff and the trade-delegation set in the Soviet Sector. Names are
+# authentic Russian given names and family names in FICTIONAL combinations;
+# none names a real person of the period, and no entry depicts a real official.
+# Name pools are split by culture AND gender (Requirement 1.7); the culture is
+# tagged `russian` for the slicer. Family names here are given in the masculine
+# form in both pools for simplicity of the fictional combinations.
+
+id: soviet
+namePools:
+  - culture: russian
+    gender: male
+    given:
+      - Nikolai
+      - Pyotr
+      - Mikhail
+      - Grigori
+      - Arkady
+      - Fyodor
+      - Yevgeny
+      - Boris
+      - Dmitri
+      - Sergei
+      - Anatoly
+      - Vadim
+    family:
+      - Marchenko
+      - Voronin
+      - Lebedev
+      - Zhukovsky
+      - Panov
+      - Serov
+      - Kalugin
+      - Ostrovsky
+      - Yudin
+      - Belov
+      - Travkin
+      - Gorelik
+  - culture: russian
+    gender: female
+    given:
+      - Vera
+      - Nadezhda
+      - Larisa
+      - Galina
+      - Zinaida
+      - Yevgenia
+      - Lidia
+      - Tamara
+      - Raisa
+      - Antonina
+    family:
+      - Marchenko
+      - Voronin
+      - Lebedev
+      - Zhukovsky
+      - Panov
+      - Serov
+      - Kalugin
+      - Ostrovsky
+      - Yudin
+      - Belov
+      - Travkin
+      - Gorelik
+voiceTraits:
+  - correct and watchful, giving nothing away for free
+  - speaks for the delegation, never for oneself
+  - probes with questions dressed as courtesies
+  - invokes friendship and reciprocity in the same breath
+  - lets a long pause do the work of a threat
+mannerisms:
+  - studies a face before a word is said
+  - keeps both hands visible on the table
+  - toasts formally and watches whether you drink
+  - repeats your words back to you, flatly, as a question
+backgrounds:
+  - Attached to the trade delegation and quartered in the Soviet Sector.
+  - Rotated into Vienna from another occupied capital.
+  - Keeps a correct distance from the Western missions, and a careful file on each.
+  - Speaks good German and better silence.
+  - Reports upward on a schedule no one outside the delegation knows.

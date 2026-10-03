@@ -1,0 +1,444 @@
+# Side Thread templates for the `core` pack — 1950s occupation Vienna.
+#
+# Side Threads are the noise the player must tell apart from the Plot
+# (Requirements 29.2, 31.7): small, self-contained stories of civilians and
+# contacts that look suspicious but are not the hostile operation. Each reuses
+# the Plot template shape but, per SideThreadTemplateSchema in
+# packages/content/src/lib/kinds.ts, names NO Cell role (no role-slot id may
+# contain "cell") and carries no deadline pressure in spirit — the stages are
+# loose everyday rhythms, not an operation's clock.
+#
+# roleSlots[].archetypes reference only non-cell archetypes: civilians and
+# contacts (black-market-trader, dock-worker, hotel-porter, cafe-waiter,
+# tram-conductor, flower-seller, emigre-fixer, friendly-journalist, and so on).
+#
+# Each stage's `traces` are structured TraceTemplates (task 26.1), the same
+# shape a Plot uses: a `kind`, the `roles` involved (role-slot ids on this
+# template), an optional `place` (a Location Type or a `target` slot), an
+# optional `channel` kind, an optional `materiel` slot, the `evidences`
+# (predicate ids) and the prose `text`. The noise generator binds every slot to
+# a concrete world entity at instantiation; the loader refuses any unresolved
+# reference (Requirement 31.2). A Side Thread leans on everyday kinds — meetings,
+# movements and the odd courier note — never operational dead drops.
+#
+# Content guardrails (Requirement 29.3): no real people, no real atrocities. The
+# penicillin thread is period black-market colour; the affair thread is a
+# private sector-crossing romance. Both are the kind of thing that draws a
+# watcher's eye and then turns out to be nothing to do with the Plot.
+
+# =========================================================================
+# Side Thread 1 — Penicillin smuggling on the black market.
+#
+# A café waiter and a dock worker run watered-down penicillin through the
+# black market, moving it off barges and selling it on through a kiosk. It
+# looks like a hostile supply line; it is only profiteering.
+# =========================================================================
+
+- id: penicillin-racket
+  roleSlots:
+    - id: racket-boss
+      archetypes: [black-market-trader]
+    - id: waterfront-runner
+      archetypes: [dock-worker]
+    - id: front-counter
+      archetypes: [kiosk-vendor]
+    - id: tip-off-contact
+      archetypes: [emigre-fixer]
+  materielSlots:
+    - id: diluted-vials
+      description: >-
+        Crates of diluted penicillin vials, repackaged to pass as full-strength
+        stock on the black market.
+    - id: ration-slips
+      description: >-
+        Forged ration and pharmacy slips used to launder the sales through a
+        legitimate-looking kiosk.
+  targetSlots:
+    - id: back-alley-buyers
+      description: >-
+        The desperate buyers the racket sells to; the demand that keeps the
+        diluted vials moving.
+  stages:
+    - id: land-the-crates
+      requires: []
+      produces: [stock-landed]
+      deadline: { min: 10, max: 20 }
+      traces:
+        - kind: npc-moved
+          roles: [waterfront-runner]
+          place: { locationType: danube-port }
+          materiel: diluted-vials
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            A dock worker offloads an unlisted crate from a Danube barge during a
+            quiet early-morning shift.
+        - kind: meeting
+          roles: [waterfront-runner, racket-boss]
+          place: { locationType: warehouse }
+          evidences: [MEETS_AT, LOCATED_AT]
+          text: >-
+            A watcher notes the same crate carried into a warehouse that keeps odd
+            hours.
+      onDisrupted: { delay: 0.6, reroute: 0.4, abort: 0.0 }
+    - id: cut-and-repackage
+      requires: [stock-landed]
+      produces: [stock-prepared]
+      deadline: { min: 10, max: 25 }
+      traces:
+        - kind: meeting
+          roles: [racket-boss]
+          place: { locationType: tobacconist-kiosk }
+          materiel: diluted-vials
+          evidences: [LOCATED_AT, CARRIES]
+          text: >-
+            The black-market trader waters the vials down and reseals them in the
+            back of a tobacconist kiosk.
+        - kind: meeting
+          roles: [racket-boss, front-counter]
+          place: { locationType: kaffeehaus }
+          materiel: ration-slips
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            Forged ration slips change hands over a café table.
+      onDisrupted: { delay: 0.6, reroute: 0.4, abort: 0.0 }
+    - id: sell-it-on
+      requires: [stock-prepared]
+      produces: [stock-sold]
+      deadline: { min: 14, max: 30 }
+      traces:
+        - kind: meeting
+          roles: [front-counter]
+          place: { target: back-alley-buyers }
+          materiel: diluted-vials
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            Buyers come and go from the kiosk after dark, each leaving with a
+            small wrapped parcel.
+        - kind: meeting
+          roles: [tip-off-contact]
+          place: { locationType: kaffeehaus }
+          evidences: [KNOWS]
+          text: >-
+            An émigré fixer, hearing of the racket, passes a word of warning to a
+            contact — nothing to do with any service.
+      onDisrupted: { delay: 0.7, reroute: 0.3, abort: 0.0 }
+  publicTraceArticles:
+    - >-
+      WIENER TAGESBLATT — Police warn of diluted penicillin sold on the black
+      market; two kiosks near the waterfront are under watch.
+    - >-
+      DIE ABENDPOST — A reader's letter decries the profiteers trading on
+      medicine shortages in the outer districts.
+
+# =========================================================================
+# Side Thread 2 — A sector-crossing love affair.
+#
+# A hotel porter in one sector and a flower seller in another meet in secret
+# across the boundary. Their careful, clandestine crossings read like a courier
+# line; they are only two people in love in a divided city.
+# =========================================================================
+
+- id: sector-crossing-affair
+  roleSlots:
+    - id: hotel-side
+      archetypes: [hotel-porter]
+    - id: market-side
+      archetypes: [flower-seller]
+    - id: go-between
+      archetypes: [tram-conductor]
+    - id: curious-reporter
+      archetypes: [friendly-journalist]
+  materielSlots:
+    - id: love-letters
+      description: >-
+        A bundle of letters the couple exchange, carried folded inside a
+        newspaper so a casual glance sees nothing.
+  targetSlots:
+    - id: the-meeting-bench
+      description: >-
+        A park bench on the sector line where the couple meet; the place a
+        watcher keeps mistaking for a dead-drop site.
+  stages:
+    - id: arrange-the-meeting
+      requires: []
+      produces: [signal-passed]
+      deadline: { min: 7, max: 21 }
+      traces:
+        - kind: npc-moved
+          roles: [go-between]
+          place: { locationType: tram-stop }
+          materiel: love-letters
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            A tram conductor passes a folded note between a hotel porter and a
+            flower seller on his regular run.
+        - kind: npc-moved
+          roles: [hotel-side]
+          place: { locationType: tram-stop }
+          evidences: [TRAVELS_TO]
+          text: >-
+            A watcher clocks the porter leaving his sector on an off day, dressed
+            with unusual care.
+      onDisrupted: { delay: 0.7, reroute: 0.3, abort: 0.0 }
+    - id: cross-the-line
+      requires: [signal-passed]
+      produces: [crossing-made]
+      deadline: { min: 7, max: 21 }
+      traces:
+        - kind: meeting
+          roles: [market-side]
+          place: { target: the-meeting-bench }
+          evidences: [LOCATED_AT]
+          text: >-
+            The flower seller lingers at a park bench on the sector boundary,
+            watching the crossing.
+        - kind: meeting
+          roles: [hotel-side, market-side]
+          place: { target: the-meeting-bench }
+          materiel: love-letters
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            The couple sit together on the bench for an hour, a newspaper of
+            letters between them, then part in different directions.
+      onDisrupted: { delay: 0.8, reroute: 0.2, abort: 0.0 }
+    - id: cover-the-tracks
+      requires: [crossing-made]
+      produces: [affair-hidden]
+      deadline: { min: 10, max: 28 }
+      traces:
+        - kind: meeting
+          roles: [curious-reporter, hotel-side]
+          place: { locationType: hotel-bar }
+          evidences: [MEETS_AT, KNOWS]
+          text: >-
+            A friendly journalist, nosing after a "courier line", interviews the
+            porter and quietly concludes it is only a romance.
+        - kind: meeting
+          roles: [market-side]
+          place: { locationType: park }
+          materiel: love-letters
+          evidences: [CARRIES]
+          text: >-
+            The flower seller burns the latest letters rather than risk them being
+            read.
+      onDisrupted: { delay: 0.8, reroute: 0.2, abort: 0.0 }
+  publicTraceArticles:
+    - >-
+      DIE ABENDPOST — A whimsical column on lovers who meet across the sector
+      lines, "defying the map for an hour on a park bench."
+    - >-
+      WIENER TAGESBLATT — Letters page: a plea for simpler passes so families
+      and sweethearts separated by the boundary might visit more freely.
+
+# =========================================================================
+# Side Thread 3 — A currency black-market ring.
+#
+# A black-market trader and a hotel porter run occupation scrip and hard
+# currency through a quiet exchange, moving notes between sectors in a porter's
+# luggage. The careful hand-offs and coded chits read like a funding channel for
+# a network; it is only money changing hands at a profit.
+# =========================================================================
+
+- id: currency-ring
+  roleSlots:
+    - id: ring-changer
+      archetypes: [black-market-trader]
+    - id: hotel-mule
+      archetypes: [hotel-porter]
+    - id: kiosk-front
+      archetypes: [kiosk-vendor]
+    - id: whispering-contact
+      archetypes: [emigre-fixer]
+  materielSlots:
+    - id: currency-bundle
+      description: >-
+        A bundle of mixed occupation scrip and hard currency, banded and hidden
+        in a hollowed guidebook for the crossing.
+    - id: coded-chits
+      description: >-
+        Scribbled exchange chits in a private shorthand that a watcher mistakes
+        for operational one-time pads.
+  targetSlots:
+    - id: exchange-clients
+      description: >-
+        The clients who buy and sell currency through the ring; the demand that
+        keeps the bundles moving across the sectors.
+  stages:
+    - id: gather-the-notes
+      requires: []
+      produces: [notes-gathered]
+      deadline: { min: 10, max: 20 }
+      traces:
+        - kind: meeting
+          roles: [ring-changer, kiosk-front]
+          place: { locationType: tobacconist-kiosk }
+          materiel: currency-bundle
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            The trader collects the week's notes from a tobacconist kiosk, the
+            bundle slipped across the counter with the newspapers.
+        - kind: meeting
+          roles: [ring-changer]
+          place: { locationType: kaffeehaus }
+          materiel: coded-chits
+          evidences: [LOCATED_AT, CARRIES]
+          text: >-
+            A watcher clocks the trader working his chits over a café table and
+            takes the shorthand for cipher.
+      onDisrupted: { delay: 0.6, reroute: 0.4, abort: 0.0 }
+    - id: carry-the-bundle
+      requires: [notes-gathered]
+      produces: [bundle-carried]
+      deadline: { min: 10, max: 25 }
+      traces:
+        - kind: npc-moved
+          roles: [hotel-mule]
+          place: { locationType: railway-station }
+          materiel: currency-bundle
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            A hotel porter carries the hollowed guidebook across the sector line
+            on his afternoon off, bundle and all.
+        - kind: meeting
+          roles: [hotel-mule, ring-changer]
+          place: { locationType: hotel-bar }
+          evidences: [MEETS_AT]
+          text: >-
+            The porter hands the trader his takings at the hotel bar, the pair
+            careful never to be seen counting.
+      onDisrupted: { delay: 0.7, reroute: 0.3, abort: 0.0 }
+    - id: settle-the-books
+      requires: [bundle-carried]
+      produces: [books-settled]
+      deadline: { min: 14, max: 30 }
+      traces:
+        - kind: meeting
+          roles: [kiosk-front]
+          place: { target: exchange-clients }
+          materiel: currency-bundle
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            Clients come to the kiosk to change their scrip, each leaving with a
+            thinner envelope than they hoped.
+        - kind: meeting
+          roles: [whispering-contact]
+          place: { locationType: kaffeehaus }
+          evidences: [KNOWS]
+          text: >-
+            An émigré fixer, hearing of the ring, passes a quiet word to a
+            contact — nothing to do with any service.
+      onDisrupted: { delay: 0.7, reroute: 0.3, abort: 0.0 }
+  publicTraceArticles:
+    - >-
+      WIENER TAGESBLATT — Occupation authorities warn against unlicensed currency
+      dealers after a spate of short-changed travellers near the sector line.
+    - >-
+      DIE ABENDPOST — A columnist marvels at the going rate for scrip on the
+      kiosk circuit, "a stock exchange run from behind the cigarette trays."
+
+# =========================================================================
+# Side Thread 4 — A forged-papers racket.
+#
+# A refugee clerk with access to blank registration forms and a dock worker who
+# moves people on the barges run a quiet trade in forged papers for the
+# desperate. The forged documents and furtive meetings look like a cell
+# equipping its people; it is only a racket selling a way out.
+# =========================================================================
+
+- id: forged-papers-racket
+  roleSlots:
+    - id: forging-clerk
+      archetypes: [refugee-clerk]
+    - id: barge-mover
+      archetypes: [dock-worker]
+    - id: tip-runner
+      archetypes: [tram-conductor]
+    - id: nosy-reporter
+      archetypes: [friendly-journalist]
+  materielSlots:
+    - id: blank-forms
+      description: >-
+        A sheaf of blank registration and travel forms lifted from a relief
+        office, the raw stock of the racket.
+    - id: finished-papers
+      description: >-
+        Completed forged identity and transit papers, stamped and aged to pass a
+        tired checkpoint clerk.
+  targetSlots:
+    - id: desperate-buyers
+      description: >-
+        The displaced persons who buy the papers to cross or to stay; the demand
+        a watcher mistakes for a network equipping agents.
+  stages:
+    - id: lift-the-blanks
+      requires: []
+      produces: [blanks-lifted]
+      deadline: { min: 10, max: 20 }
+      traces:
+        - kind: meeting
+          roles: [forging-clerk]
+          place: { locationType: library }
+          materiel: blank-forms
+          evidences: [LOCATED_AT, CARRIES]
+          text: >-
+            A watcher notes the refugee clerk carrying a thick folder out of the
+            reading room where he has no business keeping files.
+        - kind: meeting
+          roles: [forging-clerk, barge-mover]
+          place: { locationType: kaffeehaus }
+          evidences: [MEETS_AT]
+          text: >-
+            The clerk and a dock worker put their heads together over a café
+            table, a folder passing under it.
+      onDisrupted: { delay: 0.6, reroute: 0.4, abort: 0.0 }
+    - id: run-the-presses
+      requires: [blanks-lifted]
+      produces: [papers-made]
+      deadline: { min: 10, max: 25 }
+      traces:
+        - kind: npc-moved
+          roles: [tip-runner]
+          place: { locationType: tram-stop }
+          materiel: finished-papers
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            A tram conductor ferries the finished papers between the clerk and
+            the waterfront, tucked inside a folded timetable.
+        - kind: meeting
+          roles: [barge-mover, forging-clerk]
+          place: { locationType: danube-port }
+          materiel: finished-papers
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            The dock worker takes delivery of the stamped papers at the wharf,
+            where the river noise covers the talk.
+      onDisrupted: { delay: 0.7, reroute: 0.3, abort: 0.0 }
+    - id: sell-the-way-out
+      requires: [papers-made]
+      produces: [papers-sold]
+      deadline: { min: 14, max: 30 }
+      traces:
+        - kind: meeting
+          roles: [barge-mover]
+          place: { target: desperate-buyers }
+          materiel: finished-papers
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            Buyers meet the dock worker at the port after dark, each leaving with
+            a new name and a passage east or west.
+        - kind: meeting
+          roles: [nosy-reporter, barge-mover]
+          place: { locationType: hotel-bar }
+          evidences: [MEETS_AT, KNOWS]
+          text: >-
+            A friendly journalist chasing a "forgery cell" interviews the dock
+            worker and quietly files it as a racket, not a network.
+      onDisrupted: { delay: 0.7, reroute: 0.3, abort: 0.0 }
+  publicTraceArticles:
+    - >-
+      WIENER TAGESBLATT — Police seize a cache of forged registration papers in
+      a waterfront raid; officials warn the desperate against buying false
+      documents.
+    - >-
+      DIE ABENDPOST — A relief worker's letter pleads for faster lawful papers,
+      "lest the forgers remain the only office that answers in time."

@@ -1,0 +1,3658 @@
+{
+  "pbtResults": {
+    "14.4 Write the property test for prefix stability and budget": {
+      "status": "passed",
+      "lastRunTimestamp": 1791131163095
+    },
+    "26.11 Write the property test for world coherence": {
+      "status": "passed",
+      "lastRunTimestamp": 1791136732360
+    },
+    "21.2 Write the property test for save/load round-trip": {
+      "status": "passed",
+      "lastRunTimestamp": 1791148496497
+    }
+  },
+  "executionHistory": {
+    "1. Set up the monorepo and shared primitives": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216150
+      },
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067225060
+      },
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791068604501
+      }
+    ],
+    "2.1 Define `EntityId`, `GameTime`, `Proposition`, the Predicate Vocabulary and the `Truth<T>` brand": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216197
+      },
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791068610967
+      }
+    ],
+    "2.2 Build the Entity Registry": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216242
+      }
+    ],
+    "2.3 Write the predicate renderers (Proposition → second-person sentence)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216290
+      }
+    ],
+    "2.4 Implement the Truth Store with per-turn transactional writes": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216329
+      }
+    ],
+    "3.1 Generate the city graph, organizations and NPC roster": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216365
+      }
+    ],
+    "3.2 Generate the Plot as a stage DAG": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216401
+      }
+    ],
+    "3.3 Assign knowledge, false beliefs, Cover Stories and Agendas": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216434
+      }
+    ],
+    "3.4 Verify discovery paths, retrying with a derived seed on failure": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216467
+      }
+    ],
+    "3.5 Add the internal-mole scenario option and seed generation and display": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216499
+      }
+    ],
+    "3.6 Write property tests for seed determinism (P1) and Plot solvability (P2)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216531
+      }
+    ],
+    "4.1 Implement phases, per-action phase costs and `advance()`": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216559
+      }
+    ],
+    "4.2 Implement Plot Stage execution, trace emission and disruption handling (delay, reroute, abort)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216598
+      }
+    ],
+    "4.3 Implement deterministic NPC schedule advancement": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216637
+      }
+    ],
+    "5.1 Implement the five ciphers as pure functions": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216679
+      }
+    ],
+    "5.2 Implement field-message encoding and parsing of Propositions (terse plaintext format)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216724
+      }
+    ],
+    "5.3 Generate Intercepts from Plot Stages and Hostile Service traffic": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216766
+      }
+    ],
+    "5.4 Verify submitted keys and plaintexts, and add decrypted Claims to the Case File with source \"intercept\"": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216807
+      }
+    ],
+    "5.5 Write property tests for cipher round-trip (P8) and Intercept fidelity (P9)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216848
+      }
+    ],
+    "6. Checkpoint: engine inspection": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216887
+      }
+    ],
+    "7.1 Write the OpenAI-compatible client, the `models.yaml` profile loader and the startup model check": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216926
+      }
+    ],
+    "7.2 Implement `stream()` and `structured()`": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216962
+      }
+    ],
+    "7.3 Write reasoning adapters for the Gemma and Qwen families": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067216999
+      }
+    ],
+    "7.4 Add timeouts, single retry, fallback to `fast`, and the priority queue (intent → voice → extraction)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217033
+      }
+    ],
+    "7.5 Implement `RecordingGateway` (JSONL) and `ReplayGateway` keyed by request hash": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217071
+      }
+    ],
+    "8.1 Write the Knowledge Slicer": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217107
+      }
+    ],
+    "8.2 Write the Prompt Builder": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217146
+      }
+    ],
+    "8.3 Write property tests for knowledge containment (P5) and prefix stability and budget (P7)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217185
+      }
+    ],
+    "8.4 Build the Intent Classifier (`fast`, structured) and the pure `applyIntent`": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217221
+      }
+    ],
+    "8.5 Route turns to `voice` or `fast` by scene stakes": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217258
+      }
+    ],
+    "8.6 Build the Leak Guard": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217292
+      }
+    ],
+    "8.7 Write the property test for Leak Guard soundness (P6)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217337
+      }
+    ],
+    "8.8 Add refusal and meta-response detection, with retry under a reinforced fiction frame": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217371
+      }
+    ],
+    "8.9 Build the asynchronous Claim Extractor": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217405
+      }
+    ],
+    "9.1 Implement the Case File model and the pure corroboration and conflict computation": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217451
+      }
+    ],
+    "9.2 Add Admiralty grading and per-source history": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217484
+      }
+    ],
+    "9.3 Write property tests for truth isolation (P3) and corroboration independence (P10)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217524
+      }
+    ],
+    "10. Checkpoint: first live conversation": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217557
+      }
+    ],
+    "11.1 Implement `resolvePitch`, Asset status, tasking, and task results filtered by access and reliability": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217592
+      }
+    ],
+    "11.2 Implement the confront-with-Claim action, `pressureCheck` and cover-state transitions that change the Agenda": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217625
+      }
+    ],
+    "11.3 Write the property test for recruitment and pressure determinism (P11)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217658
+      }
+    ],
+    "12.1 Implement doctrine, beliefs, Exposure tracking, and daily detection with responses (arrest, double, feed)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217692
+      }
+    ],
+    "12.2 Implement Dangles, doubling the player's Assets, Chickenfeed, and belief-driven Plot adaptation": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217726
+      }
+    ],
+    "12.3 Implement internal-mole reporting and suspicion of the player's identity, with the burn threshold": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217774
+      }
+    ],
+    "13.1 Implement the arrest gate, the penalties for a wrongful arrest, and win/lose detection": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217818
+      }
+    ],
+    "13.2 Build the debrief": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217863
+      }
+    ],
+    "13.3 Write the property test for the arrest gate (P12)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217904
+      }
+    ],
+    "14.1 Implement the versioned `SaveSnapshot` with save and load": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217948
+      }
+    ],
+    "14.2 Write property tests for save/load round-trip (P13) and replay determinism (P14)": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067217989
+      }
+    ],
+    "14.3 Check golden replay sessions into `evals/replays/` and run them in CI through `ReplayGateway`": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218024
+      }
+    ],
+    "15.1 Build the Scene pane with sentence-gated streaming, and the status bar with day, phase and action costs": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218058
+      }
+    ],
+    "15.2 Wire up the action menu covering every action in the requirements": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218092
+      }
+    ],
+    "15.3 Build the Case File browser with filters, grading and linking": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218131
+      }
+    ],
+    "15.4 Build the intercept Workbench with frequency counts, shift preview and key or plaintext submission": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218173
+      }
+    ],
+    "16.1 Define the fixture format (seed plus scripted player lines) and write the four required fixtures": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218207
+      }
+    ],
+    "16.2 Collect the mechanical metrics": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218254
+      }
+    ],
+    "16.3 Add judge scoring with a fixed rubric, record the judge's identity, and warn when the judge is the same model as `voice`": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218292
+      }
+    ],
+    "16.4 Write the Markdown and CSV comparison reports, and run both profiles from `models.yaml`": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218325
+      }
+    ],
+    "17. Final checkpoint: vertical slice playtest": [
+      {
+        "executionId": "340ffa4f-3f24-46fc-b6ec-1cc898266c4c",
+        "chatSessionId": "sess_4e3217a3-3ac3-4593-8fed-bd574f5eac43",
+        "timestamp": 1791067218359
+      }
+    ],
+    "2.1 Create the `content` package and the content schemas": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506200
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076517788
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077166679
+      }
+    ],
+    "2.2 Implement the template engine": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506254
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077196146
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077945612
+      }
+    ],
+    "2.3 Implement predicate definitions and the compiled predicate registry": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506294
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077197045
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077941445
+      }
+    ],
+    "2.4 Implement the pack loader": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506331
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077952619
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078809985
+      }
+    ],
+    "2.5 Write the property test for content validation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506372
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078858864
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079514206
+      }
+    ],
+    "2.6 Write the property test for content load order independence": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506410
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078857923
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079515551
+      }
+    ],
+    "2.7 Implement the scenario config": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506443
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078857024
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079516493
+      }
+    ],
+    "3.1 Write `pack.yaml`, `predicates.yaml`, `glossary.yaml`, `hints.yaml` and `difficulty.yaml`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506477
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079529753
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080313041
+      }
+    ],
+    "3.2 Write `city.yaml`, the Location Types, descriptors, persona libraries and Cover Identities for 1950s occupied Vienna": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506520
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079527713
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080314445
+      }
+    ],
+    "3.3 Write the period archetypes": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506556
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079532727
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080314989
+      }
+    ],
+    "3.4 Write the Plot templates, Side Thread templates and Rumour templates in an occupied-Vienna setting": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506592
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080323738
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081186396
+      }
+    ],
+    "3.5 Write the document templates and public-text corpora in 1950s style": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506625
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080322922
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081183134
+      }
+    ],
+    "3.6 Write the content smoke test": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506662
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081198795
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082026516
+      }
+    ],
+    "4.1 Define the core types": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506701
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076518503
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077166089
+      }
+    ],
+    "4.2 Build the Entity Registry": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506738
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077197988
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077943746
+      }
+    ],
+    "4.3 Implement the Truth Store": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506773
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077953537
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078808445
+      }
+    ],
+    "4.4 Implement the Case File model in `player-view`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506813
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077954503
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078809321
+      }
+    ],
+    "4.5 Write the property test for corroboration independence": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506851
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078856074
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079517452
+      }
+    ],
+    "4.6 Define the top-level state and log types": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506887
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077198945
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077942811
+      }
+    ],
+    "4.7 Implement arrest evidence in `player-view`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506927
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078854649
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079518353
+      }
+    ],
+    "5.1 Generate the city": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076506968
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081194788
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082027424
+      }
+    ],
+    "5.2 Generate organizations and Principal NPCs from archetypes": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507009
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082037523
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082700200
+      }
+    ],
+    "5.3 Instantiate the Plot from a Plot template as a stage DAG": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507047
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082710265
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791083504651
+      }
+    ],
+    "5.4 Generate Channels and Dead Drops for the Plot, the Hostile Service and the Station": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507087
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791083514154
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791083866506
+      }
+    ],
+    "5.5 Assign knowledge": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507127
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791083871507
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791084465430
+      }
+    ],
+    "5.6 Implement the Document model and the Dossier and Cable composers": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507164
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791084472135
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791085186887
+      }
+    ],
+    "5.7 Generate the Cover Identity and the Starting Brief": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507204
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791085215220
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791085729573
+      }
+    ],
+    "5.8 Implement the discovery-path verifier": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507243
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791085743035
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791086367964
+      }
+    ],
+    "5.9 Implement the `generate()` entry point": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507287
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791086378617
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087136729
+      }
+    ],
+    "5.10 Write the property test for seed determinism": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507323
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087147250
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087597219
+      }
+    ],
+    "5.11 Write the property test for Plot solvability": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507360
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087148179
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087598245
+      }
+    ],
+    "5.12 Write the property test for Starting Brief rootedness": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507403
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087149244
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087599184
+      }
+    ],
+    "6.1 Generate Background NPCs from civilian archetypes": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507454
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087150530
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087600518
+      }
+    ],
+    "6.2 Instantiate Side Threads from templates with no Cell participants": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507492
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087618178
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088320135
+      }
+    ],
+    "6.3 Generate Rumours as Background-NPC false beliefs, and Noise Traffic Channel schedules at the preset ratio": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507537
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088329778
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088804494
+      }
+    ],
+    "6.4 Wire the noise pipeline into `generate()`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507573
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088822084
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089366196
+      }
+    ],
+    "6.5 Write the property test for noise independence and solvability": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507610
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089383708
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791090509680
+      }
+    ],
+    "7.1 Implement phases, `advance()` and the Sim event bus with day-boundary hooks": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507647
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087151189
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087601376
+      }
+    ],
+    "7.2 Implement Plot Stage execution": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507688
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087617215
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088318093
+      }
+    ],
+    "7.3 Implement deterministic NPC schedule advancement and Walk-in events on the daily stream": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507723
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088330718
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088805880
+      }
+    ],
+    "7.4 Implement Plot abort": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507761
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088328376
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088806822
+      }
+    ],
+    "7.5 Write the property test for abort soundness": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507804
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088824414
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089367058
+      }
+    ],
+    "8.1 Implement the five ciphers as pure functions": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507843
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080319645
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081184045
+      }
+    ],
+    "8.2 Implement `encodePropositions` and `parseFieldMessage` using predicate field codes": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507885
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082038901
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082701133
+      }
+    ],
+    "8.3 Generate Intercepts from Plot Stages, Side Threads and Noise Traffic": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507928
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087619060
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088318951
+      }
+    ],
+    "8.4 Verify submitted keys and plaintexts, and add decrypted Claims to the Case File with source \"intercept\"": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076507964
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088331735
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088807894
+      }
+    ],
+    "8.5 Write the property test for cipher round-trip": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508004
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081195762
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082029326
+      }
+    ],
+    "8.6 Write the property test for Intercept fidelity": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508042
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088825087
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089368017
+      }
+    ],
+    "8.7 Write the property test for the predicate-derived round-trip": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508081
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082709263
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791083505476
+      }
+    ],
+    "9.1 Generate the daily newspaper edition and seized-material Documents": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508121
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791088823470
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089369060
+      }
+    ],
+    "9.2 Implement the read action": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508158
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791090524723
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092104129
+      }
+    ],
+    "9.3 Write the property test for Document reading idempotence": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508195
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092693840
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791093414000
+      }
+    ],
+    "10.1 Implement the pure Budget ledger and the pay action's ledger effects": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508235
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080320572
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081187345
+      }
+    ],
+    "10.2 Implement Directives, Standing and Cables": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508278
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791090524035
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092105037
+      }
+    ],
+    "10.3 Write the property test for Budget conservation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508321
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081196621
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082028385
+      }
+    ],
+    "11.1 Implement the action framework and travel": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508362
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089384541
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791090510650
+      }
+    ],
+    "11.2 Implement Unidentified Subjects and identification": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508402
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092121640
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092683375
+      }
+    ],
+    "11.3 Implement surveil and follow": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508460
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092694816
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791093413148
+      }
+    ],
+    "11.4 Implement talk presence checks, Cold Approach with `firstContact`, and Contact Channels": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508503
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791093428602
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791093859794
+      }
+    ],
+    "11.5 Implement arrange meeting": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508546
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791093867050
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791094444925
+      }
+    ],
+    "11.6 Implement servicing dead drops": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508585
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791094449090
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791095139013
+      }
+    ],
+    "11.7 Implement intercept and wait": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508622
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791095143054
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791095710896
+      }
+    ],
+    "11.8 Write the property test for phase and cost accounting": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508659
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053521
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098064777
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129813837
+      }
+    ],
+    "11.9 Write the property test for surveillance fidelity": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508696
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053581
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134145682
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134752621
+      }
+    ],
+    "11.10 Write the property test for interception completeness": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508737
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053625
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133223146
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134134118
+      }
+    ],
+    "12. Checkpoint: engine inspection": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508777
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053666
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791160773692
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791163008764
+      }
+    ],
+    "13.1 Write the OpenAI-compatible client, the `models.yaml` profile loader and the startup model check": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508817
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077200045
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077944715
+      }
+    ],
+    "13.2 Implement `stream()` and `structured()`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508861
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077955446
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078806978
+      }
+    ],
+    "13.3 Write reasoning adapters for the Gemma and Qwen families": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508898
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079528635
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080311639
+      }
+    ],
+    "13.4 Add timeouts, retries, fallback and the priority queue": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508937
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791080321539
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081185003
+      }
+    ],
+    "13.5 Implement `RecordingGateway` (JSONL) and `ReplayGateway` keyed by request hash": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076508977
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791081198078
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082030479
+      }
+    ],
+    "13.6 Record play metrics": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509020
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082039645
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082701956
+      }
+    ],
+    "14.1 Write the Knowledge Slicer": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509061
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053714
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098065714
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129814751
+      }
+    ],
+    "14.2 Write the Prompt Builder": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509101
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053760
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129822507
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130968482
+      }
+    ],
+    "14.3 Write the property test for knowledge containment": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509143
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053801
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130979221
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132409019
+      }
+    ],
+    "14.4 Write the property test for prefix stability and budget": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509185
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053848
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130980670
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132405733
+      }
+    ],
+    "14.5 Build the Intent Classifier (`fast`, structured) and the pure `applyIntent`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509228
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053896
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129823447
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130973165
+      }
+    ],
+    "14.6 Route turns to `voice` or `fast` by scene stakes": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509268
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053935
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130982344
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132408079
+      }
+    ],
+    "14.7 Build the Leak Guard with a configurable allowed set": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509313
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098053976
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129824406
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130971300
+      }
+    ],
+    "14.8 Write the property test for Leak Guard soundness": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509352
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054016
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130981570
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132406670
+      }
+    ],
+    "14.9 Add refusal and meta-response detection, with retry under a reinforced fiction frame": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509395
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054064
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132418852
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133212531
+      }
+    ],
+    "14.10 Build the asynchronous Claim Extractor": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509435
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054108
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132415943
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133211154
+      }
+    ],
+    "14.11 Write the property test for model outputs not writing facts": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509485
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054158
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133223736
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134136201
+      }
+    ],
+    "15.1 Implement the pure Specifics Guard": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509523
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791077956430
+      },
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791078806058
+      }
+    ],
+    "15.2 Build the Narrator prompt builder and the scene-descriptor projection from the Player View": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509570
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054208
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134763362
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136272769
+      }
+    ],
+    "15.3 Implement narration streaming": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509610
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054250
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136281846
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136824806
+      }
+    ],
+    "15.4 Implement the Location Flavour cache keyed by Location, phase and crowd band": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509653
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054298
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136960455
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791140873471
+      }
+    ],
+    "15.5 Write the property test for Narrator containment": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509692
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054341
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791140879957
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141900096
+      }
+    ],
+    "16.1 Implement the engine API facade and projections": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509754
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054392
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133220831
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134135583
+      }
+    ],
+    "16.2 Implement the Journal fact log and notes": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509796
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054434
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134146625
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134753999
+      }
+    ],
+    "16.3 Implement the Map and People views": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509835
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054479
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134765710
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136273714
+      }
+    ],
+    "16.4 Implement the help command (quotes plus glossary) and content-driven hints with view-side seen flags": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509874
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054518
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134148610
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134754950
+      }
+    ],
+    "16.5 Write the property test for truth isolation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509913
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054560
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136961395
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791140874402
+      }
+    ],
+    "16.6 Implement Notifications": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076509956
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054606
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134764758
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136274663
+      }
+    ],
+    "16.7 Write the property test for notification soundness": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510003
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054650
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136282831
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136823870
+      }
+    ],
+    "16.8 Wire the Turn Pipeline": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510040
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054696
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791140880817
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141900896
+      }
+    ],
+    "16.9 Write the property test for turn atomicity": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510079
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054737
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141907509
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791142614163
+      }
+    ],
+    "17. Checkpoint: first live session": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510121
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054783
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791160774449
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791164517656
+      }
+    ],
+    "18.1 Implement `resolvePitch`, Asset status and tasking": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510163
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054831
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791140881567
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141898663
+      }
+    ],
+    "18.2 Implement retainers, pay effects and trust decay for unpaid money-motivated Assets": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510205
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054874
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141908945
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143104605
+      }
+    ],
+    "18.3 Implement the confront-with-Claim action, `pressureCheck` and cover-state transitions that change the Agenda": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510249
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054921
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141909819
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791142615379
+      }
+    ],
+    "18.4 Write the property test for recruitment and pressure determinism": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510288
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098054982
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791142624823
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143105994
+      }
+    ],
+    "18.5 Implement the turn-agent action": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510331
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055025
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143117663
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143883771
+      }
+    ],
+    "18.6 Implement the feed action and validation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510380
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055069
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143892748
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791144670634
+      }
+    ],
+    "18.7 Write the property test for turning soundness": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510422
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055119
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143894152
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791144671557
+      }
+    ],
+    "18.8 Write the property test for Asset report filtering": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510465
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055166
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791142625364
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143106636
+      }
+    ],
+    "19.1 Implement doctrine from preset ranges, beliefs, Exposure tracking, and daily detection with responses (arrest, double, feed)": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510521
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055216
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143118952
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143884954
+      }
+    ],
+    "19.2 Implement Dangles and Walk-in handling, doubling the player's Assets, Chickenfeed, and belief-driven Plot adaptation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510559
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055267
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791143894962
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791144672931
+      }
+    ],
+    "19.3 Implement mole reporting, Cover Suspicion with tailing of the player, and the burn threshold": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510601
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055316
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791144682253
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145176258
+      }
+    ],
+    "19.4 Implement Hostile Service newspaper plants and the daily comms traffic hooks for the Cipher Engine": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510640
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055367
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145184944
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145831980
+      }
+    ],
+    "19.5 Implement the off-screen consequences of hidden events": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510680
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055415
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791144683178
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145176979
+      }
+    ],
+    "19.6 Implement feed ingestion and belief-driven adaptation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510717
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055464
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145847817
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146315014
+      }
+    ],
+    "19.7 Write the property test for feed ingestion": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510754
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055514
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146323512
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146989296
+      }
+    ],
+    "20.1 Implement the arrest gate, the penalties for a wrongful arrest, and win/lose detection": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510793
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055564
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145185935
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145833807
+      }
+    ],
+    "20.2 Build the debrief": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510838
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055615
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146322681
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146988777
+      }
+    ],
+    "20.3 Implement `buildOutcomeRecord`, its Zod schema, and writing it to `saves/outcomes/`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510880
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055665
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146994929
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791147741652
+      }
+    ],
+    "20.4 Write the property test for the arrest gate": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510921
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055713
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791145848351
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146315526
+      }
+    ],
+    "20.5 Write the property test for Outcome Record derivation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076510962
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055759
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791147749827
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791148327590
+      }
+    ],
+    "21.1 Implement the versioned `SaveSnapshot` with save and load": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511001
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055807
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791147748896
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791148327470
+      }
+    ],
+    "21.2 Write the property test for save/load round-trip": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511040
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055851
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791148337983
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791149756414
+      }
+    ],
+    "21.3 Write the property test for replay determinism": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511086
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055892
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791148337364
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791149757808
+      }
+    ],
+    "21.4 Check golden replay sessions into `evals/replays/` and run them in CI through `ReplayGateway`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511127
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098055948
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791149835561
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153292737
+      }
+    ],
+    "22.1 Build the start screen and the brief Cable display": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511168
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056000
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791148335924
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791149758429
+      }
+    ],
+    "22.2 Build the Scene pane and the status bar": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511213
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056048
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791149834471
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153293467
+      }
+    ],
+    "22.3 Build the \"here\" pane and the action menu": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511253
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056098
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153299367
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155563215
+      }
+    ],
+    "22.4 Build the Case File browser with filters for entity, source and grade, plus grading and linking": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511290
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056150
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153300811
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155564242
+      }
+    ],
+    "22.5 Build the intercept Workbench": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511330
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056199
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153301735
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155565066
+      }
+    ],
+    "22.6 Build the Document reader for newspapers, public texts, Dossiers, Cables and seized material": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511374
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056247
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153302622
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155566072
+      }
+    ],
+    "22.7 Build the Journal, Map and People views": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511418
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056298
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155573356
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156025637
+      }
+    ],
+    "22.8 Build the help overlay and hint toasts": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511475
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056346
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155574307
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156027033
+      }
+    ],
+    "22.9 Write `ink-testing-library` snapshot tests": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511520
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056409
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156584450
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157571176
+      }
+    ],
+    "22.10 Build the game-over screen": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511556
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056456
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155575256
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156027984
+      }
+    ],
+    "22.11 Build the debrief screen rendering `views.debrief()` from 20.2, section by section": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511598
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056504
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155576665
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156029374
+      }
+    ],
+    "22.12 Build the save/load screen": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511640
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056549
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156051117
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156579525
+      }
+    ],
+    "22.13 Build the endpoint-unreachable error screen": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511680
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056599
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791155577322
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156029934
+      }
+    ],
+    "22.14 Build the feed composer": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511723
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056673
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156052071
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156577699
+      }
+    ],
+    "22.15 Write `ink-testing-library` snapshot tests for the game-over, debrief, save/load, endpoint error and feed composer screens": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511760
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056722
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156586533
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157572209
+      }
+    ],
+    "23.1 Define the fixture format and write the five required fixtures": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511818
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056772
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156052899
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156578674
+      }
+    ],
+    "23.2 Collect the mechanical metrics": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511860
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056817
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791156585408
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157569776
+      }
+    ],
+    "23.3 Add judge scoring with a fixed rubric (dialogue and narration), record the judge's identity, and warn when the judge is the same model as `voice`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511899
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056863
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157581401
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157906470
+      }
+    ],
+    "23.4 Write the Markdown and CSV comparison reports, and run both profiles from `models.yaml`": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511951
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056910
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157909940
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791158399580
+      }
+    ],
+    "24. Final checkpoint: vertical slice playtest": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791076511993
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056955
+      }
+    ],
+    "2. Build the content foundation": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079516535
+      }
+    ],
+    "4. Implement the core data model": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791079518416
+      }
+    ],
+    "3. Author the core content pack": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082026568
+      }
+    ],
+    "13. Build the LLM Gateway": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791082701998
+      }
+    ],
+    "5. Build the world generator (core stream)": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791087599229
+      }
+    ],
+    "7. Build the clock, Plot engine and schedules": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089367105
+      }
+    ],
+    "8. Build the Cipher Engine": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791089368057
+      }
+    ],
+    "6. Build the noise generator (noise stream)": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791090509736
+      }
+    ],
+    "10. Build the Station, Directives and Budget": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791092105085
+      }
+    ],
+    "9. Build the newspapers, seized material and reading": [
+      {
+        "executionId": "7aa0876c-eae6-4f10-bd0f-d763fbe67063",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791093414051
+      }
+    ],
+    "25.1 Implement the SDK connection and the download check": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098056999
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791158412450
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791158964844
+      }
+    ],
+    "25.2 Implement the memory-estimate preflight": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057047
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791158971135
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791159501899
+      }
+    ],
+    "25.3 Implement explicit profile load/unload with identifiers and context length": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057089
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791159505809
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791159947535
+      }
+    ],
+    "25.4 Add the `pnpm models:pull` script and wire the preflight into startup": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057133
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791159953678
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791160389195
+      }
+    ],
+    "25.5 Write the Model Manager tests": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057180
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791160392768
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791160591604
+      }
+    ],
+    "26.1 Give Plot and Side Thread traces structure": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057224
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098067131
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129815697
+      }
+    ],
+    "26.2 Execute traces as bound Sim events and scope disruption to each stage": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057268
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129825804
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130969906
+      }
+    ],
+    "26.3 Mint real Intercepts for Plot, Side Thread and Noise Traffic": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057314
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130978284
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132409954
+      }
+    ],
+    "26.4 Apply the mole and seed the Truth Store at generation": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057360
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098067817
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129816631
+      }
+    ],
+    "26.5 Derive apparent allegiance from cover": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057406
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132416885
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133214513
+      }
+    ],
+    "26.6 Make surveillance observe Sim events": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057455
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791132417829
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133213474
+      }
+    ],
+    "26.7 Tighten the discovery-path verifier": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057500
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791133222212
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134133176
+      }
+    ],
+    "26.8 Make people coherent and distinguishable": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057550
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791129826496
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791130972236
+      }
+    ],
+    "26.9 Add a third Plot template and more Side Threads and Rumours": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057593
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134147526
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134756178
+      }
+    ],
+    "26.10 Deepen the city": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057640
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134766345
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136275488
+      }
+    ],
+    "26.11 Write the property test for world coherence": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791098057692
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136283547
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136825673
+      }
+    ],
+    "14. Build the dialogue pipeline": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134136254
+      }
+    ],
+    "11. Build the Action Resolver and player actions": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791134752705
+      }
+    ],
+    "26. Close the world-coherence gaps and deepen the core pack": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136825727
+      }
+    ],
+    "26.12 Make Background NPC names unique across the roster": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136872213
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791136962253
+      },
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791140875310
+      }
+    ],
+    "15. Build the Narrator": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791141900146
+      }
+    ],
+    "16. Build the Player View and player aids": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791142614221
+      }
+    ],
+    "18. Build recruitment and relationships": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791144671615
+      }
+    ],
+    "19. Build the Hostile Service": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791146989342
+      }
+    ],
+    "20. Implement arrests, end conditions, the debrief and the Outcome Record": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791148327641
+      }
+    ],
+    "21. Implement save, load and replay": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791153292800
+      }
+    ],
+    "22. Build the TUI client": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791157572259
+      }
+    ],
+    "23. Build the model evaluation harness": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791158399648
+      }
+    ],
+    "25. Build the Model Manager": [
+      {
+        "executionId": "9d82e32d-04ea-4656-9ae0-766c78d2f7b7",
+        "chatSessionId": "sess_ef529298-cbc1-47d3-aaa0-21005c488c89",
+        "timestamp": 1791160591664
+      }
+    ]
+  }
+}

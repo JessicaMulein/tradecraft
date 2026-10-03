@@ -1,0 +1,73 @@
+# newspapers.yaml — the fictional Lisbon mastheads (content-expansion task 9.8).
+#
+# Each entry validates against NewspaperSchema (packages/content/src/kinds/
+# city.ts): { id, city, masthead, language, stance, register, days, price,
+# soldAt, years? }. `soldAt` is a Tag Query naming the Location Tags where the
+# paper is sold (the kiosks, tram stops and reading rooms that carry
+# `function:newspaper-outlet`); `price` is in escudos; `days` names the
+# weekdays the paper prints.
+#
+# Every masthead and publisher is fictional. These stand in for the dailies,
+# evening sheets and foreign-language papers of a neutral Atlantic capital
+# crowded with émigrés, correspondents and legations. The real titles of the
+# period are not named; the register and stance below are invented house
+# characters, not a portrait of any actual paper.
+#
+# Period: 1945–1965 Lisbon. Prose about the papers (their copy) lives in the
+# article Document templates under `documents/`; this file only registers the
+# mastheads the generator issues editions from.
+
+- id: diario-da-baixa
+  city: lisbon
+  masthead: Diário da Baixa
+  language: Portuguese
+  stance: cautious establishment daily
+  register: formal, measured, official in tone
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 1
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1965 }
+
+- id: gazeta-do-tejo
+  city: lisbon
+  masthead: Gazeta do Tejo
+  language: Portuguese
+  stance: commercial morning paper of shipping and the markets
+  register: plain, businesslike, heavy with notices and sailings
+  days: [monday, tuesday, wednesday, thursday, friday]
+  price: 1
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1965 }
+
+- id: a-tarde-lisboeta
+  city: lisbon
+  masthead: A Tarde Lisboeta
+  language: Portuguese
+  stance: popular evening sheet of city news, crime and the lottery
+  register: brisk, anecdotal, written for the tram and the café
+  days: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+  price: 1
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1965 }
+
+- id: the-tagus-courier
+  city: lisbon
+  masthead: The Tagus Courier
+  language: English
+  stance: English-language weekly for the émigré and foreign colony
+  register: dry, diplomatic, written for departing passengers and attachés
+  days: [friday]
+  price: 2
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1965 }
+
+- id: boletim-do-porto
+  city: lisbon
+  masthead: Boletim do Porto de Lisboa
+  language: Portuguese
+  stance: port and customs bulletin of arrivals and departures
+  register: terse, tabular, a record of the quays and the roadstead
+  days: [tuesday, friday]
+  price: 1
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1965 }

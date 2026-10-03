@@ -1,0 +1,66 @@
+{
+  "seed": "vienna-golden-bravo",
+  "plan": [
+    {
+      "kind": "wait",
+      "phases": 1
+    },
+    {
+      "kind": "travel",
+      "destIndex": 3,
+      "countersurveillance": true
+    },
+    {
+      "kind": "wait",
+      "phases": 1
+    },
+    {
+      "kind": "travel",
+      "destIndex": 7,
+      "countersurveillance": false
+    }
+  ],
+  "modelsConfig": {
+    "endpoint": "http://localhost:1234/v1",
+    "profiles": {
+      "base": {
+        "voice": {
+          "model": "voice-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "fast": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "narrator": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "bookkeeping": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "judge": {
+          "model": "voice-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        }
+      }
+    },
+    "active": "base"
+  }
+}

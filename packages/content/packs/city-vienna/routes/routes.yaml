@@ -1,0 +1,30 @@
+# routes.yaml — the Route graph of occupied Vienna (content-expansion task 9.1).
+#
+# Each is a CityRoute between two Districts: `cost` is 0 or 1 travel phases
+# (movement within a District is free and needs no Route). A crossing into or
+# out of a Soviet-sector District passes a sector checkpoint where papers are
+# checked, so it carries the `access:checkpoint` Tag and the `sector:soviet` Tag
+# naming the controlling power; crossings among the western sectors and the
+# international core are freer and carry only the sector they enter. The graph
+# is connected, so every District is reachable from the international core.
+#
+# Checkpoints were a fixture of the whole occupation, so these Routes carry no
+# Year Range (they apply across the city's 1945–1955 Period Window).
+
+# --- From the international core (Innere Stadt) -----------------------------
+- { a: innere-stadt, b: landstrasse, cost: 1, tags: [sector:british] }
+- { a: innere-stadt, b: mariahilf,   cost: 1, tags: [sector:french] }
+- { a: innere-stadt, b: alsergrund,  cost: 1, tags: [sector:american] }
+- { a: innere-stadt, b: leopoldstadt, cost: 1, tags: [sector:soviet, access:checkpoint] }
+- { a: innere-stadt, b: wieden,       cost: 1, tags: [sector:soviet, access:checkpoint] }
+
+# --- Among the western sectors ---------------------------------------------
+- { a: mariahilf,   b: alsergrund, cost: 1, tags: [sector:american] }
+- { a: landstrasse, b: wieden,     cost: 1, tags: [sector:soviet, access:checkpoint] }
+
+# --- Into and within the Soviet sector -------------------------------------
+- { a: wieden,       b: mariahilf,    cost: 1, tags: [sector:french, access:checkpoint] }
+- { a: wieden,       b: favoriten,    cost: 1, tags: [sector:soviet] }
+- { a: favoriten,    b: brigittenau,  cost: 1, tags: [sector:soviet] }
+- { a: leopoldstadt, b: brigittenau,  cost: 1, tags: [sector:soviet] }
+- { a: alsergrund,   b: brigittenau,  cost: 1, tags: [sector:soviet, access:checkpoint] }

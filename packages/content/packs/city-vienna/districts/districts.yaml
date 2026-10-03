@@ -1,0 +1,138 @@
+# districts.yaml — the Districts of occupied Vienna (content-expansion task 9.1).
+#
+# Each is a District (DistrictSchema): a named node in the city's Route graph,
+# with its aliases, prose description, atmosphere words, Tags (from the core
+# vocabulary's `setting:*` and `sector:*` facets, both of which apply to
+# districts) and the occupation `sector` that holds it (power plus the Year
+# Range it applied). The Innere Stadt is the inter-allied international zone;
+# the other seven carry one of the four occupation powers.
+#
+# Eight numbered Bezirke are modelled — a representative spread across all four
+# sectors plus the international core — which the generator draws 6–8 of per
+# world (see city.yaml `instantiation.districts`). Descriptions are period
+# texture of the 1945–1955 occupation; all organisations and people named
+# anywhere in play are fictional.
+
+- id: innere-stadt
+  city: vienna
+  name: Innere Stadt
+  aliases:
+    - { text: the First District, distinctive: false }
+    - { text: the Inner City, distinctive: true }
+    - { text: the Old Town, distinctive: false }
+  description: >-
+    The old core inside the Ring: the cathedral, the ministries, the grand
+    cafés and the hotels where every delegation keeps a table. Administered
+    jointly by all four powers, whose patrols ride the streets together.
+  atmosphere: [grand, watched, cosmopolitan, patrolled]
+  tags: [setting:commercial, setting:diplomatic, sector:international]
+  sector:
+    power: four-power
+    years: { from: 1945, to: 1955 }
+
+- id: leopoldstadt
+  city: vienna
+  name: Leopoldstadt
+  aliases:
+    - { text: the Second District, distinctive: false }
+    - { text: the island between the waters, distinctive: true }
+  description: >-
+    Across the Danube Canal on the island between canal and river: the great
+    park and its fairground wheel, and quiet streets where a watched man can
+    lose a tail or acquire one. Held by the Soviet power.
+  atmosphere: [open, faded, surveilled, quiet]
+  tags: [setting:residential, sector:soviet]
+  sector:
+    power: soviet
+    years: { from: 1945, to: 1955 }
+
+- id: landstrasse
+  city: vienna
+  name: Landstraße
+  aliases:
+    - { text: the Third District, distinctive: false }
+  description: >-
+    A legation quarter of villas and garden walls; the diplomatic traffic is
+    heavy and the pavements are swept. Held by the British power, whose
+    headquarters sit among the embassies.
+  atmosphere: [genteel, diplomatic, orderly, swept]
+  tags: [setting:diplomatic, setting:residential, sector:british]
+  sector:
+    power: british
+    years: { from: 1945, to: 1955 }
+
+- id: wieden
+  city: vienna
+  name: Wieden
+  aliases:
+    - { text: the Fourth District, distinctive: false }
+  description: >-
+    Dense tenements around a long market, tram lines running in every
+    direction, and the first stretch of the great southbound shopping street.
+    Held by the Soviet power at the city's heart.
+  atmosphere: [dense, bustling, hard-pressed, watchful]
+  tags: [setting:commercial, setting:residential, sector:soviet]
+  sector:
+    power: soviet
+    years: { from: 1945, to: 1955 }
+
+- id: mariahilf
+  city: vienna
+  name: Mariahilf
+  aliases:
+    - { text: the Sixth District, distinctive: false }
+  description: >-
+    The long shopping street and its side alleys, crowds that thin to nothing
+    once the shutters come down, and picture houses lit against the dusk. Held
+    by the French power.
+  atmosphere: [commercial, crowded-by-day, shuttered-by-night]
+  tags: [setting:commercial, sector:french]
+  sector:
+    power: french
+    years: { from: 1945, to: 1955 }
+
+- id: alsergrund
+  city: vienna
+  name: Alsergrund
+  aliases:
+    - { text: the Ninth District, distinctive: false }
+  description: >-
+    Hospitals, lecture halls and lodging houses; students, clerks and the odd
+    correspondent filing from a rented room. Held by the American power, which
+    keeps billets and offices among the institutes.
+  atmosphere: [studious, institutional, transient, lamplit]
+  tags: [setting:institutional, setting:residential, sector:american]
+  sector:
+    power: american
+    years: { from: 1945, to: 1955 }
+
+- id: favoriten
+  city: vienna
+  name: Favoriten
+  aliases:
+    - { text: the Tenth District, distinctive: false }
+  description: >-
+    Workers' blocks, rail sidings and a gasworks a long way from the Ring, where
+    the city turns industrial and the main southern terminus takes the whole
+    weight of the lines from the east. Held by the Soviet power.
+  atmosphere: [industrial, working, grey, far-flung]
+  tags: [setting:industrial, setting:residential, sector:soviet]
+  sector:
+    power: soviet
+    years: { from: 1945, to: 1955 }
+
+- id: brigittenau
+  city: vienna
+  name: Brigittenau
+  aliases:
+    - { text: the Twentieth District, distinctive: false }
+    - { text: the harbour hinterland, distinctive: true }
+  description: >-
+    Warehouses and the harbour hinterland between the canal and the river, where
+    lorries idle at odd hours and the river port works through the night. Held
+    by the Soviet power at the city's northern edge.
+  atmosphere: [warehouses and wharves, deserted-at-night, riverine, risky]
+  tags: [setting:industrial, sector:soviet]
+  sector:
+    power: soviet
+    years: { from: 1945, to: 1955 }

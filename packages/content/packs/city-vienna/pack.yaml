@@ -1,0 +1,43 @@
+# The city-vienna City Pack manifest (content-expansion task 9.1).
+#
+# A City Pack supplies the City-Scoped geography and institutions a scenario is
+# set in. The GEOGRAPHY half (task 9.1) is the `city.yaml` City Definition, its
+# Districts, City Locations, Routes, the city-specific slice Location Types, the
+# street-name pools, the monthly weather tables and the Sources List. The
+# INSTITUTIONS half (task 9.2) adds the fictional newspapers, the local
+# organisations, the city-local-security Service Definition (referenced from
+# `city.yaml`'s `services`), the local Cover Identities, the city Locale (Local
+# Terms and `allowNames`), the city article and Rumour templates, and the
+# Template Variants that localise the core Document and city article bases, plus
+# the `lint.yaml` Suppressions file.
+#
+# City: occupied Vienna, 1945–1955. After the war the city was divided into four
+# occupation sectors (United States, United Kingdom, France and the Soviet
+# Union), with the Innere Stadt (the First District) administered jointly as an
+# inter-allied international zone — patrols of all four powers rode together,
+# "four men in a jeep". The sector a District sits in shapes who patrols it, how
+# papers are checked and how a crossing feels; sector-crossing Routes carry a
+# checkpoint Tag. Every landmark named with a `real-landmark` basis is attested
+# in `sources.yaml`; every organisation and person in play is fictional.
+#
+# It declares `role: city` and `contentSchema: 2`. It requires the core pack
+# (the Tag Vocabulary and slice kinds), the one Era Pack of the period
+# (era-cold-war-early — its shared Service Definitions, the period and the era
+# Locale), and the Library Packs whose Culture Groups the city's Culture Weights
+# reference (lib-central-europe for Austrian German / Czech / Hungarian, and
+# lib-russian for the Soviet-sector Russian presence). The loader pulls these in
+# transitively and enforces exactly one Era Pack per City Pack.
+id: city-vienna
+version: 1.0.0
+contentSchema: 2
+role: city
+requires:
+  - id: core
+    range: '^1.0.0'
+  - id: era-cold-war-early
+    range: '^1.0.0'
+  - id: lib-central-europe
+    range: '^1.0.0'
+  - id: lib-russian
+    range: '^1.0.0'
+overrides: []

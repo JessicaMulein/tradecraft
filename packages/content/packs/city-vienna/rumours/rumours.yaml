@@ -1,0 +1,65 @@
+# rumours.yaml — Vienna's city Rumour templates (content-expansion task 9.2).
+#
+# Each entry is a Rumour template (RumourTemplateSchema, packages/content/src/
+# lib/kinds.ts): { id, predicate, distortions, shiftDays? }. A Rumour takes one
+# vocabulary predicate (packs/core/predicates.yaml) and the distortions that
+# turn a true — or wholly invented — fact into the garbled belief a Background
+# NPC passes along: swap-subject (wrong person), shift-day (the day slides,
+# bounded by `shiftDays`) and invent-target (a target conjured from nothing).
+#
+# These are the city's own gossip templates, set beside the core roster — the
+# café and market talk of occupied Vienna. They name no real people and depict
+# no real atrocities (slice Req 29.3); the engine fills the subjects and places
+# from the generated world. Period voice: who was seen with whom, on which day,
+# at which Beisl or tram stop.
+
+# "They say the wrong man was seen crossing into the inner city" — a sighting
+# pinned on the wrong person.
+- id: rumour-vienna-mistaken-sighting
+  predicate: LOCATED_AT
+  distortions: [swap-subject]
+
+# A café meeting whose day has slid in the retelling, as these things do over a
+# small coffee.
+- id: rumour-vienna-drifted-meeting
+  predicate: MEETS_AT
+  distortions: [shift-day]
+  shiftDays: 2
+
+# "I heard he's with the Ring" — membership gossip pinned on the wrong person.
+- id: rumour-vienna-mistaken-member
+  predicate: MEMBER_OF
+  distortions: [swap-subject]
+
+# A travel rumour both misnamed and slid a day: the garbled story of who went
+# out to Grinzing and when.
+- id: rumour-vienna-garbled-journey
+  predicate: TRAVELS_TO
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3
+
+# "Someone's planning something down at the harbour" — a plot conjured where
+# there is none.
+- id: rumour-vienna-invented-plot
+  predicate: PLANS
+  distortions: [invent-target]
+
+# A supply rumour with an imagined recipient: who is said to be slipping goods
+# to a man made up entirely.
+- id: rumour-vienna-phantom-supply
+  predicate: SUPPLIES
+  distortions: [invent-target]
+
+# A channel rumour whose day has drifted — "the wireless was Tuesday, or was it
+# Thursday?"
+- id: rumour-vienna-drifted-signal
+  predicate: USES_CHANNEL
+  distortions: [shift-day]
+  shiftDays: 2
+
+# A fully tangled target rumour: wrong accuser, invented victim, the day
+# slipped — the third-hand market story that falls apart on checking.
+- id: rumour-vienna-tangled-target
+  predicate: TARGETS
+  distortions: [swap-subject, invent-target, shift-day]
+  shiftDays: 4

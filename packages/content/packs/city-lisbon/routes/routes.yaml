@@ -1,0 +1,51 @@
+# routes.yaml — the Route graph between Lisbon's Districts (task 9.7).
+#
+# Each is a City Route (packages/content/src/kinds/city.ts, CityRouteSchema)
+# between two Districts, `cost` 0 or 1 phases. The graph is connected so the
+# generator can always lay a path between any two Districts it instantiates
+# (connectivity is checked at instantiation, task 3.3).
+#
+# Lisbon had no occupation sectors, so no Route carries a sector-checkpoint Tag
+# or a sector Year Range — the crossings here are the real transit links of the
+# city: the yellow trams (eléctricos) that climbed between the quarters, the
+# hill funiculars (elevadores da Glória, da Bica, do Lavra and the Santa Justa
+# lift), the Tagus ferries and the dock road west to Alcântara and Belém. The
+# `access:public` Tag marks an open crossing anyone may use; the two water
+# crossings are the river stations. No crossing closes over the window, so no
+# Route is year-ranged.
+#
+# Costs: adjacent lower-town quarters are a short tram ride or a walk (cost 0);
+# a crossing that climbs a hill by funicular, runs the length of the dock road,
+# or takes a ferry leg is a phase (cost 1).
+
+# the lower town: Baixa at the hub.
+# baixa<->chiado: the Elevador da Glória and the Santa Justa lift.
+- { a: baixa, b: chiado, cost: 0, tags: [access:public] }
+# baixa<->cais-do-sodre: along the central river front.
+- { a: baixa, b: cais-do-sodre, cost: 0, tags: [access:public] }
+# baixa<->alfama: tram up the castle hill.
+- { a: baixa, b: alfama, cost: 1, tags: [access:public] }
+# baixa<->mouraria: across the Martim Moniz.
+- { a: baixa, b: mouraria, cost: 0, tags: [access:public] }
+
+# the castle hill.
+# alfama<->mouraria: over the hill, where the lanes meet.
+- { a: alfama, b: mouraria, cost: 0, tags: [access:public] }
+# alfama<->cais-do-sodre: tram down to the river.
+- { a: alfama, b: cais-do-sodre, cost: 1, tags: [access:public] }
+
+# the Chiado and the hill west.
+# chiado<->estrela: tram west to the basilica.
+- { a: chiado, b: estrela, cost: 1, tags: [access:public] }
+# chiado<->cais-do-sodre: the Elevador da Bica down to the quay.
+- { a: chiado, b: cais-do-sodre, cost: 0, tags: [access:public] }
+
+# the river front west: Cais do Sodré -> Alcântara -> Belém.
+# cais-do-sodre<->alcantara: the dock road and the Cascais line.
+- { a: cais-do-sodre, b: alcantara, cost: 1, tags: [access:public] }
+# alcantara<->belem: the quay road to the river mouth.
+- { a: alcantara, b: belem, cost: 1, tags: [access:public] }
+# estrela<->alcantara: down the hill to the docks.
+- { a: estrela, b: alcantara, cost: 1, tags: [access:public] }
+# cais-do-sodre<->belem: the Cascais line stops along the water.
+- { a: cais-do-sodre, b: belem, cost: 1, tags: [access:public] }

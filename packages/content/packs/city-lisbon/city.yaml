@@ -1,0 +1,79 @@
+# city.yaml — the Lisbon City Definition (content-expansion task 9.7).
+#
+# A single CityDefinition record (packages/content/src/kinds/city.ts,
+# CityDefinitionSchema): the city's identity, climate, Period Window, Start Date
+# window, currency, languages, Culture-Group weights, the Service Definitions
+# active in it and the instantiation bounds the world generator draws Districts
+# and Locations within (tasks 3.2, 3.3, 3.8).
+#
+# Period: 1945–1965. Neutral Portugal was never occupied or divided, so there is
+# no sector regime — the Districts carry no `sector`. The currency is the
+# Portuguese escudo, written after the amount with the old "cifrão" placed
+# between escudos and centavos; here the money formatter renders the plain
+# `<amount>$00` form the period used on price tags and bills.
+#
+# climate: Lisbon has a Mediterranean climate (mild damp Atlantic winters, warm
+# dry summers), so it names `climate:mediterranean` from the core Tag
+# Vocabulary. The descriptor generator leans on this climate when a Descriptor
+# Fragment carries none (engine task 3.5).
+#
+# cultureWeights: Portuguese dominate; a standing Spanish community sits beside
+# them, and the émigré and diplomatic crowd of the neutral capital brings
+# British, American, French, German, Russian and Sephardic names. The émigré
+# weights are heaviest across the war years and taper after 1945 as the
+# refugee traffic thinned, expressed through year-ranged weights.
+#
+# services: the era's shared services (the Station's own service, the hostile
+# services and the allied liaison services) together with the city's own
+# political-police apparatus — the City-Scoped `local-security` service
+# `local-vigilance-directorate` defined in this pack's `services/` (task 9.8).
+# The bare id is namespaced to this pack (`city-lisbon/local-vigilance-directorate`)
+# the way the loader namespaces every City-Scoped reference.
+id: lisbon
+name: Lisbon
+country: Portugal
+climate: climate:mediterranean
+period:
+  from: 1945
+  to: 1965
+startDates:
+  from: '1945-05-09'
+  to: '1965-10-31'
+currency:
+  name: escudo
+  symbol: $
+  subunit: centavo
+  format: '{amount}${subunit}'
+  rounding: 0.5
+  budgetScale: 28
+languages:
+  - { id: pt, name: Portuguese, share: 0.82 }
+  - { id: es, name: Spanish, share: 0.05 }
+  - { id: en, name: English, share: 0.05 }
+  - { id: fr, name: French, share: 0.05 }
+  - { id: de, name: German, share: 0.03 }
+cultureWeights:
+  - { group: lib-iberian/portuguese, weight: 60 }
+  - { group: lib-iberian/spanish, weight: 10 }
+  - { group: lib-western/british-english, weight: 7 }
+  - { group: lib-western/american-english, weight: 6 }
+  - { group: lib-western/french, weight: 6 }
+  - { group: lib-central-europe/german-berlin, weight: 4 }
+  - { group: lib-eastern-mediterranean/sephardic, weight: 4 }
+  - { group: lib-russian/russian, weight: 3 }
+  # The émigré surge of the war years, heaviest at the front of the window and
+  # thinning as the refugee traffic cleared after 1945.
+  - { group: lib-central-europe/german-berlin, weight: 6, years: { from: 1945, to: 1948 } }
+  - { group: lib-eastern-mediterranean/sephardic, weight: 6, years: { from: 1945, to: 1949 } }
+  - { group: lib-russian/russian, weight: 4, years: { from: 1945, to: 1950 } }
+services:
+  - era-cold-war-early/own-service
+  - era-cold-war-early/hostile-foreign-directorate
+  - era-cold-war-early/hostile-security-apparat
+  - era-cold-war-early/hostile-satellite-bureau
+  - era-cold-war-early/liaison-atlantic-agency
+  - era-cold-war-early/liaison-neutral-section
+  - local-vigilance-directorate
+instantiation:
+  districts: [6, 8]
+  locations: [16, 22]

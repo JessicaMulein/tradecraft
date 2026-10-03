@@ -1,0 +1,63 @@
+# guide-traveller.yaml — a public-text GUIDE record (task 7.4).
+#
+# Validates against PublicTextSchema (packages/content/src/kinds/era.ts):
+#   { id, title, kind, provenance: { kind, source? }, body: string[], city? }
+#
+# `kind: guide`. An ORIGINAL traveller's guide to a generic divided-Europe city
+# in the first postwar decade: how to arrive, the money and the papers, getting
+# about by tram and rail, the quarters of the town, customs and courtesies, and
+# practical notes. The merged content loader ignores `public-texts/`; this
+# record is validated only by PublicTextSchema and counted by the quantity rule.
+# The city, firms and places are invented and generic; the texture (sectors,
+# ration cards, frontier controls) is period-correct for 1945–1965 and names no
+# real person or body. 40+ non-empty lines for the slice BOOK CIPHER.
+- id: guide-travellers-handbook
+  title: The Traveller's Handbook to the Divided City
+  kind: guide
+  provenance:
+    kind: original
+  body:
+    - 'The Traveller Handbook to the Divided City, a plain companion for the first-time visitor.'
+    - 'The city is governed in several sectors; the ordinary streets pass between them without a wall.'
+    - 'Carry your papers at all times; a patrol may ask to see them, and the courteous reply is to show them.'
+    - 'ARRIVAL'
+    - 'Most visitors arrive by the day express at the Central Station or by the night mail that follows it.'
+    - 'A barrow porter will carry your trunk to the rank for a small fixed fee shown on the board.'
+    - 'The station money office is open while the trains run and changes the common foreign notes.'
+    - 'MONEY'
+    - 'The local note is reckoned in the usual hundred small coins; prices in shops are plainly marked.'
+    - 'Change your money only at a bank or a licensed office; the street rate is a trap for the unwary.'
+    - 'Keep small coin for the tram, the left-luggage locker and the attendant at the public conveniences.'
+    - 'Some goods are still rationed; a short-stay visitor is issued a traveller card at the town office.'
+    - 'PAPERS AND CONTROLS'
+    - 'To cross from one sector to another on foot you need only your papers; vehicles may be stopped.'
+    - 'To leave the city by the frontier line you need the stamp of the control office, got a day ahead.'
+    - 'Photography is forbidden at the stations, the bridges and the sector posts; put the camera away there.'
+    - 'GETTING ABOUT'
+    - 'The tram is the cheap and certain way about the inner town; buy a strip of tickets at the kiosk.'
+    - 'Punch one ticket as you board; an inspector may ask to see it, and a loose ticket is no excuse.'
+    - 'The rail guide, sold at the bookstall, gives the through services to the lake and the coast.'
+    - 'Taxis wait at the station and the chief squares; agree the fare, or see the meter started, before you go.'
+    - 'THE QUARTERS OF THE TOWN'
+    - 'The Old Town, within the ring, holds the cathedral, the market square and the better shops.'
+    - 'The River Quarter, below the bridges, is the quarter of the wharves, the warehouses and the cheap lodgings.'
+    - 'The Garden Suburb, beyond the park, is quiet and residential and keeps the embassies and consulates.'
+    - 'The Station Quarter, about the Central Station, keeps the hotels, the money offices and the late cafés.'
+    - 'LODGING'
+    - 'The large hotels about the station take the traveller without notice; the small houses prefer a letter ahead.'
+    - 'A lodging house will give a clean room and a breakfast for the night at a fair and settled rate.'
+    - 'Ask the price of the room, and whether the service and the heating are counted in, before you take it.'
+    - 'EATING AND DRINKING'
+    - 'The café is the social room of the city; a single coffee buys an hour at the table and the papers.'
+    - 'The midday meal is the chief meal; the plain restaurants serve it at a set price with the dish of the day.'
+    - 'Tip by rounding the bill up a little; a heavy tip marks the stranger and does him no service.'
+    - 'CUSTOMS AND COURTESIES'
+    - 'Greet the shopkeeper on entering and on leaving; the small civility is expected and repaid.'
+    - 'Keep your voice low on the tram and in the café; the city has learned to prize a quiet manner.'
+    - 'Do not discuss the sectors or the frontier with strangers; the subject is best left to the newspapers.'
+    - 'PRACTICAL NOTES'
+    - 'The post office keeps a poste restante counter where letters are held against your name and papers.'
+    - 'The telephone kiosk takes the small coin shown on the plate; the exchange will connect a trunk call.'
+    - 'A chemist is open in each quarter through the night by rota; the list is posted on every chemist door.'
+    - 'The traveller who keeps his papers in order, his voice down and his camera cased will find the city kind.'
+    - 'A plan of the tram lines and a street index will be found folded inside the back cover of this handbook.'

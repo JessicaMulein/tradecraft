@@ -1,0 +1,95 @@
+# config/scenario.yaml — the one file that shapes a run.
+#
+# This selects the difficulty preset to start from, whether the internal mole
+# is in play, which Content Packs to load, how the Narrator behaves, whether
+# hints are on, and the starting weights for the recruitment, pressure and
+# exposure maths. A scenario names a preset or overrides any single field
+# without touching code (Req 34.1); the loader resolves the named preset from
+# the Content Set, deep-merges `difficulty.overrides` on top, and re-validates
+# the result (Req 41.1).
+#
+# The defaults below ship the standard game: the `standard` difficulty preset,
+# the `core` pack, full narration, and the starting balance weights. Edit any
+# field here — the loader reports an unknown preset or pack, or a bad value, as
+# a `<file>: <field path>: <message>` line and refuses to start (Req 41.2).
+
+difficulty:
+  # The named preset from a loaded pack's difficulty.yaml. `overrides` is a
+  # deep-partial of a Difficulty Preset: name only the fields you want to change.
+  preset: standard
+  overrides: {}
+
+# Whether the internal mole option is in play (off by default).
+mole: false
+
+packs:
+  # Where to discover packs, and which pack ids to load (merged in dependency
+  # order). The core pack ships the predicates, city, archetypes and presets.
+  # Each entry is a pack directory: the folder that holds its pack.yaml.
+  dirs:
+    - packages/content/packs/core
+  load:
+    - core
+
+# Narrator mode: full | brief | off. `brief` caps Flavour at one sentence;
+# `off` skips the Narrator and shows Fact Lines only.
+narration: full
+
+# `hints` is intentionally omitted so it falls back to the preset's
+# `hintsDefault` (on for easy/standard, off for hard). Set `hints: true|false`
+# here to force it.
+
+# Starting weights for the recruitment, pressure and exposure formulae. These
+# are tuning knobs; the keys match the coefficients the maths uses.
+recruitment:
+  # resolvePitch: σ(w1·leverMatch + w2·trust − w3·suspicion − w4·exposureRisk + persona)
+  pitch:
+    w1: 2.2
+    w2: 1.4
+    w3: 1.8
+    w4: 1.2
+  # firstContact acceptance on a Cold Approach.
+  firstContact:
+    a: 1.5
+    b: 1.0
+    c: 1.2
+    d: 0.8
+  # meeting acceptance.
+  meeting:
+    trust: 1.6
+    riskAversion: 1.3
+    scheduleConflict: 1.0
+    agendaInterest: 1.1
+  # exposure accrual from observable activity.
+  exposure:
+    k1: 0.6
+    k2: 0.4
+    k3: 0.3
+  # turn (recruit-under-pressure) success.
+  turn:
+    w1: 1.8
+    w2: 1.3
+    w3: 1.5
+    w4: 1.0
+    w5: 0.9
+
+# Per-stage retry limits for the model-facing guards.
+retries:
+  leakGuard: 2
+  narrator: 1
+  refusal: 1
+  extraction: 1
+  timeout: 1
+
+# The prompt token budget the Prompt Builder trims to.
+tokenBudget: 3000
+
+# Station Custody duration, asset-silence window and intercept retention.
+custodyPhases: 4
+silenceDays: 3
+interceptRetentionDays: 2
+
+# Where play metrics are written (the eval harness reads this log).
+metrics:
+  enabled: true
+  path: logs/metrics.jsonl

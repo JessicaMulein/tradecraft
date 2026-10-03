@@ -1,0 +1,298 @@
+# template-variants.yaml — the Lisbon Template Variants (content-expansion task
+# 9.8).
+#
+# Each entry validates against TemplateVariantSchema (packages/content/src/
+# kinds/locale.ts): { id, base, scope, template }. A variant replaces a base
+# template for one city; `scope: { city: lisbon }` scopes it to this pack's
+# City Definition (namespaced city-lisbon/lisbon). At load the variant's
+# template is compiled and its slot set compared with its base's union of
+# titlePattern and section-body slots — they must be EXACTLY equal, or the
+# loader refuses the pack (task 2.2, CE-VARIANT). Resolution is city, then era,
+# then base (Req 8.2).
+#
+# Two families of base:
+#   1. The Lisbon article Document templates in this pack's documents/
+#      (base `city-lisbon/<id>`) — localised here into the Lisbon house voice.
+#   2. The shared core Document templates (base `core/<id>`) — the newspaper,
+#      dossier, cable and seized-material bases — re-voiced for Lisbon: the
+#      escudo, the river and the port, officials named by office (the
+#      harbour-master, the customs chief, the Public Order police).
+#
+# Every slot the base binds is bound here and no other; the prose between the
+# slots is Lisbon's. All people and bodies named are fictional; no anachronism
+# past 1965.
+
+# =========================================================================
+# 1. VARIANTS OVER THE LISBON ARTICLE BASES
+# =========================================================================
+
+- id: v-baixa-city-lead
+  base: city-lisbon/baixa-city-lead
+  scope: { city: lisbon }
+  template: >-
+    {masthead}, {date} — city edition. {headline}. From the {district} our man
+    sends word that {subject} is the talk of the week. {detail} For now the
+    business sits with the {office}, and there it is likely to stay.
+
+- id: v-baixa-around-the-town
+  base: city-lisbon/baixa-around-the-town
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — around the town. The hill trams held their time, the
+    Cacilhas boats ran full on the hour, and the fish came up to the market
+    early and cheap. {note}
+
+- id: v-baixa-weather-and-tides
+  base: city-lisbon/baixa-weather-and-tides
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: weather and tides for {date}. Over the bar and the estuary,
+    {outlook}. High water is looked for at {high-water}; skippers of the smaller
+    craft off the roadstead are warned to watch the ebb.
+
+- id: v-tejo-shipping-movements
+  base: city-lisbon/tejo-shipping-movements
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — shipping movements. The {vessel}, {flag} colours at her stern,
+    worked up on the flood and now lies at {berth}. She lands {cargo} before
+    she makes up her passenger list for the outward Atlantic run.
+
+- id: v-tejo-market-notes
+  base: city-lisbon/tejo-market-notes
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: market notes. {commodity} held at {price} the quintal on the
+    quay, {trend} across the week. {source} lays the figure to the run of the
+    ocean sailings and not to any shortfall on the wharves.
+
+- id: v-tejo-customs-notice
+  base: city-lisbon/tejo-customs-notice
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — customs and bonded goods, {date}. The {office} notifies that,
+    with effect from {effective}, {ruling}. Forwarding agents at the bonded
+    sheds should lodge their papers at the long counter before any release.
+
+- id: v-porto-arrivals-bulletin
+  base: city-lisbon/porto-arrivals-bulletin
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: arrivals and departures. Come up the river overnight:
+    {inbound}. Away on the ebb: {outbound}. {roadstead} ships ride at anchor in
+    the roadstead awaiting a berth, by the harbour-master's reckoning.
+
+- id: v-courier-passages
+  base: city-lisbon/courier-passages
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — passages and partings. Among the week's departures,
+    {name-withheld} takes passage for {destination} in the {ship}. {note} The
+    agencies on the avenue report their cabins booked clear into the season.
+
+- id: v-courier-legation-diary
+  base: city-lisbon/courier-legation-diary
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: the legation diary. The {mission} kept {occasion} with a
+    reception at {venue} on Thursday evening. {remark} The foreign colony came
+    out in numbers, as it will for any such evening in a quiet season.
+
+- id: v-courier-arts-and-letters
+  base: city-lisbon/courier-arts-and-letters
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — arts and letters. {performer} gave a programme of {programme}
+    at {hall} to a full and civil house. The old room, as ever, lent warmth to
+    the soft passages and lost the loud ones in its rafters.
+
+- id: v-tarde-police-record
+  base: city-lisbon/tarde-police-record
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: police record for {date}. In the {district}, a matter of
+    {offence} was logged near {place}. The person concerned was taken in,
+    questioned, and {outcome}.
+
+- id: v-tarde-waterfront-watch
+  base: city-lisbon/tarde-waterfront-watch
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — waterfront watch. The river police report, from {quay},
+    {incident} on the night watch. {patrol} Keep clear of the mooring chains,
+    the public is told, and report any parcel left on the pontoons.
+
+- id: v-tarde-lottery-and-notices
+  base: city-lisbon/tarde-lottery-and-notices
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: lottery and small notices. The evening draw came up {numbers},
+    chalked on the kiosk slate before word of it reached the upper streets.
+    {notice}
+
+- id: v-baixa-official-order
+  base: city-lisbon/baixa-official-order
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — orders of the governor, {date}. By order of the {office}, this
+    takes effect on {effective}: {order}. It holds within the {district} and at
+    every way into it; residents are reminded to carry their papers.
+
+- id: v-baixa-registration-reminder
+  base: city-lisbon/baixa-registration-reminder
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: a reminder on registration. The {office} reminds foreign
+    lodgers and the keepers of lodging houses that {requirement}. Returns go to
+    {place} in office hours, each new guest entered in the book on the day of
+    arrival.
+
+- id: v-baixa-lost-and-found
+  base: city-lisbon/baixa-lost-and-found
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — lost and found. Given in and still unclaimed this week:
+    {items}. Owners may call at the {office} with proof of who they are; what
+    is left goes to the usual quarterly sale.
+
+- id: v-baixa-tram-service
+  base: city-lisbon/baixa-tram-service
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: tram and lift service. The {line} runs to a new timetable from
+    Monday: {change}. The undertaking puts it down to {reason} and asks hill
+    passengers to allow the longer wait between cars.
+
+- id: v-baixa-utilities-notice
+  base: city-lisbon/baixa-utilities-notice
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — water and lighting. The supply to the {quarter} is to be cut
+    for {interruption}, between {hours}. Draw what you need beforehand, and
+    report any failure that runs past the stated time.
+
+- id: v-tarde-sport-and-river
+  base: city-lisbon/tarde-sport-and-river
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: sport on the river. {event} went off the quays on Sunday in a
+    light wind and a slack tide. {result} A good {crowd} held the embankment
+    and the terraces to watch the boats come down past the customs house.
+
+- id: v-baixa-letters-column
+  base: city-lisbon/baixa-letters-column
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — letters to the paper. A correspondent writes on {subject},
+    holding that {complaint}. The remedy he proposes is {remedy}; the editor
+    sends it on to the proper office and keeps his own counsel.
+
+- id: v-tejo-advertisement-column
+  base: city-lisbon/tejo-advertisement-column
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: trade and situations. Offered through these columns this week:
+    {offer}, on {terms}. Apply to {apply-to}, in writing and first of all,
+    naming two references known about the city.
+
+- id: v-courier-notes-and-queries
+  base: city-lisbon/courier-notes-and-queries
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — notes and queries. A reader puts it to the paper: {query}. The
+    best the office can offer, on the word of the older hands of the colony, is
+    this: {answer}
+
+- id: v-tarde-fire-and-rescue
+  base: city-lisbon/tarde-fire-and-rescue
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: the fire brigade. The brigade turned out to {place} before
+    dawn, where a fire had caught. The cause is laid to {cause}. {outcome} The
+    street was open again by morning and no fresh alarm is looked for.
+
+- id: v-baixa-public-health
+  base: city-lisbon/baixa-public-health
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — public health notice. The {office} tells householders of the
+    {quarter} that {advice}. The step is a precaution and nothing more, the
+    office adds, in a season of ordinary good health.
+
+- id: v-courier-obituary-column
+  base: city-lisbon/courier-obituary-column
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: in memoriam. The foreign colony notes with regret the death of
+    {name-withheld}, known this long while about the city as {standing}. A
+    service is set for {service}, to which all who knew the departed are made
+    welcome.
+
+# =========================================================================
+# 2. VARIANTS OVER THE SHARED CORE DOCUMENT BASES
+# =========================================================================
+
+# --- newspaper bases ---
+- id: v-core-newspaper-city
+  base: core/newspaper-wiener-tagblatt-city
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — {weekday}, {date}. {edition} edition; two escudos on the
+    quays. {headline}. From the {district} it is reported that {subject} drew
+    notice this week. {detail} The matter rests with the {official-office}.{?notice}
+    A word to readers: {notice}{/notice}
+
+- id: v-core-newspaper-blotter
+  base: core/newspaper-wiener-tagblatt-blotter
+  scope: { city: lisbon }
+  template: >-
+    {masthead}: police record for {date}. From the record of the {district}, as
+    given to this paper by the {official-office}: a case of {offence} was
+    reported near {place}. The party concerned, described only as {subject}, was
+    questioned at the station, and {outcome}.
+
+- id: v-core-newspaper-notices
+  base: core/newspaper-amtsblatt-notices
+  scope: { city: lisbon }
+  template: >-
+    {masthead} — official notices, {date}. By order of the {official-office}, in
+    force from {effective-date}: {subject}. It applies within the {district} and
+    at its approaches. {detail}
+
+# --- dossier base ---
+- id: v-core-dossier-person
+  base: core/dossier-hq-person
+  scope: { city: lisbon }
+  template: >-
+    Station file {file-ref}. Subject: {subject}. Apparent information only,
+    graded {source-grade}; nothing herein is established.{?alias} Also reported
+    as {alias}.{/alias} Apparent allegiance on file: {allegiance-apparent}.
+    Last placed at {last-seen-place} about {last-seen-date}.{?association} In the
+    company of {association}.{/association} Station reading: {assessment}
+
+# --- cable bases ---
+- id: v-core-cable-directive
+  base: core/cable-hq-directive
+  scope: { city: lisbon }
+  template: >-
+    CABLE {cable-ref} {priority} STOP TO {to-station} STOP {date} STOP RE
+    {subject} STOP {instruction} STOP ACKNOWLEDGE SOONEST STOP{?deadline}
+    DEADLINE {deadline} STOP{/deadline}{?budget-line} FUNDS {budget-line}
+    STOP{/budget-line} ENDS STOP
+
+- id: v-core-cable-field
+  base: core/cable-field-report
+  scope: { city: lisbon }
+  template: >-
+    CABLE {cable-ref} FIELD STOP FROM {from-cover} STOP TO HEADQUARTERS STOP
+    {date} STOP RE {subject} STOP {observation} STOP{?request} REQUEST {request}
+    STOP{/request} AWAIT INSTRUCTION STOP ENDS STOP
+
+# --- seized base ---
+- id: v-core-seized-note
+  base: core/seized-handwritten-note
+  scope: { city: lisbon }
+  template: >-
+    Item recovered {date} at {place} by {recovered-by}; logged as seized
+    pending examination. Condition: {condition}. Description: {description}; the
+    item appears to concern {subject}. Legible contents, as found: {contents}

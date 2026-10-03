@@ -1,0 +1,501 @@
+# technology.yaml — Technology Items for the early Cold War, 1945–1965.
+#
+# Validates against TechnologyItemSchema (packages/content/src/kinds/era.ts):
+#   { id, name, aliases: string[], category, introduced: number, tags: TagId[] }
+#
+# Each item carries the year it became available to an ordinary person in a
+# European city (`introduced`), which the linter's CE-ANACH rule checks: a
+# document that names an item before its `introduced` year is an anachronism
+# (task 5.4). `aliases` give the other surface forms the text matcher scans
+# (brand-free generic names, period slang, abbreviations). Every brand name is
+# invented so no real trademark is implied; where a thing is generic (a tape
+# recorder, a biro) the plain noun is used.
+#
+# `tags` is left empty: the core Tag Vocabulary's `item` facet ships no `item:*`
+# Tag yet, and `technology` is not a kind the vocabulary requires to be tagged,
+# so an empty list loads cleanly. A later task that adds `item:*` Tags can place
+# these items in the vocabulary.
+#
+# Introduced years are deliberately conservative — the year the item was in
+# common European civilian use, not the year of its first laboratory prototype —
+# so the anachronism rule stays period-correct for a 1945–1965 game.
+
+# =========================================================================
+# COMMUNICATIONS & RADIO
+# =========================================================================
+
+- id: valve-wireless-set
+  name: valve wireless set
+  aliases: [wireless set, valve radio, the wireless]
+  category: communications
+  introduced: 1945
+
+- id: transistor-radio
+  name: transistor radio
+  aliases: [transistor set, pocket radio]
+  category: communications
+  introduced: 1954
+
+- id: shortwave-receiver
+  name: shortwave receiver
+  aliases: [short-wave set, world-band receiver]
+  category: communications
+  introduced: 1945
+
+- id: suitcase-transmitter
+  name: suitcase transmitter
+  aliases: [portable set, agent set, the suitcase]
+  category: communications
+  introduced: 1945
+
+- id: morse-key
+  name: morse key
+  aliases: [telegraph key, sending key]
+  category: communications
+  introduced: 1945
+
+- id: burst-encoder
+  name: burst encoder
+  aliases: [high-speed sender, burst keyer]
+  category: communications
+  introduced: 1952
+
+- id: numbers-station
+  name: numbers station
+  aliases: [number broadcast, counting station]
+  category: communications
+  introduced: 1946
+
+- id: field-telephone
+  name: field telephone
+  aliases: [handset, line telephone]
+  category: communications
+  introduced: 1945
+
+- id: teleprinter
+  name: teleprinter
+  aliases: [teletype, telex machine]
+  category: communications
+  introduced: 1945
+
+- id: telex-network
+  name: telex network
+  aliases: [telex, teleprinter exchange]
+  category: communications
+  introduced: 1958
+
+- id: dictating-recorder
+  name: wire recorder
+  aliases: [dictation wire, recording wire]
+  category: communications
+  introduced: 1946
+
+- id: reel-tape-recorder
+  name: reel-to-reel tape recorder
+  aliases: [tape recorder, magnetic tape machine, the recorder]
+  category: communications
+  introduced: 1950
+
+- id: miniature-tape-recorder
+  name: miniature tape recorder
+  aliases: [concealed recorder, pocket recorder]
+  category: communications
+  introduced: 1960
+
+- id: direction-finder
+  name: radio direction finder
+  aliases: [direction-finding set, D/F van, fox-hunting van]
+  category: communications
+  introduced: 1945
+
+# =========================================================================
+# PHOTOGRAPHY & DOCUMENT COPYING
+# =========================================================================
+
+- id: thirty-five-mm-camera
+  name: 35mm rangefinder camera
+  aliases: [miniature camera, rangefinder camera]
+  category: photography
+  introduced: 1945
+
+- id: subminiature-camera
+  name: subminiature camera
+  aliases: [cigarette-case camera, spy camera, matchbox camera]
+  category: photography
+  introduced: 1948
+
+- id: microdot-camera
+  name: microdot camera
+  aliases: [microdot kit, reduction camera]
+  category: photography
+  introduced: 1946
+
+- id: microdot-reader
+  name: microdot reader
+  aliases: [microdot viewer, reading lens]
+  category: photography
+  introduced: 1946
+
+- id: document-copying-camera
+  name: document copying camera
+  aliases: [copy stand camera, flat-copy camera]
+  category: photography
+  introduced: 1947
+
+- id: flash-bulb
+  name: flash bulb
+  aliases: [flashbulb, photoflash]
+  category: photography
+  introduced: 1945
+
+- id: electronic-flash
+  name: electronic flash gun
+  aliases: [strobe flash, flash gun]
+  category: photography
+  introduced: 1955
+
+- id: colour-film
+  name: colour transparency film
+  aliases: [colour film, reversal film]
+  category: photography
+  introduced: 1946
+
+- id: fast-panchromatic-film
+  name: fast panchromatic film
+  aliases: [high-speed film, fast film]
+  category: photography
+  introduced: 1954
+
+- id: instant-camera
+  name: instant print camera
+  aliases: [instant camera, one-step camera]
+  category: photography
+  introduced: 1949
+
+- id: photostat-machine
+  name: photostat machine
+  aliases: [photostat, stat copy]
+  category: photography
+  introduced: 1945
+
+- id: diazo-copier
+  name: diazo copier
+  aliases: [blueprint copier, whiteprint machine]
+  category: office
+  introduced: 1950
+
+- id: thermal-copier
+  name: thermal copier
+  aliases: [heat copier, dry copier]
+  category: office
+  introduced: 1957
+
+# =========================================================================
+# CONCEALMENT & TRADECRAFT KIT
+# =========================================================================
+
+- id: dead-drop-spike
+  name: dead-drop spike
+  aliases: [spike, drop spike, cache spike]
+  category: tradecraft
+  introduced: 1946
+
+- id: hollow-coin
+  name: hollow coin
+  aliases: [hollowed coin, container coin, nickel]
+  category: tradecraft
+  introduced: 1945
+
+- id: concealment-container
+  name: concealment container
+  aliases: [concealment device, hide, container]
+  category: tradecraft
+  introduced: 1945
+
+- id: one-time-pad
+  name: one-time pad
+  aliases: [pad, cipher pad, one-time cipher]
+  category: tradecraft
+  introduced: 1945
+
+- id: secret-writing-kit
+  name: secret-writing kit
+  aliases: [invisible ink, secret ink, sympathetic ink]
+  category: tradecraft
+  introduced: 1945
+
+- id: carbon-secret-writing
+  name: carbon transfer writing sheet
+  aliases: [carbon writing, transfer sheet]
+  category: tradecraft
+  introduced: 1950
+
+- id: lock-pick-set
+  name: lock-pick set
+  aliases: [picks, pick set, lock picks]
+  category: tradecraft
+  introduced: 1945
+
+- id: letter-opening-kit
+  name: letter-opening kit
+  aliases: [flaps and seals kit, mail-opening kit]
+  category: tradecraft
+  introduced: 1945
+
+- id: pocket-wire-tap
+  name: telephone induction tap
+  aliases: [line tap, induction coil, wire tap]
+  category: tradecraft
+  introduced: 1948
+
+- id: concealed-microphone
+  name: concealed microphone
+  aliases: [hidden microphone, bug, planted microphone]
+  category: tradecraft
+  introduced: 1950
+
+- id: carbon-microphone-bug
+  name: carbon microphone bug
+  aliases: [carbon bug, wired microphone]
+  category: tradecraft
+  introduced: 1946
+
+- id: resonant-cavity-bug
+  name: passive resonant cavity microphone
+  aliases: [passive bug, cavity resonator, the thing]
+  category: tradecraft
+  introduced: 1952
+
+- id: miniature-transmitter-bug
+  name: miniature radio transmitter
+  aliases: [transmitter bug, radio bug, pocket transmitter]
+  category: tradecraft
+  introduced: 1958
+
+- id: signal-flashlight
+  name: infrared signalling lamp
+  aliases: [IR lamp, signalling torch]
+  category: tradecraft
+  introduced: 1951
+
+# =========================================================================
+# WEAPONS
+# =========================================================================
+
+- id: service-pistol
+  name: service pistol
+  aliases: [automatic pistol, sidearm, the pistol]
+  category: weapons
+  introduced: 1945
+
+- id: compact-pistol
+  name: compact pocket pistol
+  aliases: [pocket pistol, vest-pocket automatic]
+  category: weapons
+  introduced: 1945
+
+- id: silenced-pistol
+  name: suppressed pistol
+  aliases: [silenced pistol, pistol with silencer]
+  category: weapons
+  introduced: 1945
+
+- id: submachine-gun
+  name: submachine gun
+  aliases: [machine pistol, machine carbine]
+  category: weapons
+  introduced: 1945
+
+- id: concealable-blade
+  name: concealable blade
+  aliases: [sleeve knife, flick knife, lapel dagger]
+  category: weapons
+  introduced: 1945
+
+# =========================================================================
+# TRANSPORT
+# =========================================================================
+
+- id: staff-car
+  name: staff car
+  aliases: [saloon car, motor car, the car]
+  category: transport
+  introduced: 1945
+
+- id: small-saloon-car
+  name: small postwar saloon
+  aliases: [runabout, economy saloon]
+  category: transport
+  introduced: 1948
+
+- id: motor-scooter
+  name: motor scooter
+  aliases: [scooter, motorscooter]
+  category: transport
+  introduced: 1947
+
+- id: diesel-locomotive
+  name: diesel locomotive
+  aliases: [diesel engine, diesel loco]
+  category: transport
+  introduced: 1950
+
+- id: electric-tram
+  name: electric tram
+  aliases: [tram, streetcar, tramcar]
+  category: transport
+  introduced: 1945
+
+- id: trolleybus
+  name: trolleybus
+  aliases: [trackless tram, electric bus]
+  category: transport
+  introduced: 1946
+
+- id: piston-airliner
+  name: piston airliner
+  aliases: [airliner, propeller airliner, four-engine airliner]
+  category: transport
+  introduced: 1946
+
+- id: turboprop-airliner
+  name: turboprop airliner
+  aliases: [turbo-prop, propjet airliner]
+  category: transport
+  introduced: 1953
+
+- id: jet-airliner
+  name: jet airliner
+  aliases: [jetliner, passenger jet]
+  category: transport
+  introduced: 1958
+
+- id: cargo-aircraft
+  name: cargo transport aircraft
+  aliases: [freight plane, transport plane, cargo plane]
+  category: transport
+  introduced: 1945
+
+# =========================================================================
+# OFFICE, HOUSEHOLD & EVERYDAY
+# =========================================================================
+
+- id: manual-typewriter
+  name: manual typewriter
+  aliases: [typewriter, portable typewriter]
+  category: office
+  introduced: 1945
+
+- id: electric-typewriter
+  name: electric typewriter
+  aliases: [powered typewriter, electric machine]
+  category: office
+  introduced: 1950
+
+- id: ballpoint-pen
+  name: ballpoint pen
+  aliases: [ballpoint, biro, ball pen]
+  category: office
+  introduced: 1946
+
+- id: fountain-pen
+  name: fountain pen
+  aliases: [ink pen, the pen]
+  category: office
+  introduced: 1945
+
+- id: ultraviolet-lamp
+  name: ultraviolet inspection lamp
+  aliases: [UV lamp, ultra-violet lamp, black light]
+  category: office
+  introduced: 1948
+
+- id: dictation-machine
+  name: office dictation machine
+  aliases: [dictaphone-style machine, dictation unit]
+  category: office
+  introduced: 1947
+
+- id: adding-machine
+  name: adding machine
+  aliases: [calculating machine, comptometer-style machine]
+  category: office
+  introduced: 1945
+
+- id: telephone-answering-machine
+  name: telephone answering machine
+  aliases: [answering machine, call recorder]
+  category: office
+  introduced: 1960
+
+- id: wristwatch-automatic
+  name: self-winding wristwatch
+  aliases: [automatic watch, self-winding watch]
+  category: everyday
+  introduced: 1945
+
+- id: fluorescent-lighting
+  name: fluorescent tube lighting
+  aliases: [fluorescent light, strip lighting]
+  category: everyday
+  introduced: 1946
+
+- id: nylon-stockings
+  name: nylon stockings
+  aliases: [nylons, stockings]
+  category: everyday
+  introduced: 1946
+
+- id: ballistic-nylon-raincoat
+  name: nylon raincoat
+  aliases: [plastic mac, nylon mac, raincoat]
+  category: everyday
+  introduced: 1950
+
+- id: transistor-hearing-aid
+  name: transistor hearing aid
+  aliases: [hearing aid, pocket hearing aid]
+  category: everyday
+  introduced: 1953
+
+- id: polaroid-sunglasses
+  name: polarising sunglasses
+  aliases: [polarised glasses, sun glasses]
+  category: everyday
+  introduced: 1945
+
+- id: refrigerator
+  name: electric refrigerator
+  aliases: [refrigerator, fridge, cold box]
+  category: everyday
+  introduced: 1948
+
+- id: television-set
+  name: television set
+  aliases: [television, the set, TV set]
+  category: everyday
+  introduced: 1950
+
+- id: long-playing-record
+  name: long-playing record
+  aliases: [LP record, microgroove record, long player]
+  category: everyday
+  introduced: 1949
+
+- id: espresso-machine
+  name: espresso machine
+  aliases: [coffee machine, lever espresso machine]
+  category: everyday
+  introduced: 1948
+
+- id: parking-meter
+  name: parking meter
+  aliases: [coin meter, kerb meter]
+  category: everyday
+  introduced: 1954
+
+- id: facsimile-machine
+  name: wire photo facsimile
+  aliases: [wire photo, radiophoto, facsimile transmitter]
+  category: office
+  introduced: 1945

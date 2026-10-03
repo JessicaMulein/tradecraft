@@ -1,0 +1,162 @@
+# config/models.yaml — Context Length, Model Sources, role → model mapping.
+#
+# The LLM Gateway connects to the OpenAI-compatible endpoint below (LM Studio
+# on localhost by default) and sends each Model Role the Load Identifier named
+# under the active profile. A profile is a complete role → settings mapping;
+# `active` picks the one the game runs. Swap models by editing this file — no
+# code change (Req 21.1, 21.2, 21.3).
+#
+# `contextLength` is the token context every model loads at; the Model Manager
+# reads it at load and preflight time (Req 22.1, 22.2).
+#
+# `models` maps each Load Identifier to its reasoning `family` and its two Model
+# Sources — an MLX build (preferred) then a GGUF build (fallback). `get` is the
+# argument to `lms get`; `key` is the `modelKey` the SDK lists once the build is
+# downloaded, and is what the load path passes to `loadModel`. A Load Identifier
+# such as `qwen-moe` is the stable name a model loads under and the model string
+# the Gateway sends; it is distinct from the Source, the specific build to
+# download (Req 21.5, 21.6).
+#
+# The Reference Machine (Apple M4 Max, 64 GB) holds two 4-bit models resident:
+# a dense `voice` model and an MoE model for the fast, narrator, bookkeeping and
+# judge roles. The judge is the profile's MoE model — resident and never the
+# voice model — so the judge-equals-voice harness warning never fires (Req 21.8).
+endpoint: http://localhost:1234/v1
+contextLength: 8192
+
+models:
+  gemma-31b:
+    family: gemma4
+    sources:
+      - { format: mlx,  get: lmstudio-community/gemma-4-31B-it-MLX-4bit,     key: lmstudio-community/gemma-4-31b-it-mlx-4bit }
+      - { format: gguf, get: lmstudio-community/gemma-4-31B-it-GGUF@Q4_K_M,  key: lmstudio-community/gemma-4-31b-it-gguf }
+  qwen-moe:
+    family: qwen3
+    sources:
+      - { format: mlx,  get: qwen/qwen3.6-35b-a3b,                          key: qwen/qwen3.6-35b-a3b }
+      - { format: gguf, get: lmstudio-community/Qwen3.6-35B-A3B-GGUF@Q4_K_M, key: lmstudio-community/qwen3.6-35b-a3b-gguf }
+  qwen-27b:
+    family: qwen3
+    sources:
+      - { format: mlx,  get: lmstudio-community/Qwen3.8-27B-MLX-4bit,        key: lmstudio-community/qwen3.8-27b-mlx-4bit }
+      - { format: gguf, get: lmstudio-community/Qwen3.8-27B-GGUF@Q4_K_M,     key: lmstudio-community/qwen3.8-27b-gguf }
+  gemma-moe:
+    family: gemma4
+    sources:
+      - { format: mlx,  get: lmstudio-community/gemma-4-26B-A4B-it-MLX-4bit,     key: lmstudio-community/gemma-4-26b-a4b-it-mlx-4bit }
+      - { format: gguf, get: lmstudio-community/gemma-4-26B-A4B-it-GGUF@Q4_K_M,  key: lmstudio-community/gemma-4-26b-a4b-it-gguf }
+
+  # The Qwen 3.8 27B build already on this machine (keys as LM Studio lists
+  # it), for the `installed` profile below.
+  qwen-27b-local:
+    family: qwen3
+    sources:
+      - { format: mlx,  get: qwen/qwen3.8-27b,                              key: qwen/qwen3.8-27b }
+      - { format: gguf, get: qwen/qwen3.8-27b,                              key: qwen/qwen3.8-27b }
+
+profiles:
+  # A dense Gemma for voice, an MoE Qwen3 for the fast, narrator, bookkeeping
+  # and judge roles. The judge is the MoE model, not the voice model (Req 21.1).
+  gemma-voice:
+    voice:
+      model: gemma-31b
+      temperature: 0.8
+      maxTokens: 320
+      timeoutMs: 20000
+      reasoning: off
+    fast:
+      model: qwen-moe
+      temperature: 0.7
+      maxTokens: 220
+      timeoutMs: 8000
+      reasoning: off
+    narrator:
+      model: qwen-moe
+      temperature: 0.9
+      maxTokens: 160
+      timeoutMs: 6000
+      reasoning: off
+    bookkeeping:
+      model: qwen-moe
+      temperature: 0.0
+      maxTokens: 400
+      timeoutMs: 15000
+      reasoning: off
+    judge:
+      model: qwen-moe
+      temperature: 0.0
+      maxTokens: 300
+      timeoutMs: 30000
+      reasoning: on
+
+  # The mirror hypothesis: a dense Qwen3 for voice, an MoE Gemma for the fast,
+  # narrator, bookkeeping and judge roles. Bookkeeping moves from the voice
+  # model to the MoE model, and the judge is the MoE model, not voice (Req 21.2).
+  qwen-voice:
+    voice:
+      model: qwen-27b
+      temperature: 0.8
+      maxTokens: 320
+      timeoutMs: 20000
+      reasoning: off
+    fast:
+      model: gemma-moe
+      temperature: 0.7
+      maxTokens: 220
+      timeoutMs: 8000
+      reasoning: off
+    narrator:
+      model: gemma-moe
+      temperature: 0.9
+      maxTokens: 160
+      timeoutMs: 6000
+      reasoning: off
+    bookkeeping:
+      model: gemma-moe
+      temperature: 0.0
+      maxTokens: 400
+      timeoutMs: 15000
+      reasoning: off
+    judge:
+      model: gemma-moe
+      temperature: 0.0
+      maxTokens: 300
+      timeoutMs: 30000
+      reasoning: on
+
+  # Qwen 3.8 27B (already downloaded) for voice, the Qwen 3.6 35B-A3B MoE for
+  # the fast, narrator, bookkeeping and judge roles. The judge is the MoE model,
+  # not the voice model. Needs: lms get lmstudio-community/Qwen3.6-35B-A3B-MLX-4bit
+  installed:
+    voice:
+      model: qwen-27b-local
+      temperature: 0.8
+      maxTokens: 320
+      timeoutMs: 20000
+      reasoning: off
+    fast:
+      model: qwen-moe
+      temperature: 0.7
+      maxTokens: 220
+      timeoutMs: 8000
+      reasoning: off
+    narrator:
+      model: qwen-moe
+      temperature: 0.9
+      maxTokens: 160
+      timeoutMs: 6000
+      reasoning: off
+    bookkeeping:
+      model: qwen-moe
+      temperature: 0.0
+      maxTokens: 400
+      timeoutMs: 15000
+      reasoning: off
+    judge:
+      model: qwen-moe
+      temperature: 0.0
+      maxTokens: 300
+      timeoutMs: 30000
+      reasoning: on
+
+active: installed

@@ -1,0 +1,63 @@
+# timetable-railway.yaml — a public-text railway TIMETABLE record (task 7.4).
+#
+# Validates against PublicTextSchema (packages/content/src/kinds/era.ts):
+#   { id, title, kind, provenance: { kind, source? }, body: string[], city? }
+#
+# `kind: timetable`. A railway (not tram) timetable: the general-notice pages
+# and principal through services of a fictional regional network, in the plain
+# column prose a printed guide used in the first postwar decade. The merged
+# content loader ignores `public-texts/`; this record is validated only by
+# PublicTextSchema. The filename deliberately avoids the slice's reserved
+# `timetable.yaml` (the engine's tram-and-rail book-cipher corpus, a different
+# shape). All station names, companies and times are invented and generic.
+# 40+ non-empty lines so the slice BOOK CIPHER has pages, lines and words.
+- id: timetable-regional-railway
+  title: Regional Railway Guide and Table of Through Services
+  kind: timetable
+  provenance:
+    kind: original
+  body:
+    - 'Regional Railway Guide. Table of principal through services, corrected to the current issue.'
+    - 'Times are shown by the twenty-four hour clock and are kept to the standard time of the capital.'
+    - 'Summer time is observed from the last Sunday of the fourth month to the last Sunday of the tenth.'
+    - 'Services marked with a cross run on weekdays only and do not run on the public holidays.'
+    - 'Services marked with a star run on Sundays and holidays and carry no van for parcels traffic.'
+    - 'First and third class are carried on all through trains; second class on the long express only.'
+    - 'A restaurant car runs on the midday and evening expresses between the capital and the junction.'
+    - 'Sleeping berths on the night mail must be bespoke at the booking office before the day of travel.'
+    - 'Luggage is carried free to the usual allowance; excess is charged by weight at the parcels counter.'
+    - 'Table One: Capital Central to the Northern Junction and the lake terminus.'
+    - 'Capital Central depart 06.15, Riverside Halt 06.28, Mill Siding 06.41, Northern Junction arrive 07.05.'
+    - 'Capital Central depart 08.40, Riverside Halt 08.53, Northern Junction 09.30, Lake Terminus arrive 10.12.'
+    - 'Capital Central depart 12.00, express, Northern Junction 12.44, Lake Terminus arrive 13.20.'
+    - 'Capital Central depart 17.35, Riverside Halt 17.48, Mill Siding 18.01, Northern Junction arrive 18.25.'
+    - 'Capital Central depart 22.50, night mail, Northern Junction 23.40, Lake Terminus arrive 00.35.'
+    - 'Table Two: the Lake Terminus to the Capital, the up direction.'
+    - 'Lake Terminus depart 06.00, Northern Junction 06.42, Mill Siding 07.05, Capital Central arrive 07.55.'
+    - 'Lake Terminus depart 11.10, express, Northern Junction 11.46, Capital Central arrive 12.30.'
+    - 'Lake Terminus depart 16.20, Northern Junction 17.02, Riverside Halt 17.30, Capital Central arrive 17.44.'
+    - 'Lake Terminus depart 20.45, night mail, Northern Junction 21.35, Capital Central arrive 22.25.'
+    - 'Table Three: the Eastern Branch, Capital Central to the Border Station by way of the Old Town.'
+    - 'Capital Central depart 07.20, Old Town 07.52, Vineyard Halt 08.19, Border Station arrive 08.55.'
+    - 'Capital Central depart 13.15, Old Town 13.47, Border Station arrive 14.40, cross with international carriage.'
+    - 'Capital Central depart 18.50, Old Town 19.22, Vineyard Halt 19.49, Border Station arrive 20.25.'
+    - 'Passengers for abroad must hold their papers ready for inspection at the Border Station platform.'
+    - 'The international carriage is detached at the Border Station and attached to the frontier service.'
+    - 'Table Four: the Coast Line, the Capital to the Harbour by the shore road.'
+    - 'Capital Central depart 09.05, Saltings Halt 09.44, Fisher Cove 10.11, Harbour Pier arrive 10.40.'
+    - 'Capital Central depart 14.30, express, Fisher Cove 15.20, Harbour Pier arrive 15.50.'
+    - 'Harbour Pier depart 11.15, Fisher Cove 11.44, Saltings Halt 12.11, Capital Central arrive 12.55.'
+    - 'Harbour Pier depart 16.40, express, Capital Central arrive 18.00, connecting with the night mail north.'
+    - 'The steamer for the islands meets the forenoon train at Harbour Pier in the fair season only.'
+    - 'Table Five: Sunday and holiday service, reduced, between the Capital and the Northern Junction.'
+    - 'Capital Central depart 09.30, star, Northern Junction arrive 10.20, no connection for the lake.'
+    - 'Capital Central depart 15.00, star, Northern Junction arrive 15.50; return 18.30, Capital 19.20.'
+    - 'Fares are reckoned by the mile at the published rate; return tickets hold good for one month.'
+    - 'A workman ticket is issued before the morning hour at the reduced fare on the branch lines.'
+    - 'Children under three travel free; children under twelve travel at half the ordinary fare.'
+    - 'The company does not hold itself answerable for delay beyond the control of the traffic office.'
+    - 'Lost property is held at the parcels office of the arrival station for one calendar month.'
+    - 'Connections are not guaranteed; passengers in doubt should enquire of the station master.'
+    - 'Bicycles and small livestock are carried in the van at the rate shown on the parcels board.'
+    - 'The guide is corrected each quarter; the date of issue is printed upon the cover.'
+    - 'Enquiries by post should be addressed to the traffic office of the capital terminus.'

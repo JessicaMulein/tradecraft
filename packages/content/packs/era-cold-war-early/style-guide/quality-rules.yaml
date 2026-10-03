@@ -1,0 +1,154 @@
+# quality-rules.yaml — the Style Guide quality and manual rules (task 7.3).
+#
+# Validates against StyleRuleSchema (packages/content/src/kinds/era.ts):
+#   { id, appliesTo: ('fact-line' | 'document:<kind>')[], check, value?, message }
+#
+# The document-styles.yaml file in this directory holds the per-surface
+# mechanical styles (length, telegraphese, period spelling). This file adds the
+# Style Guide's *quality* rules: the editorial discipline a reviewer applies
+# across every surface. Two matter most and are called out by the task:
+#
+#   AFTERMATH RESTRAINT — the game is set in the immediate aftermath of a war,
+#   amid ruins, displacement and loss. Content reports that aftermath plainly
+#   and with restraint. It does not dwell on gore, sensationalise suffering, or
+#   use the aftermath as colour. This is an editorial judgement a mechanical
+#   check cannot make, so it is a `manual` rule on every surface — a review
+#   reminder the linter lists but never fails on (design, "the Style Guide's
+#   manual rules are listed as review reminders").
+#
+#   OFFICES BY TITLE — the period press and officialdom name people by office
+#   ("the sector commandant", "the ministry spokesman", "the chief of police"),
+#   not by personal name. This both fits the voice and keeps generated text away
+#   from the Real-Person Blocklist. Where it can be partly mechanised it is
+#   backed by the `hedging`/`spelling` style checks in document-styles.yaml;
+#   the judgement itself (is this the *right* way to refer to the office?) is a
+#   `manual` rule here.
+#
+# A `manual` rule carries no `value`; its `message` is the reminder a reviewer
+# reads. The mechanical rules below (`no-first-person`, `no-exclamation`) back
+# the manual rules with the checks the linter can run.
+
+# =========================================================================
+# AFTERMATH RESTRAINT — manual, every narrative surface
+# =========================================================================
+
+- id: quality-aftermath-restraint-fact-line
+  appliesTo: ['fact-line']
+  check: manual
+  message: >-
+    Aftermath restraint: a Fact Line about ruins, casualties or displacement
+    states what is observed, plainly. Do not dwell on gore or use suffering as
+    atmosphere. Review before promoting.
+
+- id: quality-aftermath-restraint-newspaper
+  appliesTo: ['document:newspaper']
+  check: manual
+  message: >-
+    Aftermath restraint: the period press reports losses, shortages and the
+    occupation with a level, factual voice. Avoid sensational or lurid framing
+    of suffering. Review before promoting.
+
+- id: quality-aftermath-restraint-dossier
+  appliesTo: ['document:dossier']
+  check: manual
+  message: >-
+    Aftermath restraint: a dossier records the human toll of the period
+    impersonally and without spectacle. State facts; do not editorialise on
+    suffering. Review before promoting.
+
+- id: quality-aftermath-restraint-seized
+  appliesTo: ['document:seized']
+  check: manual
+  message: >-
+    Aftermath restraint: seized material touching casualties, camps or
+    deportations is transcribed plainly and without added colour. Review before
+    promoting.
+
+- id: quality-aftermath-restraint-public-text
+  appliesTo: ['document:public-text']
+  check: manual
+  message: >-
+    Aftermath restraint: an almanac, guide or anthology that touches the war's
+    aftermath keeps a measured, documentary tone. Review before promoting.
+
+# =========================================================================
+# OFFICES BY TITLE — manual, every surface that names officials
+# =========================================================================
+
+- id: quality-offices-by-title-fact-line
+  appliesTo: ['fact-line']
+  check: manual
+  message: >-
+    Offices by title: refer to officials by their office — the commandant, the
+    district warden, the ministry clerk — not by a personal name. This fits the
+    period voice and keeps the text clear of the Real-Person Blocklist. Review
+    before promoting.
+
+- id: quality-offices-by-title-newspaper
+  appliesTo: ['document:newspaper']
+  check: manual
+  message: >-
+    Offices by title: news copy of the period names people by office — "the
+    sector commandant", "the city magistrate", "a ministry spokesman" — not by
+    personal name. Review before promoting.
+
+- id: quality-offices-by-title-dossier
+  appliesTo: ['document:dossier']
+  check: manual
+  message: >-
+    Offices by title: a dossier identifies officials by post and function, not
+    by a real personal name. Review that every named role is an office, not a
+    real person, before promoting.
+
+- id: quality-offices-by-title-cable
+  appliesTo: ['document:cable']
+  check: manual
+  message: >-
+    Offices by title: a cable refers to the office or the cover designation, not
+    a real personal name. Review before promoting.
+
+- id: quality-offices-by-title-seized
+  appliesTo: ['document:seized']
+  check: manual
+  message: >-
+    Offices by title: a seizure record names the office or role found on a
+    document, not a real person. Review before promoting.
+
+# =========================================================================
+# NO REAL NAMES — manual reminder tying content to the Real-Person Blocklist
+# =========================================================================
+
+- id: quality-no-real-persons
+  appliesTo:
+    - 'fact-line'
+    - 'document:newspaper'
+    - 'document:dossier'
+    - 'document:cable'
+    - 'document:seized'
+    - 'document:public-text'
+  check: manual
+  message: >-
+    No real persons: every person named in content is fictional. Check names
+    against the Real-Person Blocklist and the Sensitivity Term List before
+    promoting; use an office or a fictional name instead of a real figure.
+
+# =========================================================================
+# IMPERSONAL VOICE — mechanical, backing offices-by-title and restraint
+# =========================================================================
+# These run as mechanical checks (CE-STYLE) and reinforce the manual rules: an
+# impersonal, un-exclamatory voice is what the aftermath-restraint and
+# offices-by-title discipline produces in practice.
+
+- id: quality-impersonal-public-text
+  appliesTo: ['document:public-text']
+  check: no-first-person
+  message: >-
+    A public text (almanac, directory, guide) is written impersonally. Avoid the
+    first person; report in the third person.
+
+- id: quality-no-exclamation-fact-line-restraint
+  appliesTo: ['fact-line']
+  check: no-exclamation
+  message: >-
+    Restraint: a Fact Line about the aftermath carries no exclamation mark.
+    State the observation plainly.

@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist/client-js",
+    "emitDeclarationOnly": false,
+    "declaration": false,
+    "declarationMap": false,
+    "importHelpers": false,
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "types": [],
+    "forceConsistentCasingInFileNames": true,
+    "composite": false
+  },
+  "include": [
+    "src/client/**/*.ts",
+    "src/shared/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}

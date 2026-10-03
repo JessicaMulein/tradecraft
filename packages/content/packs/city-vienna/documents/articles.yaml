@@ -1,0 +1,352 @@
+# articles.yaml — Vienna's city article (newspaper) Document templates
+# (content-expansion task 9.2).
+#
+# Each entry is a Document template (DocumentTemplateSchema, packages/content/
+# src/lib/kinds.ts): { id, kind, titlePattern, sections:[{id, body}], slots }.
+# These are the city's own newspaper-article templates — the local voice of the
+# Viennese press — set beside the three generic core newspaper templates. The
+# Document composer stamps concrete articles from them; the newspaper Locale and
+# document style dress the output.
+#
+# Grammar: `titlePattern` and each section `body` are content template strings
+# (packages/content/src/lib/template.ts). A `{slot}` substitutes a binding;
+# `{?slot}…{/slot}` renders only when the slot is bound. The slots a template
+# uses are declared in `slots`. No `{pick:pool}` references, so each template
+# validates in isolation.
+#
+# Each of these also serves as the BASE of a city Template Variant (see
+# template-variants/): a variant's slot set must equal its base's exactly, so
+# the slot lists below are the contract the matching variant honours.
+#
+# Period: occupied Vienna, 1945–1955. All mastheads, offices and businesses are
+# invented; officials are named by office, never personally; no anachronisms and
+# no sensational framing of the war's aftermath.
+
+# --- City life and reconstruction ------------------------------------------
+
+- id: article-reconstruction-report
+  kind: newspaper
+  titlePattern: '{masthead}: Rebuilding in the {district}'
+  slots: [masthead, district, subject, detail, official-office]
+  sections:
+    - id: lead
+      body: >-
+        Work goes on in the {district}, where {subject} is reported under way.
+        {detail} The programme is overseen by the {official-office}.
+    - id: standing
+      body: >-
+        Materials remain short and the winter stock of coal is watched closely.
+        Residents are asked to report damaged gas mains to the district office.
+
+- id: article-ration-notice
+  kind: newspaper
+  titlePattern: '{masthead}: The Ration for {period-label}'
+  slots: [masthead, period-label, ration-item, ration-detail, official-office]
+  sections:
+    - id: lead
+      body: >-
+        The ration for {period-label} is announced by the {official-office}.
+        The allowance of {ration-item} is set as follows: {ration-detail}
+    - id: standing
+      body: >-
+        Cards must be presented in the holder's own district. Goods offered
+        above the controlled price, or below it, should be refused and reported.
+
+- id: article-tram-service
+  kind: newspaper
+  titlePattern: '{masthead}: Tram and Rail Notices'
+  slots: [masthead, line, change-detail, effective-date, official-office]
+  sections:
+    - id: lead
+      body: >-
+        The {line} is subject to a change of service from {effective-date}.
+        {change-detail} The alteration is published by the {official-office}.
+    - id: standing
+      body: >-
+        Passengers are reminded that papers are inspected on services crossing a
+        sector boundary, and that the last cars run before the Sperrstunde.
+
+- id: article-weather-river
+  kind: newspaper
+  titlePattern: '{masthead}: The River and the Weather'
+  slots: [masthead, weather-detail, river-detail]
+  sections:
+    - id: lead
+      body: >-
+        Over the Danube the outlook is this: {weather-detail} On the water,
+        {river-detail}
+    - id: standing
+      body: >-
+        The ferries keep to the published times, fog permitting. Barge traffic
+        is logged at the harbour office on the Handelskai.
+
+# --- Officialdom and the occupation -----------------------------------------
+
+- id: article-sector-order
+  kind: newspaper
+  titlePattern: '{masthead}: Order of the {official-office}'
+  slots: [masthead, official-office, order-subject, effective-date, district]
+  sections:
+    - id: lead
+      body: >-
+        By order of the {official-office}, the following takes effect on
+        {effective-date}: {order-subject}. It applies within the {district} and
+        at the crossings into it.
+    - id: standing
+      body: >-
+        The order is posted at the district office and read at the sector gates.
+        Copies may be consulted at the municipal reading hall.
+
+- id: article-court-record
+  kind: newspaper
+  titlePattern: '{masthead}: From the District Court'
+  slots: [masthead, offence, outcome, official-office]
+  sections:
+    - id: lead
+      body: >-
+        Before the district court, a charge of {offence} was heard. {outcome}
+        The proceedings were reported by the {official-office}.
+    - id: standing
+      body: >-
+        The court sits on weekday mornings. The public gallery is open; papers
+        are shown at the door.
+
+- id: article-permit-notice
+  kind: newspaper
+  titlePattern: '{masthead}: Permits and Papers'
+  slots: [masthead, permit-subject, permit-detail, official-office, district]
+  sections:
+    - id: lead
+      body: >-
+        The {official-office} gives notice concerning {permit-subject}.
+        {permit-detail} Residents of the {district} are affected.
+    - id: standing
+      body: >-
+        Applications are made in person during office hours, with proof of
+        residence and two photographs. Lost papers are reported at once.
+
+- id: article-lost-found
+  kind: newspaper
+  titlePattern: '{masthead}: Lost and Found'
+  slots: [masthead, found-item, place, official-office]
+  sections:
+    - id: lead
+      body: >-
+        Handed in at the central office and unclaimed: {found-item}, left at
+        {place}. The property is held by the {official-office}.
+    - id: standing
+      body: >-
+        Owners may apply with proof of identity during office hours. Unclaimed
+        property is disposed of after the usual interval.
+
+# --- Markets, trade and the black market ------------------------------------
+
+- id: article-market-prices
+  kind: newspaper
+  titlePattern: '{masthead}: At the Markets'
+  slots: [masthead, market-name, price-detail, shortage-note]
+  sections:
+    - id: lead
+      body: >-
+        At the {market-name} the week's trade stood thus: {price-detail}
+        {?shortage-note}A word of warning: {shortage-note}{/shortage-note}
+    - id: standing
+      body: >-
+        Controlled goods carry a fixed price. The trade in them off the stalls
+        remains an offence in every sector and is watched by the city police.
+
+- id: article-black-market-warning
+  kind: newspaper
+  titlePattern: '{masthead}: A Warning on the Illicit Trade'
+  slots: [masthead, goods, district, official-office]
+  sections:
+    - id: lead
+      body: >-
+        The {official-office} warns against the illicit trade in {goods},
+        reported active in the {district}.
+    - id: standing
+      body: >-
+        Those who buy as well as those who sell are liable. The public is asked
+        to report the traffic to the nearest patrol and to refuse the goods.
+
+- id: article-business-notice
+  kind: newspaper
+  titlePattern: '{masthead}: Trade and Business'
+  slots: [masthead, firm, business-detail, district]
+  sections:
+    - id: lead
+      body: >-
+        {firm}, of the {district}, gives notice: {business-detail}
+    - id: standing
+      body: >-
+        Business notices are received at the counter until the Thursday before
+        publication. Terms are posted at the office.
+
+# --- Culture, the arts and the picture houses -------------------------------
+
+- id: article-concert-notice
+  kind: newspaper
+  titlePattern: '{masthead}: Concerts and the Theatre'
+  slots: [masthead, event, venue, event-date, review-note]
+  sections:
+    - id: lead
+      body: >-
+        {event} is given at {venue} on {event-date}.
+        {?review-note}Our critic writes: {review-note}{/review-note}
+    - id: standing
+      body: >-
+        Tickets are had at the box office from the morning. Latecomers are
+        seated at the first interval.
+
+- id: article-cinema-programme
+  kind: newspaper
+  titlePattern: '{masthead}: At the Picture Houses'
+  slots: [masthead, cinema, programme-detail]
+  sections:
+    - id: lead
+      body: >-
+        This week at {cinema}: {programme-detail}
+    - id: standing
+      body: >-
+        The newsreel precedes the main picture. Doors open an hour before the
+        first showing; the last performance ends before the Sperrstunde.
+
+- id: article-book-review
+  kind: newspaper
+  titlePattern: '{masthead}: Books of the Week'
+  slots: [masthead, book-title, review-detail]
+  sections:
+    - id: lead
+      body: >-
+        Of the week's new books, {book-title} draws notice. {review-detail}
+    - id: standing
+      body: >-
+        The antiquarian trade of the inner districts reports steady custom.
+        Reviews are the opinion of our critic and not of the paper.
+
+- id: article-society-column
+  kind: newspaper
+  titlePattern: '{masthead}: About the City'
+  slots: [masthead, item-one, item-two]
+  sections:
+    - id: lead
+      body: >-
+        About the city this week: {item-one} And in another quarter: {item-two}
+    - id: standing
+      body: >-
+        The column reports what is seen and said in the public rooms of the
+        city. Readers' notes are welcomed at the counter.
+
+# --- People, work and the displaced -----------------------------------------
+
+- id: article-appointments
+  kind: newspaper
+  titlePattern: '{masthead}: Appointments and Offices'
+  slots: [masthead, office, appointment-detail, official-office]
+  sections:
+    - id: lead
+      body: >-
+        The {official-office} announces concerning the {office}:
+        {appointment-detail}
+    - id: standing
+      body: >-
+        Offices are named here by their title. The holders take up their duties
+        at the published date.
+
+- id: article-situations
+  kind: newspaper
+  titlePattern: '{masthead}: Situations and Notices'
+  slots: [masthead, situation-detail, district]
+  sections:
+    - id: lead
+      body: >-
+        Situations offered and sought in the {district}: {situation-detail}
+    - id: standing
+      body: >-
+        Replies are left at the counter under the box number given. References
+        are expected.
+
+- id: article-missing-persons
+  kind: newspaper
+  titlePattern: '{masthead}: Inquiries After Persons'
+  slots: [masthead, inquiry-detail, official-office]
+  sections:
+    - id: lead
+      body: >-
+        Inquiries after missing and displaced persons are published by the
+        {official-office}: {inquiry-detail}
+    - id: standing
+      body: >-
+        Those with word of a named person are asked to send it to the relief
+        committee. The inquiries are printed plainly and without comment.
+
+# --- Public order and safety ------------------------------------------------
+
+- id: article-police-blotter
+  kind: newspaper
+  titlePattern: '{masthead}: The Police Record'
+  slots: [masthead, offence, place, outcome, official-office]
+  sections:
+    - id: lead
+      body: >-
+        From the police record, released by the {official-office}: an incident
+        of {offence} near {place}. {outcome}
+    - id: standing
+      body: >-
+        The public is asked to report loiterers and unattended parcels to the
+        nearest patrol, and to carry papers at all times.
+
+- id: article-curfew-notice
+  kind: newspaper
+  titlePattern: '{masthead}: Hours and the Sperrstunde'
+  slots: [masthead, hours-detail, district, official-office]
+  sections:
+    - id: lead
+      body: >-
+        The {official-office} sets the hours for the {district}: {hours-detail}
+    - id: standing
+      body: >-
+        Premises must shut at the Sperrstunde. Those abroad after the hour
+        should expect to show papers to a patrol.
+
+- id: article-public-health
+  kind: newspaper
+  titlePattern: '{masthead}: Public Health Notice'
+  slots: [masthead, health-subject, health-detail, official-office]
+  sections:
+    - id: lead
+      body: >-
+        The {official-office} gives notice on {health-subject}: {health-detail}
+    - id: standing
+      body: >-
+        The clinics of the institutional district keep their published hours.
+        Water from damaged mains should be boiled before use.
+
+# --- The weather and the almanac corner -------------------------------------
+
+- id: article-almanac-corner
+  kind: newspaper
+  titlePattern: '{masthead}: The Almanac Corner'
+  slots: [masthead, almanac-note, saints-day]
+  sections:
+    - id: lead
+      body: >-
+        From the almanac for the week: {almanac-note}
+        {?saints-day}The day is kept as {saints-day}.{/saints-day}
+    - id: standing
+      body: >-
+        The corner records the turning of the year, the fairs and the market
+        days, as the old household almanacs have always done.
+
+- id: article-correspondence
+  kind: newspaper
+  titlePattern: '{masthead}: Letters to the Paper'
+  slots: [masthead, letter-subject, letter-detail]
+  sections:
+    - id: lead
+      body: >-
+        On the question of {letter-subject}, a reader writes: {letter-detail}
+    - id: standing
+      body: >-
+        Letters are printed at the editor's discretion and shortened as needed.
+        The views are the writers' own.

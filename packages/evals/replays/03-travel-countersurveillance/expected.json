@@ -1,0 +1,5138 @@
+{
+  "generatorVersion": "0.7.0",
+  "finalState": {
+    "meta": {
+      "seed": "vienna-golden-charlie",
+      "generatorVersion": "0.7.0",
+      "content": {
+        "schema": 1,
+        "packs": [
+          {
+            "id": "core",
+            "version": "1.0.0",
+            "hash": "02fe241d4483c8a6cb8abefbe8aa6d76d1bff51aac021f14170ece490f7a59f3"
+          }
+        ]
+      },
+      "preset": {
+        "id": "standard",
+        "plot": {
+          "stageCount": 5,
+          "deadlineSlackDays": 2
+        },
+        "noiseCounts": {
+          "backgroundNpcs": 16,
+          "sideThreads": 2,
+          "rumours": 6
+        },
+        "noiseTrafficRatio": {
+          "noise": 2,
+          "plot": 1
+        },
+        "hqFalseBeliefRate": 0.15,
+        "doctrine": {
+          "risk": {
+            "min": 0.3,
+            "max": 0.6
+          },
+          "security": {
+            "min": 0.3,
+            "max": 0.6
+          },
+          "deception": {
+            "min": 0.3,
+            "max": 0.6
+          }
+        },
+        "detectionBase": {
+          "surveil": 0.1,
+          "meeting": 0.06,
+          "drop": 0.04
+        },
+        "madeRevealProbability": 0.6,
+        "tradecraftErrorProbability": 0.3,
+        "allowedCiphers": [
+          "caesar",
+          "vigenere",
+          "columnar",
+          "book",
+          "otp"
+        ],
+        "arrest": {
+          "threshold": 7,
+          "wrongfulAuthorityPenalty": -1,
+          "wrongfulRaisesAlertness": false
+        },
+        "startingBudget": 3000,
+        "traceRequestDelayPhases": 2,
+        "coverSuspicionBurnThreshold": 0.8,
+        "hintsDefault": true
+      },
+      "scenario": {
+        "difficulty": {
+          "preset": "standard",
+          "overrides": {}
+        },
+        "setting": {
+          "city": "core"
+        },
+        "mole": true,
+        "packs": {
+          "dirs": [
+            "packages/content/packs/core"
+          ],
+          "load": [
+            "core"
+          ]
+        },
+        "narration": "full",
+        "recruitment": {
+          "pitch": {
+            "w1": 1,
+            "w2": 1,
+            "w3": 1,
+            "w4": 1
+          },
+          "firstContact": {
+            "a": 1,
+            "b": 1,
+            "c": 1,
+            "d": 1
+          },
+          "meeting": {
+            "trust": 1,
+            "riskAversion": 1,
+            "scheduleConflict": 1,
+            "agendaInterest": 1
+          },
+          "exposure": {
+            "k1": 1,
+            "k2": 1,
+            "k3": 1
+          },
+          "turn": {
+            "w1": 1,
+            "w2": 1,
+            "w3": 1,
+            "w4": 1,
+            "w5": 1
+          }
+        },
+        "retries": {
+          "leakGuard": 2,
+          "narrator": 1,
+          "refusal": 1,
+          "extraction": 1,
+          "timeout": 1
+        },
+        "tokenBudget": 3000,
+        "custodyPhases": 4,
+        "silenceDays": 3,
+        "interceptRetentionDays": 2,
+        "metrics": {
+          "enabled": true,
+          "path": "logs/metrics.jsonl"
+        }
+      },
+      "setting": {
+        "city": "core",
+        "startDate": "1950-01-01",
+        "year": 1950,
+        "attempt": 0
+      }
+    },
+    "time": {
+      "day": 1,
+      "phase": 0
+    },
+    "rng": [
+      3615451011,
+      1947337532,
+      1193243478,
+      528715202
+    ],
+    "city": {
+      "displayName": "Vienna",
+      "districts": {
+        "district:alsergrund": {
+          "id": "district:alsergrund",
+          "name": "Alsergrund",
+          "sector": "american"
+        },
+        "district:mariahilf": {
+          "id": "district:mariahilf",
+          "name": "Mariahilf",
+          "sector": "french"
+        },
+        "district:favoriten": {
+          "id": "district:favoriten",
+          "name": "Favoriten",
+          "sector": "soviet"
+        },
+        "district:landstrasse": {
+          "id": "district:landstrasse",
+          "name": "Landstraße",
+          "sector": "british"
+        },
+        "district:brigittenau": {
+          "id": "district:brigittenau",
+          "name": "Brigittenau",
+          "sector": "soviet"
+        }
+      },
+      "locations": {
+        "loc:antiquariat-zum-blauen-band-0": {
+          "id": "loc:antiquariat-zum-blauen-band-0",
+          "name": "Antiquariat Zum Blauen Band",
+          "aliases": [],
+          "type": "bookshop",
+          "district": "district:mariahilf",
+          "public": true,
+          "description": "A cat sleeps on the ledger; the proprietor peers over half-moon glasses and names a price without looking up.",
+          "atmosphere": [
+            "dusty",
+            "quiet",
+            "bookish",
+            "discreet",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": false
+          },
+          "risk": 0.15,
+          "deadDropSites": [
+            "drop:cell/antiquariat-zum-blauen-band-0"
+          ]
+        },
+        "loc:gloria-kino-1": {
+          "id": "loc:gloria-kino-1",
+          "name": "Gloria-Kino",
+          "aliases": [],
+          "type": "cinema",
+          "district": "district:landstrasse",
+          "public": true,
+          "description": "A tiled foyer with a glass box office, lobby cards under lights, and the muffled roar of the feature within.",
+          "atmosphere": [
+            "dark",
+            "anonymous",
+            "meeting-ground",
+            "crowded",
+            "public"
+          ],
+          "hours": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.2,
+          "deadDropSites": [
+            "drop:hostile/gloria-kino-1"
+          ]
+        },
+        "loc:landungssteg-obere-donaustra-e-2": {
+          "id": "loc:landungssteg-obere-donaustra-e-2",
+          "name": "Landungssteg Obere Donaustraße",
+          "aliases": [],
+          "type": "danube-port",
+          "district": "district:mariahilf",
+          "public": true,
+          "description": "A sentry box at the Soviet-sector gate, a striped pole, and a bored soldier who checks papers by lantern light.",
+          "atmosphere": [
+            "industrial",
+            "exposed",
+            "rough",
+            "soviet-edge"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": false
+          },
+          "risk": 0.45,
+          "deadDropSites": [
+            "drop:station/landungssteg-obere-donaustra-e-2"
+          ]
+        },
+        "loc:legation-of-the-free-republic-3": {
+          "id": "loc:legation-of-the-free-republic-3",
+          "name": "Legation of the Free Republic",
+          "aliases": [],
+          "type": "embassy",
+          "district": "district:alsergrund",
+          "public": false,
+          "description": "High-ceilinged rooms smelling of floor wax and sealing wax, telephones ringing behind closed doors.",
+          "atmosphere": [
+            "official",
+            "guarded",
+            "bureaucratic",
+            "cover-friendly"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": false
+          },
+          "risk": 0.25,
+          "deadDropSites": []
+        },
+        "loc:heuriger-zum-alten-presshaus-4": {
+          "id": "loc:heuriger-zum-alten-presshaus-4",
+          "name": "Heuriger Zum Alten Presshaus",
+          "aliases": [],
+          "type": "heuriger",
+          "district": "district:landstrasse",
+          "public": true,
+          "description": "Long trestle tables under a vine arbour; a bush of pine over the gate says the new wine is poured.",
+          "atmosphere": [
+            "convivial",
+            "open-air",
+            "loose-tongued",
+            "crowded",
+            "public"
+          ],
+          "hours": {
+            "0": false,
+            "1": false,
+            "2": false,
+            "3": false
+          },
+          "risk": 0.2,
+          "deadDropSites": []
+        },
+        "loc:the-american-bar-at-hotel-erzherzog-5": {
+          "id": "loc:the-american-bar-at-hotel-erzherzog-5",
+          "name": "the American Bar at Hotel Erzherzog",
+          "aliases": [],
+          "type": "hotel-bar",
+          "district": "district:favoriten",
+          "public": true,
+          "description": "Correspondents and attachés hold the stools; the barman pours and forgets with equal skill.",
+          "atmosphere": [
+            "cosmopolitan",
+            "smoky",
+            "loose-tongued",
+            "watched",
+            "public"
+          ],
+          "hours": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.3,
+          "deadDropSites": []
+        },
+        "loc:cafe-hochquell-6": {
+          "id": "loc:cafe-hochquell-6",
+          "name": "Café Hochquell",
+          "aliases": [],
+          "type": "kaffeehaus",
+          "district": "district:brigittenau",
+          "public": true,
+          "description": "A marble-topped corner where a man can nurse one small black coffee for a whole afternoon and be left in peace.",
+          "atmosphere": [
+            "smoky",
+            "genteel",
+            "unhurried",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.15,
+          "deadDropSites": []
+        },
+        "loc:stadtische-lesehalle-7": {
+          "id": "loc:stadtische-lesehalle-7",
+          "name": "Städtische Lesehalle",
+          "aliases": [],
+          "type": "library",
+          "district": "district:favoriten",
+          "public": true,
+          "description": "Card catalogues wall the entrance; readers turn pages under a ceiling stained by decades of lamp-smoke.",
+          "atmosphere": [
+            "hushed",
+            "studious",
+            "discreet",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": false
+          },
+          "risk": 0.1,
+          "deadDropSites": []
+        },
+        "loc:naschmarkt-8": {
+          "id": "loc:naschmarkt-8",
+          "name": "Naschmarkt",
+          "aliases": [],
+          "type": "market",
+          "district": "district:mariahilf",
+          "public": true,
+          "description": "Barrows of root vegetables and winter apples, a butcher's slab, and a flower stall bright against the grey.",
+          "atmosphere": [
+            "crowded",
+            "bustling",
+            "everyday",
+            "concealing",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": false
+          },
+          "risk": 0.25,
+          "deadDropSites": []
+        },
+        "loc:stadtpark-9": {
+          "id": "loc:stadtpark-9",
+          "name": "Stadtpark",
+          "aliases": [],
+          "type": "park",
+          "district": "district:alsergrund",
+          "public": true,
+          "description": "The great wheel turns slowly over the fairground; beyond it the paths lose themselves in the dusk.",
+          "atmosphere": [
+            "open-air",
+            "exposed",
+            "meeting-ground",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.2,
+          "deadDropSites": []
+        },
+        "loc:westbahnhof-10": {
+          "id": "loc:westbahnhof-10",
+          "name": "Westbahnhof",
+          "aliases": [],
+          "type": "railway-station",
+          "district": "district:brigittenau",
+          "public": true,
+          "description": "Porters wheel trunks past the ticket windows while a loudspeaker calls the Vienna–Linz express.",
+          "atmosphere": [
+            "crowded",
+            "transient",
+            "anonymous",
+            "public",
+            "watched"
+          ],
+          "hours": {
+            "0": false,
+            "1": false,
+            "2": false,
+            "3": true
+          },
+          "risk": 0.35,
+          "deadDropSites": []
+        },
+        "loc:apartment-on-weihburggasse-11": {
+          "id": "loc:apartment-on-weihburggasse-11",
+          "name": "Apartment on Weihburggasse",
+          "aliases": [],
+          "type": "safehouse",
+          "district": "district:alsergrund",
+          "public": false,
+          "description": "A rented flat kept deliberately dull: a table, two chairs, a bed, and curtains always half-drawn.",
+          "atmosphere": [
+            "private",
+            "secure",
+            "spare",
+            "concealed"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.1,
+          "deadDropSites": []
+        },
+        "loc:the-station-12": {
+          "id": "loc:the-station-12",
+          "name": "the Station",
+          "aliases": [],
+          "type": "station-hq",
+          "district": "district:alsergrund",
+          "public": false,
+          "description": "A kettle on the gas ring, a wall of pigeonholes, and a window painted over so no one across the street can read the room.",
+          "atmosphere": [
+            "secure",
+            "official",
+            "home-ground",
+            "concealed"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.05,
+          "deadDropSites": []
+        },
+        "loc:tabak-trafik-pichler-13": {
+          "id": "loc:tabak-trafik-pichler-13",
+          "name": "Tabak-Trafik Pichler",
+          "aliases": [],
+          "type": "tobacconist-kiosk",
+          "district": "district:favoriten",
+          "public": true,
+          "description": "A hole in the wall at the tram stop, its light the first thing lit on the street and the last thing out.",
+          "atmosphere": [
+            "cramped",
+            "everyday",
+            "watchful",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": false
+          },
+          "risk": 0.2,
+          "deadDropSites": []
+        },
+        "loc:the-corner-of-mariahilfer-stra-e-14": {
+          "id": "loc:the-corner-of-mariahilfer-stra-e-14",
+          "name": "the corner of Mariahilfer Straße",
+          "aliases": [],
+          "type": "tram-stop",
+          "district": "district:landstrasse",
+          "public": true,
+          "description": "A clanging red tram slows at the kerb; the waiting crowd shuffles and reforms as it pulls away.",
+          "atmosphere": [
+            "transient",
+            "crowded",
+            "exposed",
+            "public"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "risk": 0.2,
+          "deadDropSites": []
+        },
+        "loc:speditionslager-hartl-15": {
+          "id": "loc:speditionslager-hartl-15",
+          "name": "Speditionslager Hartl",
+          "aliases": [],
+          "type": "warehouse",
+          "district": "district:alsergrund",
+          "public": false,
+          "description": "A freight lift with a concertina gate, a tally clerk's abandoned desk, and ledgers furred with dust.",
+          "atmosphere": [
+            "industrial",
+            "deserted",
+            "risky",
+            "concealing"
+          ],
+          "hours": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": false
+          },
+          "risk": 0.5,
+          "deadDropSites": []
+        }
+      },
+      "routes": [
+        {
+          "a": "district:landstrasse",
+          "b": "district:alsergrund",
+          "cost": 1
+        },
+        {
+          "a": "district:alsergrund",
+          "b": "district:favoriten",
+          "cost": 0
+        },
+        {
+          "a": "district:favoriten",
+          "b": "district:mariahilf",
+          "cost": 1
+        },
+        {
+          "a": "district:mariahilf",
+          "b": "district:brigittenau",
+          "cost": 1
+        },
+        {
+          "a": "district:mariahilf",
+          "b": "district:landstrasse",
+          "cost": 1
+        }
+      ],
+      "crowdModels": {
+        "bookshop": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.3
+            },
+            {
+              "weekday": "thursday",
+              "phase": "afternoon",
+              "level": 0.35
+            },
+            {
+              "weekday": "saturday",
+              "phase": "morning",
+              "level": 0.45
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 1.15
+            }
+          ]
+        },
+        "cinema": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.3
+            },
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.5
+            },
+            {
+              "weekday": "friday",
+              "phase": "evening",
+              "level": 0.8
+            },
+            {
+              "weekday": "friday",
+              "phase": "night",
+              "level": 0.75
+            },
+            {
+              "weekday": "saturday",
+              "phase": "afternoon",
+              "level": 0.8
+            },
+            {
+              "weekday": "sunday",
+              "phase": "afternoon",
+              "level": 0.85
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 1.3
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 1.25
+            },
+            {
+              "weather": "sleet",
+              "crowdMultiplier": 1.25
+            },
+            {
+              "weather": "clear",
+              "crowdMultiplier": 0.85
+            }
+          ]
+        },
+        "danube-port": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "early-morning",
+              "level": 0.6
+            },
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.7
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.5
+            },
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.2
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "fog",
+              "crowdMultiplier": 0.7
+            },
+            {
+              "weather": "rain",
+              "crowdMultiplier": 0.6
+            }
+          ]
+        },
+        "embassy": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.5
+            },
+            {
+              "weekday": "monday",
+              "phase": "midday",
+              "level": 0.6
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.4
+            }
+          ],
+          "weatherModifiers": []
+        },
+        "heuriger": {
+          "curve": [
+            {
+              "weekday": "wednesday",
+              "phase": "evening",
+              "level": 0.4
+            },
+            {
+              "weekday": "friday",
+              "phase": "evening",
+              "level": 0.7
+            },
+            {
+              "weekday": "friday",
+              "phase": "night",
+              "level": 0.85
+            },
+            {
+              "weekday": "saturday",
+              "phase": "afternoon",
+              "level": 0.6
+            },
+            {
+              "weekday": "saturday",
+              "phase": "night",
+              "level": 0.9
+            },
+            {
+              "weekday": "sunday",
+              "phase": "afternoon",
+              "level": 0.8
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "clear",
+              "crowdMultiplier": 1.3
+            },
+            {
+              "weather": "rain",
+              "crowdMultiplier": 0.5
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 0.3
+            },
+            {
+              "weather": "thunderstorm",
+              "crowdMultiplier": 0.3
+            }
+          ]
+        },
+        "hotel-bar": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.5
+            },
+            {
+              "weekday": "monday",
+              "phase": "night",
+              "level": 0.6
+            },
+            {
+              "weekday": "friday",
+              "phase": "night",
+              "level": 0.9
+            },
+            {
+              "weekday": "friday",
+              "phase": "late-night",
+              "level": 0.8
+            },
+            {
+              "weekday": "saturday",
+              "phase": "night",
+              "level": 0.9
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 1.1
+            }
+          ]
+        },
+        "kaffeehaus": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.5
+            },
+            {
+              "weekday": "monday",
+              "phase": "midday",
+              "level": 0.7
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.8
+            },
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.6
+            },
+            {
+              "weekday": "saturday",
+              "phase": "afternoon",
+              "level": 0.9
+            },
+            {
+              "weekday": "sunday",
+              "phase": "afternoon",
+              "level": 0.85
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 1.25
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 1.3
+            },
+            {
+              "weather": "sleet",
+              "crowdMultiplier": 1.3
+            },
+            {
+              "weather": "clear",
+              "crowdMultiplier": 0.9
+            }
+          ]
+        },
+        "library": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.3
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.5
+            },
+            {
+              "weekday": "tuesday",
+              "phase": "afternoon",
+              "level": 0.5
+            },
+            {
+              "weekday": "saturday",
+              "phase": "midday",
+              "level": 0.6
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 1.2
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 1.2
+            }
+          ]
+        },
+        "market": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "early-morning",
+              "level": 0.6
+            },
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.9
+            },
+            {
+              "weekday": "monday",
+              "phase": "midday",
+              "level": 0.7
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.3
+            },
+            {
+              "weekday": "saturday",
+              "phase": "morning",
+              "level": 0.95
+            },
+            {
+              "weekday": "friday",
+              "phase": "evening",
+              "level": 0.6
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 0.6
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 0.45
+            },
+            {
+              "weather": "clear",
+              "crowdMultiplier": 1.2
+            },
+            {
+              "weather": "thunderstorm",
+              "crowdMultiplier": 0.4
+            }
+          ]
+        },
+        "park": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.3
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.5
+            },
+            {
+              "weekday": "sunday",
+              "phase": "afternoon",
+              "level": 0.9
+            },
+            {
+              "weekday": "sunday",
+              "phase": "midday",
+              "level": 0.8
+            },
+            {
+              "weekday": "monday",
+              "phase": "night",
+              "level": 0.1
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 0.4
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 0.3
+            },
+            {
+              "weather": "clear",
+              "crowdMultiplier": 1.3
+            },
+            {
+              "weather": "thunderstorm",
+              "crowdMultiplier": 0.2
+            }
+          ]
+        },
+        "railway-station": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "early-morning",
+              "level": 0.7
+            },
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.8
+            },
+            {
+              "weekday": "monday",
+              "phase": "midday",
+              "level": 0.6
+            },
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.85
+            },
+            {
+              "weekday": "monday",
+              "phase": "late-night",
+              "level": 0.3
+            },
+            {
+              "weekday": "friday",
+              "phase": "evening",
+              "level": 0.95
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "snow",
+              "crowdMultiplier": 1.1
+            },
+            {
+              "weather": "rain",
+              "crowdMultiplier": 1.1
+            }
+          ]
+        },
+        "safehouse": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.05
+            },
+            {
+              "weekday": "monday",
+              "phase": "night",
+              "level": 0.05
+            }
+          ],
+          "weatherModifiers": []
+        },
+        "station-hq": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.4
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.4
+            },
+            {
+              "weekday": "monday",
+              "phase": "night",
+              "level": 0.15
+            }
+          ],
+          "weatherModifiers": []
+        },
+        "tobacconist-kiosk": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "early-morning",
+              "level": 0.4
+            },
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.5
+            },
+            {
+              "weekday": "monday",
+              "phase": "midday",
+              "level": 0.3
+            },
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.35
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 0.8
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 0.7
+            }
+          ]
+        },
+        "tram-stop": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "early-morning",
+              "level": 0.6
+            },
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.8
+            },
+            {
+              "weekday": "monday",
+              "phase": "evening",
+              "level": 0.8
+            },
+            {
+              "weekday": "monday",
+              "phase": "midday",
+              "level": 0.4
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "rain",
+              "crowdMultiplier": 0.9
+            },
+            {
+              "weather": "snow",
+              "crowdMultiplier": 0.85
+            }
+          ]
+        },
+        "warehouse": {
+          "curve": [
+            {
+              "weekday": "monday",
+              "phase": "morning",
+              "level": 0.4
+            },
+            {
+              "weekday": "monday",
+              "phase": "afternoon",
+              "level": 0.3
+            },
+            {
+              "weekday": "monday",
+              "phase": "night",
+              "level": 0.05
+            }
+          ],
+          "weatherModifiers": [
+            {
+              "weather": "snow",
+              "crowdMultiplier": 0.8
+            }
+          ]
+        }
+      },
+      "startMonth": 1
+    },
+    "orgs": {
+      "org:station": {
+        "id": "org:station",
+        "name": "the Field Station",
+        "kind": "station",
+        "allegiance": "station"
+      },
+      "org:hostile": {
+        "id": "org:hostile",
+        "name": "the Hostile Service",
+        "kind": "hostile",
+        "allegiance": "hostile"
+      },
+      "org:cell": {
+        "id": "org:cell",
+        "name": "the ring",
+        "kind": "cell",
+        "allegiance": "cell"
+      }
+    },
+    "npcs": {
+      "npc:grete-huber-0": {
+        "id": "npc:grete-huber-0",
+        "archetype": "cell-leader",
+        "role": "cell",
+        "org": "org:cell",
+        "trueAllegiance": {
+          "org": "org:cell"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.040399499936029315,
+          "ideology": 0.9177354541607201,
+          "coercion": 0.13111304165795445,
+          "ego": 0.643765818234533
+        },
+        "moneyNeed": 300,
+        "reliability": 0.7696238111238927,
+        "tradecraft": 0.8645033568702639,
+        "securityConsciousness": 0.775225269664079,
+        "status": "active",
+        "persona": {
+          "name": "Grete Huber",
+          "given": "Grete",
+          "family": "Huber",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "stirs a coffee long after the sugar has dissolved"
+          ],
+          "background": "Waited out the occupation behind a shop counter, trusting no sector in particular.",
+          "openness": 0.7489681441802531
+        },
+        "descriptor": {
+          "summary": "broad through the shoulders, no powder, a belted gabardine raincoat, a swagger coat over a day dress, a small veiled hat",
+          "phrases": [
+            "broad through the shoulders",
+            "no powder",
+            "a belted gabardine raincoat",
+            "a swagger coat over a day dress",
+            "a small veiled hat"
+          ],
+          "pools": [
+            "street-clothes",
+            "bourgeois-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 2,
+              "phase": 2,
+              "loc": "loc:apartment-on-weihburggasse-11"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:stadtpark-9"
+            }
+          ]
+        },
+        "wariness": 0.8052253924775868
+      },
+      "npc:aloisia-mayrhofer-1": {
+        "id": "npc:aloisia-mayrhofer-1",
+        "archetype": "cell-courier",
+        "role": "cell",
+        "org": "org:cell",
+        "trueAllegiance": {
+          "org": "org:cell"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.5152282148599625,
+          "ideology": 0.49837598111480474,
+          "coercion": 0.25136626432649795,
+          "ego": 0.11738653355278075
+        },
+        "moneyNeed": 2620,
+        "reliability": 0.4959075627941638,
+        "tradecraft": 0.7349035876896232,
+        "securityConsciousness": 0.7498856793250888,
+        "status": "active",
+        "persona": {
+          "name": "Aloisia Mayrhofer",
+          "given": "Aloisia",
+          "family": "Mayrhofer",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "circles a subject three times before naming it"
+          ],
+          "mannerisms": [
+            "lowers the voice whenever the occupiers are mentioned"
+          ],
+          "background": "Kept the family trade going through the hard years after the war.",
+          "openness": 0.6455557932611555
+        },
+        "descriptor": {
+          "summary": "heavyset and deliberate, no powder, a plain blouse and a cardigan buttoned high, a soft grey felt hat, a headscarf and a wrapround apron",
+          "phrases": [
+            "heavyset and deliberate",
+            "no powder",
+            "a plain blouse and a cardigan buttoned high",
+            "a soft grey felt hat",
+            "a headscarf and a wrapround apron"
+          ],
+          "pools": [
+            "street-clothes",
+            "worker-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 1,
+              "loc": "loc:tabak-trafik-pichler-13"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:westbahnhof-10"
+            },
+            {
+              "weekday": 5,
+              "phase": 0,
+              "loc": "loc:stadtpark-9"
+            }
+          ]
+        },
+        "wariness": 0.5806092948419973
+      },
+      "npc:franz-wagner-2": {
+        "id": "npc:franz-wagner-2",
+        "archetype": "cell-radio-operator",
+        "role": "cell",
+        "org": "org:cell",
+        "trueAllegiance": {
+          "org": "org:cell"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.19292234468739483,
+          "ideology": 0.7395091627724468,
+          "coercion": 0.3919323418755084,
+          "ego": 0.48768108456861226
+        },
+        "moneyNeed": 1050,
+        "reliability": 0.6916383307753131,
+        "tradecraft": 0.7957781087793411,
+        "securityConsciousness": 0.8015379516128451,
+        "status": "active",
+        "persona": {
+          "name": "Franz Wagner",
+          "given": "Franz",
+          "family": "Wagner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "quick to invoke the way things were done before the war"
+          ],
+          "mannerisms": [
+            "touches the brim of the hat in greeting"
+          ],
+          "background": "Waited out the occupation behind a shop counter, trusting no sector in particular.",
+          "openness": 0.40857761665247383
+        },
+        "descriptor": {
+          "summary": "heavyset and deliberate, a pencil moustache, a knitted waistcoat under a tweed jacket",
+          "phrases": [
+            "heavyset and deliberate",
+            "a pencil moustache",
+            "a knitted waistcoat under a tweed jacket"
+          ],
+          "pools": [
+            "street-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 3,
+              "loc": "loc:apartment-on-weihburggasse-11"
+            },
+            {
+              "weekday": 2,
+              "phase": 3,
+              "loc": "loc:apartment-on-weihburggasse-11"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:apartment-on-weihburggasse-11"
+            }
+          ]
+        },
+        "wariness": 0.8293400551658123
+      },
+      "npc:albert-hartl-3": {
+        "id": "npc:albert-hartl-3",
+        "archetype": "cell-financier",
+        "role": "cell",
+        "org": "org:cell",
+        "trueAllegiance": {
+          "org": "org:cell"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.6234996533021331,
+          "ideology": 0.690028135292232,
+          "coercion": 0.23617862854152916,
+          "ego": 0.5599914504680783
+        },
+        "moneyNeed": 3160,
+        "reliability": 0.6563490439951419,
+        "tradecraft": 0.701257839454338,
+        "securityConsciousness": 0.8444833749718964,
+        "status": "active",
+        "persona": {
+          "name": "Albert Hartl",
+          "given": "Albert",
+          "family": "Hartl",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "quick to invoke the way things were done before the war"
+          ],
+          "mannerisms": [
+            "taps ash with a small, precise flick"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.6317206357605756
+        },
+        "descriptor": {
+          "summary": "tall and spare, a clipped moustache, a double-breasted overcoat over a pressed suit",
+          "phrases": [
+            "tall and spare",
+            "a clipped moustache",
+            "a double-breasted overcoat over a pressed suit"
+          ],
+          "pools": [
+            "bourgeois-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 0,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 5,
+              "phase": 2,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            }
+          ]
+        },
+        "wariness": 0.7288811944425106
+      },
+      "npc:pyotr-travkin-4": {
+        "id": "npc:pyotr-travkin-4",
+        "archetype": "hostile-resident",
+        "role": "hostile-officer",
+        "org": "org:hostile",
+        "trueAllegiance": {
+          "org": "org:hostile"
+        },
+        "apparentAllegiance": "hostile",
+        "mice": {
+          "money": 0.012803100724704565,
+          "ideology": 0.7794041197281331,
+          "coercion": 0.007574068335816264,
+          "ego": 0.5939718622714282
+        },
+        "moneyNeed": 160,
+        "reliability": 0.7193630711641162,
+        "tradecraft": 0.8493950764555483,
+        "securityConsciousness": 0.7808834632765501,
+        "status": "active",
+        "persona": {
+          "name": "Pyotr Travkin",
+          "given": "Pyotr",
+          "family": "Travkin",
+          "library": "soviet",
+          "culture": "russian",
+          "gender": "male",
+          "voiceTraits": [
+            "speaks for the delegation, never for oneself"
+          ],
+          "mannerisms": [
+            "repeats your words back to you, flatly, as a question"
+          ],
+          "background": "Keeps a correct distance from the Western missions, and a careful file on each.",
+          "openness": 0.37998541831038896
+        },
+        "descriptor": {
+          "summary": "lean and stooped, clean-shaven, a well-cut charcoal suit and a silk tie, a homburg hat, a severe double-breasted overcoat, leather gloves drawn on finger by finger",
+          "phrases": [
+            "lean and stooped",
+            "clean-shaven",
+            "a well-cut charcoal suit and a silk tie",
+            "a homburg hat",
+            "a severe double-breasted overcoat",
+            "leather gloves drawn on finger by finger"
+          ],
+          "pools": [
+            "bourgeois-dress",
+            "officer-bearing"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:legation-of-the-free-republic-3"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:legation-of-the-free-republic-3"
+            },
+            {
+              "weekday": 4,
+              "phase": 2,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            }
+          ]
+        },
+        "wariness": 0.9442946024704725
+      },
+      "npc:arkady-gorelik-5": {
+        "id": "npc:arkady-gorelik-5",
+        "archetype": "hostile-case-officer",
+        "role": "hostile-officer",
+        "org": "org:hostile",
+        "trueAllegiance": {
+          "org": "org:hostile"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.21695474707521498,
+          "ideology": 0.723233089223504,
+          "coercion": 0.320663969963789,
+          "ego": 0.3966036979341879
+        },
+        "moneyNeed": 1160,
+        "reliability": 0.7612275441642851,
+        "tradecraft": 0.7834263814333826,
+        "securityConsciousness": 0.765435871174559,
+        "status": "active",
+        "persona": {
+          "name": "Arkady Gorelik",
+          "given": "Arkady",
+          "family": "Gorelik",
+          "library": "soviet",
+          "culture": "russian",
+          "gender": "male",
+          "voiceTraits": [
+            "invokes friendship and reciprocity in the same breath"
+          ],
+          "mannerisms": [
+            "keeps both hands visible on the table"
+          ],
+          "background": "Rotated into Vienna from another occupied capital.",
+          "openness": 0.6496562272775919
+        },
+        "descriptor": {
+          "summary": "lean and stooped, a day's grey stubble, a loden coat the colour of moss, a severe double-breasted overcoat, mirror-polished shoes",
+          "phrases": [
+            "lean and stooped",
+            "a day's grey stubble",
+            "a loden coat the colour of moss",
+            "a severe double-breasted overcoat",
+            "mirror-polished shoes"
+          ],
+          "pools": [
+            "street-clothes",
+            "officer-bearing"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 3,
+              "phase": 2,
+              "loc": "loc:stadtpark-9"
+            },
+            {
+              "weekday": 5,
+              "phase": 1,
+              "loc": "loc:legation-of-the-free-republic-3"
+            }
+          ]
+        },
+        "wariness": 0.609717593807727
+      },
+      "npc:clive-whitcombe-6": {
+        "id": "npc:clive-whitcombe-6",
+        "archetype": "chief-of-station",
+        "role": "station-staff",
+        "org": "org:station",
+        "trueAllegiance": {
+          "org": "org:station"
+        },
+        "apparentAllegiance": "station",
+        "mice": {
+          "money": 0.16668000342324377,
+          "ideology": 0.5114037352614105,
+          "coercion": 0.14414619975723328,
+          "ego": 0.7663984121754766
+        },
+        "moneyNeed": 920,
+        "reliability": 0.6863518351409585,
+        "tradecraft": 0.6258371569588781,
+        "securityConsciousness": 0.5826360254455358,
+        "status": "active",
+        "persona": {
+          "name": "Clive Whitcombe",
+          "given": "Clive",
+          "family": "Whitcombe",
+          "library": "british",
+          "culture": "british",
+          "gender": "male",
+          "voiceTraits": [
+            "treats enthusiasm as faintly vulgar"
+          ],
+          "mannerisms": [
+            "folds the newspaper to a precise quarter"
+          ],
+          "background": "Served through the war and speaks of none of it.",
+          "openness": 0.736583799822256
+        },
+        "descriptor": {
+          "summary": "tall and spare, a clipped moustache, a well-cut charcoal suit and a silk tie, kid gloves, a severe double-breasted overcoat, a bearing that never quite leaves attention",
+          "phrases": [
+            "tall and spare",
+            "a clipped moustache",
+            "a well-cut charcoal suit and a silk tie",
+            "kid gloves",
+            "a severe double-breasted overcoat",
+            "a bearing that never quite leaves attention"
+          ],
+          "pools": [
+            "bourgeois-dress",
+            "officer-bearing"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:legation-of-the-free-republic-3"
+            },
+            {
+              "weekday": 4,
+              "phase": 2,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            }
+          ]
+        },
+        "wariness": 0.6786641728598625
+      },
+      "npc:gustav-schober-7": {
+        "id": "npc:gustav-schober-7",
+        "archetype": "station-driver",
+        "role": "station-staff",
+        "org": "org:station",
+        "trueAllegiance": {
+          "org": "org:hostile"
+        },
+        "apparentAllegiance": "station",
+        "mice": {
+          "money": 0.5889484307263047,
+          "ideology": 0.22589556670282038,
+          "coercion": 0.38810823538806294,
+          "ego": 0.14065503971651197
+        },
+        "moneyNeed": 2990,
+        "reliability": 0.4263883793237619,
+        "tradecraft": 0.4212820853758603,
+        "securityConsciousness": 0.47701688429340716,
+        "status": "active",
+        "persona": {
+          "name": "Gustav Schober",
+          "given": "Gustav",
+          "family": "Schober",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "touches the brim of the hat in greeting"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.36813301453366876
+        },
+        "descriptor": {
+          "summary": "tall and spare, a day's grey stubble, heavy corduroy trousers and hobnailed boots, a cigarette behind one ear, a plain grey suit and a knitted tie, a wristwatch on a worn strap",
+          "phrases": [
+            "tall and spare",
+            "a day's grey stubble",
+            "heavy corduroy trousers and hobnailed boots",
+            "a cigarette behind one ear",
+            "a plain grey suit and a knitted tie",
+            "a wristwatch on a worn strap"
+          ],
+          "pools": [
+            "worker-clothes",
+            "office-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 1,
+              "phase": 1,
+              "loc": "loc:westbahnhof-10"
+            },
+            {
+              "weekday": 3,
+              "phase": 2,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            }
+          ]
+        },
+        "wariness": 0.46332918286789204
+      },
+      "npc:marjorie-marchmont-8": {
+        "id": "npc:marjorie-marchmont-8",
+        "archetype": "station-cipher-clerk",
+        "role": "station-staff",
+        "org": "org:station",
+        "trueAllegiance": {
+          "org": "org:station"
+        },
+        "apparentAllegiance": "station",
+        "mice": {
+          "money": 0.2910252823727205,
+          "ideology": 0.4396696637850255,
+          "coercion": 0.20253403009846807,
+          "ego": 0.2653937340015545
+        },
+        "moneyNeed": 1530,
+        "reliability": 0.6242435629665851,
+        "tradecraft": 0.49349344818852836,
+        "securityConsciousness": 0.6534610044118017,
+        "status": "active",
+        "persona": {
+          "name": "Marjorie Marchmont",
+          "given": "Marjorie",
+          "family": "Marchmont",
+          "library": "british",
+          "culture": "british",
+          "gender": "female",
+          "voiceTraits": [
+            "correct and a little cold with strangers"
+          ],
+          "mannerisms": [
+            "lets a silence run until the other party fills it"
+          ],
+          "background": "Posted to Vienna from a desk in the control commission.",
+          "openness": 0.38674389966763556
+        },
+        "descriptor": {
+          "summary": "round-shouldered and soft-spoken, pale powder and a dark lipstick, a dark skirt and a crisp white blouse",
+          "phrases": [
+            "round-shouldered and soft-spoken",
+            "pale powder and a dark lipstick",
+            "a dark skirt and a crisp white blouse"
+          ],
+          "pools": [
+            "office-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 2,
+              "phase": 2,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:the-station-12"
+            }
+          ]
+        },
+        "wariness": 0.6489629624178632
+      },
+      "npc:nigel-thorne-9": {
+        "id": "npc:nigel-thorne-9",
+        "archetype": "station-clerk",
+        "role": "station-staff",
+        "org": "org:station",
+        "trueAllegiance": {
+          "org": "org:station"
+        },
+        "apparentAllegiance": "station",
+        "mice": {
+          "money": 0.43961531287059186,
+          "ideology": 0.3946954456157983,
+          "coercion": 0.42272732958663256,
+          "ego": 0.30102095098700377
+        },
+        "moneyNeed": 2250,
+        "reliability": 0.4591237650997936,
+        "tradecraft": 0.3859958509262651,
+        "securityConsciousness": 0.3787986207567155,
+        "status": "active",
+        "persona": {
+          "name": "Nigel Thorne",
+          "given": "Nigel",
+          "family": "Thorne",
+          "library": "british",
+          "culture": "british",
+          "gender": "male",
+          "voiceTraits": [
+            "clipped understatement, never says the whole thing"
+          ],
+          "mannerisms": [
+            "polishes spectacles to buy time"
+          ],
+          "background": "Posted to Vienna from a desk in the control commission.",
+          "openness": 0.4668648562394083
+        },
+        "descriptor": {
+          "summary": "average height, forgettable, a day's grey stubble, a cardigan over a shirt and a plain tie, a pencil tucked behind the ear",
+          "phrases": [
+            "average height, forgettable",
+            "a day's grey stubble",
+            "a cardigan over a shirt and a plain tie",
+            "a pencil tucked behind the ear"
+          ],
+          "pools": [
+            "office-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 1,
+              "phase": 1,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:the-station-12"
+            }
+          ]
+        },
+        "wariness": 0.32914257743395864
+      },
+      "npc:johanna-hofbauer-10": {
+        "id": "npc:johanna-hofbauer-10",
+        "archetype": "police-liaison",
+        "role": "contact",
+        "org": "org:station",
+        "trueAllegiance": {
+          "org": "org:station"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.6444277411326765,
+          "ideology": 0.2894812779733911,
+          "coercion": 0.4510485130827874,
+          "ego": 0.4429877741960808
+        },
+        "moneyNeed": 3260,
+        "reliability": 0.3817064462113195,
+        "tradecraft": 0.6801064542494715,
+        "securityConsciousness": 0.5799442101735621,
+        "status": "active",
+        "persona": {
+          "name": "Johanna Hofbauer",
+          "given": "Johanna",
+          "family": "Hofbauer",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "quick to invoke the way things were done before the war"
+          ],
+          "mannerisms": [
+            "lowers the voice whenever the occupiers are mentioned"
+          ],
+          "background": "Lost the family flat to the bombing and took rooms in a stranger's house.",
+          "openness": 0.39789282511919744
+        },
+        "descriptor": {
+          "summary": "average height, forgettable, a trace of rosewater scent, a dark skirt and a crisp white blouse, a severe double-breasted overcoat, mirror-polished shoes",
+          "phrases": [
+            "average height, forgettable",
+            "a trace of rosewater scent",
+            "a dark skirt and a crisp white blouse",
+            "a severe double-breasted overcoat",
+            "mirror-polished shoes"
+          ],
+          "pools": [
+            "office-dress",
+            "officer-bearing"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 0,
+              "loc": "loc:the-station-12"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 5,
+              "phase": 1,
+              "loc": "loc:westbahnhof-10"
+            }
+          ]
+        },
+        "wariness": 0.7932624868117273
+      },
+      "npc:gretl-brunner-11": {
+        "id": "npc:gretl-brunner-11",
+        "archetype": "emigre-fixer",
+        "role": "contact",
+        "org": "org:station",
+        "trueAllegiance": {
+          "org": "org:station"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.8091427493840456,
+          "ideology": 0.5607745236717164,
+          "coercion": 0.19382374188862744,
+          "ego": 0.4933673352235928
+        },
+        "moneyNeed": 4060,
+        "reliability": 0.4225978912785649,
+        "tradecraft": 0.6051090485882014,
+        "securityConsciousness": 0.6325458860956132,
+        "status": "active",
+        "persona": {
+          "name": "Gretl Brunner",
+          "given": "Gretl",
+          "family": "Brunner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "dry Viennese irony under the politeness"
+          ],
+          "mannerisms": [
+            "answers a question with a proverb"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.2735218805726618
+        },
+        "descriptor": {
+          "summary": "round-shouldered and soft-spoken, a trace of rosewater scent, a loden coat the colour of moss, a dark wool dress and a short string of pearls",
+          "phrases": [
+            "round-shouldered and soft-spoken",
+            "a trace of rosewater scent",
+            "a loden coat the colour of moss",
+            "a dark wool dress and a short string of pearls"
+          ],
+          "pools": [
+            "street-clothes",
+            "bourgeois-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 2,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 5,
+              "phase": 1,
+              "loc": "loc:tabak-trafik-pichler-13"
+            }
+          ]
+        },
+        "wariness": 0.5989625010406598
+      },
+      "npc:bg-0": {
+        "id": "npc:bg-0",
+        "archetype": "black-market-trader",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.7472419226542115,
+          "ideology": 0.13884472786448895,
+          "coercion": 0.6869402034208179,
+          "ego": 0.3626452593132854
+        },
+        "moneyNeed": 3760,
+        "reliability": 0.29781482290010897,
+        "tradecraft": 0.5466699798963964,
+        "securityConsciousness": 0.7012329853512347,
+        "status": "active",
+        "persona": {
+          "name": "Larisa Panov",
+          "given": "Larisa",
+          "family": "Panov",
+          "library": "soviet",
+          "culture": "russian",
+          "gender": "female",
+          "voiceTraits": [
+            "lets a long pause do the work of a threat"
+          ],
+          "mannerisms": [
+            "studies a face before a word is said"
+          ],
+          "background": "Rotated into Vienna from another occupied capital.",
+          "openness": 0.5613846046850086
+        },
+        "descriptor": {
+          "summary": "broad through the shoulders, pale powder and a dark lipstick, a woollen two-piece costume with a modest hem, a small cloth hat with a felt flower",
+          "phrases": [
+            "broad through the shoulders",
+            "pale powder and a dark lipstick",
+            "a woollen two-piece costume with a modest hem",
+            "a small cloth hat with a felt flower"
+          ],
+          "pools": [
+            "street-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 3,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            },
+            {
+              "weekday": 3,
+              "phase": 3,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            },
+            {
+              "weekday": 5,
+              "phase": 2,
+              "loc": "loc:tabak-trafik-pichler-13"
+            }
+          ]
+        },
+        "wariness": 0.7897902176249773
+      },
+      "npc:bg-1": {
+        "id": "npc:bg-1",
+        "archetype": "cafe-waiter",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.3537130602635443,
+          "ideology": 0.1584894070867449,
+          "coercion": 0.14909863620996477,
+          "ego": 0.11818274352699519
+        },
+        "moneyNeed": 1830,
+        "reliability": 0.44469550141599024,
+        "tradecraft": 0.4591147585771978,
+        "securityConsciousness": 0.35358514050021767,
+        "status": "active",
+        "persona": {
+          "name": "Walter Wagner",
+          "given": "Walter",
+          "family": "Wagner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "quick to invoke the way things were done before the war"
+          ],
+          "mannerisms": [
+            "stirs a coffee long after the sugar has dissolved"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.2988878690171987
+        },
+        "descriptor": {
+          "summary": "lean and stooped, a day's grey stubble, a short white serving jacket and black trousers",
+          "phrases": [
+            "lean and stooped",
+            "a day's grey stubble",
+            "a short white serving jacket and black trousers"
+          ],
+          "pools": [
+            "waiter-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 4,
+              "phase": 2,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            }
+          ]
+        },
+        "wariness": 0.2249192965682596
+      },
+      "npc:bg-2": {
+        "id": "npc:bg-2",
+        "archetype": "cinema-usher",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.535746319591999,
+          "ideology": 0.2617567164590583,
+          "coercion": 0.22908638666849584,
+          "ego": 0.3358531267615036
+        },
+        "moneyNeed": 2730,
+        "reliability": 0.4318904260382988,
+        "tradecraft": 0.43822549172677094,
+        "securityConsciousness": 0.4848852255474776,
+        "status": "active",
+        "persona": {
+          "name": "Edith Hartl",
+          "given": "Edith",
+          "family": "Hartl",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "lowers the voice whenever the occupiers are mentioned"
+          ],
+          "background": "Lost the family flat to the bombing and took rooms in a stranger's house.",
+          "openness": 0.7446491157170385
+        },
+        "descriptor": {
+          "summary": "slight and quick, no powder, a dark serge uniform with piped cuffs",
+          "phrases": [
+            "slight and quick",
+            "no powder",
+            "a dark serge uniform with piped cuffs"
+          ],
+          "pools": [
+            "uniform-work-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 2,
+              "phase": 2,
+              "loc": "loc:gloria-kino-1"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:gloria-kino-1"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:gloria-kino-1"
+            }
+          ]
+        },
+        "wariness": 0.30026272640097884
+      },
+      "npc:bg-3": {
+        "id": "npc:bg-3",
+        "archetype": "dock-worker",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.7146255686879158,
+          "ideology": 0.15380195537582042,
+          "coercion": 0.596439912985079,
+          "ego": 0.22090194588527082
+        },
+        "moneyNeed": 3600,
+        "reliability": 0.33925068346783516,
+        "tradecraft": 0.3453131212294101,
+        "securityConsciousness": 0.4200181830581277,
+        "status": "active",
+        "persona": {
+          "name": "Elisabeth Hartl",
+          "given": "Elisabeth",
+          "family": "Hartl",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "circles a subject three times before naming it"
+          ],
+          "mannerisms": [
+            "lowers the voice whenever the occupiers are mentioned"
+          ],
+          "background": "Grew up in Leopoldstadt and never left the district for long.",
+          "openness": 0.7141675168182702
+        },
+        "descriptor": {
+          "summary": "tall and spare, a trace of rosewater scent, blue overalls stiff with grime",
+          "phrases": [
+            "tall and spare",
+            "a trace of rosewater scent",
+            "blue overalls stiff with grime"
+          ],
+          "pools": [
+            "worker-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            },
+            {
+              "weekday": 4,
+              "phase": 1,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            }
+          ]
+        },
+        "wariness": 0.34698208209592846
+      },
+      "npc:bg-4": {
+        "id": "npc:bg-4",
+        "archetype": "flower-seller",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.41985743122641,
+          "ideology": 0.10340404012240469,
+          "coercion": 0.26455290720332414,
+          "ego": 0.3249080366222188
+        },
+        "moneyNeed": 2160,
+        "reliability": 0.4823083436954766,
+        "tradecraft": 0.47608153374865647,
+        "securityConsciousness": 0.5101997981034219,
+        "status": "active",
+        "persona": {
+          "name": "Friedrich Gruber",
+          "given": "Friedrich",
+          "family": "Gruber",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "taps ash with a small, precise flick"
+          ],
+          "background": "Kept the family trade going through the hard years after the war.",
+          "openness": 0.41205422054044905
+        },
+        "descriptor": {
+          "summary": "tall and spare, a clipped moustache, a dark double-breasted suit gone shiny at the elbows",
+          "phrases": [
+            "tall and spare",
+            "a clipped moustache",
+            "a dark double-breasted suit gone shiny at the elbows"
+          ],
+          "pools": [
+            "street-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 0,
+              "loc": "loc:stadtpark-9"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:westbahnhof-10"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:stadtpark-9"
+            }
+          ]
+        },
+        "wariness": 0.39126851623877884
+      },
+      "npc:bg-5": {
+        "id": "npc:bg-5",
+        "archetype": "hotel-porter",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.5551205390365794,
+          "ideology": 0.28276303948368875,
+          "coercion": 0.4706553380237892,
+          "ego": 0.28293514163233346
+        },
+        "moneyNeed": 2820,
+        "reliability": 0.413563244517427,
+        "tradecraft": 0.5190948340948671,
+        "securityConsciousness": 0.5380935430899263,
+        "status": "active",
+        "persona": {
+          "name": "Friedrich Brantner",
+          "given": "Friedrich",
+          "family": "Brantner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "stirs a coffee long after the sugar has dissolved"
+          ],
+          "background": "Waited out the occupation behind a shop counter, trusting no sector in particular.",
+          "openness": 0.5982234006281943
+        },
+        "descriptor": {
+          "summary": "tall and spare, clean-shaven, an usher's short braided jacket, white cotton gloves",
+          "phrases": [
+            "tall and spare",
+            "clean-shaven",
+            "an usher's short braided jacket",
+            "white cotton gloves"
+          ],
+          "pools": [
+            "uniform-work-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 2,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            },
+            {
+              "weekday": 2,
+              "phase": 3,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            }
+          ]
+        },
+        "wariness": 0.45664239311590793
+      },
+      "npc:bg-6": {
+        "id": "npc:bg-6",
+        "archetype": "kiosk-vendor",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.4890444316901267,
+          "ideology": 0.12040145443752408,
+          "coercion": 0.1948487920686603,
+          "ego": 0.3365918562980369
+        },
+        "moneyNeed": 2500,
+        "reliability": 0.4545963488239796,
+        "tradecraft": 0.5555063923355192,
+        "securityConsciousness": 0.4255098161287606,
+        "status": "active",
+        "persona": {
+          "name": "Gretl Draxler",
+          "given": "Gretl",
+          "family": "Draxler",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "taps ash with a small, precise flick"
+          ],
+          "background": "Waited out the occupation behind a shop counter, trusting no sector in particular.",
+          "openness": 0.25668872138485316
+        },
+        "descriptor": {
+          "summary": "heavyset and deliberate, a trace of rosewater scent, a leather apron over a flannel shirt",
+          "phrases": [
+            "heavyset and deliberate",
+            "a trace of rosewater scent",
+            "a leather apron over a flannel shirt"
+          ],
+          "pools": [
+            "worker-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:tabak-trafik-pichler-13"
+            },
+            {
+              "weekday": 2,
+              "phase": 0,
+              "loc": "loc:tabak-trafik-pichler-13"
+            },
+            {
+              "weekday": 5,
+              "phase": 1,
+              "loc": "loc:tabak-trafik-pichler-13"
+            }
+          ]
+        },
+        "wariness": 0.48125543049536645
+      },
+      "npc:bg-7": {
+        "id": "npc:bg-7",
+        "archetype": "librarian",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.4078723533311859,
+          "ideology": 0.5457208808511496,
+          "coercion": 0.21707518661860378,
+          "ego": 0.21935501967091114
+        },
+        "moneyNeed": 2100,
+        "reliability": 0.5361700377659873,
+        "tradecraft": 0.5522811114694923,
+        "securityConsciousness": 0.4912672082334757,
+        "status": "active",
+        "persona": {
+          "name": "Richard Brantner",
+          "given": "Richard",
+          "family": "Brantner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "dry Viennese irony under the politeness"
+          ],
+          "mannerisms": [
+            "lowers the voice whenever the occupiers are mentioned"
+          ],
+          "background": "Lost the family flat to the bombing and took rooms in a stranger's house.",
+          "openness": 0.5512787654530258
+        },
+        "descriptor": {
+          "summary": "heavyset and deliberate, clean-shaven, a double-breasted overcoat over a pressed suit, a slim gold cigarette case, a plain grey suit and a knitted tie",
+          "phrases": [
+            "heavyset and deliberate",
+            "clean-shaven",
+            "a double-breasted overcoat over a pressed suit",
+            "a slim gold cigarette case",
+            "a plain grey suit and a knitted tie"
+          ],
+          "pools": [
+            "bourgeois-dress",
+            "office-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 0,
+              "loc": "loc:stadtische-lesehalle-7"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:stadtische-lesehalle-7"
+            },
+            {
+              "weekday": 5,
+              "phase": 1,
+              "loc": "loc:antiquariat-zum-blauen-band-0"
+            }
+          ]
+        },
+        "wariness": 0.515437277010642
+      },
+      "npc:bg-8": {
+        "id": "npc:bg-8",
+        "archetype": "refugee-clerk",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.757994226180017,
+          "ideology": 0.20666384883224964,
+          "coercion": 0.5245008596219122,
+          "ego": 0.25672477360349155
+        },
+        "moneyNeed": 3810,
+        "reliability": 0.49230503058061004,
+        "tradecraft": 0.4675180121511221,
+        "securityConsciousness": 0.6089135543163866,
+        "status": "active",
+        "persona": {
+          "name": "Leopoldine Winkler",
+          "given": "Leopoldine",
+          "family": "Winkler",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "taps ash with a small, precise flick"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.5988867462612689
+        },
+        "descriptor": {
+          "summary": "tall and spare, clean-shaven, a buttoned twinset and a pleated skirt, a plain blouse and a cardigan buttoned high",
+          "phrases": [
+            "tall and spare",
+            "clean-shaven",
+            "a buttoned twinset and a pleated skirt",
+            "a plain blouse and a cardigan buttoned high"
+          ],
+          "pools": [
+            "office-dress",
+            "street-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:the-corner-of-mariahilfer-stra-e-14"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:stadtische-lesehalle-7"
+            },
+            {
+              "weekday": 4,
+              "phase": 1,
+              "loc": "loc:the-corner-of-mariahilfer-stra-e-14"
+            }
+          ]
+        },
+        "wariness": 0.6083863843698054
+      },
+      "npc:bg-9": {
+        "id": "npc:bg-9",
+        "archetype": "tram-conductor",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.5379497948801144,
+          "ideology": 0.21431789754424246,
+          "coercion": 0.36876690683420754,
+          "ego": 0.09952772988472133
+        },
+        "moneyNeed": 2740,
+        "reliability": 0.39272366945864634,
+        "tradecraft": 0.40260221215896314,
+        "securityConsciousness": 0.3841834713984281,
+        "status": "active",
+        "persona": {
+          "name": "Gustav Fuchs",
+          "given": "Gustav",
+          "family": "Fuchs",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "quick to invoke the way things were done before the war"
+          ],
+          "mannerisms": [
+            "taps ash with a small, precise flick"
+          ],
+          "background": "Lost the family flat to the bombing and took rooms in a stranger's house.",
+          "openness": 0.4140341494232417
+        },
+        "descriptor": {
+          "summary": "heavyset and deliberate, a clipped moustache, a brass-buttoned tunic and peaked cap, a torch clipped to the belt",
+          "phrases": [
+            "heavyset and deliberate",
+            "a clipped moustache",
+            "a brass-buttoned tunic and peaked cap",
+            "a torch clipped to the belt"
+          ],
+          "pools": [
+            "uniform-work-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:the-corner-of-mariahilfer-stra-e-14"
+            },
+            {
+              "weekday": 1,
+              "phase": 1,
+              "loc": "loc:stadtpark-9"
+            },
+            {
+              "weekday": 3,
+              "phase": 2,
+              "loc": "loc:the-corner-of-mariahilfer-stra-e-14"
+            }
+          ]
+        },
+        "wariness": 0.3880407774820924
+      },
+      "npc:bg-10": {
+        "id": "npc:bg-10",
+        "archetype": "black-market-trader",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.7355014480650425,
+          "ideology": 0.15679227537475526,
+          "coercion": 0.3207161263562739,
+          "ego": 0.3758393861819059
+        },
+        "moneyNeed": 3700,
+        "reliability": 0.3367454708507285,
+        "tradecraft": 0.6174711830448358,
+        "securityConsciousness": 0.6272910710424184,
+        "status": "active",
+        "persona": {
+          "name": "Rudolf Baumgartner",
+          "given": "Rudolf",
+          "family": "Baumgartner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "formal and courteous to a fault"
+          ],
+          "mannerisms": [
+            "touches the brim of the hat in greeting"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.5456093556713313
+        },
+        "descriptor": {
+          "summary": "slight and quick, a pencil moustache, a loden coat the colour of moss",
+          "phrases": [
+            "slight and quick",
+            "a pencil moustache",
+            "a loden coat the colour of moss"
+          ],
+          "pools": [
+            "street-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 3,
+              "loc": "loc:stadtpark-9"
+            },
+            {
+              "weekday": 3,
+              "phase": 3,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            },
+            {
+              "weekday": 5,
+              "phase": 2,
+              "loc": "loc:tabak-trafik-pichler-13"
+            }
+          ]
+        },
+        "wariness": 0.6729191761696711
+      },
+      "npc:bg-11": {
+        "id": "npc:bg-11",
+        "archetype": "cafe-waiter",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.5538871838478372,
+          "ideology": 0.17240960632916538,
+          "coercion": 0.2828674164833501,
+          "ego": 0.13594737614039332
+        },
+        "moneyNeed": 2810,
+        "reliability": 0.5032309745787643,
+        "tradecraft": 0.3941965979617089,
+        "securityConsciousness": 0.33866220261901614,
+        "status": "active",
+        "persona": {
+          "name": "Viktor Reichert",
+          "given": "Viktor",
+          "family": "Reichert",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "quick to invoke the way things were done before the war"
+          ],
+          "mannerisms": [
+            "lowers the voice whenever the occupiers are mentioned"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.6621592757292092
+        },
+        "descriptor": {
+          "summary": "average height, forgettable, a day's grey stubble, a black waistcoat over a pressed white shirt, a leather change-purse at the hip",
+          "phrases": [
+            "average height, forgettable",
+            "a day's grey stubble",
+            "a black waistcoat over a pressed white shirt",
+            "a leather change-purse at the hip"
+          ],
+          "pools": [
+            "waiter-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 4,
+              "phase": 2,
+              "loc": "loc:cafe-hochquell-6"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:cafe-hochquell-6"
+            }
+          ]
+        },
+        "wariness": 0.25958343120291827
+      },
+      "npc:bg-12": {
+        "id": "npc:bg-12",
+        "archetype": "cinema-usher",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.5389745876658707,
+          "ideology": 0.11906871320679785,
+          "coercion": 0.2285180347505957,
+          "ego": 0.2930947402259335
+        },
+        "moneyNeed": 2740,
+        "reliability": 0.39836787289939823,
+        "tradecraft": 0.46094564531929794,
+        "securityConsciousness": 0.35801092895679176,
+        "status": "active",
+        "persona": {
+          "name": "Walter Moser",
+          "given": "Walter",
+          "family": "Moser",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "touches the brim of the hat in greeting"
+          ],
+          "background": "Lost the family flat to the bombing and took rooms in a stranger's house.",
+          "openness": 0.6356358512304724
+        },
+        "descriptor": {
+          "summary": "round-shouldered and soft-spoken, a pencil moustache, an usher's short braided jacket",
+          "phrases": [
+            "round-shouldered and soft-spoken",
+            "a pencil moustache",
+            "an usher's short braided jacket"
+          ],
+          "pools": [
+            "uniform-work-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 2,
+              "phase": 2,
+              "loc": "loc:gloria-kino-1"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:gloria-kino-1"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:gloria-kino-1"
+            }
+          ]
+        },
+        "wariness": 0.22487997175194324
+      },
+      "npc:bg-13": {
+        "id": "npc:bg-13",
+        "archetype": "dock-worker",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.7701904179528356,
+          "ideology": 0.4720390357077122,
+          "coercion": 0.3421862888149917,
+          "ego": 0.29071051999926567
+        },
+        "moneyNeed": 3870,
+        "reliability": 0.47910845970734944,
+        "tradecraft": 0.3413333760946988,
+        "securityConsciousness": 0.33368564363569014,
+        "status": "active",
+        "persona": {
+          "name": "Irmgard Lindner",
+          "given": "Irmgard",
+          "family": "Lindner",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "formal and courteous to a fault"
+          ],
+          "mannerisms": [
+            "touches the brim of the hat in greeting"
+          ],
+          "background": "Served in the old administration and learned to say little and notice much.",
+          "openness": 0.32572311470285065
+        },
+        "descriptor": {
+          "summary": "slight and quick, a trace of rosewater scent, a work smock over a plain skirt",
+          "phrases": [
+            "slight and quick",
+            "a trace of rosewater scent",
+            "a work smock over a plain skirt"
+          ],
+          "pools": [
+            "worker-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 0,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            },
+            {
+              "weekday": 2,
+              "phase": 1,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            },
+            {
+              "weekday": 4,
+              "phase": 1,
+              "loc": "loc:landungssteg-obere-donaustra-e-2"
+            }
+          ]
+        },
+        "wariness": 0.32984155460726466
+      },
+      "npc:bg-14": {
+        "id": "npc:bg-14",
+        "archetype": "flower-seller",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.42153971272055063,
+          "ideology": 0.21266587595455347,
+          "coercion": 0.36859004148282115,
+          "ego": 0.22196595733985308
+        },
+        "moneyNeed": 2170,
+        "reliability": 0.4743809202779084,
+        "tradecraft": 0.49237275102175776,
+        "securityConsciousness": 0.3943605904188007,
+        "status": "active",
+        "persona": {
+          "name": "Gretl Pichler",
+          "given": "Gretl",
+          "family": "Pichler",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "female",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "touches the brim of the hat in greeting"
+          ],
+          "background": "Kept the family trade going through the hard years after the war.",
+          "openness": 0.39481734000146396
+        },
+        "descriptor": {
+          "summary": "round-shouldered and soft-spoken, a trace of rosewater scent, a woollen two-piece costume with a modest hem",
+          "phrases": [
+            "round-shouldered and soft-spoken",
+            "a trace of rosewater scent",
+            "a woollen two-piece costume with a modest hem"
+          ],
+          "pools": [
+            "street-clothes"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 1,
+              "phase": 0,
+              "loc": "loc:stadtpark-9"
+            },
+            {
+              "weekday": 3,
+              "phase": 1,
+              "loc": "loc:westbahnhof-10"
+            },
+            {
+              "weekday": 6,
+              "phase": 1,
+              "loc": "loc:stadtpark-9"
+            }
+          ]
+        },
+        "wariness": 0.41966564317699523
+      },
+      "npc:bg-15": {
+        "id": "npc:bg-15",
+        "archetype": "hotel-porter",
+        "role": "civilian",
+        "trueAllegiance": {
+          "org": "org:none"
+        },
+        "apparentAllegiance": "neutral",
+        "mice": {
+          "money": 0.6802472797920928,
+          "ideology": 0.042689490225166084,
+          "coercion": 0.22343533432576806,
+          "ego": 0.12382404704112561
+        },
+        "moneyNeed": 3430,
+        "reliability": 0.40513883315492427,
+        "tradecraft": 0.41354613805189727,
+        "securityConsciousness": 0.4159263186436146,
+        "status": "active",
+        "persona": {
+          "name": "Walter Novak",
+          "given": "Walter",
+          "family": "Novak",
+          "library": "austrian",
+          "culture": "austrian",
+          "gender": "male",
+          "voiceTraits": [
+            "fond of the diminutive, softening every noun"
+          ],
+          "mannerisms": [
+            "stirs a coffee long after the sugar has dissolved"
+          ],
+          "background": "Waited out the occupation behind a shop counter, trusting no sector in particular.",
+          "openness": 0.7703485322184862
+        },
+        "descriptor": {
+          "summary": "lean and stooped, a neat spade beard, a conductor's belted coat and leggings",
+          "phrases": [
+            "lean and stooped",
+            "a neat spade beard",
+            "a conductor's belted coat and leggings"
+          ],
+          "pools": [
+            "uniform-work-dress"
+          ]
+        },
+        "schedule": {
+          "entries": [
+            {
+              "weekday": 0,
+              "phase": 2,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            },
+            {
+              "weekday": 2,
+              "phase": 3,
+              "loc": "loc:the-american-bar-at-hotel-erzherzog-5"
+            },
+            {
+              "weekday": 4,
+              "phase": 3,
+              "loc": "loc:heuriger-zum-alten-presshaus-4"
+            }
+          ]
+        },
+        "wariness": 0.4509396079927683
+      }
+    },
+    "whereabouts": {
+      "npc:albert-hartl-3": "loc:the-american-bar-at-hotel-erzherzog-5",
+      "npc:aloisia-mayrhofer-1": "absent",
+      "npc:arkady-gorelik-5": "absent",
+      "npc:bg-0": "absent",
+      "npc:bg-1": "absent",
+      "npc:bg-10": "absent",
+      "npc:bg-11": "absent",
+      "npc:bg-12": "absent",
+      "npc:bg-13": "absent",
+      "npc:bg-14": "loc:stadtpark-9",
+      "npc:bg-15": "absent",
+      "npc:bg-2": "absent",
+      "npc:bg-3": "absent",
+      "npc:bg-4": "loc:stadtpark-9",
+      "npc:bg-5": "absent",
+      "npc:bg-6": "absent",
+      "npc:bg-7": "loc:stadtische-lesehalle-7",
+      "npc:bg-8": "absent",
+      "npc:bg-9": "absent",
+      "npc:clive-whitcombe-6": "absent",
+      "npc:franz-wagner-2": "absent",
+      "npc:grete-huber-0": "absent",
+      "npc:gretl-brunner-11": "absent",
+      "npc:gustav-schober-7": "absent",
+      "npc:johanna-hofbauer-10": "loc:the-station-12",
+      "npc:marjorie-marchmont-8": "absent",
+      "npc:nigel-thorne-9": "absent",
+      "npc:pyotr-travkin-4": "absent"
+    },
+    "relationships": {},
+    "told": {},
+    "plot": {
+      "template": "emigre-abduction",
+      "status": "running",
+      "stages": [
+        {
+          "id": "stage:emigre-abduction/spot-the-emigre",
+          "templateId": "spot-the-emigre",
+          "requires": [],
+          "produces": [
+            "prop:emigre-abduction/spot-the-emigre/emigre-located"
+          ],
+          "deadline": {
+            "day": 8,
+            "phase": 0
+          },
+          "traces": [
+            {
+              "index": 0,
+              "kind": "meeting",
+              "participants": [
+                "npc:grete-huber-0"
+              ],
+              "place": {
+                "kind": "loc",
+                "loc": "loc:cafe-hochquell-6"
+              },
+              "evidences": [
+                "LOCATED_AT",
+                "TARGETS"
+              ],
+              "template": "A watcher logs the émigré's café mornings across a week, marking the table he takes and the hour he leaves."
+            },
+            {
+              "index": 1,
+              "kind": "npc-moved",
+              "participants": [
+                "npc:aloisia-mayrhofer-1"
+              ],
+              "place": {
+                "kind": "loc",
+                "loc": "loc:westbahnhof-10"
+              },
+              "evidences": [
+                "TRAVELS_TO"
+              ],
+              "template": "A courier paces the émigré's walk back from the tram stop to his lodgings, timing the quiet stretch where a car could pull alongside."
+            }
+          ],
+          "onDisrupted": {
+            "delay": 0.5,
+            "reroute": 0.4,
+            "abort": 0.1
+          },
+          "status": "pending"
+        },
+        {
+          "id": "stage:emigre-abduction/suborn-the-lure",
+          "templateId": "suborn-the-lure",
+          "requires": [
+            "prop:emigre-abduction/spot-the-emigre/emigre-located"
+          ],
+          "produces": [
+            "prop:emigre-abduction/suborn-the-lure/lure-arranged"
+          ],
+          "deadline": {
+            "day": 22,
+            "phase": 0
+          },
+          "traces": [
+            {
+              "index": 0,
+              "kind": "meeting",
+              "participants": [
+                "npc:gretl-brunner-11",
+                "npc:arkady-gorelik-5"
+              ],
+              "place": {
+                "kind": "loc",
+                "loc": "loc:heuriger-zum-alten-presshaus-4"
+              },
+              "evidences": [
+                "MEETS_AT",
+                "REPORTS_TO"
+              ],
+              "template": "An émigré fixer the target trusts begins meeting the handling officer at a hotel bar, carrying back the time the émigré will be alone."
+            },
+            {
+              "index": 1,
+              "kind": "meeting",
+              "participants": [
+                "npc:albert-hartl-3"
+              ],
+              "place": {
+                "kind": "target",
+                "entity": "npc:grete-huber-0"
+              },
+              "evidences": [
+                "SUPPLIES"
+              ],
+              "template": "The paymaster settles the fixer's debts through a front, buying the one evening the lure needs."
+            }
+          ],
+          "onDisrupted": {
+            "delay": 0.5,
+            "reroute": 0.3,
+            "abort": 0.2
+          },
+          "status": "pending"
+        },
+        {
+          "id": "stage:emigre-abduction/ready-the-snatch",
+          "templateId": "ready-the-snatch",
+          "requires": [
+            "prop:emigre-abduction/suborn-the-lure/lure-arranged"
+          ],
+          "produces": [
+            "prop:emigre-abduction/ready-the-snatch/snatch-ready"
+          ],
+          "deadline": {
+            "day": 30,
+            "phase": 0
+          },
+          "traces": [
+            {
+              "index": 0,
+              "kind": "transmission",
+              "participants": [
+                "npc:franz-wagner-2"
+              ],
+              "channelKind": "radio",
+              "evidences": [
+                "USES_CHANNEL",
+                "CARRIES"
+              ],
+              "template": "A wireless operator signals the safehouse that the sedative kit and forged papers are ready, using the night transmission window."
+            },
+            {
+              "index": 1,
+              "kind": "drop-emptied",
+              "participants": [
+                "npc:aloisia-mayrhofer-1"
+              ],
+              "place": {
+                "kind": "loc",
+                "loc": "loc:stadtpark-9"
+              },
+              "materiel": "item:emigre-abduction/sedative-kit",
+              "evidences": [
+                "CARRIES"
+              ],
+              "template": "A courier lifts the sedative kit from a dead drop in the park and carries it to the staging flat."
+            }
+          ],
+          "onDisrupted": {
+            "delay": 0.4,
+            "reroute": 0.4,
+            "abort": 0.2
+          },
+          "status": "pending"
+        },
+        {
+          "id": "stage:emigre-abduction/take-the-emigre",
+          "templateId": "take-the-emigre",
+          "requires": [
+            "prop:emigre-abduction/ready-the-snatch/snatch-ready"
+          ],
+          "produces": [
+            "prop:emigre-abduction/take-the-emigre/emigre-taken"
+          ],
+          "deadline": {
+            "day": 36,
+            "phase": 0
+          },
+          "traces": [
+            {
+              "index": 0,
+              "kind": "meeting",
+              "participants": [
+                "npc:arkady-gorelik-5"
+              ],
+              "place": {
+                "kind": "target",
+                "entity": "npc:grete-huber-0"
+              },
+              "materiel": "item:emigre-abduction/sedative-kit",
+              "evidences": [
+                "MEETS_AT",
+                "CARRIES"
+              ],
+              "template": "On the evening the fixer bought, the handling officer and a courier take the émigré off a quiet street and into a waiting car."
+            },
+            {
+              "index": 1,
+              "kind": "meeting",
+              "participants": [
+                "npc:grete-huber-0"
+              ],
+              "place": {
+                "kind": "target",
+                "entity": "npc:grete-huber-0"
+              },
+              "evidences": [
+                "LOCATED_AT"
+              ],
+              "template": "A watcher confirms the émigré does not reach his door and that no alarm is raised that night."
+            }
+          ],
+          "onDisrupted": {
+            "delay": 0.3,
+            "reroute": 0.3,
+            "abort": 0.4
+          },
+          "status": "pending"
+        },
+        {
+          "id": "stage:emigre-abduction/run-across-the-line",
+          "templateId": "run-across-the-line",
+          "requires": [
+            "prop:emigre-abduction/take-the-emigre/emigre-taken"
+          ],
+          "produces": [
+            "prop:emigre-abduction/run-across-the-line/emigre-delivered"
+          ],
+          "deadline": {
+            "day": 45,
+            "phase": 0
+          },
+          "traces": [
+            {
+              "index": 0,
+              "kind": "npc-moved",
+              "participants": [
+                "npc:aloisia-mayrhofer-1"
+              ],
+              "place": {
+                "kind": "target",
+                "entity": "npc:pyotr-travkin-4"
+              },
+              "materiel": "item:emigre-abduction/forged-transit",
+              "evidences": [
+                "TRAVELS_TO",
+                "CARRIES"
+              ],
+              "template": "The snatch car clears the sector boundary on forged transit papers before the first morning checkpoint change."
+            },
+            {
+              "index": 1,
+              "kind": "transmission",
+              "participants": [
+                "npc:pyotr-travkin-4"
+              ],
+              "channelKind": "numbers",
+              "evidences": [
+                "USES_CHANNEL",
+                "REPORTS_TO"
+              ],
+              "template": "The operation director signals the Directorate that the parcel is across and in hand."
+            }
+          ],
+          "onDisrupted": {
+            "delay": 0.3,
+            "reroute": 0.2,
+            "abort": 0.5
+          },
+          "status": "pending"
+        }
+      ],
+      "roles": [
+        {
+          "slot": "operation-director",
+          "archetype": "hostile-resident",
+          "npc": "npc:pyotr-travkin-4"
+        },
+        {
+          "slot": "handling-officer",
+          "archetype": "hostile-case-officer",
+          "npc": "npc:arkady-gorelik-5"
+        },
+        {
+          "slot": "cell-ringleader",
+          "archetype": "cell-leader",
+          "npc": "npc:grete-huber-0"
+        },
+        {
+          "slot": "snatch-courier",
+          "archetype": "cell-courier",
+          "npc": "npc:aloisia-mayrhofer-1"
+        },
+        {
+          "slot": "wireless-operator",
+          "archetype": "cell-radio-operator",
+          "npc": "npc:franz-wagner-2"
+        },
+        {
+          "slot": "paymaster",
+          "archetype": "cell-financier",
+          "npc": "npc:albert-hartl-3"
+        },
+        {
+          "slot": "luring-fixer",
+          "archetype": "emigre-fixer",
+          "npc": "npc:gretl-brunner-11"
+        }
+      ],
+      "materielSlots": [
+        {
+          "slot": "sedative-kit",
+          "item": "item:emigre-abduction/sedative-kit"
+        },
+        {
+          "slot": "forged-transit",
+          "item": "item:emigre-abduction/forged-transit"
+        }
+      ],
+      "targetSlots": [
+        {
+          "slot": "emigre-target",
+          "entity": "npc:grete-huber-0"
+        },
+        {
+          "slot": "boundary-crossing",
+          "entity": "npc:pyotr-travkin-4"
+        }
+      ],
+      "materiel": "item:emigre-abduction/sedative-kit",
+      "leader": "npc:grete-huber-0",
+      "target": "npc:grete-huber-0",
+      "abortPressure": 0,
+      "pressureKeys": [],
+      "materielSeized": false
+    },
+    "sideThreads": [
+      {
+        "id": "thread:0",
+        "template": "currency-ring",
+        "participants": [
+          "npc:gretl-brunner-11",
+          "npc:nigel-thorne-9",
+          "npc:gustav-schober-7"
+        ],
+        "propositions": [
+          {
+            "id": "prop:thread/0/located-0-npc-gretl-brunner-11",
+            "subject": "npc:gretl-brunner-11",
+            "predicate": "LOCATED_AT",
+            "object": "npc:gretl-brunner-11",
+            "place": "loc:cafe-hochquell-6"
+          },
+          {
+            "id": "prop:thread/0/located-1-npc-nigel-thorne-9",
+            "subject": "npc:nigel-thorne-9",
+            "predicate": "LOCATED_AT",
+            "object": "npc:nigel-thorne-9",
+            "place": "loc:westbahnhof-10"
+          },
+          {
+            "id": "prop:thread/0/located-2-npc-gustav-schober-7",
+            "subject": "npc:gustav-schober-7",
+            "predicate": "LOCATED_AT",
+            "object": "npc:gustav-schober-7",
+            "place": "loc:stadtische-lesehalle-7"
+          },
+          {
+            "id": "prop:thread/0/located-3-npc-gretl-brunner-11",
+            "subject": "npc:gretl-brunner-11",
+            "predicate": "LOCATED_AT",
+            "object": "npc:gretl-brunner-11",
+            "place": "loc:cafe-hochquell-6"
+          },
+          {
+            "id": "prop:thread/0/meets-0-npc-gretl-brunner-11-npc-gustav-schober-7",
+            "subject": "npc:gretl-brunner-11",
+            "predicate": "MEETS_AT",
+            "object": "npc:gustav-schober-7",
+            "place": "loc:tabak-trafik-pichler-13",
+            "window": {
+              "from": {
+                "day": 0,
+                "phase": 0
+              }
+            }
+          },
+          {
+            "id": "prop:thread/0/meets-1-npc-nigel-thorne-9-npc-gretl-brunner-11",
+            "subject": "npc:nigel-thorne-9",
+            "predicate": "MEETS_AT",
+            "object": "npc:gretl-brunner-11",
+            "place": "loc:the-american-bar-at-hotel-erzherzog-5",
+            "window": {
+              "from": {
+                "day": 0,
+                "phase": 0
+              }
+            }
+          }
+        ],
+        "traces": [
+          {
+            "index": 0,
+            "stage": "gather-the-notes",
+            "kind": "meeting",
+            "template": "The trader collects the week's notes from a tobacconist kiosk, the bundle slipped across the counter with the newspapers.",
+            "loc": "loc:tabak-trafik-pichler-13",
+            "participants": [
+              "npc:gretl-brunner-11",
+              "npc:gustav-schober-7"
+            ],
+            "materiel": "item:thread/0/currency-bundle",
+            "evidences": [
+              "MEETS_AT",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 1,
+            "stage": "gather-the-notes",
+            "kind": "meeting",
+            "template": "A watcher clocks the trader working his chits over a café table and takes the shorthand for cipher.",
+            "loc": "loc:cafe-hochquell-6",
+            "participants": [
+              "npc:gretl-brunner-11"
+            ],
+            "materiel": "item:thread/0/coded-chits",
+            "evidences": [
+              "LOCATED_AT",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 2,
+            "stage": "carry-the-bundle",
+            "kind": "npc-moved",
+            "template": "A hotel porter carries the hollowed guidebook across the sector line on his afternoon off, bundle and all.",
+            "loc": "loc:westbahnhof-10",
+            "participants": [
+              "npc:nigel-thorne-9"
+            ],
+            "materiel": "item:thread/0/currency-bundle",
+            "evidences": [
+              "TRAVELS_TO",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 3,
+            "stage": "carry-the-bundle",
+            "kind": "meeting",
+            "template": "The porter hands the trader his takings at the hotel bar, the pair careful never to be seen counting.",
+            "loc": "loc:the-american-bar-at-hotel-erzherzog-5",
+            "participants": [
+              "npc:nigel-thorne-9",
+              "npc:gretl-brunner-11"
+            ],
+            "evidences": [
+              "MEETS_AT"
+            ]
+          },
+          {
+            "index": 4,
+            "stage": "settle-the-books",
+            "kind": "meeting",
+            "template": "Clients come to the kiosk to change their scrip, each leaving with a thinner envelope than they hoped.",
+            "loc": "loc:stadtische-lesehalle-7",
+            "participants": [
+              "npc:gustav-schober-7"
+            ],
+            "materiel": "item:thread/0/currency-bundle",
+            "evidences": [
+              "MEETS_AT",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 5,
+            "stage": "settle-the-books",
+            "kind": "meeting",
+            "template": "An émigré fixer, hearing of the ring, passes a quiet word to a contact — nothing to do with any service.",
+            "loc": "loc:cafe-hochquell-6",
+            "participants": [
+              "npc:gretl-brunner-11"
+            ],
+            "evidences": [
+              "KNOWS"
+            ]
+          }
+        ],
+        "channels": [
+          {
+            "id": "chan:thread/0/traffic",
+            "kind": "radio",
+            "owner": "npc:gretl-brunner-11",
+            "schedule": {
+              "period": 1,
+              "start": {
+                "day": 0,
+                "phase": 2
+              },
+              "phase": 2
+            }
+          }
+        ]
+      },
+      {
+        "id": "thread:1",
+        "template": "forged-papers-racket",
+        "participants": [
+          "npc:bg-15",
+          "npc:bg-14",
+          "npc:bg-7",
+          "npc:bg-0"
+        ],
+        "propositions": [
+          {
+            "id": "prop:thread/1/located-0-npc-bg-15",
+            "subject": "npc:bg-15",
+            "predicate": "LOCATED_AT",
+            "object": "npc:bg-15",
+            "place": "loc:stadtische-lesehalle-7"
+          },
+          {
+            "id": "prop:thread/1/located-1-npc-bg-7",
+            "subject": "npc:bg-7",
+            "predicate": "LOCATED_AT",
+            "object": "npc:bg-7",
+            "place": "loc:the-corner-of-mariahilfer-stra-e-14"
+          },
+          {
+            "id": "prop:thread/1/located-2-npc-bg-14",
+            "subject": "npc:bg-14",
+            "predicate": "LOCATED_AT",
+            "object": "npc:bg-14",
+            "place": "loc:the-american-bar-at-hotel-erzherzog-5"
+          },
+          {
+            "id": "prop:thread/1/meets-0-npc-bg-15-npc-bg-14",
+            "subject": "npc:bg-15",
+            "predicate": "MEETS_AT",
+            "object": "npc:bg-14",
+            "place": "loc:cafe-hochquell-6",
+            "window": {
+              "from": {
+                "day": 0,
+                "phase": 0
+              }
+            }
+          },
+          {
+            "id": "prop:thread/1/meets-1-npc-bg-14-npc-bg-15",
+            "subject": "npc:bg-14",
+            "predicate": "MEETS_AT",
+            "object": "npc:bg-15",
+            "place": "loc:landungssteg-obere-donaustra-e-2",
+            "window": {
+              "from": {
+                "day": 0,
+                "phase": 0
+              }
+            }
+          },
+          {
+            "id": "prop:thread/1/meets-2-npc-bg-0-npc-bg-14",
+            "subject": "npc:bg-0",
+            "predicate": "MEETS_AT",
+            "object": "npc:bg-14",
+            "place": "loc:the-american-bar-at-hotel-erzherzog-5",
+            "window": {
+              "from": {
+                "day": 0,
+                "phase": 0
+              }
+            }
+          }
+        ],
+        "traces": [
+          {
+            "index": 0,
+            "stage": "lift-the-blanks",
+            "kind": "meeting",
+            "template": "A watcher notes the refugee clerk carrying a thick folder out of the reading room where he has no business keeping files.",
+            "loc": "loc:stadtische-lesehalle-7",
+            "participants": [
+              "npc:bg-15"
+            ],
+            "materiel": "item:thread/1/blank-forms",
+            "evidences": [
+              "LOCATED_AT",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 1,
+            "stage": "lift-the-blanks",
+            "kind": "meeting",
+            "template": "The clerk and a dock worker put their heads together over a café table, a folder passing under it.",
+            "loc": "loc:cafe-hochquell-6",
+            "participants": [
+              "npc:bg-15",
+              "npc:bg-14"
+            ],
+            "evidences": [
+              "MEETS_AT"
+            ]
+          },
+          {
+            "index": 2,
+            "stage": "run-the-presses",
+            "kind": "npc-moved",
+            "template": "A tram conductor ferries the finished papers between the clerk and the waterfront, tucked inside a folded timetable.",
+            "loc": "loc:the-corner-of-mariahilfer-stra-e-14",
+            "participants": [
+              "npc:bg-7"
+            ],
+            "materiel": "item:thread/1/finished-papers",
+            "evidences": [
+              "TRAVELS_TO",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 3,
+            "stage": "run-the-presses",
+            "kind": "meeting",
+            "template": "The dock worker takes delivery of the stamped papers at the wharf, where the river noise covers the talk.",
+            "loc": "loc:landungssteg-obere-donaustra-e-2",
+            "participants": [
+              "npc:bg-14",
+              "npc:bg-15"
+            ],
+            "materiel": "item:thread/1/finished-papers",
+            "evidences": [
+              "MEETS_AT",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 4,
+            "stage": "sell-the-way-out",
+            "kind": "meeting",
+            "template": "Buyers meet the dock worker at the port after dark, each leaving with a new name and a passage east or west.",
+            "loc": "loc:the-american-bar-at-hotel-erzherzog-5",
+            "participants": [
+              "npc:bg-14"
+            ],
+            "materiel": "item:thread/1/finished-papers",
+            "evidences": [
+              "MEETS_AT",
+              "CARRIES"
+            ]
+          },
+          {
+            "index": 5,
+            "stage": "sell-the-way-out",
+            "kind": "meeting",
+            "template": "A friendly journalist chasing a \"forgery cell\" interviews the dock worker and quietly files it as a racket, not a network.",
+            "loc": "loc:the-american-bar-at-hotel-erzherzog-5",
+            "participants": [
+              "npc:bg-0",
+              "npc:bg-14"
+            ],
+            "evidences": [
+              "MEETS_AT",
+              "KNOWS"
+            ]
+          }
+        ],
+        "channels": [
+          {
+            "id": "chan:thread/1/traffic",
+            "kind": "numbers",
+            "owner": "npc:bg-15",
+            "schedule": {
+              "period": 1,
+              "start": {
+                "day": 0,
+                "phase": 2
+              },
+              "phase": 2
+            }
+          }
+        ]
+      }
+    ],
+    "channels": {
+      "chan:franz-wagner-2/signal": {
+        "id": "chan:franz-wagner-2/signal",
+        "kind": "numbers",
+        "owner": "npc:franz-wagner-2",
+        "schedule": {
+          "period": 3,
+          "start": {
+            "day": 2,
+            "phase": 0
+          },
+          "phase": 0
+        }
+      },
+      "chan:aloisia-mayrhofer-1/courier": {
+        "id": "chan:aloisia-mayrhofer-1/courier",
+        "kind": "courier",
+        "owner": "npc:aloisia-mayrhofer-1",
+        "schedule": {
+          "period": 2,
+          "start": {
+            "day": 1,
+            "phase": 0
+          },
+          "phase": 0
+        },
+        "route": "loc:naschmarkt-8"
+      },
+      "chan:cell/drop": {
+        "id": "chan:cell/drop",
+        "kind": "dead-drop",
+        "owner": "org:cell",
+        "schedule": {
+          "period": 1,
+          "start": {
+            "day": 0,
+            "phase": 3
+          },
+          "phase": 3
+        }
+      },
+      "chan:pyotr-travkin-4/signal": {
+        "id": "chan:pyotr-travkin-4/signal",
+        "kind": "numbers",
+        "owner": "npc:pyotr-travkin-4",
+        "schedule": {
+          "period": 2,
+          "start": {
+            "day": 0,
+            "phase": 3
+          },
+          "phase": 3
+        }
+      },
+      "chan:station/signal": {
+        "id": "chan:station/signal",
+        "kind": "radio",
+        "owner": "org:station",
+        "schedule": {
+          "period": 2,
+          "start": {
+            "day": 0,
+            "phase": 0
+          },
+          "phase": 0
+        }
+      },
+      "chan:thread/0/traffic": {
+        "id": "chan:thread/0/traffic",
+        "kind": "radio",
+        "owner": "npc:gretl-brunner-11",
+        "schedule": {
+          "period": 1,
+          "start": {
+            "day": 0,
+            "phase": 2
+          },
+          "phase": 2
+        }
+      },
+      "chan:thread/1/traffic": {
+        "id": "chan:thread/1/traffic",
+        "kind": "numbers",
+        "owner": "npc:bg-15",
+        "schedule": {
+          "period": 1,
+          "start": {
+            "day": 0,
+            "phase": 2
+          },
+          "phase": 2
+        }
+      },
+      "chan:noise/0/diplomatic": {
+        "id": "chan:noise/0/diplomatic",
+        "kind": "radio",
+        "owner": "org:noise-diplomatic",
+        "schedule": {
+          "period": 2,
+          "start": {
+            "day": 0,
+            "phase": 2
+          },
+          "phase": 2
+        }
+      },
+      "chan:noise/1/commercial": {
+        "id": "chan:noise/1/commercial",
+        "kind": "numbers",
+        "owner": "org:noise-commercial",
+        "schedule": {
+          "period": 3,
+          "start": {
+            "day": 1,
+            "phase": 3
+          },
+          "phase": 3
+        }
+      }
+    },
+    "deadDrops": {
+      "drop:cell/antiquariat-zum-blauen-band-0": {
+        "id": "drop:cell/antiquariat-zum-blauen-band-0",
+        "loc": "loc:antiquariat-zum-blauen-band-0",
+        "owner": "org:cell",
+        "contents": [
+          "item:emigre-abduction/sedative-kit"
+        ]
+      },
+      "drop:hostile/gloria-kino-1": {
+        "id": "drop:hostile/gloria-kino-1",
+        "loc": "loc:gloria-kino-1",
+        "owner": "org:hostile",
+        "contents": []
+      },
+      "drop:station/landungssteg-obere-donaustra-e-2": {
+        "id": "drop:station/landungssteg-obere-donaustra-e-2",
+        "loc": "loc:landungssteg-obere-donaustra-e-2",
+        "owner": "org:station",
+        "contents": []
+      }
+    },
+    "transmissions": [
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@0.2",
+        "at": {
+          "day": 0,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-0-2",
+          "at": {
+            "day": 0,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 53,
+            "header": "NR",
+            "callsign": "NOIS"
+          },
+          "ciphertext": "UY\nBJ vyn:uvpzl-kpwsvthapj =A:johu:uvpzl/0/kpwsvthapj",
+          "spec": {
+            "kind": "caesar",
+            "shift": 7
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@0.2"
+          ],
+          "origin": "noise",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@10.2",
+        "at": {
+          "day": 10,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-10-2",
+          "at": {
+            "day": 10,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 56,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "remTn/a\u0000:dtciii\u0000g-a:odt\u0000oso=:0m\u0000Uniihspc il n/o\u0000Copcael\u0000",
+          "spec": {
+            "kind": "columnar",
+            "key": "QUTPCNE"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@10.2"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@12.2",
+        "at": {
+          "day": 12,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-12-2",
+          "at": {
+            "day": 12,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 53,
+            "header": "NR",
+            "callsign": "NOIS"
+          },
+          "ciphertext": "UR\nRV zyg:khtze-abasojtepc =Q:vshn:khtze/0/abasojtepc",
+          "spec": {
+            "kind": "vigenere",
+            "key": "HAXTL"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@12.2"
+          ],
+          "origin": "noise",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@14.2",
+        "at": {
+          "day": 14,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-14-2",
+          "at": {
+            "day": 14,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 53,
+            "header": "NR",
+            "callsign": "NOIS"
+          },
+          "ciphertext": "NQ\nHF oec:pgsml-jhunuinihv =L:wmgs:izqfl/0/taajwjwjgm",
+          "spec": {
+            "kind": "otp",
+            "padId": "pad:2"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@14.2"
+          ],
+          "origin": "noise",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@2.2",
+        "at": {
+          "day": 2,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-2-2",
+          "at": {
+            "day": 2,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 50,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "BR etw:udyuu-kxfnetpjks =A:rxcd:udyuu/0/kxfnetpjks",
+          "spec": {
+            "kind": "vigenere",
+            "key": "HPQCQ"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@2.2"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@4.2",
+        "at": {
+          "day": 4,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-4-2",
+          "at": {
+            "day": 4,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 50,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "GK ofz:zwigx-pqpzhyitwv =F:khog:zwigx/0/pqpzhyitwv",
+          "spec": {
+            "kind": "vigenere",
+            "key": "MIAOT"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@4.2"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@6.2",
+        "at": {
+          "day": 6,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-6-2",
+          "at": {
+            "day": 6,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 50,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "TB nqf:mnhrd-choknlzshb =S:bgzm:mnhrd/0/choknlzshb",
+          "spec": {
+            "kind": "caesar",
+            "shift": 25
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@6.2"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/0/diplomatic@8.2",
+        "at": {
+          "day": 8,
+          "phase": 2
+        },
+        "channel": "chan:noise/0/diplomatic",
+        "owner": "org:noise-diplomatic",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-0-diplomatic-8-2",
+          "at": {
+            "day": 8,
+            "phase": 2
+          },
+          "channel": "chan:noise/0/diplomatic",
+          "owner": "org:noise-diplomatic",
+          "direction": "outbound",
+          "meta": {
+            "length": 52,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "onepa c:s/lt\u0000Uro-lt=hnedoiCgidoiTao/imc :simc:ni0pa\u0000",
+          "spec": {
+            "kind": "columnar",
+            "key": "DFMB"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/0/diplomatic@8.2"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/1/commercial@1.3",
+        "at": {
+          "day": 1,
+          "phase": 3
+        },
+        "channel": "chan:noise/1/commercial",
+        "owner": "org:noise-commercial",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-1-commercial-1-3",
+          "at": {
+            "day": 1,
+            "phase": 3
+          },
+          "channel": "chan:noise/1/commercial",
+          "owner": "org:noise-commercial",
+          "direction": "outbound",
+          "meta": {
+            "length": 52,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "CgiceaTao/orlonemc c:s/mi\u0000Uro-mi=hnecea :sorl:ni1mc\u0000",
+          "spec": {
+            "kind": "columnar",
+            "key": "PAVM"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/1/commercial@1.3"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/1/commercial@10.3",
+        "at": {
+          "day": 10,
+          "phase": 3
+        },
+        "channel": "chan:noise/1/commercial",
+        "owner": "org:noise-commercial",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-1-commercial-10-3",
+          "at": {
+            "day": 10,
+            "phase": 3
+          },
+          "channel": "chan:noise/1/commercial",
+          "owner": "org:noise-commercial",
+          "direction": "outbound",
+          "meta": {
+            "length": 53,
+            "header": "NR",
+            "callsign": "NOIS"
+          },
+          "ciphertext": "TX\nAI uxm:tuoyk-iusskxiogr =Z:ingt:tuoyk/1/iusskxiogr",
+          "spec": {
+            "kind": "caesar",
+            "shift": 6
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/1/commercial@10.3"
+          ],
+          "origin": "noise",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/1/commercial@13.3",
+        "at": {
+          "day": 13,
+          "phase": 3
+        },
+        "channel": "chan:noise/1/commercial",
+        "owner": "org:noise-commercial",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-1-commercial-13-3",
+          "at": {
+            "day": 13,
+            "phase": 3
+          },
+          "channel": "chan:noise/1/commercial",
+          "owner": "org:noise-commercial",
+          "direction": "outbound",
+          "meta": {
+            "length": 50,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "TV xke:hnbbx-ailfnkacze =C:vfum:gxbqy/1/bhvfclbbje",
+          "spec": {
+            "kind": "vigenere",
+            "key": "ZTJTYU"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/1/commercial@13.3"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/1/commercial@4.3",
+        "at": {
+          "day": 4,
+          "phase": 3
+        },
+        "channel": "chan:noise/1/commercial",
+        "owner": "org:noise-commercial",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-1-commercial-4-3",
+          "at": {
+            "day": 4,
+            "phase": 3
+          },
+          "channel": "chan:noise/1/commercial",
+          "owner": "org:noise-commercial",
+          "direction": "outbound",
+          "meta": {
+            "length": 50,
+            "callsign": "NOIS"
+          },
+          "ciphertext": "VD fte:opzuc-dpdocsdzcj =U:dycl:opzuc/1/dpdocsdzcj",
+          "spec": {
+            "kind": "vigenere",
+            "key": "BBRCY"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/1/commercial@4.3"
+          ],
+          "origin": "noise"
+        }
+      },
+      {
+        "id": "noise-tx:chan:noise/1/commercial@7.3",
+        "at": {
+          "day": 7,
+          "phase": 3
+        },
+        "channel": "chan:noise/1/commercial",
+        "owner": "org:noise-commercial",
+        "origin": "noise",
+        "intercept": {
+          "id": "int:noise-tx-chan-noise-1-commercial-7-3",
+          "at": {
+            "day": 7,
+            "phase": 3
+          },
+          "channel": "chan:noise/1/commercial",
+          "owner": "org:noise-commercial",
+          "direction": "outbound",
+          "meta": {
+            "length": 53,
+            "header": "NR",
+            "callsign": "NOIS"
+          },
+          "ciphertext": "GY\nCU gdg:yzifx-jcxakpiits =X:tzvr:egmsr/1/fddawvhwre",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          },
+          "plaintextProps": [
+            "prop:noise/chan:noise/1/commercial@7.3"
+          ],
+          "origin": "noise",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "plot-tx:stage:emigre-abduction/ready-the-snatch/0",
+        "at": {
+          "day": 30,
+          "phase": 0
+        },
+        "channel": "chan:thread/0/traffic",
+        "owner": "npc:gretl-brunner-11",
+        "origin": "plot",
+        "intercept": {
+          "id": "int:plot-tx-stage-emigre-abduction-ready-the-snatch-0",
+          "at": {
+            "day": 30,
+            "phase": 0
+          },
+          "channel": "chan:thread/0/traffic",
+          "owner": "npc:gretl-brunner-11",
+          "direction": "outbound",
+          "meta": {
+            "length": 278,
+            "header": "NR",
+            "callsign": "THRE"
+          },
+          "ciphertext": "GY\nGA ybc:nlqwhmn-ewgkoobsi-1 =W:hux\\zshirshvgn\\fptainwvv\nYC pwq:npoacao-raaryskyc-1 =A:qbsr:hzzlavt-tedzygyqf-1/phbkpiu\nUA fpt:jjhbq-patqxy-2 =X:tpvr:wiuar-yorqye-2/vmxngc\nQM ncf:hpodqak-kanibrjrk-1 trs:kpjw\nMM fxp:hfayd-wrrlqv-2 buy:ylle\nIS rpw:zlqga-vlfxy-0 =B:ghr\\vytigsmpsy",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          },
+          "plaintextProps": [
+            "prop:know/cell/carries",
+            "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+            "prop:know/cell/chan-chan-franz-wagner-2-signal",
+            "prop:know/cell/member-npc-aloisia-mayrhofer-1",
+            "prop:know/cell/member-npc-franz-wagner-2",
+            "prop:know/cell/plan"
+          ],
+          "origin": "plot",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "plot-tx:stage:emigre-abduction/run-across-the-line/1",
+        "at": {
+          "day": 45,
+          "phase": 0
+        },
+        "channel": "chan:pyotr-travkin-4/signal",
+        "owner": "npc:pyotr-travkin-4",
+        "origin": "plot",
+        "intercept": {
+          "id": "int:plot-tx-stage-emigre-abduction-run-across-the-line-1",
+          "at": {
+            "day": 45,
+            "phase": 0
+          },
+          "channel": "chan:pyotr-travkin-4/signal",
+          "owner": "npc:pyotr-travkin-4",
+          "direction": "outbound",
+          "meta": {
+            "length": 247,
+            "header": "NR",
+            "callsign": "PYOT"
+          },
+          "ciphertext": "WU\nGI juc:ihbfsyn-bwvpkdeyx-1 =J:amq\\nfrwgjozmk\\pkhultajl\nQQ omx:altxcsd-szsjslwlc-1 =P:laxo:eatxlvf-tkbkucenc-1/mkafqxt\nGX htl:eqtth-vjudef-2 =S:cfcb:laisa-trzpxy-2/pvscbm\nHI ded:huskiam-pgnvxsreu-1 hqn:jogm\nRO yon:koyww-myrze-0 =T:hoh\\juqldknrus",
+          "spec": {
+            "kind": "otp",
+            "padId": "pad:1"
+          },
+          "plaintextProps": [
+            "prop:know/cell/carries",
+            "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+            "prop:know/cell/chan-chan-franz-wagner-2-signal",
+            "prop:know/cell/member-npc-aloisia-mayrhofer-1",
+            "prop:know/cell/plan"
+          ],
+          "origin": "plot",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      },
+      {
+        "id": "cell-tx:chan:thread/0/traffic@1.2",
+        "at": {
+          "day": 1,
+          "phase": 2
+        },
+        "channel": "chan:thread/0/traffic",
+        "owner": "npc:gretl-brunner-11",
+        "origin": "plot",
+        "intercept": {
+          "id": "int:cell-tx-chan-thread-0-traffic-1-2",
+          "at": {
+            "day": 1,
+            "phase": 2
+          },
+          "channel": "chan:thread/0/traffic",
+          "owner": "npc:gretl-brunner-11",
+          "direction": "outbound",
+          "meta": {
+            "length": 40,
+            "header": "NR",
+            "callsign": "THRE"
+          },
+          "ciphertext": "NOcoayf1gl\nnasmhroc\u0000Mpliao-re\u0000R :i-re :l",
+          "spec": {
+            "kind": "columnar",
+            "key": "EZKP"
+          },
+          "plaintextProps": [
+            "prop:know/cell/member-npc-aloisia-mayrhofer-1"
+          ],
+          "origin": "plot",
+          "tradecraftError": {
+            "kind": "fixed-header",
+            "header": "NR"
+          }
+        }
+      }
+    ],
+    "intercepts": {},
+    "documents": {
+      "doc:cable/hq-rlie": {
+        "id": "doc:cable/hq-rlie",
+        "kind": "cable",
+        "title": "CABLE HQ-RLIE IMMEDIATE",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "FROM HEADQUARTERS STOP TO STATION STOP Day 0, morning STOP IMMEDIATE STOP REF HQ-RLIE STOP\n\nRE STARTING BRIEF STOP ASSUME COVER AND REPORT TO STATION STOP WORK THE LEADS ON FILE STOP CORROBORATE BEFORE ANY ACTION STOP ACKNOWLEDGE SOONEST STOP\n\nFUNDS 3000 DRAWN ON STATION ACCOUNT STOP ENDS STOP\n\nMESSAGE ENDS STOP DESTROY AFTER READING STOP",
+        "asserts": [
+          "prop:know/cell/chan-chan-franz-wagner-2-signal",
+          "prop:know/station/false-0"
+        ]
+      },
+      "doc:dossier/albert-hartl-3": {
+        "id": "doc:dossier/albert-hartl-3",
+        "kind": "dossier",
+        "title": "DOSSIER — Albert Hartl (ref. S-ALBERT-HARTL-3)",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "File reference S-ALBERT-HARTL-3. Subject: Albert Hartl. This file records apparent information held by the station and is not an assessment of fact. Grade of source material: C3.\n\nKnown or reported as Albert Hartl. Apparent allegiance on file: cell.\n\nLast placed at no fixed location recorded on or about a recent date.\n\nStation assessment: leads on file are to be worked and corroborated before any action This file is to be read as leads only. Nothing herein is to be treated as established without corroboration.",
+        "asserts": [
+          "prop:know/cell/member-npc-albert-hartl-3"
+        ]
+      },
+      "doc:dossier/aloisia-mayrhofer-1": {
+        "id": "doc:dossier/aloisia-mayrhofer-1",
+        "kind": "dossier",
+        "title": "DOSSIER — Aloisia Mayrhofer (ref. S-ALOISIA-MAYRHOFER-1)",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "File reference S-ALOISIA-MAYRHOFER-1. Subject: Aloisia Mayrhofer. This file records apparent information held by the station and is not an assessment of fact. Grade of source material: C3.\n\nKnown or reported as Aloisia Mayrhofer. Apparent allegiance on file: cell.\n\nLast placed at no fixed location recorded on or about a recent date.\n\nStation assessment: leads on file are to be worked and corroborated before any action This file is to be read as leads only. Nothing herein is to be treated as established without corroboration.",
+        "asserts": [
+          "prop:know/cell/carries",
+          "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+          "prop:know/cell/member-npc-aloisia-mayrhofer-1"
+        ]
+      },
+      "doc:dossier/clive-whitcombe-6": {
+        "id": "doc:dossier/clive-whitcombe-6",
+        "kind": "dossier",
+        "title": "DOSSIER — Clive Whitcombe (ref. S-CLIVE-WHITCOMBE-6)",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "File reference S-CLIVE-WHITCOMBE-6. Subject: Clive Whitcombe. This file records apparent information held by the station and is not an assessment of fact. Grade of source material: C3.\n\nKnown or reported as Clive Whitcombe. Apparent allegiance on file: cell.\n\nLast placed at no fixed location recorded on or about a recent date.\n\nStation assessment: leads on file are to be worked and corroborated before any action This file is to be read as leads only. Nothing herein is to be treated as established without corroboration.",
+        "asserts": [
+          "prop:know/station/false-0",
+          "prop:know/station/false-1"
+        ]
+      },
+      "doc:dossier/franz-wagner-2": {
+        "id": "doc:dossier/franz-wagner-2",
+        "kind": "dossier",
+        "title": "DOSSIER — Franz Wagner (ref. S-FRANZ-WAGNER-2)",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "File reference S-FRANZ-WAGNER-2. Subject: Franz Wagner. This file records apparent information held by the station and is not an assessment of fact. Grade of source material: C3.\n\nKnown or reported as Franz Wagner. Apparent allegiance on file: cell.\n\nLast placed at no fixed location recorded on or about a recent date.\n\nStation assessment: leads on file are to be worked and corroborated before any action This file is to be read as leads only. Nothing herein is to be treated as established without corroboration.",
+        "asserts": [
+          "prop:know/cell/chan-chan-franz-wagner-2-signal",
+          "prop:know/cell/member-npc-franz-wagner-2"
+        ]
+      },
+      "doc:dossier/grete-huber-0": {
+        "id": "doc:dossier/grete-huber-0",
+        "kind": "dossier",
+        "title": "DOSSIER — Grete Huber (ref. S-GRETE-HUBER-0)",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "File reference S-GRETE-HUBER-0. Subject: Grete Huber. This file records apparent information held by the station and is not an assessment of fact. Grade of source material: C3.\n\nKnown or reported as Grete Huber. Apparent allegiance on file: cell.\n\nLast placed at Antiquariat Zum Blauen Band on or about a recent date. Reported in the company of Aloisia Mayrhofer.\n\nStation assessment: leads on file are to be worked and corroborated before any action This file is to be read as leads only. Nothing herein is to be treated as established without corroboration.",
+        "asserts": [
+          "prop:know/cell/meet",
+          "prop:know/cell/member-npc-grete-huber-0"
+        ]
+      },
+      "doc:public-text/almanac-vienna-household": {
+        "id": "doc:public-text/almanac-vienna-household",
+        "kind": "public-text",
+        "title": "The Household Almanac and Register for the Year",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "The almanac opens with a word on the seasons and the work each one asks of a careful household.\nIn the first month the days are short and the river runs cold under a grey and heavy sky.\nA prudent family lays in coal early, mends what the autumn wore thin, and keeps the lamp trimmed against the long evening.\nThe second month brings a thaw that is not to be trusted, for the frost returns by night and the streets turn to glass before dawn.\nBy the third month the market stalls show the first green of the year and the price of eggs begins at last to fall.\nIn spring the gardener turns the beds, sows the early roots, and watches the almanac for the days the moon favours planting.\nThe fourth month is the month of rain, when the gutters run and the washing will not dry, and patience is the only remedy.\nHigh summer fills the orchards along the slow bend of the river and the evenings grow long and warm and full of dust.\nA good cook preserves in the seventh month what the eighth month will not keep, and labels every jar in a plain and honest hand.\nAutumn is the season of accounts, when the wise settle their debts before the cold and reckon the year that is closing.\nThe ninth month brings the fairs, the harvest home, and the first fires lit against the evening chill.\nBy the tenth month the leaves are down, the barges run low in the water, and the fog sits on the river until midday.\nThe eleventh month asks the household to look to its stores, its boots and its roof before the true winter comes.\nIn the last month the year turns inward, the days are shortest, and the family gathers close about the single warm room.\nA table of weights and measures follows, for the market, the kitchen and the yard, that no honest trader be cheated.\nA pound is reckoned here in the old manner and again in the new, that buyer and seller may agree before the scale is read.\nThe register of fairs lists the spring cattle fair, the midsummer cloth fair, the autumn produce fair and the winter market by the old gate.\nEach fair opens at the eighth hour and closes when the light fails, and no stall may be struck before the bell.\nA note on the post advises that letters within the city are collected twice daily and that parcels require a stamp of the proper weight.\nThe office of the district magistrate keeps its hours from the ninth hour to the fourth, and is closed upon the day of rest.\nThe ration office opens early and the queue forms earlier still, so the almanac counsels the reader to carry a book and a patient temper.\nA page of household remedies offers honey for the throat, chamomile for the nerves, and a hot brick wrapped in flannel for the cold bed.\nThe almanac warns against the quack and the pedlar of miracle cures, and recommends instead rest, broth and the plain advice of a sober physician.\nA column of sayings reminds the reader that a stitch in time saves nine, that the early bird takes the worm, and that a watched pot is slow to boil.\nThe gardener's calendar names the days to prune, the days to sow and the days to leave the beds alone and trust the weather.\nA table of the tides on the great rivers follows, for those whose trade rides the water from the mountains to the sea.\nThe almanac closes its first part with a prayer for a mild winter, a kind harvest and a quiet year at the crossing posts.\nThe second part is given over to the register of the city and the plain facts a householder should keep near the door.\nThe city stands upon the river where the plain meets the last of the hills, and has stood there, by the chronicles, a very long time.\nIts streets are laid in rings about an old inner town, and a broad avenue circles where the walls once ran before they were pulled down.\nThe water is drawn from the mountains by a long aqueduct and is counted among the sweetest a city ever drank.\nThe markets gather by district, each on its appointed day, and the almanac prints the days in order that no cook arrive to a shuttered square.\nThe register of weights for bread fixes the honest loaf, and the baker who sells short is named to the magistrate and fined.\nA short history of the almanac itself boasts that it has been printed every year, through hard winters and lean ones, without a single year missed.\nThe printer thanks the reader, commends the almanac to the household shelf, and promises a corrected and enlarged edition when the year comes round again.\nA final page of blank ruled lines invites the family to keep its own accounts, its birthdays and its small triumphs, against the almanac's own.",
+        "asserts": [],
+        "obtainableAt": [
+          "loc:antiquariat-zum-blauen-band-0",
+          "loc:stadtische-lesehalle-7",
+          "loc:tabak-trafik-pichler-13"
+        ]
+      },
+      "doc:public-text/anthology-river-and-stone": {
+        "id": "doc:public-text/anthology-river-and-stone",
+        "kind": "public-text",
+        "title": "The River and the Stone — A Reader's Anthology",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "This small anthology gathers verse and prose for the quiet hour. The pieces are new, written for the common reader, and ask only to be read slowly and without hurry.\nMorning on the Water\nThe river wakes before the town,\na slow grey ribbon under cloud,\nit carries off the night downstream\nand will not speak of it aloud.\nThe barges nose against the quay,\nthe lamps go out along the shore,\nand someone whistles, far away,\na tune I think I knew before.\nThe Keeper of the Bridge\nThere was once a man whose whole work was to watch a bridge, and he knew every plank of it as a reader knows a page. He counted the carts at dawn and the walkers at dusk, and he could tell by the sound of a step whether the one who crossed was tired or in a hurry or afraid. People thought his work was small, but he knew that a bridge is only as safe as the eyes that keep it, and he was proud, in his quiet way, of the hundred crossings that passed each day without a stumble.\nThe Lamp in the Window\nA lamp set in a window\nis a small and steady thing,\nit says the house is waking,\nit says the kettle sings.\nIt does not ask the weather,\nit does not fear the night,\nit keeps its one plain promise\nto hold a little light.\nA Letter Never Sent\nI meant to write to you in the autumn, when the leaves came down along the avenue and the air turned sharp and clean. I meant to tell you that the old cafe still keeps your corner table, that the waiter still remembers how you took your coffee, and that the city, for all its changes, has not quite let you go. But the autumn passed, and the winter after it, and the letter stayed on my desk, half written, as letters so often do. I send it now, late and plain, because a thing said late is better than a thing not said.\nMarket Day\nThe square fills up at the eighth hour,\nwith baskets, boots and bargaining,\nthe cheese is weighed, the apples turned,\nand sparrows watch for anything.\nA clock strikes somewhere over roofs,\nthe crowd thins out, the stalls come down,\nand quiet settles on the stones\nlike dusk that gathers in a town.\nThe Clockmaker's Patience\nThe clockmaker worked by a single window, and he said that patience was the only tool he could not buy. A spring will not be hurried, he told me, and a wheel that is forced will break. You set each piece in its place and you wait, and when it is right the clock keeps time of its own accord and asks nothing further of you. I have thought since that a great many things are like his clocks, and that most of our troubles come of forcing the wheel.\nSnow in the Inner Town\nThe snow comes down on the inner town\nand softens every hard-edged thing,\nit hushes carts, it hoods the lamps,\nit muffles even the quarter's ring.\nA child draws letters in the white,\na dog goes nosing down the lane,\nand for an hour the oldest streets\nare new and clean and strange again.\nWhat the Ferryman Knew\nThe ferryman had crossed the same stretch of water for forty years, and he said the river taught a man to read the weather better than any almanac. He knew the colour the sky took before a storm, the smell the wind carried off the hills, the way the current pulled when the thaw was coming. He had never left the valley, and he did not wish to; the whole world, he said, passed over his ferry in time, and he had only to wait and watch and work the oars, and the world would show him all it had.\nThe anthology closes here. The reader who has come this far is thanked, and wished a quiet evening and a kind morning after it.",
+        "asserts": [],
+        "obtainableAt": [
+          "loc:antiquariat-zum-blauen-band-0",
+          "loc:stadtische-lesehalle-7",
+          "loc:tabak-trafik-pichler-13"
+        ]
+      },
+      "doc:public-text/timetable-vienna-tram-rail": {
+        "id": "doc:public-text/timetable-vienna-tram-rail",
+        "kind": "public-text",
+        "title": "City Tramway and Local Railway Timetable",
+        "date": {
+          "day": 0,
+          "phase": 0
+        },
+        "body": "Municipal Transport Office\ntimetable\nServices run daily unless marked. Sunday and holiday services are reduced.\nPassengers must show papers on request at any crossing between sectors.\nThe first and last departures are printed for each line; intermediate cars run at the stated interval.\nFares are by zone. A transfer ticket is valid for one hour from the time of issue and may not be used for a return journey.\n1\nInner Ring\nclockwise about the old town\n05:12\n23:48\n6\nCathedral Square\nOld Gate\nLinden Avenue\nMint Court\nRiver Steps\nLamplighters' Row\nChancery Corner\nCathedral Square\n2\nOuter Ring\nanti-clockwise about the old town\n05:04\n23:40\n6\nNorth Gate Market\nArsenal Walk\nFoundry Bridge\nHospital Lane\nBotanic Gardens\nObservatory Hill\nWest Barracks\nNorth Gate Market\n5\nRiver Line\nfrom the inner town to the port\n04:50\n00:12\n8\nCathedral Square\nCustoms House\nGrain Quay\nTimber Wharf\nFerry Steps\nPort Office\nLower Harbour\n9\nVineyard Line\nfrom the ring to the northern hills\n05:30\n22:54\n12\nChancery Corner\nUniversity Gate\nPrinters' Square\nElm Terrace\nVineyard Halt\nHilltop Chapel\nBelvedere Turn\n11\nFactory Line\nfrom the ring to the eastern works\n04:36\n23:06\n7\nOld Gate\nCanal Bridge\nGasworks Halt\nWeavers' Yard\nRolling Mill\nEast Depot\n18\nCemetery Line\nfrom the south gate to the great cemetery\n05:18\n21:42\n15\nSouth Gate\nRose Market\nStonemasons' Row\nChapel of Rest\nGreat Cemetery\nEastern Local\nCentral Station\nRiver Crossing\n06:02\n06:41\nCentral Station\nMarket Halt\nBrickworks\nWillow Bank\nRiver Crossing\n07:14\n07:53\nCentral Station\nMarket Halt\nBrickworks\nWillow Bank\nRiver Crossing\n08:26\n09:05\nCentral Station\nMarket Halt\nBrickworks\nWillow Bank\nRiver Crossing\nNorthern Local\nCentral Station\nPine Halt\n06:20\n07:08\nCentral Station\nFoundry Bridge\nOrchard Lane\nSpring Valley\nPine Halt\n07:40\n08:28\nCentral Station\nFoundry Bridge\nOrchard Lane\nSpring Valley\nPine Halt\nSouthern Local\nSouth Gate\nLake View\n06:08\n06:59\nSouth Gate\nRose Market\nMeadow Halt\nBirch Crossing\nLake View\n07:30\n08:21\nSouth Gate\nRose Market\nMeadow Halt\nBirch Crossing\nLake View\nThe transport office regrets that services may be delayed at crossings between sectors when papers are inspected. Passengers are asked to allow extra time in the early morning and the evening, to keep their tickets until the end of the journey, and to give up their seats to the elderly and to mothers with young children. The office thanks the public for its patience and good order.",
+        "asserts": [],
+        "obtainableAt": [
+          "loc:antiquariat-zum-blauen-band-0",
+          "loc:stadtische-lesehalle-7",
+          "loc:tabak-trafik-pichler-13"
+        ]
+      },
+      "doc:newspaper/edition-1": {
+        "id": "doc:newspaper/edition-1",
+        "kind": "newspaper",
+        "title": "newspaper-wiener-tagblatt-city — Day 1, Day 1, morning",
+        "date": {
+          "day": 1,
+          "phase": 0
+        },
+        "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\nThe city at large. Our correspondent reports from the the city that The day stood quiet over the city; the markets and the ring trams kept their usual hours. drew notice this week. The day stood quiet over the city; the markets and the ring trams kept their usual hours. The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.",
+        "asserts": [],
+        "obtainableAt": [
+          "loc:antiquariat-zum-blauen-band-0",
+          "loc:stadtische-lesehalle-7",
+          "loc:tabak-trafik-pichler-13"
+        ]
+      }
+    },
+    "documentPropositions": {
+      "prop:know/cell/chan-chan-franz-wagner-2-signal": {
+        "id": "prop:know/cell/chan-chan-franz-wagner-2-signal",
+        "subject": "npc:franz-wagner-2",
+        "predicate": "USES_CHANNEL",
+        "object": {
+          "kind": "text",
+          "value": "chan:franz-wagner-2/signal"
+        }
+      },
+      "prop:know/station/false-0": {
+        "id": "prop:know/station/false-0",
+        "subject": "npc:clive-whitcombe-6",
+        "predicate": "MEMBER_OF",
+        "object": "org:cell"
+      },
+      "prop:know/cell/member-npc-albert-hartl-3": {
+        "id": "prop:know/cell/member-npc-albert-hartl-3",
+        "subject": "npc:albert-hartl-3",
+        "predicate": "MEMBER_OF",
+        "object": "org:cell"
+      },
+      "prop:know/cell/carries": {
+        "id": "prop:know/cell/carries",
+        "subject": "npc:aloisia-mayrhofer-1",
+        "predicate": "CARRIES",
+        "object": {
+          "kind": "text",
+          "value": "the operation materiel"
+        }
+      },
+      "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier": {
+        "id": "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+        "subject": "npc:aloisia-mayrhofer-1",
+        "predicate": "USES_CHANNEL",
+        "object": {
+          "kind": "text",
+          "value": "chan:aloisia-mayrhofer-1/courier"
+        }
+      },
+      "prop:know/cell/member-npc-aloisia-mayrhofer-1": {
+        "id": "prop:know/cell/member-npc-aloisia-mayrhofer-1",
+        "subject": "npc:aloisia-mayrhofer-1",
+        "predicate": "MEMBER_OF",
+        "object": "org:cell"
+      },
+      "prop:know/station/false-1": {
+        "id": "prop:know/station/false-1",
+        "subject": "npc:clive-whitcombe-6",
+        "predicate": "MEMBER_OF",
+        "object": "org:cell"
+      },
+      "prop:know/cell/member-npc-franz-wagner-2": {
+        "id": "prop:know/cell/member-npc-franz-wagner-2",
+        "subject": "npc:franz-wagner-2",
+        "predicate": "MEMBER_OF",
+        "object": "org:cell"
+      },
+      "prop:know/cell/meet": {
+        "id": "prop:know/cell/meet",
+        "subject": "npc:grete-huber-0",
+        "predicate": "MEETS_AT",
+        "object": "npc:aloisia-mayrhofer-1",
+        "place": "loc:antiquariat-zum-blauen-band-0"
+      },
+      "prop:know/cell/member-npc-grete-huber-0": {
+        "id": "prop:know/cell/member-npc-grete-huber-0",
+        "subject": "npc:grete-huber-0",
+        "predicate": "MEMBER_OF",
+        "object": "org:cell"
+      }
+    },
+    "newspapers": {
+      "1": "doc:newspaper/edition-1"
+    },
+    "meetings": {},
+    "station": {
+      "org": "org:station",
+      "chief": "npc:clive-whitcombe-6",
+      "staff": [
+        "npc:gustav-schober-7",
+        "npc:marjorie-marchmont-8",
+        "npc:nigel-thorne-9"
+      ],
+      "mole": "npc:gustav-schober-7",
+      "knowledge": {
+        "known": [
+          {
+            "id": "prop:know/cell/carries",
+            "subject": "npc:aloisia-mayrhofer-1",
+            "predicate": "CARRIES",
+            "object": {
+              "kind": "text",
+              "value": "the operation materiel"
+            }
+          },
+          {
+            "id": "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+            "subject": "npc:aloisia-mayrhofer-1",
+            "predicate": "USES_CHANNEL",
+            "object": {
+              "kind": "text",
+              "value": "chan:aloisia-mayrhofer-1/courier"
+            }
+          },
+          {
+            "id": "prop:know/cell/chan-chan-franz-wagner-2-signal",
+            "subject": "npc:franz-wagner-2",
+            "predicate": "USES_CHANNEL",
+            "object": {
+              "kind": "text",
+              "value": "chan:franz-wagner-2/signal"
+            }
+          },
+          {
+            "id": "prop:know/cell/meet",
+            "subject": "npc:grete-huber-0",
+            "predicate": "MEETS_AT",
+            "object": "npc:aloisia-mayrhofer-1",
+            "place": "loc:antiquariat-zum-blauen-band-0"
+          },
+          {
+            "id": "prop:know/cell/member-npc-albert-hartl-3",
+            "subject": "npc:albert-hartl-3",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/member-npc-aloisia-mayrhofer-1",
+            "subject": "npc:aloisia-mayrhofer-1",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/member-npc-franz-wagner-2",
+            "subject": "npc:franz-wagner-2",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/member-npc-grete-huber-0",
+            "subject": "npc:grete-huber-0",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          }
+        ],
+        "falseBeliefs": [
+          {
+            "id": "prop:know/station/false-0",
+            "subject": "npc:clive-whitcombe-6",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/station/false-1",
+            "subject": "npc:clive-whitcombe-6",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          }
+        ],
+        "knownEntities": [
+          "npc:aloisia-mayrhofer-1",
+          "npc:franz-wagner-2",
+          "npc:grete-huber-0",
+          "loc:antiquariat-zum-blauen-band-0",
+          "npc:albert-hartl-3",
+          "org:cell",
+          "npc:clive-whitcombe-6",
+          "org:station"
+        ]
+      },
+      "directives": [],
+      "standing": 0,
+      "ledger": {
+        "start": 3000,
+        "entries": []
+      },
+      "pendingCables": [],
+      "reportable": [
+        {
+          "id": "prop:know/cell/carries",
+          "subject": "npc:aloisia-mayrhofer-1",
+          "predicate": "CARRIES",
+          "object": {
+            "kind": "text",
+            "value": "the operation materiel"
+          }
+        },
+        {
+          "id": "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+          "subject": "npc:aloisia-mayrhofer-1",
+          "predicate": "USES_CHANNEL",
+          "object": {
+            "kind": "text",
+            "value": "chan:aloisia-mayrhofer-1/courier"
+          }
+        },
+        {
+          "id": "prop:know/cell/chan-chan-franz-wagner-2-signal",
+          "subject": "npc:franz-wagner-2",
+          "predicate": "USES_CHANNEL",
+          "object": {
+            "kind": "text",
+            "value": "chan:franz-wagner-2/signal"
+          }
+        },
+        {
+          "id": "prop:know/cell/meet",
+          "subject": "npc:grete-huber-0",
+          "predicate": "MEETS_AT",
+          "object": "npc:aloisia-mayrhofer-1",
+          "place": "loc:antiquariat-zum-blauen-band-0"
+        },
+        {
+          "id": "prop:know/cell/member-npc-albert-hartl-3",
+          "subject": "npc:albert-hartl-3",
+          "predicate": "MEMBER_OF",
+          "object": "org:cell"
+        },
+        {
+          "id": "prop:know/cell/member-npc-aloisia-mayrhofer-1",
+          "subject": "npc:aloisia-mayrhofer-1",
+          "predicate": "MEMBER_OF",
+          "object": "org:cell"
+        },
+        {
+          "id": "prop:know/cell/member-npc-franz-wagner-2",
+          "subject": "npc:franz-wagner-2",
+          "predicate": "MEMBER_OF",
+          "object": "org:cell"
+        },
+        {
+          "id": "prop:know/cell/member-npc-grete-huber-0",
+          "subject": "npc:grete-huber-0",
+          "predicate": "MEMBER_OF",
+          "object": "org:cell"
+        },
+        {
+          "id": "prop:know/station/false-0",
+          "subject": "npc:clive-whitcombe-6",
+          "predicate": "MEMBER_OF",
+          "object": "org:cell"
+        }
+      ]
+    },
+    "hostile": {
+      "doctrine": {
+        "riskTolerance": 0.5081594824790955,
+        "securityConsciousness": 0.4115352592198178,
+        "deceptionAppetite": 0.4143141886917874
+      },
+      "beliefs": {
+        "credibility": {},
+        "agentSuspicion": {},
+        "exposure": {},
+        "adopted": [
+          {
+            "id": "prop:know/cell/carries",
+            "subject": "npc:aloisia-mayrhofer-1",
+            "predicate": "CARRIES",
+            "object": {
+              "kind": "text",
+              "value": "the operation materiel"
+            }
+          },
+          {
+            "id": "prop:know/cell/meet",
+            "subject": "npc:grete-huber-0",
+            "predicate": "MEETS_AT",
+            "object": "npc:aloisia-mayrhofer-1",
+            "place": "loc:antiquariat-zum-blauen-band-0"
+          },
+          {
+            "id": "prop:know/cell/member-npc-albert-hartl-3",
+            "subject": "npc:albert-hartl-3",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/member-npc-aloisia-mayrhofer-1",
+            "subject": "npc:aloisia-mayrhofer-1",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/station/false-0",
+            "subject": "npc:clive-whitcombe-6",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/member-npc-franz-wagner-2",
+            "subject": "npc:franz-wagner-2",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/member-npc-grete-huber-0",
+            "subject": "npc:grete-huber-0",
+            "predicate": "MEMBER_OF",
+            "object": "org:cell"
+          },
+          {
+            "id": "prop:know/cell/chan-chan-aloisia-mayrhofer-1-courier",
+            "subject": "npc:aloisia-mayrhofer-1",
+            "predicate": "USES_CHANNEL",
+            "object": {
+              "kind": "text",
+              "value": "chan:aloisia-mayrhofer-1/courier"
+            }
+          },
+          {
+            "id": "prop:know/cell/chan-chan-franz-wagner-2-signal",
+            "subject": "npc:franz-wagner-2",
+            "predicate": "USES_CHANNEL",
+            "object": {
+              "kind": "text",
+              "value": "chan:franz-wagner-2/signal"
+            }
+          }
+        ],
+        "adoptedKeys": [
+          "CARRIES|npc:aloisia-mayrhofer-1|{\"kind\":\"text\",\"value\":\"the operation materiel\"}||",
+          "MEETS_AT|npc:grete-huber-0|npc:aloisia-mayrhofer-1|loc:antiquariat-zum-blauen-band-0|",
+          "MEMBER_OF|npc:albert-hartl-3|org:cell||",
+          "MEMBER_OF|npc:aloisia-mayrhofer-1|org:cell||",
+          "MEMBER_OF|npc:clive-whitcombe-6|org:cell||",
+          "MEMBER_OF|npc:franz-wagner-2|org:cell||",
+          "MEMBER_OF|npc:grete-huber-0|org:cell||",
+          "USES_CHANNEL|npc:aloisia-mayrhofer-1|{\"kind\":\"text\",\"value\":\"chan:aloisia-mayrhofer-1/courier\"}||",
+          "USES_CHANNEL|npc:franz-wagner-2|{\"kind\":\"text\",\"value\":\"chan:franz-wagner-2/signal\"}||"
+        ],
+        "compromisedChannels": [],
+        "suspectedAssets": []
+      },
+      "feedLog": []
+    },
+    "player": {
+      "loc": "loc:antiquariat-zum-blauen-band-0",
+      "cover": {
+        "id": "trade-attache",
+        "title": "Trade Attaché",
+        "employerOrg": "Allied Trade Mission",
+        "fitLocationTypes": [
+          "embassy",
+          "hotel-bar",
+          "kaffeehaus",
+          "station-hq"
+        ],
+        "suspicionModifiers": {
+          "atFit": -0.15,
+          "elsewhere": 0.2
+        }
+      },
+      "coverSuspicion": 0,
+      "tailed": false,
+      "known": {
+        "entities": [
+          "npc:clive-whitcombe-6",
+          "npc:gustav-schober-7",
+          "npc:marjorie-marchmont-8",
+          "npc:nigel-thorne-9",
+          "npc:johanna-hofbauer-10",
+          "npc:gretl-brunner-11",
+          "loc:antiquariat-zum-blauen-band-0",
+          "loc:gloria-kino-1",
+          "loc:landungssteg-obere-donaustra-e-2",
+          "loc:heuriger-zum-alten-presshaus-4",
+          "loc:the-american-bar-at-hotel-erzherzog-5",
+          "loc:cafe-hochquell-6",
+          "loc:stadtische-lesehalle-7",
+          "loc:naschmarkt-8",
+          "loc:stadtpark-9",
+          "loc:westbahnhof-10",
+          "loc:tabak-trafik-pichler-13",
+          "loc:the-corner-of-mariahilfer-stra-e-14",
+          "npc:franz-wagner-2",
+          "org:cell"
+        ],
+        "channels": [
+          "chan:station/signal"
+        ],
+        "drops": [
+          "drop:station/landungssteg-obere-donaustra-e-2"
+        ]
+      },
+      "contacts": [
+        "npc:johanna-hofbauer-10",
+        "npc:gretl-brunner-11"
+      ],
+      "arrestAuthority": 2,
+      "arrests": [],
+      "burned": false,
+      "readDocuments": [
+        "doc:cable/hq-rlie"
+      ],
+      "unkIds": {}
+    },
+    "scheduled": []
+  },
+  "stateHash": "1a583b4d919cb5f8bf8635da4a46ee3e10223802e677b3f799602230ef022123",
+  "actionLog": [
+    {
+      "seq": 0,
+      "kind": "action",
+      "turn": "turn:0"
+    },
+    {
+      "seq": 1,
+      "kind": "action",
+      "turn": "turn:1"
+    },
+    {
+      "seq": 2,
+      "kind": "action",
+      "turn": "turn:2"
+    }
+  ]
+}

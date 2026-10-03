@@ -1,0 +1,133 @@
+# streets/streets.yaml - Berlin street and place name pools (task 9.3).
+#
+# Each pool validates against StreetsPoolSchema (packages/content/src/kinds/
+# city.ts): { id, names[] }. The generator draws addresses from these pools and
+# Location Type `namePatterns` reference them with `{pick:<pool>}`.
+#
+# The street-name pools below (grand, commercial, residential, waterfront,
+# quiet, industrial) hold well over sixty real Berlin street names of the
+# period, grouped by texture so a Location sits on a plausible street for its
+# district. The `ubahn-names` and `sbahn-names` pools name real stations of the
+# divided city's underground and city railways, which the transit-hub Location
+# Types stamp their names from. Street and station names are real public
+# topography (cited in `sources/`); no business or person is named here.
+
+# --- grand avenues and squares ---------------------------------------------
+- id: grand
+  names:
+    - Unter den Linden
+    - Kurfürstendamm
+    - Tauentzienstraße
+    - Friedrichstraße
+    - Wilhelmstraße
+    - Leipziger Straße
+    - Potsdamer Platz
+    - Pariser Platz
+    - Alexanderplatz
+    - Hardenbergstraße
+
+# --- commercial and shopping streets ---------------------------------------
+- id: commercial
+  names:
+    - Tauentzienstraße
+    - Joachimsthaler Straße
+    - Kantstraße
+    - Schloßstraße
+    - Turmstraße
+    - Müllerstraße
+    - Badstraße
+    - Frankfurter Allee
+    - Karl-Marx-Straße
+    - Hermannstraße
+    - Potsdamer Straße
+    - Bundesallee
+
+# --- residential streets ----------------------------------------------------
+- id: residential
+  names:
+    - Bergmannstraße
+    - Oranienstraße
+    - Kastanienallee
+    - Schönhauser Allee
+    - Prenzlauer Allee
+    - Danziger Straße
+    - Rykestraße
+    - Dunckerstraße
+    - Choriner Straße
+    - Grunewaldstraße
+    - Akazienstraße
+    - Belziger Straße
+    - Winterfeldtstraße
+    - Motzstraße
+
+# --- waterfront and canal ---------------------------------------------------
+- id: waterfront
+  names:
+    - Am Spreeufer
+    - Gröbenufer
+    - Paul-Lincke-Ufer
+    - Maybachufer
+    - Tempelhofer Ufer
+    - Schiffbauerdamm
+    - Kupfergraben
+    - Reichpietschufer
+    - Carl-Herz-Ufer
+    - Fraenkelufer
+
+# --- quiet side streets -----------------------------------------------------
+- id: quiet
+  names:
+    - Fasanenstraße
+    - Meinekestraße
+    - Giesebrechtstraße
+    - Niebuhrstraße
+    - Bleibtreustraße
+    - Knesebeckstraße
+    - Carmerstraße
+    - Savignyplatz
+    - Steinplatz
+    - Marburger Straße
+
+# --- industrial fringe ------------------------------------------------------
+- id: industrial
+  names:
+    - Gerichtstraße
+    - Reinickendorfer Straße
+    - Chausseestraße
+    - Köpenicker Straße
+    - Skalitzer Straße
+    - Gitschiner Straße
+    - Ritterstraße
+    - Lindower Straße
+    - Nordufer
+    - Seestraße
+
+# --- U-Bahn stations --------------------------------------------------------
+- id: ubahn-names
+  names:
+    - Wittenbergplatz
+    - Nollendorfplatz
+    - Gleisdreieck
+    - Hallesches Tor
+    - Kottbusser Tor
+    - Schlesisches Tor
+    - Stadtmitte
+    - Hausvogteiplatz
+    - Spittelmarkt
+    - Rosenthaler Platz
+    - Seestraße
+    - Mehringdamm
+
+# --- S-Bahn stations --------------------------------------------------------
+- id: sbahn-names
+  names:
+    - Friedrichstraße
+    - Zoologischer Garten
+    - Bahnhof Lichtenberg
+    - Ostkreuz
+    - Westkreuz
+    - Gesundbrunnen
+    - Schöneberg
+    - Yorckstraße
+    - Alexanderplatz
+    - Savignyplatz

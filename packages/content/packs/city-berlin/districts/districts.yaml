@@ -1,0 +1,150 @@
+# districts/districts.yaml - the Districts of divided Berlin (task 9.3).
+#
+# Each validates against DistrictSchema (packages/content/src/kinds/city.ts): an
+# id, the owning `city`, a name, aliases, a prose description, atmosphere words,
+# Tags and an optional `sector` ({ power, years }). The Districts are the nodes
+# of the Route graph; the generator stamps a District entity from each and keys
+# the Routes off `id`.
+#
+# Eight districts spread across the four occupation sectors - two Soviet (east)
+# and six western (two American, two British, two French) - so a world draws its
+# six-to-eight districts from a mix of both halves of the city. Each carries its
+# `sector` ({ power, years }), the occupation power that held it and the years
+# that regime applied; the sector lines were fixed from 1945 and held through
+# the whole window, so every sector `years` spans 1945-1961.
+#
+# Tags are drawn from the core vocabulary's `setting` and `sector` facets (both
+# apply to `district`). Every district carries at least one Tag (Req 4.3).
+
+# =========================================================================
+# SOVIET SECTOR (east)
+# =========================================================================
+
+- id: mitte
+  city: berlin
+  name: Mitte
+  aliases:
+    - { text: the old centre, distinctive: false }
+    - { text: the eastern centre, distinctive: false }
+  description: >-
+    The historic heart of the city, east of the boundary: the long avenue of
+    linden trees, the ministries behind their scaffolding, the gutted palaces
+    and the cleared lots where the rubble has been carted away. The trams run
+    past queues at the state shops, and a watched man feels the eyes of the
+    sector here more than anywhere.
+  atmosphere: [monumental, austere, rebuilding, watched, soviet-held]
+  tags: [setting:institutional, sector:soviet]
+  sector: { power: Soviet, years: { from: 1945, to: 1961 } }
+
+- id: prenzlauer-berg
+  city: berlin
+  name: Prenzlauer Berg
+  aliases:
+    - { text: the northern tenements, distinctive: false }
+  description: >-
+    A dense quarter of pre-war tenement blocks and inner courtyards north-east
+    of the centre, in the Soviet sector. Washing lines cross the backyards, the
+    corner pubs keep their old trade, and the warren of courtyards and
+    connecting cellars makes it a place to lose a follower or to be lost.
+  atmosphere: [tenement, close-packed, working-class, labyrinthine, soviet-held]
+  tags: [setting:residential, sector:soviet]
+  sector: { power: Soviet, years: { from: 1945, to: 1961 } }
+
+# =========================================================================
+# AMERICAN SECTOR (south)
+# =========================================================================
+
+- id: kreuzberg
+  city: berlin
+  name: Kreuzberg
+  aliases:
+    - { text: the southern works, distinctive: false }
+  description: >-
+    A crowded quarter of tenements, print works and canal wharves hard against
+    the sector boundary in the American south. The elevated railway rattles
+    overhead, the Landwehr Canal carries its barge traffic, and the boundary
+    with the Soviet sector runs down the middle of certain streets.
+  atmosphere: [industrial, canal-side, crowded, boundary-edge, american-held]
+  tags: [setting:industrial, sector:american]
+  sector: { power: American, years: { from: 1945, to: 1961 } }
+
+- id: schoneberg
+  city: berlin
+  name: Schöneberg
+  aliases:
+    - { text: the town-hall district, distinctive: false }
+  description: >-
+    A solid middle-class district of apartment houses, a great red-brick town
+    hall and broad shopping streets in the American sector. The western city's
+    administration keeps offices here; the cafés fill with clerks at noon and
+    the trams converge on the square.
+  atmosphere: [bourgeois, administrative, orderly, busy, american-held]
+  tags: [setting:commercial, sector:american]
+  sector: { power: American, years: { from: 1945, to: 1961 } }
+
+# =========================================================================
+# BRITISH SECTOR (west-centre)
+# =========================================================================
+
+- id: tiergarten
+  city: berlin
+  name: Tiergarten
+  aliases:
+    - { text: the park quarter, distinctive: false }
+    - { text: the legation quarter, distinctive: true }
+  description: >-
+    The great park and the diplomatic streets around it, in the British sector.
+    The trees are thinned by the hard winters when the city burned its parks for
+    fuel, but the paths still run quiet between the lawns, and the missions and
+    liaison offices keep their walled gardens along the embassy row.
+  atmosphere: [open-air, diplomatic, genteel, exposed, british-held]
+  tags: [setting:diplomatic, sector:british]
+  sector: { power: British, years: { from: 1945, to: 1961 } }
+
+- id: charlottenburg
+  city: berlin
+  name: Charlottenburg
+  aliases:
+    - { text: the western centre, distinctive: false }
+    - { text: the new west end, distinctive: false }
+  description: >-
+    The commercial heart of the western sectors: the great shopping boulevard,
+    the lit shop windows that are the West's answer to the queues across the
+    boundary, the hotels where correspondents and attachés keep their tables,
+    and the main-line station that is the city's gate to the western zones.
+  atmosphere: [cosmopolitan, prosperous, lit-up, bustling, british-held]
+  tags: [setting:commercial, sector:british]
+  sector: { power: British, years: { from: 1945, to: 1961 } }
+
+# =========================================================================
+# FRENCH SECTOR (north-west)
+# =========================================================================
+
+- id: wedding
+  city: berlin
+  name: Wedding
+  aliases:
+    - { text: the red north, distinctive: false }
+  description: >-
+    A working-class quarter of factories, rail yards and tenement blocks in the
+    French sector, pressed against the Soviet-sector line along several of its
+    streets. The old labour politics still colour it; the goods yards and the
+    depots give cover for cargo that would rather not be seen.
+  atmosphere: [working-class, industrial, boundary-edge, hard-up, french-held]
+  tags: [setting:industrial, sector:french]
+  sector: { power: French, years: { from: 1945, to: 1961 } }
+
+- id: reinickendorf
+  city: berlin
+  name: Reinickendorf
+  aliases:
+    - { text: the northern edge, distinctive: false }
+    - { text: the airfield district, distinctive: true }
+  description: >-
+    The city's northern fringe in the French sector, where the tenements give
+    way to allotments, lakes and pine. The great airlift field lies here, its
+    aircraft coming in low over the rooftops minute by minute through the
+    blockade winter; beyond it the sector line runs out into the countryside.
+  atmosphere: [peripheral, open, airfield, semi-rural, french-held]
+  tags: [setting:residential, sector:french]
+  sector: { power: French, years: { from: 1945, to: 1961 } }

@@ -1,0 +1,93 @@
+# sources/sources.yaml — the Istanbul bibliography (task 9.5).
+#
+# Each validates against SourceSchema (city.ts): { id, title, author?, year?,
+# kind, note? }. Every `real-landmark` Location in `locations/` cites one of
+# these so its historical texture can be checked at review (Req 3.1). The
+# landmarks are real places of 1950–1965 Istanbul; the sources are the kinds of
+# guide, map and reference a reviewer would consult to verify the period
+# texture. All people and businesses in play are fictional — these entries
+# attest only the real places named for colour.
+
+- id: src-pera-palace
+  title: "Guide to Constantinople and the Bosphorus"
+  kind: guide
+  note: >-
+    Attests the Pera Palace hotel above the Golden Horn, built for the
+    Orient-Express traveller and long the centre of foreign Pera's social life.
+
+- id: src-pera-consulates
+  title: "The Foreign Quarter of Pera: Consulates and Missions"
+  kind: guide
+  note: >-
+    Attests the grand foreign consulates (British, French and others) that
+    remained in Pera/Beyoğlu after the embassies removed to Ankara in the 1920s.
+
+- id: src-cicek-pasaji
+  title: "Beyoğlu Street by Street"
+  kind: guide
+  note: >-
+    Attests the Çiçek Pasajı (Cité de Péra) arcade off the Grande Rue and its
+    tavern tables under the iron-and-glass roof.
+
+- id: src-galata-quays
+  title: "The Port of Istanbul: Quays, Customs and Shipping"
+  kind: archive
+  note: >-
+    Attests the working quays and customs sheds at Karaköy/Galata at the mouth
+    of the Golden Horn.
+
+- id: src-sehir-hatlari
+  title: "City-Line Ferry Timetable, Bosphorus and Golden Horn"
+  kind: other
+  note: >-
+    Attests the city-line (Şehir Hatları / former Şirket-i Hayriye) passenger
+    ferries and their piers at Karaköy, Eminönü, Kadıköy and Üsküdar.
+
+- id: src-sirkeci
+  title: "Sirkeci Terminus and the Line from Europe"
+  kind: archive
+  note: >-
+    Attests Sirkeci Station, the Istanbul terminus of the railway from Europe
+    and the eastern end of the Orient Express.
+
+- id: src-buyuk-postane
+  title: "The Grand Post Office at Sirkeci"
+  kind: archive
+  note: >-
+    Attests the central post and telegraph office (Büyük Postane) near Sirkeci
+    and its public reading rooms.
+
+- id: src-kapalicarsi
+  title: "The Grand Bazaar of Istanbul"
+  kind: guide
+  note: >-
+    Attests the Kapalıçarşı (Grand Bazaar), the great covered market of vaulted
+    lanes and thousands of stalls in the old city.
+
+- id: src-misir-carsisi
+  title: "The Spice Bazaar at Eminönü"
+  kind: guide
+  note: >-
+    Attests the Mısır Çarşısı (Egyptian / Spice Bazaar), the L-shaped covered
+    market by the new mosque at the Golden Horn bridgehead.
+
+- id: src-sahaflar
+  title: "The Booksellers' Market by the Bazaar"
+  kind: guide
+  note: >-
+    Attests the Sahaflar Çarşısı, the old second-hand booksellers' courtyard
+    beside the Grand Bazaar.
+
+- id: src-sureyya
+  title: "Cinemas of the Asian Shore"
+  kind: guide
+  note: >-
+    Attests the Süreyya cinema and the picture houses of Kadıköy on the Asian
+    shore.
+
+- id: src-karacaahmet
+  title: "The Cemeteries of Üsküdar"
+  kind: guide
+  note: >-
+    Attests the great Karacaahmet cemetery above Üsküdar, its cypress walks a
+    landmark of the Asian shore.

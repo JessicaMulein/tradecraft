@@ -1,0 +1,42 @@
+# services.yaml — the city-lisbon local-security Service Definition (content-
+# expansion task 9.8).
+#
+# Validates against ServiceDefinitionSchema (packages/content/src/kinds/
+# service.ts): { id, name, aliases: {text,distinctive}[], kind, country,
+# doctrineBase, years?, tags? }.
+#
+# A City Pack's own police/security apparatus is a City-Scoped `local-security`
+# service defined here (not in the Era Pack, which carries only the shared own
+# / hostile / liaison services). The city references it by id through
+# `CityDefinition.services` (city.yaml). The loader resolves that reference and
+# records the service as owned by the Lisbon city (task 2.1, Req 19.2); one
+# service keeps one id across cities and campaigns (Req 19.4).
+#
+# FICTIONALISED. Neutral Portugal of 1945–1965 ran a political police that
+# watched the émigré crowd, the port and the foreign missions of its capital.
+# The service below is a wholly invented stand-in for that apparatus: its name,
+# its aliases and its character are fiction. No real security service, bureau
+# or officer is named, and the Real-Person Blocklist is observed.
+#
+# As a `local-security` service it is the host-nation watcher the Station must
+# work around rather than an opposing foreign-intelligence service: watchful,
+# jealous of the regime's neutrality, quick to detain and slow to let a foreign
+# game run on its own soil — a high security consciousness, a low appetite for
+# deception, and a middling tolerance for risk.
+
+- id: local-vigilance-directorate
+  name: The State Directorate for Public Order
+  aliases:
+    - { text: the Directorate for Public Order, distinctive: true }
+    - { text: the Public Order police, distinctive: true }
+    - { text: the political police, distinctive: false }
+    - { text: the watchers, distinctive: false }
+  kind: local-security
+  country: Portugal
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.85
+    deceptionAppetite: 0.25
+  years:
+    from: 1945
+    to: 1965

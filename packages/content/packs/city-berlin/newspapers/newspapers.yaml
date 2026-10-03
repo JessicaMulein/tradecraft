@@ -1,0 +1,90 @@
+# newspapers.yaml - the fictional Berlin mastheads (content-expansion 9.4).
+#
+# Each entry is a Newspaper (NewspaperSchema, packages/content/src/kinds/
+# city.ts): { id, city, masthead, language, stance, register, days[weekday],
+# price, soldAt: TagQuery, years? }. `city` references the Berlin City
+# Definition by its bare id (the loader namespaces it city-berlin/berlin).
+#
+# `soldAt` is a Tag Query naming where a copy can be had - the generator binds
+# it against the city's Locations, whose Effective Tags carry the
+# `function:newspaper-outlet` slot (the S-Bahn station, the Imbiss/newsstand
+# kiosk and the market Location Types). `price` is in Pfennig, the D-Mark
+# subunit.
+#
+# Period: divided Berlin, 1948-1961. EVERY masthead is invented - no real Berlin
+# paper of the period is named. The spread is the divided city's press: a sober
+# western morning paper of record, a quick western evening sheet, an eastern
+# party organ printed in the Soviet sector, the four-power administration's
+# official gazette, and a western liberal weekly for the occupation readership.
+# `years` are set so a paper that only appears once the eastern administration
+# is organised carries a later start, which the Game-Year filter respects.
+
+# A sober western morning paper of record: the established daily of the western
+# sectors, read in the Charlottenburg cafes and the administration offices,
+# careful and non-partisan under occupation licence.
+- id: berliner-morgenpost-west
+  city: berlin
+  masthead: Berliner Morgenkurier
+  language: German
+  stance: independent western paper of record
+  register: sober, formal, cautious
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 20
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1948, to: 1961 }
+
+# The popular western evening sheet: sold from the kiosks and the station
+# bookstalls, quick with the police record, the football and the tram and
+# airlift news, light on politics and heavy on the city's small dramas.
+- id: abend-echo-west
+  city: berlin
+  masthead: Abend-Echo
+  language: German
+  stance: popular western evening sheet
+  register: brisk, plain, anecdotal
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 15
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1948, to: 1961 }
+
+# The eastern party organ, printed in the Soviet sector: emphatic and didactic,
+# long on the reconstruction effort, the plan and the friendship of peoples,
+# circulated across the open boundary into the western kiosks too.
+- id: neue-tribuene-ost
+  city: berlin
+  masthead: Neue Tribüne
+  language: German
+  stance: eastern-sector party organ
+  register: emphatic, didactic, declamatory
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 15
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1949, to: 1961 }
+
+# The official notices gazette of the city administration: municipal and
+# inter-allied orders, permits, currency and crossing regulations, printed dry
+# and read for what it is forced to disclose.
+- id: amtlicher-anzeiger-berlin
+  city: berlin
+  masthead: Amtlicher Anzeiger für Berlin
+  language: German
+  stance: official administrative gazette
+  register: dry, bureaucratic, impersonal
+  days: [tuesday, friday]
+  price: 10
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1948, to: 1961 }
+
+# A western liberal weekly of comment and the arts: concerts, the theatre, the
+# anxieties of a walled-in middle class, printed on a Saturday for the week's
+# reflection, in German and English for the occupation readership.
+- id: spree-wochenschau
+  city: berlin
+  masthead: Spree-Wochenschau
+  language: German and English
+  stance: liberal western weekly of comment and the arts
+  register: literate, discursive, reflective
+  days: [saturday]
+  price: 40
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1948, to: 1961 }

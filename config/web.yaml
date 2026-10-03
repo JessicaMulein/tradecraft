@@ -1,0 +1,5 @@
+# Web shell settings. The server always binds 127.0.0.1; there is no host option.
+port: 0              # 0 = any free port
+openBrowser: true
+soundtrackDir: soundtrack
+audioFormats: [opus, mp3]

@@ -1,0 +1,37 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/engine"
+    },
+    {
+      "path": "./packages/dialogue"
+    },
+    {
+      "path": "./packages/llm"
+    },
+    {
+      "path": "./packages/player-view"
+    },
+    {
+      "path": "./packages/tui"
+    },
+    {
+      "path": "./packages/web"
+    },
+    {
+      "path": "./packages/app"
+    },
+    {
+      "path": "./packages/evals"
+    },
+    {
+      "path": "./packages/content"
+    },
+    {
+      "path": "./packages/content-tools"
+    }
+  ]
+}

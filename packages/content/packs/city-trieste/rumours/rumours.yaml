@@ -1,0 +1,96 @@
+# rumours/rumours.yaml — Trieste Rumour distortion templates
+# (content-expansion task 9.10).
+#
+# Each entry validates against RumourTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, predicate, distortions, shiftDays? }. `predicate` is one of
+# the existing UPPER_SNAKE_CASE predicate ids (core predicates.yaml);
+# `distortions` is a non-empty list drawn from swap-subject | shift-day |
+# invent-target; `shiftDays` bounds how far a day can slide where a shift-day
+# distortion applies.
+#
+# A Rumour takes one of the vocabulary predicates and the distortions that turn
+# a true — or wholly invented — fact into the garbled belief a Background NPC
+# passes along (design, "Organisations and documents"). The player's job is to
+# notice the drift: the wrong face named, the day slid, a target conjured from
+# nothing. These set beside the core Rumour templates with the free-port city's
+# own gossip — who crossed at which valico, who was seen on the Opicina tram,
+# who is said to run goods off the bonded sheds.
+#
+# Content guardrail: rumours name no real people and depict no real atrocities —
+# they are café and quay gossip about who met whom and where. Period: the Free
+# Territory of Trieste, 1947–1954.
+
+# A zone-line meeting rumour with the wrong person at its centre: the queue at
+# the valico puts the wrong face at the table on the far side.
+- id: trieste-rumour-swapped-crossing-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject]
+
+# A tram sighting whose day has drifted in the retelling.
+- id: trieste-rumour-drifted-tram-sighting
+  predicate: LOCATED_AT
+  distortions: [shift-day]
+  shiftDays: 2
+
+# "Someone said he draws Belgrade money" — the wrong employer pinned on the
+# wrong person, as quay talk hardens into assumption.
+- id: trieste-rumour-mistaken-paymaster
+  predicate: WORKS_FOR
+  distortions: [swap-subject]
+
+# A crossing rumour that both names the wrong traveller and slides the day.
+- id: trieste-rumour-garbled-crossing
+  predicate: TRAVELS_TO
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3
+
+# An invented plot: the osteria insists someone is "planning something" over the
+# line, a target conjured where there is none.
+- id: trieste-rumour-invented-plot
+  predicate: PLANS
+  distortions: [invent-target]
+
+# A smuggling-supply rumour with an imagined recipient — who is said to be
+# running coffee and papers off the bonded sheds, the recipient made up.
+- id: trieste-rumour-phantom-supply
+  predicate: SUPPLIES
+  distortions: [invent-target]
+
+# A membership rumour pinned on the wrong person: the classic "I heard he's one
+# of the Ring."
+- id: trieste-rumour-mistaken-member
+  predicate: MEMBER_OF
+  distortions: [swap-subject]
+
+# A fully garbled target rumour: wrong accuser, invented victim, day slipped —
+# the third-hand story that falls apart on checking.
+- id: trieste-rumour-tangled-target
+  predicate: TARGETS
+  distortions: [swap-subject, invent-target, shift-day]
+  shiftDays: 4
+
+# A reporting rumour pinned on the wrong person: quay talk puts the wrong face
+# at the end of a chain of command.
+- id: trieste-rumour-mistaken-handler
+  predicate: REPORTS_TO
+  distortions: [swap-subject]
+
+# A channel rumour whose day has drifted — "I heard the wireless was on Tuesday,
+# or was it Thursday?"
+- id: trieste-rumour-drifted-signal
+  predicate: USES_CHANNEL
+  distortions: [shift-day]
+  shiftDays: 2
+
+# A knowing rumour with an invented acquaintance: the café insists someone is
+# "in with" a person who was never there.
+- id: trieste-rumour-phantom-acquaintance
+  predicate: KNOWS
+  distortions: [invent-target]
+
+# A fully garbled meeting rumour: wrong person, wrong day — the third-hand story
+# of a rendezvous at the mole that falls apart on checking.
+- id: trieste-rumour-tangled-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3

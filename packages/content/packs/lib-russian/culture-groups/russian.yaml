@@ -1,0 +1,362 @@
+# culture-groups/russian.yaml — the Russian group.
+#
+# A CultureGroup (CultureGroupSchema). Russian names take a patronymic between
+# the given and family name, so the Naming Rule's `parts.patronymic` carries the
+# gendered endings -ovich (m) / -ovna (f) the engine appends to the father's
+# name (design, NamingRule). Russian surnames inflect by gender (-ov / -ova,
+# -in / -ina, -sky / -skaya), so family names are gendered pairs { m, f }; the
+# generator picks the form matching the drawn NPC's gender.
+#
+# Quantity (Req 11.4): at least 100 given and 100 family names, at least 300
+# distinct total. Names are transliterated to the Latin alphabet (the slice
+# renderer and Specifics Guard work in Latin text). All names are generic,
+# common Russian names of the period in fictional use; none names a real
+# individual, and famous full-name combinations are avoided.
+- id: russian
+  name: Russian
+  languages:
+    - ru
+  naming:
+    display: '{given} {patronymic} {family}'
+    formal: '{honorific} {family}'
+    parts:
+      patronymic:
+        m: ovich
+        f: ovna
+  given:
+    f:
+      - Anna
+      - Maria
+      - Elena
+      - Olga
+      - Tatiana
+      - Nina
+      - Galina
+      - Valentina
+      - Lyudmila
+      - Vera
+      - Nadezhda
+      - Lidia
+      - Zinaida
+      - Raisa
+      - Yevgenia
+      - Antonina
+      - Klavdia
+      - Alexandra
+      - Yekaterina
+      - Natalia
+      - Svetlana
+      - Larisa
+      - Marina
+      - Irina
+      - Tamara
+      - Varvara
+      - Sofia
+      - Agafia
+      - Anastasia
+      - Darya
+      - Fekla
+      - Glafira
+      - Yefrosinia
+      - Pelageya
+      - Praskovya
+      - Serafima
+      - Ustinya
+      - Yulia
+      - Zoya
+      - Alla
+      - Bela
+      - Dina
+      - Elvira
+      - Faina
+      - Inna
+      - Kira
+      - Lilia
+      - Mila
+      - Nelli
+      - Oksana
+      - Polina
+      - Regina
+      - Stella
+      - Tonya
+      - Ulyana
+      - Valeria
+      - Yana
+      - Zhanna
+      - Albina
+      - Diana
+      - Agnia
+      - Avdotya
+      - Yefimia
+      - Feodosia
+      - Gelena
+      - Iraida
+      - Kapitolina
+      - Lyubov
+      - Marfa
+      - Nonna
+      - Rimma
+      - Taisia
+      - Yevdokia
+      - Yevlampia
+      - Agrippina
+      - Domna
+      - Khristina
+      - Melania
+      - Nika
+      - Zlata
+    m:
+      - Ivan
+      - Alexei
+      - Nikolai
+      - Mikhail
+      - Vladimir
+      - Sergei
+      - Pyotr
+      - Pavel
+      - Andrei
+      - Dmitri
+      - Konstantin
+      - Vasili
+      - Grigori
+      - Fyodor
+      - Boris
+      - Georgi
+      - Anatoli
+      - Leonid
+      - Viktor
+      - Yuri
+      - Oleg
+      - Valeri
+      - Gennadi
+      - Arkadi
+      - Semyon
+      - Yakov
+      - Roman
+      - Timofei
+      - Ignat
+      - Kuzma
+      - Lavrenti
+      - Makar
+      - Nazar
+      - Osip
+      - Prokhor
+      - Rodion
+      - Savva
+      - Trofim
+      - Ustin
+      - Yefim
+      - Zakhar
+      - Afanasi
+      - Danila
+      - Yegor
+      - Foma
+      - Gavril
+      - Illarion
+      - Kirill
+      - Luka
+      - Matvei
+      - Nikita
+      - Innokenti
+      - Platon
+      - Rostislav
+      - Spiridon
+      - Terenti
+      - Vsevolod
+      - Yefrem
+      - Agafon
+      - Demyan
+      - Bogdan
+      - Vadim
+      - Veniamin
+      - Vikenti
+      - Vitali
+      - Vladislav
+      - Gleb
+      - Denis
+      - Zinovi
+      - Modest
+      - Naum
+      - Ippolit
+      - Serafim
+      - Stepan
+      - Taras
+      - Fadei
+      - Khariton
+      - Yulian
+      - Avel
+  family:
+    - { m: Ivanov, f: Ivanova }
+    - { m: Smirnov, f: Smirnova }
+    - { m: Kuznetsov, f: Kuznetsova }
+    - { m: Popov, f: Popova }
+    - { m: Vasiliev, f: Vasilieva }
+    - { m: Petrov, f: Petrova }
+    - { m: Sokolov, f: Sokolova }
+    - { m: Mikhailov, f: Mikhailova }
+    - { m: Novikov, f: Novikova }
+    - { m: Fyodorov, f: Fyodorova }
+    - { m: Morozov, f: Morozova }
+    - { m: Volkov, f: Volkova }
+    - { m: Alexeyev, f: Alexeyeva }
+    - { m: Lebedev, f: Lebedeva }
+    - { m: Semyonov, f: Semyonova }
+    - { m: Yegorov, f: Yegorova }
+    - { m: Pavlov, f: Pavlova }
+    - { m: Kozlov, f: Kozlova }
+    - { m: Stepanov, f: Stepanova }
+    - { m: Nikolaev, f: Nikolaeva }
+    - { m: Orlov, f: Orlova }
+    - { m: Andreyev, f: Andreyeva }
+    - { m: Makarov, f: Makarova }
+    - { m: Nikitin, f: Nikitina }
+    - { m: Zakharov, f: Zakharova }
+    - { m: Zaitsev, f: Zaitseva }
+    - { m: Solovyov, f: Solovyova }
+    - { m: Borisov, f: Borisova }
+    - { m: Yakovlev, f: Yakovleva }
+    - { m: Grigoriev, f: Grigorieva }
+    - { m: Romanov, f: Romanova }
+    - { m: Vorobyov, f: Vorobyova }
+    - { m: Sergeyev, f: Sergeyeva }
+    - { m: Kuzmin, f: Kuzmina }
+    - { m: Frolov, f: Frolova }
+    - { m: Alexandrov, f: Alexandrova }
+    - { m: Dmitriev, f: Dmitrieva }
+    - { m: Korolyov, f: Korolyova }
+    - { m: Gusev, f: Guseva }
+    - { m: Kiselyov, f: Kiselyova }
+    - { m: Ilyin, f: Ilyina }
+    - { m: Maximov, f: Maximova }
+    - { m: Polyakov, f: Polyakova }
+    - { m: Sorokin, f: Sorokina }
+    - { m: Vinogradov, f: Vinogradova }
+    - { m: Kovalyov, f: Kovalyova }
+    - { m: Belov, f: Belova }
+    - { m: Medvedev, f: Medvedeva }
+    - { m: Antonov, f: Antonova }
+    - { m: Tarasov, f: Tarasova }
+    - { m: Zhukov, f: Zhukova }
+    - { m: Baranov, f: Baranova }
+    - { m: Filippov, f: Filippova }
+    - { m: Komarov, f: Komarova }
+    - { m: Davydov, f: Davydova }
+    - { m: Belyaev, f: Belyaeva }
+    - { m: Gerasimov, f: Gerasimova }
+    - { m: Bogdanov, f: Bogdanova }
+    - { m: Osipov, f: Osipova }
+    - { m: Sidorov, f: Sidorova }
+    - { m: Matveyev, f: Matveyeva }
+    - { m: Titov, f: Titova }
+    - { m: Markov, f: Markova }
+    - { m: Mironov, f: Mironova }
+    - { m: Krylov, f: Krylova }
+    - { m: Kulikov, f: Kulikova }
+    - { m: Karpov, f: Karpova }
+    - { m: Vlasov, f: Vlasova }
+    - { m: Melnikov, f: Melnikova }
+    - { m: Denisov, f: Denisova }
+    - { m: Gavrilov, f: Gavrilova }
+    - { m: Tikhonov, f: Tikhonova }
+    - { m: Kazakov, f: Kazakova }
+    - { m: Afanasiev, f: Afanasieva }
+    - { m: Danilov, f: Danilova }
+    - { m: Yefimov, f: Yefimova }
+    - { m: Blokhin, f: Blokhina }
+    - { m: Fomin, f: Fomina }
+    - { m: Nazarov, f: Nazarova }
+    - { m: Gorbunov, f: Gorbunova }
+    - { m: Loginov, f: Loginova }
+    - { m: Yudin, f: Yudina }
+    - { m: Prokhorov, f: Prokhorova }
+    - { m: Rodionov, f: Rodionova }
+    - { m: Trofimov, f: Trofimova }
+    - { m: Konovalov, f: Konovalova }
+    - { m: Panov, f: Panova }
+    - { m: Lukin, f: Lukina }
+    - { m: Shestakov, f: Shestakova }
+    - { m: Nekrasov, f: Nekrasova }
+    - { m: Rybakov, f: Rybakova }
+    - { m: Sobolev, f: Soboleva }
+    - { m: Yershov, f: Yershova }
+    - { m: Fadeyev, f: Fadeyeva }
+    - { m: Ignatov, f: Ignatova }
+    - { m: Zhdanov, f: Zhdanova }
+    - { m: Ponomarev, f: Ponomareva }
+    - { m: Golubev, f: Golubeva }
+    - { m: Abramov, f: Abramova }
+    - { m: Shcherbakov, f: Shcherbakova }
+    - { m: Lazarev, f: Lazareva }
+    - { m: Noskov, f: Noskova }
+    - { m: Ustinov, f: Ustinova }
+    - { m: Platonov, f: Platonova }
+    - { m: Savin, f: Savina }
+    - { m: Terentiev, f: Terentieva }
+    - { m: Chernov, f: Chernova }
+    - { m: Yakushev, f: Yakusheva }
+    - { m: Zuev, f: Zueva }
+    - { m: Shilov, f: Shilova }
+    - { m: Nefyodov, f: Nefyodova }
+    - { m: Isaev, f: Isaeva }
+    - { m: Molchanov, f: Molchanova }
+    - { m: Avdeyev, f: Avdeyeva }
+    - { m: Kudryashov, f: Kudryashova }
+    - { m: Yakovenko, f: Yakovenko }
+    - { m: Zhuravlyov, f: Zhuravlyova }
+    - { m: Shubin, f: Shubina }
+    - { m: Latyshev, f: Latysheva }
+    - { m: Suvorov, f: Suvorova }
+    - { m: Rozanov, f: Rozanova }
+    - { m: Odintsov, f: Odintsova }
+    - { m: Lobanov, f: Lobanova }
+    - { m: Pakhomov, f: Pakhomova }
+    - { m: Zimin, f: Zimina }
+    - { m: Yefremov, f: Yefremova }
+    - { m: Agafonov, f: Agafonova }
+    - { m: Demyanov, f: Demyanova }
+    - { m: Rostov, f: Rostova }
+    - { m: Yermolov, f: Yermolova }
+    - { m: Kirsanov, f: Kirsanova }
+    - { m: Shvetsov, f: Shvetsova }
+    - { m: Shulgin, f: Shulgina }
+    - { m: Pankratov, f: Pankratova }
+    - { m: Yevseyev, f: Yevseyeva }
+    - { m: Kostin, f: Kostina }
+    - { m: Burov, f: Burova }
+    - { m: Khokhlov, f: Khokhlova }
+    - { m: Lagunov, f: Lagunova }
+    - { m: Shiryaev, f: Shiryaeva }
+    - { m: Tregubov, f: Tregubova }
+    - { m: Mezentsev, f: Mezentseva }
+    - { m: Zotov, f: Zotova }
+    - { m: Chebotarev, f: Chebotareva }
+  voiceTraits:
+    - correct and watchful, giving away little
+    - formal in the extreme with strangers
+    - speaks in careful circumlocutions about the state
+    - warms suddenly over tea and shared grievance
+    - quotes a proverb to close a dangerous subject
+  mannerisms:
+    - pauses before every answer as if weighing it
+    - offers tea and refuses to begin without it
+    - keeps both hands visible on the table
+    - lets a long silence do the work of a reply
+    - glances once at the door and never again
+  backgrounds:
+    - text: Posted to the city with the occupation administration and billeted near the garrison.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Works as a translator for a trade delegation and is trusted by neither side entirely.
+      tags: []
+    - text: Came as a technical adviser and keeps to the compound more than the city.
+      tags: []
+    - text: Clerks at a cultural mission and files reports no one admits to reading.
+      tags: []
+    - text: Served in the war, was decorated, and speaks of none of it to foreigners.
+      tags: []
+    - text: Keeps the accounts for a state import office and knows which invoices are fictions.
+      tags: []
+    - text: Teaches language at the mission school and listens more than the pupils know.
+      tags: []
+    - text: Drives for the delegation and remembers every address and every passenger.
+      tags: []

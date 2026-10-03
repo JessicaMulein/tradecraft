@@ -1,0 +1,80 @@
+# city.yaml — the Free Territory of Trieste, 1947–1954 (content-expansion task 9.9).
+#
+# One CityDefinition record (CityDefinitionSchema, packages/content/src/kinds/
+# city.ts). The generator reads this to choose a Start Date within the city's
+# window and instantiate the city: its climate, period, currency, languages,
+# Culture-Group weights, the era Services active in it and the instantiation
+# bounds.
+#
+# PERIOD. 1947–1954: from the peace settlement that created the Territory to its
+# 1954 partition. The Start Date window opens a little inside the period so a
+# scenario always has room to run.
+#
+# CURRENCY. The Allied Military Government in Zone A kept the lira in daily
+# circulation (the "AM-lira" of the earlier occupation had been withdrawn by
+# this period). Everyday prices are in lire; the subunit is the centesimo,
+# effectively out of use by now but still named.
+#
+# CULTURE WEIGHTS. Trieste was an Italian-majority Adriatic port with a Slovene
+# minority and the old Habsburg free port's cosmopolitan communities — Austrian-
+# German, Greek, Armenian and Sephardic — plus a heavy transient population of
+# displaced persons and émigrés moving through the camps and the shipping lines.
+# NOTE: the Library Packs ship no Italian or Slovene Culture Group yet, so the
+# dominant local population cannot be named from the vocabulary; the weights
+# below draw on the groups that DO exist and that are historically present in
+# the city (the Mitteleuropa Austrian-German community, the Greek and Sephardic
+# and Armenian merchant communities, and the Central-European / Russian émigrés
+# and displaced persons), weighted toward the Mitteleuropa heritage. When an
+# Italian and a Slovene group are authored, they should carry the dominant
+# weight here. (Flagged in the task report as a content gap.)
+id: trieste
+name: Trieste
+country: Free Territory of Trieste
+climate: climate:mediterranean
+period: { from: 1947, to: 1954 }
+startDates:
+  from: '1948-01-01'
+  to: '1953-06-30'
+currency:
+  name: lira
+  symbol: ₤
+  subunit: centesimo
+  format: '{symbol}{amount}'
+  rounding: 1
+  budgetScale: 1
+languages:
+  - { id: it, name: Italian, share: 0.72 }
+  - { id: sl, name: Slovene, share: 0.18 }
+  - { id: de, name: German, share: 0.05 }
+  - { id: en, name: English, share: 0.05 }
+cultureWeights:
+  # The Mitteleuropa heritage of the old Habsburg free port carries the local
+  # texture while no Italian/Slovene group exists in the vocabulary.
+  - { group: lib-central-europe/austrian-german, weight: 5 }
+  # The historic merchant communities of the port.
+  - { group: lib-eastern-mediterranean/istanbul-greek, weight: 2 }
+  - { group: lib-eastern-mediterranean/sephardic, weight: 2 }
+  - { group: lib-eastern-mediterranean/armenian, weight: 1 }
+  # Displaced persons and émigrés moving through the city.
+  - { group: lib-central-europe/czech, weight: 1 }
+  - { group: lib-central-europe/hungarian, weight: 1 }
+  - { group: lib-central-europe/polish, weight: 1 }
+  - { group: lib-russian/russian, weight: 1 }
+  # The occupation and the foreign presence.
+  - { group: lib-western/british-english, weight: 1 }
+  - { group: lib-western/american-english, weight: 1 }
+services:
+  # The city's own zone local-security Service — Zone A's civil police under the
+  # Allied military government — is a City-Scoped `local-security` service
+  # defined in services/services.yaml (task 9.10); its bare id namespaces to
+  # city-trieste/zone-security-office.
+  - zone-security-office
+  # The era-shared services active in the city.
+  - era-cold-war-early/own-service
+  - era-cold-war-early/hostile-foreign-directorate
+  - era-cold-war-early/hostile-satellite-bureau
+  - era-cold-war-early/liaison-atlantic-agency
+  - era-cold-war-early/liaison-neutral-section
+instantiation:
+  districts: [6, 7]
+  locations: [25, 34]

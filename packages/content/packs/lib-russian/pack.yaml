@@ -1,0 +1,24 @@
+# The lib-russian Library Pack manifest (content-expansion task 8.1).
+#
+# A Library Pack supplies the shared `culture-group` records the World Generator
+# draws NPC names, voices and cover biographies from (Req 6.1, 7.1). This pack
+# ships the Russian group on its own because Russian names need a patronymic
+# Naming Rule (gendered -ovich / -ovna endings) and gendered family forms
+# (Petrov / Petrova), which the other Central-European groups do not use.
+#
+# A City Pack's Culture Weights reference the group by its namespaced id
+# `lib-russian/russian`. Every name here is a generic, common Russian period
+# name in a FICTIONAL combination; none names a real individual, and famous
+# full-name combinations are avoided (cross-checked against the era Real-Person
+# Blocklist, Req 3.3, 11.4).
+#
+# It declares `role: library` and `contentSchema: 2`, and requires only the core
+# pack. The loader merges it with any Era and City Packs a scenario loads.
+id: lib-russian
+version: 1.0.0
+contentSchema: 2
+role: library
+requires:
+  - id: core
+    range: '^1.0.0'
+overrides: []

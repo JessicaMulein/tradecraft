@@ -1,0 +1,48 @@
+# routes.yaml — the District Route graph of Trieste, 1947–1954
+# (content-expansion task 9.9).
+#
+# Each Route (CityRouteSchema) connects two Districts by id. `cost` is 0 or 1
+# phases; travel within a District is free and needs no Route. A Route may carry
+# checkpoint Tags and a Year Range so a sector- or zone-crossing can open or
+# close over the period.
+#
+# The graph: the six Zone A Districts of the city form a connected core, with
+# the Karst plateau reached by the Opicina tramway. The one Zone B District —
+# the Istrian hinterland — is reachable only across the guarded zone line,
+# through control points where papers are checked. Those zone-line Routes carry
+# the `sector:checkpoint` and `access:checkpoint` Tags and the Year Range of the
+# zone regime (1947–1954); crossing is slower and watched.
+#
+# Tags are drawn from the core Tag Vocabulary: `access:checkpoint` marks a
+# crossing where papers are checked, and the `sector:*` Tag of the zone the
+# crossing enters (here `sector:yugoslav`, Zone B) marks the zone line it spans.
+
+# --- Zone A: the city core (free movement within the Allied zone) ----------
+- { a: borgo-teresiano, b: piazza-unita,   cost: 0 }
+- { a: borgo-teresiano, b: citta-vecchia,  cost: 0 }
+- { a: piazza-unita,    b: citta-vecchia,  cost: 0 }
+- { a: borgo-teresiano, b: porto-vecchio,  cost: 1 }
+- { a: piazza-unita,    b: porto-vecchio,  cost: 1 }
+- { a: piazza-unita,    b: san-vito,       cost: 1 }
+- { a: citta-vecchia,   b: san-vito,       cost: 1 }
+- { a: san-vito,        b: porto-vecchio,  cost: 1 }
+
+# --- Zone A: the Karst plateau, reached by the Opicina tramway -------------
+- { a: borgo-teresiano, b: opicina-carso,  cost: 1 }
+- { a: citta-vecchia,   b: opicina-carso,  cost: 1 }
+
+# --- The zone line: crossings into Zone B (checkpoint, papers checked) -----
+# From the Karst edge of Zone A, where the plateau runs out toward the line.
+# The `sector:yugoslav` Tag marks the zone the crossing enters; the
+# `access:checkpoint` Tag marks the control point where papers are checked.
+- a: opicina-carso
+  b: istrian-hinterland
+  cost: 1
+  tags: [sector:yugoslav, access:checkpoint]
+  years: { from: 1947, to: 1954 }
+# From the port and the coastal strip, by the shore road and the ferries.
+- a: porto-vecchio
+  b: istrian-hinterland
+  cost: 1
+  tags: [sector:yugoslav, access:checkpoint]
+  years: { from: 1947, to: 1954 }

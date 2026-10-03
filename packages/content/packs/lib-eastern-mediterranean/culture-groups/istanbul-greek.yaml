@@ -1,0 +1,371 @@
+# culture-groups/istanbul-greek.yaml — the Istanbul Greek (Rum) group.
+#
+# A CultureGroup (CultureGroupSchema) for the Greek Orthodox community of
+# Istanbul (the Rum Polites). Names are given in Latin transliteration for the
+# slice renderer and Specifics Guard. Greek surnames do inflect in native use,
+# but the transliterated nominative form is used here as a single plain string,
+# so family names are plain strings and the Naming Rule is the generic
+# {given} {family}. Quantity (Req 11.4): at least 100 given and 100 family
+# names, at least 300 distinct total. All names are generic, common names of the
+# community in fictional use; none names a real individual.
+- id: istanbul-greek
+  name: Istanbul Greek
+  languages:
+    - el
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Maria
+      - Eleni
+      - Katina
+      - Despina
+      - Sofia
+      - Anastasia
+      - Evangelia
+      - Chrysanthi
+      - Kyriaki
+      - Panagiota
+      - Vasiliki
+      - Theodora
+      - Fotini
+      - Aikaterini
+      - Paraskevi
+      - Styliani
+      - Zoe
+      - Angeliki
+      - Dimitra
+      - Georgia
+      - Ioanna
+      - Kalliopi
+      - Lemonia
+      - Marigo
+      - Nefeli
+      - Olympia
+      - Pelagia
+      - Rodanthi
+      - Smaragda
+      - Thalia
+      - Varvara
+      - Xanthippi
+      - Zacharoula
+      - Aspasia
+      - Chariklia
+      - Domna
+      - Efrosyni
+      - Fevronia
+      - Garyfallia
+      - Irini
+      - Kleoniki
+      - Loukia
+      - Melpomeni
+      - Niki
+      - Ourania
+      - Persefoni
+      - Roxani
+      - Stamatia
+      - Triantafyllia
+      - Vaia
+      - Agapi
+      - Chrysoula
+      - Danai
+      - Elpida
+      - Froso
+      - Glykeria
+      - Iphigenia
+      - Kokona
+      - Myrto
+      - Polyxeni
+    m:
+      - Yorgos
+      - Dimitris
+      - Kostas
+      - Nikos
+      - Panagiotis
+      - Vasilis
+      - Christos
+      - Stavros
+      - Andreas
+      - Michalis
+      - Theodoros
+      - Yannis
+      - Spyros
+      - Thanasis
+      - Haralambos
+      - Aristidis
+      - Prodromos
+      - Fotios
+      - Evangelos
+      - Anestis
+      - Antonis
+      - Alekos
+      - Argyris
+      - Charalampos
+      - Doukas
+      - Evripidis
+      - Fokas
+      - Gerasimos
+      - Iakovos
+      - Kyriakos
+      - Lambros
+      - Menelaos
+      - Nestoras
+      - Odysseas
+      - Pavlos
+      - Rigas
+      - Savvas
+      - Telemachos
+      - Vangelis
+      - Xenophon
+      - Zacharias
+      - Agisilaos
+      - Chrysovalantis
+      - Diomidis
+      - Efstathios
+      - Filippos
+      - Grigoris
+      - Isidoros
+      - Kleanthis
+      - Leonidas
+      - Miltiadis
+      - Nikiforos
+      - Orestis
+      - Periklis
+      - Sotirios
+      - Themistoklis
+      - Vrasidas
+      - Alkiviadis
+      - Epameinondas
+      - Polydoros
+  family:
+    - Papadopoulos
+    - Nikolaidis
+    - Georgiadis
+    - Vasileiou
+    - Konstantinidis
+    - Dimitriadis
+    - Pappas
+    - Christodoulou
+    - Oikonomou
+    - Antoniadis
+    - Theodorou
+    - Stavridis
+    - Michailidis
+    - Angelopoulos
+    - Pantelis
+    - Sarantidis
+    - Vlachos
+    - Komninos
+    - Fotiadis
+    - Argyriou
+    - Anagnostou
+    - Boubalos
+    - Chatzis
+    - Daskalakis
+    - Eleftheriou
+    - Fragkos
+    - Galanis
+    - Haritos
+    - Ioannidis
+    - Kalogeras
+    - Laskaris
+    - Manolakis
+    - Nikolaou
+    - Orfanidis
+    - Panousis
+    - Rallis
+    - Spanos
+    - Trantafyllos
+    - Varvaressos
+    - Xenakis
+    - Zografos
+    - Avramidis
+    - Botsaris
+    - Chrysafis
+    - Diamantis
+    - Economides
+    - Filippidis
+    - Gazis
+    - Hadjimichalis
+    - Isaakidis
+    - Karydis
+    - Lambrakis
+    - Markezinis
+    - Negrepontis
+    - Pagonis
+    - Sakellariou
+    - Tombazis
+    - Valaoritis
+    - Zannos
+    - Alexiadis
+    - Baltazzis
+    - Chourmouzis
+    - Delmouzos
+    - Evelpidis
+    - Fardys
+    - Giannaros
+    - Hypsilantis
+    - Kavafis
+    - Logothetis
+    - Melas
+    - Nomikos
+    - Paspatis
+    - Rodokanakis
+    - Sideris
+    - Tsakalotos
+    - Vouros
+    - Zarifis
+    - Agelastos
+    - Benardis
+    - Choremis
+    - Doxiadis
+    - Embirikos
+    - Frangopoulos
+    - Glykas
+    - Hadjopoulos
+    - Inglesis
+    - Kalvokoresis
+    - Lemos
+    - Mavrogordatos
+    - Negropontis
+    - Petrokokkinos
+    - Rodocanachi
+    - Scaramanga
+    - Timoleon
+    - Vlasto
+    - Zafiropoulos
+    - Aravantinos
+    - Benakis
+    - Carapanos
+    - Deligiannis
+    - Eftaliotis
+    - Agapitos
+    - Benizelos
+    - Chalkokondylis
+    - Doxaras
+    - Eutaxias
+    - Fotopoulos
+    - Giannopoulos
+    - Hadjidakis
+    - Ikonomidis
+    - Kalfoglou
+    - Lascaratos
+    - Mavridis
+    - Nikolopoulos
+    - Oikonomidis
+    - Papazoglou
+    - Rizos
+    - Soutzoglou
+    - Theofilou
+    - Vretos
+    - Zarokostas
+    - Alexopoulos
+    - Boukouvalas
+    - Chrysoulidis
+    - Dimopoulos
+    - Evgenidis
+    - Filaretos
+    - Gritsis
+    - Hatziantoniou
+    - Ioannou
+    - Kanellidis
+    - Lagoudakis
+    - Melissinos
+    - Nerantzis
+    - Papanastasiou
+    - Rodopoulos
+    - Stamoulis
+    - Themelis
+    - Vafiadis
+    - Zervos
+    - Anastasopoulos
+    - Beis
+    - Christakis
+    - Despotidis
+    - Eleftheriadis
+    - Floros
+    - Georgopoulos
+    - Hatzis
+    - Istavridis
+    - Kokkinos
+    - Loizos
+    - Markou
+    - Nikolaidis-Pera
+    - Pallidis
+    - Rousopoulos
+    - Spiliotopoulos
+    - Trikoupis
+    - Vasilakis
+    - Zoumboulidis
+    - Andreadis
+    - Boutaris
+    - Chatzidimitriou
+    - Dermitzakis
+    - Evangelidis
+    - Frantzis
+    - Giannakopoulos
+    - Hatzopoulos
+    - Ioakeimidis
+    - Kourtidis
+    - Lambropoulos
+    - Metaxas
+    - Nomidis
+    - Panagopoulos
+    - Rodinos
+    - Stathopoulos
+    - Theodoridis
+    - Vlahopoulos
+    - Zaimis
+    - Argyropoulos
+    - Botzaris
+    - Chatziioannou
+    - Danilidis
+    - Fotakis
+    - Gennimatas
+    - Harilaos
+  voiceTraits:
+    - cosmopolitan and quick, switching tongue to suit the table
+    - fences a point with Levantine irony
+    - keeps old-world courtesy over a trader's wariness
+    - speaks of community matters in guarded shorthand
+    - laughs easily and gives away little
+  mannerisms:
+    - counts worry beads through a long story
+    - orders coffee for the whole table without asking
+    - taps a cigarette twice before lighting it
+    - gestures with the coffee cup to make a point
+    - lowers the voice to name an official
+  backgrounds:
+    - text: Keeps a dry-goods shop in Pera that has served the quarter three generations.
+      tags: []
+    - text: Clerks for a maritime insurer and knows which hulls were overvalued.
+      tags: []
+    - text: Teaches at a community school and keeps the parish registers besides.
+      tags: []
+    - text: Trades in tobacco and currants and settles accounts in four currencies.
+      tags: []
+    - text: Runs a patisserie on the grand avenue where consuls take their afternoons.
+      tags: []
+    - text: Interprets at the exchange and hears every rumour before it is a price.
+      tags: []
+    - text: Keeps the books for a shipping house and the family's older ledgers too.
+      tags: []
+    - text: Cantors at the parish church and carries messages between households.
+      tags: []
+    - text: Deals in antiquities and knows which buyers never ask for papers.
+      tags: []
+    - text: Tends bar at a hotel on the water and remembers every late conversation.
+      tags: []
+    - text: Keeps a chandlery on the Galata quay and supplies half the small craft.
+      tags: []
+    - text: Runs a printing shop that sets type in three alphabets for the quarter.
+      tags: []
+    - text: Clerks for a cotton broker and keeps the ledgers in Greek and French.
+      tags: []
+    - text: Manages a cinema in Pera and knows which back rows the deals are struck in.
+      tags: []
+    - text: Keeps a pharmacy by the church and the quarter's quiet troubles with it.
+      tags: []
+    - text: Trades carpets along the arcade and reads a buyer before a word is spoken.
+      tags: []

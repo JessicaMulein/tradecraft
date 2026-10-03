@@ -1,0 +1,41 @@
+# The city-berlin City Pack manifest (content-expansion task 9.3, 9.4).
+#
+# A City Pack supplies one playable city: its City Definition (`city.yaml`), the
+# City-Scoped Districts, Locations, Routes and Location Types, the street name
+# pools, the monthly weather tables and the Sources bibliography (the geography
+# half, task 9.3), together with the newspapers, local organisations, the
+# local-security Service Definition, local Cover Identities, the Locale and the
+# Template Variants (the institutions half, task 9.4).
+#
+# This pack is divided Berlin in the years 1948-1961: from the blockade and the
+# airlift through the long tightening of the sector boundary to the closing of
+# the open crossings in August 1961. The city is held in four occupation
+# sectors - American, British and French in the west, Soviet in the east - and
+# a man may still, for most of this window, ride the U-Bahn and S-Bahn or walk a
+# street from one sector into another. The sector-crossing Routes carry Year
+# Ranges so a crossing that was casual in 1948 is barred by the period's end.
+#
+# Every landmark named in `sources/` is a real place of the period; every
+# person, newspaper, organisation and service in play is fictional. The prose is
+# original and carries no anachronism against the era quality lists.
+#
+# It declares `role: city` and `contentSchema: 2`, and requires the core pack
+# (the Tag Vocabulary and slice kinds), exactly one Era Pack
+# (`era-cold-war-early`, whose 1945-1965 window contains this city's 1948-1961
+# period) and the Library Packs its Culture Weights draw on: the Central-European
+# groups (German Berlin, Czech, Hungarian, Polish) and the Russian group of the
+# Soviet sector.
+id: city-berlin
+version: 1.0.0
+contentSchema: 2
+role: city
+requires:
+  - id: core
+    range: '^1.0.0'
+  - id: era-cold-war-early
+    range: '^1.0.0'
+  - id: lib-central-europe
+    range: '^1.0.0'
+  - id: lib-russian
+    range: '^1.0.0'
+overrides: []

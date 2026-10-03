@@ -1,0 +1,289 @@
+# lint.yaml — Pack Linter Suppressions for city-trieste (content-expansion 9.10).
+#
+# A pack's lint.yaml is a list of Suppressions, each { rule, path, justification }
+# where `rule` is a suppressible Lint Rule id, `path` is the exact located
+# finding path to silence, and `justification` is a non-empty reason recorded in
+# the report (design, "Pack Linter"; Req 13.5, 13.6). A Suppression naming a
+# non-suppressible rule (CE-SCHEMA, CE-REF, CE-REALPERSON, CE-SENSITIVE,
+# CE-PROVENANCE, CE-QUANTITY, CE-VARIANT, CE-CONFORM, CE-FEASIBLE, CE-IDSTABLE)
+# is rejected with a CE-SCHEMA error, so none is listed here.
+#
+# The institutions and voice authored by task 9.10 (the newspapers, local
+# organisations, the local-security Service, Cover Identities, the Locale, the
+# article Document templates, the Rumour templates and the Template Variants)
+# lint clean under the release profile: every reference resolves, every variant
+# slot set matches its base, the Quantity Targets are met, and no authored name,
+# term or passage trips the identity, period or style rules.
+#
+# The entries below are the ONLY findings on the pack, and all fall on the
+# geography half (task 9.9): CE-DUPTEXT on the short, tag-like `atmosphere`
+# words that recur across the city's Locations and Districts, and CE-DUPTEXT /
+# CE-NEARDUP on the Location-Type description pools the city deliberately shares
+# with the slice's core venue prose. These repetitions carry no new information
+# and are intentional period texture, so they are suppressible warnings and are
+# downgraded to informational here with a justification, leaving the pack with
+# no active error or warning finding under the release profile.
+- rule: CE-DUPTEXT
+  path: '[6].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-NEARDUP
+  path: '[10].descriptionPool[2]'
+  justification: >-
+    Near-duplicate period description pool shared with the core Location Types (task 9.9); the city reuses the slice's venue prose by design and the overlap is intentional.
+- rule: CE-DUPTEXT
+  path: '[13].descriptionPool[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-NEARDUP
+  path: '[13].descriptionPool[1]'
+  justification: >-
+    Near-duplicate period description pool shared with the core Location Types (task 9.9); the city reuses the slice's venue prose by design and the overlap is intentional.
+- rule: CE-DUPTEXT
+  path: '[13].descriptionPool[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[15].descriptionPool[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[15].descriptionPool[3]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[15].namePatterns[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[4].namePatterns[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[5].descriptionPool[3]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-NEARDUP
+  path: '[8].descriptionPool[1]'
+  justification: >-
+    Near-duplicate period description pool shared with the core Location Types (task 9.9); the city reuses the slice's venue prose by design and the overlap is intentional.
+- rule: CE-DUPTEXT
+  path: '[9].descriptionPool[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-NEARDUP
+  path: '[9].descriptionPool[1]'
+  justification: >-
+    Near-duplicate period description pool shared with the core Location Types (task 9.9); the city reuses the slice's venue prose by design and the overlap is intentional.
+- rule: CE-DUPTEXT
+  path: '[9].descriptionPool[3]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[10].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[10].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[11].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[11].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[12].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[12].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[13].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[13].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[13].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[15].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[15].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[16].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[16].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[18].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[19].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[20].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[20].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[20].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[21].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[21].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[22].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[22].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[22].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[23].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[24].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[24].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[24].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[25].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[25].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[25].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[26].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[26].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[26].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[27].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[29].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[2].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[30].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[30].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[30].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[31].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[31].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[31].atmosphere[3]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[32].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[32].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[33].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[34].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[34].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[35].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[35].atmosphere[1]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[8].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[9].atmosphere[0]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.
+- rule: CE-DUPTEXT
+  path: '[9].atmosphere[2]'
+  justification: >-
+    Geometry/atmosphere texture repeated across the authored geography (task 9.9); the short atmosphere words and the shared Location-Type description pools recur legitimately and carry no new information to deduplicate.

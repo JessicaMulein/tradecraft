@@ -1,0 +1,73 @@
+# city.yaml - the Berlin City Definition (content-expansion task 9.3).
+#
+# Validates against CityDefinitionSchema (packages/content/src/kinds/city.ts):
+#   { id, name, country, climate, period, startDates, currency, languages,
+#     cultureWeights, services, instantiation? }
+#
+# Period: 1948-1961. The window opens with the blockade and the airlift and
+# closes in the summer of 1961, when the open sector boundary was sealed. The
+# Start Date window is kept to the earliest months of the period so a scenario
+# begins in the airlift winter; the engine draws a Start Date within both this
+# window and the era's 1945-1965 range.
+#
+# Climate: `climate:temperate` - the core Tag Vocabulary's `climate` facet (which
+# applies to `city`) defines a temperate-continental band of "cold winters and
+# warm summers", which is exactly Berlin's humid-continental climate. This Tag is
+# drawn from the shipped vocabulary; no new climate Tag is invented here.
+#
+# Currency: the Deutsche Mark of the western sectors (introduced in the June
+# 1948 currency reform that touched off the blockade). The East issued its own
+# mark, but the player's Station banks and pays in the western currency, so the
+# city's money is the D-Mark. `budgetScale` 1 keeps the era's money fields at
+# face value; `rounding` 0.1 rounds to the Pfennig-tenth the money formatter
+# prints.
+#
+# Culture Weights: a Berlin world is overwhelmingly German, with a standing
+# Soviet-sector Russian presence and the Central-European minorities (Czech,
+# Polish, Hungarian) of the divided city's traffic in refugees and defectors.
+# The weights are year-neutral across the window.
+#
+# Services: the shared era services - the player's own service, the hostile
+# foreign-intelligence and security services, and the allied liaison services -
+# together with Berlin's own City-Scoped `local-security` service, the Berlin
+# Office of Public Order (`city-public-order-office`, defined in this pack's
+# `services/`, task 9.4). Every id resolves against a loaded Service Definition
+# (the loader checks `services`); the city-scoped id is namespaced to this pack.
+id: berlin
+name: Berlin
+country: Germany
+climate: climate:temperate
+period:
+  from: 1948
+  to: 1961
+startDates:
+  from: '1948-07-01'
+  to: '1949-05-31'
+currency:
+  name: Deutsche Mark
+  symbol: DM
+  subunit: Pfennig
+  format: '{amount} {symbol}'
+  rounding: 0.1
+  budgetScale: 1
+languages:
+  - { id: de, name: German, share: 0.9 }
+  - { id: ru, name: Russian, share: 0.06 }
+  - { id: en, name: English, share: 0.04 }
+cultureWeights:
+  - { group: lib-central-europe/german-berlin, weight: 70 }
+  - { group: lib-russian/russian, weight: 12 }
+  - { group: lib-central-europe/polish, weight: 7 }
+  - { group: lib-central-europe/czech, weight: 5 }
+  - { group: lib-central-europe/hungarian, weight: 3 }
+services:
+  - era-cold-war-early/own-service
+  - era-cold-war-early/hostile-foreign-directorate
+  - era-cold-war-early/hostile-security-apparat
+  - era-cold-war-early/hostile-satellite-bureau
+  - era-cold-war-early/liaison-atlantic-agency
+  - era-cold-war-early/liaison-federal-service
+  - city-public-order-office
+instantiation:
+  districts: [6, 8]
+  locations: [20, 28]

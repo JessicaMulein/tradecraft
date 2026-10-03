@@ -1,0 +1,83 @@
+# The core pack's Difficulty Presets.
+#
+# One entry per column of the design's Difficulty Presets table (design,
+# "Difficulty Presets"). A scenario names one of these and may deep-merge
+# overrides onto any single field; the merged result re-validates against
+# DifficultyPresetSchema. `standard` is the shipped default and must match the
+# values the engine's scenario-config contract pins exactly.
+
+# --- easy -------------------------------------------------------------------
+# Shorter plot with generous slack, little noise, forgiving detection, no HQ
+# false beliefs, a low arrest threshold and hints on. OTP is withheld.
+- id: easy
+  plot: { stageCount: 4, deadlineSlackDays: 3 }
+  noiseCounts: { backgroundNpcs: 10, sideThreads: 1, rumours: 3 }
+  noiseTrafficRatio: { noise: 1, plot: 1 }
+  hqFalseBeliefRate: 0
+  doctrine:
+    risk: { min: 0.2, max: 0.4 }
+    security: { min: 0.2, max: 0.4 }
+    deception: { min: 0.2, max: 0.4 }
+  detectionBase: { surveil: 0.05, meeting: 0.03, drop: 0.02 }
+  madeRevealProbability: 1.0
+  tradecraftErrorProbability: 0.5
+  allowedCiphers: [caesar, vigenere, columnar, book]
+  arrest:
+    threshold: 6
+    wrongfulAuthorityPenalty: -1
+    wrongfulRaisesAlertness: false
+  startingBudget: 5000
+  traceRequestDelayPhases: 1
+  coverSuspicionBurnThreshold: 1.0
+  hintsDefault: true
+
+# --- standard ---------------------------------------------------------------
+# The shipped default. These values are pinned by the engine's
+# scenario-config contract; change them only alongside that test.
+- id: standard
+  plot: { stageCount: 5, deadlineSlackDays: 2 }
+  noiseCounts: { backgroundNpcs: 16, sideThreads: 2, rumours: 6 }
+  noiseTrafficRatio: { noise: 2, plot: 1 }
+  hqFalseBeliefRate: 0.15
+  doctrine:
+    risk: { min: 0.3, max: 0.6 }
+    security: { min: 0.3, max: 0.6 }
+    deception: { min: 0.3, max: 0.6 }
+  detectionBase: { surveil: 0.1, meeting: 0.06, drop: 0.04 }
+  madeRevealProbability: 0.6
+  tradecraftErrorProbability: 0.3
+  allowedCiphers: [caesar, vigenere, columnar, book, otp]
+  arrest:
+    threshold: 7
+    wrongfulAuthorityPenalty: -1
+    wrongfulRaisesAlertness: false
+  startingBudget: 3000
+  traceRequestDelayPhases: 2
+  coverSuspicionBurnThreshold: 0.8
+  hintsDefault: true
+
+# --- hard -------------------------------------------------------------------
+# Longer plot with tight slack, dense noise, sharp detection, a high HQ
+# false-belief rate, all ciphers, a wrongful arrest that costs more authority
+# and raises Hostile Service alertness, and hints off.
+- id: hard
+  plot: { stageCount: 6, deadlineSlackDays: 1 }
+  noiseCounts: { backgroundNpcs: 20, sideThreads: 3, rumours: 10 }
+  noiseTrafficRatio: { noise: 4, plot: 1 }
+  hqFalseBeliefRate: 0.3
+  doctrine:
+    risk: { min: 0.5, max: 0.8 }
+    security: { min: 0.5, max: 0.8 }
+    deception: { min: 0.5, max: 0.8 }
+  detectionBase: { surveil: 0.18, meeting: 0.1, drop: 0.07 }
+  madeRevealProbability: 0.3
+  tradecraftErrorProbability: 0.15
+  allowedCiphers: [caesar, vigenere, columnar, book, otp]
+  arrest:
+    threshold: 7
+    wrongfulAuthorityPenalty: -2
+    wrongfulRaisesAlertness: true
+  startingBudget: 1800
+  traceRequestDelayPhases: 4
+  coverSuspicionBurnThreshold: 0.6
+  hintsDefault: false

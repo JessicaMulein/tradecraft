@@ -1,0 +1,367 @@
+# culture-groups/british-english.yaml — the British English group.
+#
+# A CultureGroup (CultureGroupSchema). English surnames are not gender-inflected,
+# so family names are plain strings and the Naming Rule uses the generic
+# {given} {family} display the engine renders. Quantity (Req 11.4): at least 100
+# given and 100 family names, at least 300 distinct total. All names are
+# generic, common British names of the mid-century in fictional use; none names
+# a real individual, and famous full-name combinations are avoided.
+- id: british-english
+  name: British English
+  languages:
+    - en
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Margaret
+      - Joan
+      - Mary
+      - Patricia
+      - Jean
+      - Barbara
+      - Audrey
+      - Doreen
+      - Sheila
+      - Pamela
+      - Brenda
+      - Vera
+      - Marjorie
+      - Edith
+      - Winifred
+      - Gwendolyn
+      - Beryl
+      - Phyllis
+      - Daphne
+      - Enid
+      - Hilda
+      - Maureen
+      - Eileen
+      - Constance
+      - Dorothy
+      - Nora
+      - Peggy
+      - Rosemary
+      - Sylvia
+      - Vivienne
+      - Agnes
+      - Beatrice
+      - Clarice
+      - Deirdre
+      - Elsie
+      - Freda
+      - Gladys
+      - Harriet
+      - Irene
+      - Joyce
+      - Kathleen
+      - Lilian
+      - Mabel
+      - Nancy
+      - Olive
+      - Prudence
+      - Rita
+      - Stella
+      - Violet
+      - Winnie
+      - Alma
+      - Cynthia
+      - Dulcie
+      - Ethel
+      - Fenella
+      - Gillian
+      - Hazel
+      - Ivy
+      - Josephine
+      - Myra
+    m:
+      - John
+      - William
+      - George
+      - Arthur
+      - Albert
+      - Frederick
+      - Ernest
+      - Harold
+      - Reginald
+      - Cyril
+      - Cecil
+      - Herbert
+      - Leonard
+      - Stanley
+      - Percy
+      - Horace
+      - Wilfred
+      - Clement
+      - Edmund
+      - Geoffrey
+      - Humphrey
+      - Ian
+      - Keith
+      - Lionel
+      - Montague
+      - Nigel
+      - Oswald
+      - Peregrine
+      - Quentin
+      - Rupert
+      - Sidney
+      - Terence
+      - Vernon
+      - Wesley
+      - Alfred
+      - Bertram
+      - Clifford
+      - Desmond
+      - Everard
+      - Francis
+      - Gerald
+      - Hugh
+      - Ivor
+      - Julian
+      - Kenneth
+      - Lawrence
+      - Maurice
+      - Norman
+      - Oliver
+      - Philip
+      - Roland
+      - Sebastian
+      - Theodore
+      - Victor
+      - Walter
+      - Aubrey
+      - Basil
+      - Crispin
+      - Denis
+      - Eustace
+  family:
+    - Ashworth
+    - Bainbridge
+    - Chadwick
+    - Doncaster
+    - Ellerby
+    - Fairweather
+    - Grantham
+    - Hadleigh
+    - Ickenham
+    - Jardine
+    - Kettering
+    - Langton
+    - Marchmont
+    - Netherby
+    - Oakley
+    - Pemberton
+    - Quayle
+    - Rookwood
+    - Standish
+    - Thorneycroft
+    - Umbridge
+    - Vaughan
+    - Wetherby
+    - Yardley
+    - Allingham
+    - Braithwaite
+    - Caxton
+    - Darnley
+    - Entwistle
+    - Fosdyke
+    - Gilliland
+    - Hartnell
+    - Inglebright
+    - Jessop
+    - Kingswood
+    - Lymington
+    - Marsden
+    - Northcote
+    - Osgood
+    - Parslow
+    - Quillan
+    - Ravenscroft
+    - Shackleton
+    - Trentham
+    - Underhill
+    - Verekers
+    - Wimborne
+    - Yelverton
+    - Attwater
+    - Blencowe
+    - Castleford
+    - Dunstable
+    - Ellingham
+    - Fenwick
+    - Garsington
+    - Hollingsworth
+    - Ilbery
+    - Jervoise
+    - Kempston
+    - Loxley
+    - Mowbray
+    - Needham
+    - Osbaldeston
+    - Prentice
+    - Quennell
+    - Rushmore
+    - Smallwood
+    - Tredinnick
+    - Upcott
+    - Vane
+    - Waddington
+    - Yoxall
+    - Appleyard
+    - Birtwistle
+    - Cholmondeley
+    - Danvers
+    - Eggleston
+    - Framlingham
+    - Goodenough
+    - Harbottle
+    - Illingworth
+    - Jerningham
+    - Knatchbull
+    - Leatherdale
+    - Mottram
+    - Nunnington
+    - Ottaway
+    - Pennethorne
+    - Quibell
+    - Rawdon
+    - Snelgrove
+    - Tattersall
+    - Uttley
+    - Vereker
+    - Westonbirt
+    - Yoxford
+    - Arbuthnot
+    - Blagrove
+    - Catchpole
+    - Dengate
+    - Affleck
+    - Blackmore
+    - Carstairs
+    - Dalgleish
+    - Ethrington
+    - Fairclough
+    - Grimshaw
+    - Hartley
+    - Inchbald
+    - Jephcott
+    - Kilbride
+    - Loveridge
+    - Mainwaring
+    - Nettleton
+    - Offord
+    - Padgett
+    - Quarrington
+    - Risborough
+    - Sedgwick
+    - Thistlewood
+    - Ulyatt
+    - Vowles
+    - Winterbourne
+    - Yelland
+    - Abberley
+    - Breckenridge
+    - Cardew
+    - Dunthorne
+    - Ennever
+    - Fotheringay
+    - Garbutt
+    - Hepplewhite
+    - Idle
+    - Jolliffe
+    - Kerslake
+    - Lightbody
+    - Micklethwaite
+    - Noblet
+    - Oxborough
+    - Pargeter
+    - Quelch
+    - Rowbotham
+    - Satterthwaite
+    - Thurgood
+    - Umpleby
+    - Verrall
+    - Whittingstall
+    - Yeomans
+    - Adlington
+    - Bellenger
+    - Crummock
+    - Dewhurst
+    - Easingwold
+    - Featherstonhaugh
+    - Golightly
+    - Hollingworth
+    - Ibberson
+    - Jerram
+    - Kempshall
+    - Longbottom
+    - Mottershead
+    - Naesmith
+    - Ollerenshaw
+    - Postlethwaite
+    - Quinton
+    - Ravenhill
+    - Snailham
+    - Thackeray
+    - Ushenko
+    - Vallance
+    - Winstanley
+    - Yoxon
+    - Allcroft
+    - Birtles
+    - Chetwynd
+    - Dymock
+    - Ellershaw
+    - Fairbairn
+    - Greatorex
+    - Hinchcliffe
+  voiceTraits:
+    - dry, understated, deflecting praise with irony
+    - precise in diction and sparing with warmth
+    - treats enthusiasm as faintly bad form
+    - lets class and school show in a careful vowel
+    - closes a difficult subject with a wry aside
+  mannerisms:
+    - polishes spectacles while framing a reply
+    - offers tea as a way of taking the measure of a guest
+    - stands a touch too straight out of old habit
+    - folds a newspaper to a quarter and reads it corner-first
+    - clears the throat before any inconvenient truth
+  backgrounds:
+    - text: Attached to the control commission and billeted in a requisitioned house.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Represents a shipping line and keeps the manifests nobody else may see.
+      tags: []
+    - text: Lectures at the British institute and files quiet notes on who attends.
+      tags: []
+    - text: Served in intelligence in the war and never quite returned to civilian terms.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Manages a bank's local branch and knows which accounts move with the weather.
+      tags: []
+    - text: Reports for a London paper and cultivates every ministry doorman.
+      tags: []
+    - text: Trades in antiques and crosses borders with a dealer's easy paperwork.
+      tags: []
+    - text: Keeps a small import office going and asks no questions about the crates.
+      tags: []
+    - text: Came out with the diplomatic bag and stayed for reasons left unstated.
+      tags: []
+    - text: Teaches at a mission school and corrects more than grammar.
+      tags: []
+    - text: Keeps the registry at a consulate and the names that pass through it.
+      tags: []
+    - text: Buys tobacco for a London house and travels with a buyer's open door.
+      tags: []
+    - text: Edits the English page of a local daily and softens what the censor marks.
+      tags: []
+    - text: Ran a wartime liaison desk and kept the contacts long after the posting.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Manages a hotel the embassies favour and reads the register each morning.
+      tags: []
+    - text: Surveys for an oil concern and crosses frontiers no tourist would.
+      tags: []

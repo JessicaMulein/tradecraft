@@ -1,0 +1,702 @@
+# locations/public-places.yaml — Vienna's public City Locations
+# (content-expansion task 9.1), part 1 of 2.
+#
+# Each is a CityLocation: an authored place pinned to a District and stamped
+# from a city Location Type (`type`, a bare id namespaced `city-vienna/<id>`).
+# A Location's Effective Tags are its own `tags` plus its Location Type's Tags,
+# which together satisfy the core Required Queries. `basis` records how the
+# place relates to the real city; a `real-landmark` cites `sources` (see
+# sources.yaml). All organisations and people in play are fictional.
+#
+# These are the public, open-access places (cafés, kiosks, reading halls,
+# bookshops, bars, parks, stations, tram stops, the market and a cinema),
+# spread across all eight Districts and the four sectors.
+
+# --- Kaffeehäuser (cafés) --------------------------------------------------
+- id: cafe-mohnblume
+  name: Café Mohnblume
+  type: kaffeehaus
+  district: innere-stadt
+  public: true
+  description: >-
+    A grand coffee house off the Graben, all marble and mirrors, where every
+    delegation keeps a corner table and the headwaiter remembers which papers
+    each regular reads.
+  atmosphere: [marble and mirrors, a corner table for every delegation, cigarette haze]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: cafe-alte-linde
+  name: Café Zur Alten Linde
+  type: kaffeehaus
+  district: alsergrund
+  public: true
+  description: >-
+    A quieter house near the lecture halls, favoured by students who nurse one
+    small black coffee a whole afternoon and by a correspondent or two filing
+    copy at the back.
+  atmosphere: [one coffee all afternoon, students at the back, nobody hurried out]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: cafe-rautenberg
+  name: Café Rautenberg
+  type: kaffeehaus
+  district: mariahilf
+  public: true
+  description: >-
+    A shopping-street café with a street terrace in the warm months, loud at
+    midday and all but empty once the shutters come down along the Straße.
+  atmosphere: [a street terrace in summer, loud at midday, emptied by the shutters]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: cafe-weisser-reiter
+  name: Café Weißer Reiter
+  type: kaffeehaus
+  district: leopoldstadt
+  public: true
+  description: >-
+    A faded house across the canal in the Soviet sector, its velvet gone shiny
+    with wear, where strangers are noticed and the proprietor keeps one eye on
+    the door.
+  atmosphere: [velvet gone shiny, strangers remembered, one eye on the door]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Trafiken (kiosks) -----------------------------------------------------
+- id: trafik-graben
+  name: Trafik am Graben
+  type: trafik
+  district: innere-stadt
+  public: true
+  description: >-
+    A tobacconist's booth on the Graben, its morning papers pegged on a wire and
+    its proprietor a fixture who knows every regular by their brand.
+  atmosphere: [papers pegged on a wire, every regular known by brand, on the Graben]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+- id: trafik-kolar
+  name: Trafik Kolar
+  type: trafik
+  district: wieden
+  public: true
+  description: >-
+    A hole in the wall by the market square, its shutter half-down against the
+    wind, where lottery slips and picture postcards fan across the glass.
+  atmosphere: [shutter half-down, lottery slips in the glass, by the market square]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+- id: trafik-favoriten
+  name: Tabak-Trafik Weinhuber
+  type: trafik
+  district: favoriten
+  public: true
+  description: >-
+    A workers'-district kiosk at a tram junction, the first light lit on the
+    street and the last out, where the evening editions sell to the shift coming
+    off the sidings.
+  atmosphere: [first light on the street, evening editions for the late shift, by the sidings]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+# --- Lesehallen (reading halls / libraries) --------------------------------
+- id: lesehalle-mariahilf
+  name: Lesesaal Mariahilf
+  type: lesehalle
+  district: mariahilf
+  public: true
+  description: >-
+    A hushed district reading hall of long oak tables and green-shaded lamps,
+    its card catalogues walling the entrance and its periodicals chained to
+    their stands.
+  atmosphere: [green-shaded lamps, periodicals chained to their stands, only turning pages]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: lesehalle-alsergrund
+  name: Bezirksbücherei Alsergrund
+  type: lesehalle
+  district: alsergrund
+  public: true
+  description: >-
+    A branch library among the institutes, its galleries climbing into the
+    gloom, where pensioners and students share the long tables in silence.
+  atmosphere: [galleries climbing into gloom, pensioners and students in silence, dry with old paper]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Antiquariate (bookshops) ----------------------------------------------
+- id: antiquariat-lindner
+  name: Antiquariat Lindner
+  type: antiquariat
+  district: innere-stadt
+  public: true
+  description: >-
+    A narrow antiquarian bookshop in the old town, its shelves leaning overhead
+    and its back room of unpriced stock where a book cipher could hide a dozen
+    keys among the foxed almanacs.
+  atmosphere: [shelves leaning overhead, a back room of unpriced stock, foxed almanacs]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+- id: antiquariat-blaues-band
+  name: Antiquariat Zum Blauen Band
+  type: antiquariat
+  district: landstrasse
+  public: true
+  description: >-
+    A legation-quarter bookshop with a cat asleep on the ledger, its window
+    display of maps and a globe unchanged in a decade, patronised by the
+    attachés from the embassies up the street.
+  atmosphere: [a cat asleep on the ledger, maps and a globe in the window, attachés browsing]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+# --- Hotelbars -------------------------------------------------------------
+- id: marmorbar
+  name: the Marmorbar
+  type: hotelbar
+  district: innere-stadt
+  public: true
+  description: >-
+    A marble-and-brass hotel bar on the Ring where correspondents and attachés
+    hold the stools, the talk running in four languages and none of it quite the
+    truth.
+  atmosphere: [talk in four languages, a slow piano, almonds down the counter]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: blue-danube-bar
+  name: the Blue Danube Bar
+  type: hotelbar
+  district: alsergrund
+  public: true
+  description: >-
+    An American-sector hotel bar near the billets, a piano turning over
+    something slow in the corner and a page in buttons by the revolving door.
+  atmosphere: [a page in buttons by the door, near the American billets, a draught of street cold]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Parks -----------------------------------------------------------------
+- id: prater
+  name: the Prater
+  type: park
+  district: leopoldstadt
+  public: true
+  description: >-
+    The great public park and fairground across the canal, its slow Ferris wheel
+    turning over the avenues, its paths losing themselves in the dusk — exposed
+    ground where a tail is easily spotted and as easily shaken.
+  atmosphere: [the slow wheel turning, avenues lost in dusk, a tail easily shaken]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-prater, src-vienna-guide]
+
+- id: stadtpark
+  name: the Stadtpark
+  type: park
+  district: landstrasse
+  public: true
+  description: >-
+    The formal municipal gardens along the Ring, their beds dug over for winter,
+    a bandstand standing empty and gravel walks that carry the sound of every
+    footstep.
+  atmosphere: [beds dug over for winter, an empty bandstand, gravel that carries every step]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-vienna-guide, src-ringstrasse]
+
+# --- Stations (railway termini) --------------------------------------------
+- id: westbahnhof
+  name: the Westbahnhof
+  type: bahnhof
+  district: mariahilf
+  public: true
+  description: >-
+    The western terminus, a vaulted hall under a sooty glass roof where the
+    lines from the west come in; porters wheel trunks past the ticket windows
+    and the left-luggage lockers run a cold corridor's length.
+  atmosphere: [trunks wheeled past the windows, a cold left-luggage corridor, lines from the west]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-vienna-guide, src-railway-timetable]
+
+- id: suedbahnhof
+  name: the Südbahnhof
+  type: bahnhof
+  district: favoriten
+  public: true
+  description: >-
+    The great southern terminus in the Soviet sector, taking the whole weight of
+    the lines from the east; soldiers of three armies pass under the arrivals
+    board going opposite ways.
+  atmosphere: [three armies under one board, lines from the east, kitbags going both ways]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-vienna-guide, src-railway-timetable]
+
+# --- Tram stops ------------------------------------------------------------
+- id: ring-haltestelle
+  name: the Ring tram stop
+  type: haltestelle
+  district: innere-stadt
+  public: true
+  description: >-
+    A busy stop on the Ring where several lines cross; a knot of commuters under
+    a cast-iron shelter, newspapers up against the wind, and a tram slowing every
+    few minutes.
+  atmosphere: [several lines crossing, a cast-iron shelter, a tram every few minutes]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: mariahilfer-haltestelle
+  name: the Mariahilfer Straße stop
+  type: haltestelle
+  district: mariahilf
+  public: true
+  description: >-
+    A shopping-street corner where two lines meet; the overhead wires spark blue
+    at the junction and the crowd leans out to look up the street for the next
+    car.
+  atmosphere: [wires sparking blue at the junction, the crowd craning up the line, shopfronts behind]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Heuriger ---------------------------------------------------------------
+- id: heuriger-grinzing
+  name: Heuriger Zum Alten Presshaus
+  type: heuriger
+  district: alsergrund
+  public: true
+  description: >-
+    A wine garden up the hill past the last tram stop, where the city thins to
+    vineyards; string lights sway over the trestle tables and the hum of the
+    garden swallows anything said at arm's length.
+  atmosphere: [string lights over the arbour, past the last tram stop, a hundred voices for cover]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: real-inspired
+
+# --- Cinema ----------------------------------------------------------------
+- id: kino-elysium
+  name: Kino Elysium
+  type: kino
+  district: mariahilf
+  public: true
+  description: >-
+    A picture house off the shopping street, its worn plush seats and swimming
+    projector beam; the back row is as private as any public place in the city.
+  atmosphere: [worn plush in the dark, a swimming projector beam, a private back row]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Market ----------------------------------------------------------------
+- id: naschmarkt
+  name: the Naschmarkt
+  type: markt
+  district: wieden
+  public: true
+  description: >-
+    The long covered market between Wieden and Mariahilf, rows of stalls under
+    glass; the cries of the sellers, the smell of pickles and smoked fish, and a
+    black-market whisper at the back of the fish hall where coupons change hands.
+  atmosphere: [stalls under glass, pickles and smoked fish, coupons changing hands at the back]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-vienna-guide, src-naschmarkt]
+
+# --- River port ------------------------------------------------------------
+- id: winterhafen
+  name: the Winterhafen
+  type: donauhafen
+  district: brigittenau
+  public: true
+  description: >-
+    The sheltered river port on the city's northern edge, cranes over coal
+    barges and a sentry box at the Soviet-sector gate where a striped pole and a
+    bored soldier check papers by lantern light.
+  atmosphere: [cranes over the coal barges, a striped pole at the sector gate, papers checked by lamplight]
+  city: vienna
+  tags: [access:public]
+  basis: real-inspired
+  sources: [src-danube-port]
+
+# ===========================================================================
+# Variety pool (content-expansion task 9.1): additional authored public places
+# spread evenly across all eight Districts. The authored Location pool is
+# deliberately larger than any single world's instantiation Location bound
+# (city.yaml `instantiation.locations`), so different seeds draw different
+# subsets of the selected Districts' places and the Coverage Variety Metric
+# (Req 15.4) stays well under its 0.6 target rather than selecting nearly the
+# same set every seed. Every place is a city Location Type Binder for the core
+# Required Queries it carries, so the extra pool only ever adds binding margin;
+# all organisations and people in play are fictional.
+
+# --- Innere Stadt (international zone) --------------------------------------
+- id: cafe-schattenburg
+  name: Café Schattenburg
+  type: kaffeehaus
+  district: innere-stadt
+  public: true
+  description: >-
+    A panelled coffee house behind the cathedral where the billiard room runs
+    late and the waiters move so quietly a conversation at the corner table
+    carries no further than the marble top it is spoken over.
+  atmosphere: [panelled and dim, a billiard room running late, waiters who hear nothing]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: trafik-stephansplatz
+  name: Trafik am Stephansplatz
+  type: trafik
+  district: innere-stadt
+  public: true
+  description: >-
+    A kiosk in the cathedral square's shadow, its racks of foreign papers a day
+    behind the news, where the proprietor keeps a drawer of under-the-counter
+    editions for the regulars who ask by first name.
+  atmosphere: [foreign papers a day behind, a drawer under the counter, in the cathedral's shadow]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+- id: hotel-kaiserhof-bar
+  name: the Kaiserhof bar
+  type: hotelbar
+  district: innere-stadt
+  public: true
+  description: >-
+    A hushed hotel bar off the Kärntnerstraße where the delegations drink apart
+    at tables set a careful distance from one another and the barman affects to
+    speak no language at all.
+  atmosphere: [tables set a careful distance apart, a barman who speaks nothing, hushed]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Leopoldstadt (Soviet sector) ------------------------------------------
+- id: cafe-praterstern
+  name: Café Praterstern
+  type: kaffeehaus
+  district: leopoldstadt
+  public: true
+  description: >-
+    A corner house by the great junction where the trams wheel round, loud with
+    the clatter of the crossing and the kind of place a man can sit all morning
+    behind a paper and watch who comes off every line.
+  atmosphere: [the trams wheeling round, loud with the crossing, a paper to watch behind]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: augarten
+  name: the Augarten
+  type: park
+  district: leopoldstadt
+  public: true
+  description: >-
+    A walled baroque garden of straight gravel allées and clipped hedges, its
+    flak tower squatting grey above the trees, where a watched man can see the
+    length of every path before he steps onto it.
+  atmosphere: [straight gravel allées, the grey tower above the trees, every path seen end to end]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: nordbahnhof-ruin
+  name: the Nordbahnhof sidings
+  type: haltestelle
+  district: leopoldstadt
+  public: true
+  description: >-
+    A tram halt among the gutted sheds of the bombed northern station, where the
+    line runs on past rusting sidings and nobody waits who does not have a reason
+    to be in so forsaken a corner of the sector.
+  atmosphere: [gutted sheds, rusting sidings, nobody here without a reason]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Landstraße (British sector) -------------------------------------------
+- id: cafe-rochus
+  name: Café Rochus
+  type: kaffeehaus
+  district: landstrasse
+  public: true
+  description: >-
+    A market-corner café by the parish church, its windows steamed opaque in
+    winter, where the attachés from the quarter take a late breakfast and the
+    waiter leaves the morning editions folded to the foreign pages.
+  atmosphere: [windows steamed opaque, a late breakfast crowd, papers folded to the foreign pages]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: antiquariat-rennweg
+  name: Antiquariat am Rennweg
+  type: antiquariat
+  district: landstrasse
+  public: true
+  description: >-
+    A map-and-print seller's on the Rennweg, its folios of occupation-era city
+    plans fanned in the window, where a buyer taken to the back room can leave by
+    a second door onto the lane.
+  atmosphere: [folios of city plans in the window, a back room, a second door onto the lane]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+- id: botanischer-garten
+  name: the Botanic Garden
+  type: park
+  district: landstrasse
+  public: true
+  description: >-
+    The university's walled botanic garden behind the palace, glasshouses
+    clouded with their own warmth and a gravel circuit of beds labelled in Latin
+    where two strollers draw no second glance.
+  atmosphere: [glasshouses clouded with warmth, beds labelled in Latin, two strollers unremarked]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Wieden (Soviet sector) ------------------------------------------------
+- id: cafe-resselpark
+  name: Café Resselpark
+  type: kaffeehaus
+  district: wieden
+  public: true
+  description: >-
+    A students' café opposite the technical school, cheap and smoke-blue, its
+    back booths screened by a rank of coat stands where a quiet word is lost in
+    the argument of a dozen others.
+  atmosphere: [cheap and smoke-blue, back booths behind the coat stands, a dozen arguments for cover]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: lesehalle-wieden
+  name: Bezirksbücherei Wieden
+  type: lesehalle
+  district: wieden
+  public: true
+  description: >-
+    A district library over the market, its reading room floored in worn
+    linoleum, where a reader at the periodicals rack can hear the footsteps of
+    anyone who climbs the stair long before they reach the door.
+  atmosphere: [worn linoleum, footsteps heard up the stair, periodicals by the window]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: paulanergasse-haltestelle
+  name: the Paulanergasse stop
+  type: haltestelle
+  district: wieden
+  public: true
+  description: >-
+    A side-street tram halt a block off the long shopping street, little used
+    once the shops close, where a man can board the last car of the evening and
+    know at a glance whether anyone has stepped on with him.
+  atmosphere: [little used after dark, the last car of the evening, a glance down the aisle]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Mariahilf (French sector) ---------------------------------------------
+- id: cafe-gumpendorf
+  name: Café Gumpendorf
+  type: kaffeehaus
+  district: mariahilf
+  public: true
+  description: >-
+    A side-street house off the shopping run, its one long mirror doubling the
+    room, patronised by the clerks of the picture distributors whose offices
+    crowd the floors above.
+  atmosphere: [one long mirror doubling the room, film clerks from upstairs, off the shopping run]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: kino-apollo
+  name: the Apollo-Kino
+  type: kino
+  district: mariahilf
+  public: true
+  description: >-
+    A big double-feature house on the shopping street, its foyer gilt and
+    peeling, where the matinée crowd thins to a scatter of single men in the
+    dark and the exit gives onto a courtyard behind.
+  atmosphere: [gilt and peeling foyer, single men in the matinée dark, an exit to the courtyard]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: trafik-mariahilf
+  name: Trafik Mariahilfer Straße
+  type: trafik
+  district: mariahilf
+  public: true
+  description: >-
+    A busy kiosk at a shopping-street corner, its hatch doing a brisk trade in
+    tram tickets and evening papers, where a folded note left with the right coin
+    is as good as posted.
+  atmosphere: [a brisk trade in tickets, the shopping-street corner, a note left with the right coin]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+# --- Alsergrund (American sector) ------------------------------------------
+- id: cafe-votiv
+  name: Café Votiv
+  type: kaffeehaus
+  district: alsergrund
+  public: true
+  description: >-
+    A tall-windowed house facing the twin-spired church, loud with students at
+    the front and quiet at the rear, where a correspondent files copy at the same
+    back table every afternoon as if it were an office.
+  atmosphere: [tall windows on the church, students at the front, a correspondent's back table]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: strudlhof-haltestelle
+  name: the Strudlhofstiege stop
+  type: haltestelle
+  district: alsergrund
+  public: true
+  description: >-
+    A tram halt at the foot of the great tiered stair, lamplit and leaf-strewn,
+    where the steps climbing away into the dark offer a dozen ways up and a dozen
+    ways to see if a step is being matched behind.
+  atmosphere: [the great tiered stair, lamplit and leaf-strewn, a dozen ways up]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: antiquariat-berggasse
+  name: Antiquariat Berggasse
+  type: antiquariat
+  district: alsergrund
+  public: true
+  description: >-
+    A medical bookseller's near the clinics, its shelves of foxed anatomies and
+    bound journals climbing to the ceiling, where the proprietor sorts crates in
+    a back room nobody is invited to enter.
+  atmosphere: [foxed anatomies to the ceiling, bound journals, a back room off limits]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+# --- Favoriten (Soviet sector) ---------------------------------------------
+- id: cafe-reumannplatz
+  name: Café Reumannplatz
+  type: kaffeehaus
+  district: favoriten
+  public: true
+  description: >-
+    A workers' café on the square by the great municipal baths, plain and
+    hard-used, where the shift coming off the sidings fills the place at six and
+    empties it by eight and a stranger is marked at once.
+  atmosphere: [plain and hard-used, the shift crowd at six, a stranger marked at once]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: viktor-adler-markt
+  name: the Viktor-Adler-Markt
+  type: markt
+  district: favoriten
+  public: true
+  description: >-
+    A workers'-district street market of handcarts and awnings, the cheapest in
+    the city, where ration coupons and harder currency change hands over the
+    vegetable barrows and a word is swallowed in the haggling.
+  atmosphere: [handcarts and awnings, coupons over the barrows, a word lost in the haggling]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: trafik-favoritenstrasse
+  name: Trafik Favoritenstraße
+  type: trafik
+  district: favoriten
+  public: true
+  description: >-
+    A kiosk at a tram junction on the long workers' street, first lit on the
+    block before dawn, where the early papers go to the men bound for the sidings
+    and the proprietor forgets a face by the next tram.
+  atmosphere: [first lit before dawn, early papers for the sidings, a face forgotten by the next tram]
+  city: vienna
+  tags: [access:public]
+  basis: fictional
+
+# --- Brigittenau (Soviet sector) -------------------------------------------
+- id: cafe-wallensteinplatz
+  name: Café Wallensteinplatz
+  type: kaffeehaus
+  district: brigittenau
+  public: true
+  description: >-
+    A dockland café on the square, oilcloth on the tables and a stove roaring in
+    the cold, where the lorry drivers and barge hands take their coffee laced and
+    nobody remarks on a stranger come in out of the river fog.
+  atmosphere: [oilcloth and a roaring stove, barge hands and lorry drivers, a stranger out of the fog]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: handelskai-haltestelle
+  name: the Handelskai stop
+  type: haltestelle
+  district: brigittenau
+  public: true
+  description: >-
+    A tram halt on the quay road hard by the river, the cranes of the port
+    working behind it, where the wind off the water scatters the few who wait and
+    the last tram of the night runs all but empty back to the Ring.
+  atmosphere: [the quay road by the river, cranes working behind, the last tram all but empty]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional
+
+- id: lesehalle-brigittenau
+  name: Volksbücherei Brigittenau
+  type: lesehalle
+  district: brigittenau
+  public: true
+  description: >-
+    A people's lending library in a tenement courtyard, its one warm room a
+    refuge from the dockland cold, where the few readers keep to themselves and
+    the stacks at the back are dark enough to lose a book among for a day.
+  atmosphere: [a tenement courtyard, one warm room, dark stacks to lose a book among]
+  city: vienna
+  tags: [function:meeting-spot, access:public]
+  basis: fictional

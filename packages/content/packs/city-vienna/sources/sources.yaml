@@ -1,0 +1,75 @@
+# sources.yaml — the Vienna Sources List (content-expansion task 9.1).
+#
+# Each is a Source: the bibliographic record a `real-landmark` City Location
+# cites (CE-SOURCE, Req 3.1) so its historical texture can be reviewed. These
+# attest the real Viennese landmarks named in the Locations — the Prater, the
+# Ringstraße parks, the railway termini, the Naschmarkt, the river port and the
+# four-power administration — against period and reference works. The entries
+# themselves are plain bibliographic descriptions; the authored prose about each
+# place is original.
+
+- id: src-vienna-guide
+  title: A Visitor's Guide to Vienna, Fourth Edition
+  kind: guide
+  year: 1951
+  note: >-
+    General city guidebook of the occupation years; its ward-by-ward walks and
+    plans attest the Ringstraße, the parks, the markets and the railway termini.
+
+- id: src-prater
+  title: The Prater and the Leopoldstadt — A Short History
+  author: a city historian
+  kind: book
+  year: 1949
+  note: >-
+    Local history of the great park and the island district, attesting the
+    fairground, the Ferris wheel and the park's avenues in the postwar years.
+
+- id: src-ringstrasse
+  title: The Ringstraße and Its Gardens
+  kind: book
+  year: 1948
+  note: >-
+    Reference account of the boulevard laid out on the old glacis and the formal
+    municipal gardens along it, including the Stadtpark.
+
+- id: src-railway-timetable
+  title: Austrian Railways Public Timetable, Summer Service
+  kind: guide
+  year: 1952
+  note: >-
+    Published passenger timetable attesting the western and southern termini and
+    the services running from each during the occupation.
+
+- id: src-naschmarkt
+  title: The Markets of Vienna
+  kind: book
+  year: 1950
+  note: >-
+    Survey of the city's standing markets, attesting the long covered market
+    between Wieden and Mariahilf and its halls.
+
+- id: src-danube-port
+  title: The Danube and Its Harbours at Vienna
+  kind: book
+  year: 1947
+  note: >-
+    Account of the river and its working harbours, attesting the sheltered
+    winter port on the city's northern edge and its quays.
+
+- id: src-four-power
+  title: The Administration of Occupied Vienna, 1945–1955
+  kind: archive
+  year: 1956
+  note: >-
+    Reference account of the four-power occupation and its inter-allied
+    machinery, attesting the jointly administered international zone and its
+    liaison arrangements.
+
+- id: src-vienna-map
+  title: Plan of the City of Vienna with Occupation Sectors
+  kind: map
+  year: 1950
+  note: >-
+    Street plan of the period marked with the four occupation sectors and the
+    international zone, used to place Districts and Routes.

@@ -1,0 +1,376 @@
+{
+  "note": "Written by `pnpm seeds:vet`. Seeds the expert playability probe wins inside the vetted window.",
+  "generatorVersion": "0.7.0",
+  "winWindow": [
+    0.3,
+    0.8
+  ],
+  "presets": {
+    "easy": [
+      {
+        "seed": "vienna-easy-0",
+        "winDay": 13,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-easy-1",
+        "winDay": 28,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-easy-2",
+        "winDay": 16,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-easy-3",
+        "winDay": 13,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-easy-4",
+        "winDay": 12,
+        "finalDeadline": 35
+      },
+      {
+        "seed": "vienna-easy-5",
+        "winDay": 15,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-easy-6",
+        "winDay": 12,
+        "finalDeadline": 36
+      },
+      {
+        "seed": "vienna-easy-8",
+        "winDay": 20,
+        "finalDeadline": 37
+      },
+      {
+        "seed": "vienna-easy-9",
+        "winDay": 13,
+        "finalDeadline": 40
+      },
+      {
+        "seed": "vienna-easy-11",
+        "winDay": 13,
+        "finalDeadline": 30
+      },
+      {
+        "seed": "vienna-easy-12",
+        "winDay": 22,
+        "finalDeadline": 32
+      },
+      {
+        "seed": "vienna-easy-14",
+        "winDay": 29,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-easy-15",
+        "winDay": 13,
+        "finalDeadline": 36
+      },
+      {
+        "seed": "vienna-easy-16",
+        "winDay": 15,
+        "finalDeadline": 44
+      },
+      {
+        "seed": "vienna-easy-18",
+        "winDay": 28,
+        "finalDeadline": 41
+      },
+      {
+        "seed": "vienna-easy-19",
+        "winDay": 28,
+        "finalDeadline": 44
+      },
+      {
+        "seed": "vienna-easy-20",
+        "winDay": 12,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-easy-22",
+        "winDay": 20,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-easy-23",
+        "winDay": 29,
+        "finalDeadline": 40
+      },
+      {
+        "seed": "vienna-easy-24",
+        "winDay": 23,
+        "finalDeadline": 36
+      },
+      {
+        "seed": "vienna-easy-25",
+        "winDay": 14,
+        "finalDeadline": 44
+      },
+      {
+        "seed": "vienna-easy-26",
+        "winDay": 28,
+        "finalDeadline": 36
+      },
+      {
+        "seed": "vienna-easy-30",
+        "winDay": 24,
+        "finalDeadline": 35
+      },
+      {
+        "seed": "vienna-easy-31",
+        "winDay": 17,
+        "finalDeadline": 46
+      }
+    ],
+    "standard": [
+      {
+        "seed": "vienna-standard-0",
+        "winDay": 29,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-standard-1",
+        "winDay": 15,
+        "finalDeadline": 42
+      },
+      {
+        "seed": "vienna-standard-4",
+        "winDay": 18,
+        "finalDeadline": 45
+      },
+      {
+        "seed": "vienna-standard-5",
+        "winDay": 15,
+        "finalDeadline": 46
+      },
+      {
+        "seed": "vienna-standard-7",
+        "winDay": 20,
+        "finalDeadline": 44
+      },
+      {
+        "seed": "vienna-standard-8",
+        "winDay": 23,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-standard-9",
+        "winDay": 19,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-standard-13",
+        "winDay": 33,
+        "finalDeadline": 45
+      },
+      {
+        "seed": "vienna-standard-14",
+        "winDay": 27,
+        "finalDeadline": 41
+      },
+      {
+        "seed": "vienna-standard-15",
+        "winDay": 14,
+        "finalDeadline": 46
+      },
+      {
+        "seed": "vienna-standard-17",
+        "winDay": 15,
+        "finalDeadline": 46
+      },
+      {
+        "seed": "vienna-standard-19",
+        "winDay": 34,
+        "finalDeadline": 44
+      },
+      {
+        "seed": "vienna-standard-20",
+        "winDay": 27,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-standard-21",
+        "winDay": 26,
+        "finalDeadline": 40
+      },
+      {
+        "seed": "vienna-standard-26",
+        "winDay": 20,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-standard-27",
+        "winDay": 24,
+        "finalDeadline": 37
+      },
+      {
+        "seed": "vienna-standard-28",
+        "winDay": 31,
+        "finalDeadline": 41
+      },
+      {
+        "seed": "vienna-standard-30",
+        "winDay": 18,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-standard-31",
+        "winDay": 31,
+        "finalDeadline": 44
+      },
+      {
+        "seed": "vienna-standard-32",
+        "winDay": 34,
+        "finalDeadline": 49
+      },
+      {
+        "seed": "vienna-standard-33",
+        "winDay": 13,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-standard-34",
+        "winDay": 26,
+        "finalDeadline": 42
+      },
+      {
+        "seed": "vienna-standard-35",
+        "winDay": 25,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-standard-36",
+        "winDay": 18,
+        "finalDeadline": 46
+      }
+    ],
+    "hard": [
+      {
+        "seed": "vienna-hard-0",
+        "winDay": 29,
+        "finalDeadline": 40
+      },
+      {
+        "seed": "vienna-hard-1",
+        "winDay": 16,
+        "finalDeadline": 36
+      },
+      {
+        "seed": "vienna-hard-2",
+        "winDay": 24,
+        "finalDeadline": 36
+      },
+      {
+        "seed": "vienna-hard-3",
+        "winDay": 27,
+        "finalDeadline": 40
+      },
+      {
+        "seed": "vienna-hard-5",
+        "winDay": 28,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-hard-7",
+        "winDay": 23,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-hard-8",
+        "winDay": 13,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-hard-10",
+        "winDay": 17,
+        "finalDeadline": 35
+      },
+      {
+        "seed": "vienna-hard-11",
+        "winDay": 28,
+        "finalDeadline": 39
+      },
+      {
+        "seed": "vienna-hard-12",
+        "winDay": 11,
+        "finalDeadline": 32
+      },
+      {
+        "seed": "vienna-hard-13",
+        "winDay": 21,
+        "finalDeadline": 30
+      },
+      {
+        "seed": "vienna-hard-16",
+        "winDay": 14,
+        "finalDeadline": 41
+      },
+      {
+        "seed": "vienna-hard-17",
+        "winDay": 24,
+        "finalDeadline": 34
+      },
+      {
+        "seed": "vienna-hard-18",
+        "winDay": 21,
+        "finalDeadline": 32
+      },
+      {
+        "seed": "vienna-hard-20",
+        "winDay": 20,
+        "finalDeadline": 37
+      },
+      {
+        "seed": "vienna-hard-21",
+        "winDay": 30,
+        "finalDeadline": 38
+      },
+      {
+        "seed": "vienna-hard-22",
+        "winDay": 28,
+        "finalDeadline": 35
+      },
+      {
+        "seed": "vienna-hard-23",
+        "winDay": 29,
+        "finalDeadline": 41
+      },
+      {
+        "seed": "vienna-hard-24",
+        "winDay": 22,
+        "finalDeadline": 33
+      },
+      {
+        "seed": "vienna-hard-25",
+        "winDay": 20,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-hard-26",
+        "winDay": 19,
+        "finalDeadline": 42
+      },
+      {
+        "seed": "vienna-hard-27",
+        "winDay": 28,
+        "finalDeadline": 43
+      },
+      {
+        "seed": "vienna-hard-28",
+        "winDay": 22,
+        "finalDeadline": 37
+      },
+      {
+        "seed": "vienna-hard-29",
+        "winDay": 19,
+        "finalDeadline": 29
+      }
+    ]
+  }
+}

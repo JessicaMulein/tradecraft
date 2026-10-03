@@ -1,0 +1,71 @@
+# descriptor-fragments/feature.yaml — the `feature` slot.
+#
+# A distinguishing feature: the detail a watcher fixes on. This slot is
+# deliberately the largest and most varied because the descriptor generator
+# appends `feature` fragments one by one until a subject's descriptor is unique
+# (Req 6.5; task 3.5) — a thin pool would force collisions. Each fragment
+# validates against DescriptorFragmentSchema with `slot: feature`.
+#
+# GENDER. Facial hair reads `m` (a clipped moustache, a day's stubble); period
+# cosmetics read `f` (pale powder and a dark lipstick, a marcel wave). The rest
+# — complexion, bearing, hands, eyes, voice, gait — are gender-neutral and carry
+# no `gender`. Nothing here is period-specific, so no fragment carries `years`.
+#
+# None of these describes a real individual. A `text` that contains a comma is
+# quoted so the YAML flow mapping does not read the comma as a key separator.
+
+# --- grooming: men ---------------------------------------------------------
+- { id: feat-m-clean-shaven, slot: feature, gender: m, text: "clean-shaven, with a square jaw" }
+- { id: feat-m-clipped-moustache, slot: feature, gender: m, text: a clipped moustache }
+- { id: feat-m-pencil-moustache, slot: feature, gender: m, text: a pencil moustache }
+- { id: feat-m-grey-stubble, slot: feature, gender: m, text: a day's grey stubble }
+- { id: feat-m-spade-beard, slot: feature, gender: m, text: a neat spade beard }
+- { id: feat-m-hair-oiled-flat, slot: feature, gender: m, text: hair oiled and combed flat }
+- { id: feat-m-close-cropped, slot: feature, gender: m, text: hair close-cropped at the back and sides }
+- { id: feat-m-thinning-swept, slot: feature, gender: m, text: thinning hair swept straight back }
+- { id: feat-m-heavy-sideburns, slot: feature, gender: m, text: heavy sideburns }
+
+# --- grooming: women -------------------------------------------------------
+- { id: feat-f-pale-powder-lipstick, slot: feature, gender: f, text: pale powder and a dark lipstick }
+- { id: feat-f-marcel-wave, slot: feature, gender: f, text: a careful marcel wave }
+- { id: feat-f-tight-bun, slot: feature, gender: f, text: greying hair worn in a tight bun }
+- { id: feat-f-rosewater-scent, slot: feature, gender: f, text: a trace of rosewater scent }
+- { id: feat-f-scrubbed-plain, slot: feature, gender: f, text: "no powder, a scrubbed plainness" }
+- { id: feat-f-pinned-under-hat, slot: feature, gender: f, text: hair pinned up under a hat }
+- { id: feat-f-short-permed, slot: feature, gender: f, text: "short, tightly permed hair" }
+
+# --- face and complexion (either) ------------------------------------------
+- { id: feat-closed-expression, slot: feature, text: "a careful, closed expression" }
+- { id: feat-wire-spectacles-tired, slot: feature, text: tired eyes behind wire spectacles }
+- { id: feat-ruddy-open-face, slot: feature, text: "a ruddy, open face" }
+- { id: feat-long-jaw-watchful, slot: feature, text: a long jaw and watchful eyes }
+- { id: feat-quick-measuring-glance, slot: feature, text: "a quick, measuring glance" }
+- { id: feat-horn-rimmed, slot: feature, text: heavy horn-rimmed spectacles }
+- { id: feat-sallow-complexion, slot: feature, text: "a sallow, indoor complexion" }
+- { id: feat-weathered-outdoor, slot: feature, text: "a weathered, outdoor face" }
+- { id: feat-pale-sharp, slot: feature, text: "pale, sharp features" }
+- { id: feat-broken-nose, slot: feature, text: a nose broken and badly set }
+- { id: feat-scar-eyebrow, slot: feature, text: a thin scar through one eyebrow }
+- { id: feat-cleft-chin, slot: feature, text: a deep-cleft chin }
+- { id: feat-hooded-eyes, slot: feature, text: "heavy, hooded eyes" }
+- { id: feat-pockmarked, slot: feature, text: a faintly pockmarked cheek }
+- { id: feat-gold-tooth, slot: feature, text: a glint of a gold tooth }
+- { id: feat-missing-fingertip, slot: feature, text: a missing fingertip on one hand }
+- { id: feat-ink-stained-fingers, slot: feature, text: ink-stained fingers }
+- { id: feat-nicotine-fingers, slot: feature, text: nicotine-yellowed fingers }
+- { id: feat-signet-ring, slot: feature, text: a worn signet ring on the right hand }
+- { id: feat-wristwatch-worn-strap, slot: feature, text: a wristwatch on a worn strap }
+
+# --- bearing, voice and gait (either) --------------------------------------
+- { id: feat-stiff-attention, slot: feature, text: a bearing that never quite leaves attention }
+- { id: feat-slight-limp, slot: feature, text: "a slight, favouring limp" }
+- { id: feat-stoop-walk, slot: feature, text: "a stooping, hurried walk" }
+- { id: feat-rolling-gait, slot: feature, text: "a slow, rolling gait" }
+- { id: feat-soft-accented-voice, slot: feature, text: "a soft, accented voice" }
+- { id: feat-hoarse-smoker, slot: feature, text: "a hoarse, smoker's voice" }
+- { id: feat-clipped-precise, slot: feature, text: "clipped, precise speech" }
+- { id: feat-restless-hands, slot: feature, text: "restless, fidgeting hands" }
+- { id: feat-habit-glancing-back, slot: feature, text: a habit of glancing back }
+- { id: feat-cigarette-never-out, slot: feature, text: a cigarette never quite out }
+- { id: feat-permanent-frown, slot: feature, text: "a permanent, worried frown" }
+- { id: feat-ready-smile, slot: feature, text: "a ready, disarming smile" }

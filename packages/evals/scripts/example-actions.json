@@ -1,0 +1,5 @@
+[
+  { "kind": "wait", "phases": 1 },
+  { "kind": "wait", "phases": 2 },
+  { "kind": "travel", "to": "loc:REPLACE-WITH-A-REAL-LOCATION-ID", "countersurveillance": false }
+]

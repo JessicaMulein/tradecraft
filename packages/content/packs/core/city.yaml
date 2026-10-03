@@ -1,0 +1,262 @@
+# city.yaml — 1950s occupied Vienna, four-power occupation.
+#
+# This file holds the Viennese geography the world generator stamps Districts,
+# Locations and Routes from, plus the Central European weather tables the daily
+# stream reads. It also carries the name pools that Location Type `namePatterns`
+# draw from via `{pick:<pool>}` (for example `{pick:cafe-names}`).
+#
+# Occupation texture: after 1945 Vienna was split into four sectors held by the
+# United States, the United Kingdom, France and the Soviet Union, with the Inner
+# City (the First District) run jointly as an international zone patrolled by all
+# four powers in rotation ("four men in a jeep"). The sector a District sits in
+# shapes who patrols it, how papers are checked, and how a crossing feels. All
+# of it is period texture; every character and organisation in play is fictional.
+#
+# The loader tolerates this file (it is in the ignored set), so the shape here is
+# chosen for later tasks rather than a schema. Keep it clean, consistent YAML.
+
+id: vienna-1952
+displayName: Vienna
+era: '1950s'
+occupation: four-power
+
+# --- Sectors ---------------------------------------------------------------
+# The four occupying powers plus the jointly administered international zone.
+sectors:
+  - id: international
+    power: four-power
+    label: International Zone
+    note: >-
+      The Inner City, administered jointly; patrols rotate monthly between the
+      four powers and ride together in a single jeep.
+  - id: american
+    power: american
+    label: American Sector
+  - id: british
+    power: british
+    label: British Sector
+  - id: french
+    power: french
+    label: French Sector
+  - id: soviet
+    power: soviet
+    label: Soviet Sector
+    note: >-
+      Papers are checked more often here and strangers are remembered; the
+      sector presses up against the city's eastern and northern edges.
+
+# --- Districts -------------------------------------------------------------
+# A representative spread of the city's numbered Bezirke, each tagged with the
+# sector that holds it. Districts are the nodes the Route graph connects.
+districts:
+  - id: innere-stadt
+    number: 1
+    name: Innere Stadt
+    sector: international
+    character: >-
+      The old core inside the Ring: the cathedral, the ministries, the grand
+      cafés and the hotels where every delegation keeps a table.
+  - id: leopoldstadt
+    number: 2
+    name: Leopoldstadt
+    sector: soviet
+    character: >-
+      Across the Danube Canal; the great park, the fairground wheel, and quiet
+      streets where a watched man can lose a tail or acquire one.
+  - id: landstrasse
+    number: 3
+    name: Landstraße
+    sector: british
+    character: >-
+      Legation quarter of villas and garden walls; the diplomatic traffic here
+      is heavy and the pavements are swept.
+  - id: wieden
+    number: 4
+    name: Wieden
+    sector: soviet
+    character: Dense tenements, a market square, and tram lines in every direction.
+  - id: mariahilf
+    number: 6
+    name: Mariahilf
+    sector: french
+    character: >-
+      The long shopping street and its side alleys; crowds thin to nothing after
+      the shutters come down.
+  - id: alsergrund
+    number: 9
+    name: Alsergrund
+    sector: american
+    character: >-
+      Hospitals, lecture halls and lodging houses; students, clerks and the odd
+      correspondent filing from a rented room.
+  - id: favoriten
+    number: 10
+    name: Favoriten
+    sector: soviet
+    character: >-
+      Workers' blocks, rail sidings and a gasworks; a long way from the Ring and
+      it feels it.
+  - id: brigittenau
+    number: 20
+    name: Brigittenau
+    sector: soviet
+    character: >-
+      Warehouses and the harbour hinterland between the canal and the river,
+      where lorries idle at odd hours.
+
+# --- Street name pools -----------------------------------------------------
+# Authentic-sounding but fictional Viennese street names, pooled by texture so a
+# Location can be placed on a plausible street for its District. Drawn by name
+# patterns and by the generator when it needs an address.
+streets:
+  grand:
+    - Ringstraße
+    - Opernring
+    - Kärntner Straße
+    - Graben
+    - Kohlmarkt
+    - Herrengasse
+  commercial:
+    - Mariahilfer Straße
+    - Taborstraße
+    - Praterstraße
+    - Favoritenstraße
+    - Wiedner Hauptstraße
+  residential:
+    - Berggasse
+    - Porzellangasse
+    - Nußdorfer Straße
+    - Zirkusgasse
+    - Große Sperlgasse
+    - Blumauergasse
+  waterfront:
+    - Handelskai
+    - Obere Donaustraße
+    - Untere Donaustraße
+    - Treustraße
+  quiet:
+    - Annagasse
+    - Weihburggasse
+    - Dorotheergasse
+    - Himmelpfortgasse
+    - Bäckerstraße
+
+# --- Name pools for Location Types ----------------------------------------
+# Referenced from location-types.yaml name patterns as `{pick:<pool>}`. All
+# proper names are invented; none name a real Viennese business of the period.
+namePools:
+  cafe-names:
+    - Café Mohnblume
+    - Café Sperl­garten
+    - Café Rautenberg
+    - Café Zur Alten Linde
+    - Café Hochquell
+    - Café Weißer Reiter
+  hotel-names:
+    - Hotel Donaublick
+    - Hotel Erzherzog
+    - Hotel Vier Jahreszeiten am Ring
+    - Hotel Stephanskrone
+    - Pension Goldenes Kreuz
+  bookshop-names:
+    - Antiquariat Lindner
+    - Buchhandlung Vorwald
+    - Antiquariat Zum Blauen Band
+    - Buchhandlung Reichert
+  tobacconist-names:
+    - Trafik Kolar
+    - Tabak-Trafik Weinhuber
+    - Trafik am Graben
+    - Tabak-Trafik Pichler
+  library-names:
+    - Städtische Lesehalle
+    - Bezirksbücherei Alsergrund
+    - Lesesaal Mariahilf
+  park-names:
+    - Prater
+    - Stadtpark
+    - Rathauspark
+    - Augarten
+  warehouse-names:
+    - Lagerhaus Brunner & Söhne
+    - Speditionslager Hartl
+    - Zollfreilager Nord
+    - Lagerhalle am Handelskai
+  embassy-names:
+    - Allied Trade Mission
+    - Legation of the Free Republic
+    - Commission for Displaced Persons
+    - Four-Power Liaison Office
+  bar-names:
+    - the Marmorbar
+    - the Blue Danube Bar
+    - the American Bar
+    - the Kellerbar
+  heuriger-names:
+    - Heuriger Grinzinger Hof
+    - Heuriger Zum Alten Presshaus
+    - Weinhaus Nussberg
+    - Heuriger Sieveringer Stüberl
+    - Buschenschank Kahlenberg
+    - Heuriger Zur Grünen Pforte
+  cinema-names:
+    - Kino Elysium
+    - Lichtspiele Apollo
+    - Kino Urania-Palast
+    - Gloria-Kino
+    - Burg-Lichtspiele
+    - Kino Rondell
+  market-names:
+    - Naschmarkt
+    - Brunnenmarkt
+    - Karmelitermarkt
+    - Rochusmarkt
+    - Viktor-Adler-Markt
+    - Vorgartenmarkt
+
+# --- Weather tables --------------------------------------------------------
+# Central European seasons. The daily stream draws one `condition` per day,
+# weighted; Location Types key crowd modifiers off the condition `id`. No
+# anachronisms — these are plain weather words a 1950s Viennese would use.
+weather:
+  seasons:
+    winter:
+      months: [12, 1, 2]
+      conditions:
+        - { id: clear-cold, label: 'clear and bitter', weight: 3 }
+        - { id: overcast, label: 'low grey cloud', weight: 4 }
+        - { id: snow, label: 'falling snow', weight: 3 }
+        - { id: fog, label: 'river fog', weight: 2 }
+        - { id: sleet, label: 'sleet and slush', weight: 2 }
+    spring:
+      months: [3, 4, 5]
+      conditions:
+        - { id: clear, label: 'bright and mild', weight: 4 }
+        - { id: overcast, label: 'overcast', weight: 3 }
+        - { id: rain, label: 'steady rain', weight: 3 }
+        - { id: fog, label: 'morning haze', weight: 1 }
+    summer:
+      months: [6, 7, 8]
+      conditions:
+        - { id: clear, label: 'warm and clear', weight: 5 }
+        - { id: humid, label: 'close and humid', weight: 3 }
+        - { id: thunderstorm, label: 'afternoon thunderstorm', weight: 2 }
+        - { id: rain, label: 'warm rain', weight: 1 }
+    autumn:
+      months: [9, 10, 11]
+      conditions:
+        - { id: clear, label: 'crisp and clear', weight: 3 }
+        - { id: overcast, label: 'grey and still', weight: 4 }
+        - { id: rain, label: 'cold rain', weight: 3 }
+        - { id: fog, label: 'thick river fog', weight: 3 }
+  # Tags the Location Type `weatherModifiers` match on. A Location raises or
+  # lowers its crowd when the day's condition carries the tag.
+  tags:
+    - rain
+    - snow
+    - sleet
+    - fog
+    - thunderstorm
+    - clear
+    - humid
+    - overcast

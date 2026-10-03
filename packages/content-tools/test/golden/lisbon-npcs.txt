@@ -1,0 +1,11 @@
+== NPCs (10) ==
+- round-shouldered and soft-spoken, a clipped moustache, a dark double-breasted suit gone shiny at the elbows, a soft grey felt hat  [apparent: neutral]
+- round-shouldered and soft-spoken, a pencil moustache, a black waistcoat over a pressed white shirt  [apparent: neutral]
+- broad through the shoulders, no powder, a loden coat the colour of moss  [apparent: neutral]
+- round-shouldered and soft-spoken, clean-shaven, a short white serving jacket and black trousers, a folded napkin over one forearm  [apparent: neutral]
+- round-shouldered and soft-spoken, a trace of rosewater scent, an usher's short braided jacket, a numbered cap badge  [apparent: neutral]
+- average height, forgettable, a clipped moustache, a leather apron over a flannel shirt, a canvas tool roll  [apparent: neutral]
+- heavyset and deliberate, clean-shaven, a dark double-breasted suit gone shiny at the elbows  [apparent: neutral]
+- average height, forgettable, pale powder and a dark lipstick, a trim uniform jacket and a knee-length skirt, a torch clipped to the belt  [apparent: neutral]
+- tall and spare, a pencil moustache, an usher's short braided jacket, a numbered cap badge  [apparent: neutral]
+- average height, forgettable, no powder, a leather apron over a flannel shirt, a cigarette behind one ear  [apparent: neutral]

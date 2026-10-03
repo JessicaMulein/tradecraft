@@ -1,0 +1,82 @@
+# The core pack's hints (Requirement 26.6).
+#
+# A hint is one-off guidance the UI shows the first time a situation occurs, and
+# only when hints are enabled. The `trigger` comes from the fixed HINT_TRIGGERS
+# enum so the view can match a hint to a situation without reading its text.
+# There is one hint per trigger. `text` is a template string; these are plain
+# prose, so they reference no slots and render verbatim.
+#
+# Setting: 1950s occupied Vienna, four-power occupation. Wording stays in the
+# register of station tradecraft without naming any real person.
+
+- id: hint-first-unidentified-subject
+  trigger: first-unidentified-subject
+  text: >-
+    You have logged someone you cannot yet name. Keep watching and
+    corroborating until you can tie this Unidentified Subject to a known face.
+
+- id: hint-first-intercept
+  trigger: first-intercept
+  text: >-
+    You have your first intercept. Take it to the workbench and try a cipher;
+    the field codes in the message hint at what it carries.
+
+- id: hint-first-dead-drop
+  trigger: first-dead-drop
+  text: >-
+    A dead drop lets you pass material without a meeting. Service it on a
+    schedule and watch for signs it was left unserviced.
+
+- id: hint-first-meeting
+  trigger: first-meeting
+  text: >-
+    A face-to-face meeting carries detection risk. Pick a crowded, open
+    Location and a quiet phase to keep it discreet.
+
+- id: hint-first-recruitment
+  trigger: first-recruitment
+  text: >-
+    Recruitment turns on a person's motive. Read their MICE profile and lead
+    with the lever that fits before you make the pitch.
+
+- id: hint-first-document
+  trigger: first-document
+  text: >-
+    Documents become evidence once filed. Grade what you read and link
+    corroborating Claims so the Case File builds toward an arrest.
+
+- id: hint-budget-low
+  trigger: budget-low
+  text: >-
+    Your operating Budget is running low. Pay only the retainers that earn
+    their keep, and let thinner assets lapse.
+
+- id: hint-standing-low
+  trigger: standing-low
+  text: >-
+    Your Standing with headquarters is slipping. Close an open Directive before
+    its deadline to recover authority.
+
+- id: hint-cover-suspicion-high
+  trigger: cover-suspicion-high
+  text: >-
+    Your cover is drawing attention. Ease off observable activity and vary your
+    routine before the Hostile Service burns your identity.
+
+- id: hint-directive-near-deadline
+  trigger: directive-near-deadline
+  text: >-
+    A Directive is near its deadline. Decide now whether you can meet it or must
+    spend the Standing to let it fail.
+
+- id: hint-plot-deadline-near
+  trigger: plot-deadline-near
+  text: >-
+    The operation you are tracking is close to its deadline. If you mean to act
+    on it, move before the window closes.
+
+- id: hint-first-arrest-available
+  trigger: first-arrest-available
+  text: >-
+    You now hold enough corroborated evidence to request an arrest. A wrongful
+    arrest costs authority, so be sure the Case File names the right person.

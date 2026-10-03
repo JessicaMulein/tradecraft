@@ -1,0 +1,116 @@
+# public-texts/anthology.yaml — a verse-and-prose anthology, original text.
+#
+# Another keyable public text for the book cipher (Requirement 9.2). Every
+# passage here is ORIGINAL writing composed for this pack. We deliberately do
+# NOT reproduce copyrighted twentieth-century poetry or prose; these are new
+# lines written in a plain, period-neutral style so a book cipher has a long,
+# word-rich corpus to count across. The loader tolerates files under
+# public-texts/, so this shape serves the composers (task 5.6), not a schema.
+
+id: anthology-river-and-stone
+kind: public-text
+title: The River and the Stone — A Reader's Anthology
+publisher: Donaustadt Printing House
+genre: anthology
+# A short preface, then numbered passages. The book cipher counts words across
+# the whole ordered body, so every line is plain, ordinary language.
+preface: >-
+  This small anthology gathers verse and prose for the quiet hour. The pieces
+  are new, written for the common reader, and ask only to be read slowly and
+  without hurry.
+passages:
+  - number: 1
+    kind: verse
+    title: Morning on the Water
+    text:
+      - The river wakes before the town,
+      - a slow grey ribbon under cloud,
+      - it carries off the night downstream
+      - and will not speak of it aloud.
+      - The barges nose against the quay,
+      - the lamps go out along the shore,
+      - and someone whistles, far away,
+      - a tune I think I knew before.
+  - number: 2
+    kind: prose
+    title: The Keeper of the Bridge
+    text: >-
+      There was once a man whose whole work was to watch a bridge, and he knew
+      every plank of it as a reader knows a page. He counted the carts at dawn
+      and the walkers at dusk, and he could tell by the sound of a step whether
+      the one who crossed was tired or in a hurry or afraid. People thought his
+      work was small, but he knew that a bridge is only as safe as the eyes that
+      keep it, and he was proud, in his quiet way, of the hundred crossings that
+      passed each day without a stumble.
+  - number: 3
+    kind: verse
+    title: The Lamp in the Window
+    text:
+      - A lamp set in a window
+      - is a small and steady thing,
+      - it says the house is waking,
+      - it says the kettle sings.
+      - It does not ask the weather,
+      - it does not fear the night,
+      - it keeps its one plain promise
+      - to hold a little light.
+  - number: 4
+    kind: prose
+    title: A Letter Never Sent
+    text: >-
+      I meant to write to you in the autumn, when the leaves came down along the
+      avenue and the air turned sharp and clean. I meant to tell you that the
+      old cafe still keeps your corner table, that the waiter still remembers how
+      you took your coffee, and that the city, for all its changes, has not quite
+      let you go. But the autumn passed, and the winter after it, and the letter
+      stayed on my desk, half written, as letters so often do. I send it now,
+      late and plain, because a thing said late is better than a thing not said.
+  - number: 5
+    kind: verse
+    title: Market Day
+    text:
+      - The square fills up at the eighth hour,
+      - with baskets, boots and bargaining,
+      - the cheese is weighed, the apples turned,
+      - and sparrows watch for anything.
+      - A clock strikes somewhere over roofs,
+      - the crowd thins out, the stalls come down,
+      - and quiet settles on the stones
+      - like dusk that gathers in a town.
+  - number: 6
+    kind: prose
+    title: The Clockmaker's Patience
+    text: >-
+      The clockmaker worked by a single window, and he said that patience was
+      the only tool he could not buy. A spring will not be hurried, he told me,
+      and a wheel that is forced will break. You set each piece in its place and
+      you wait, and when it is right the clock keeps time of its own accord and
+      asks nothing further of you. I have thought since that a great many things
+      are like his clocks, and that most of our troubles come of forcing the
+      wheel.
+  - number: 7
+    kind: verse
+    title: Snow in the Inner Town
+    text:
+      - The snow comes down on the inner town
+      - and softens every hard-edged thing,
+      - it hushes carts, it hoods the lamps,
+      - it muffles even the quarter's ring.
+      - A child draws letters in the white,
+      - a dog goes nosing down the lane,
+      - and for an hour the oldest streets
+      - are new and clean and strange again.
+  - number: 8
+    kind: prose
+    title: What the Ferryman Knew
+    text: >-
+      The ferryman had crossed the same stretch of water for forty years, and he
+      said the river taught a man to read the weather better than any almanac.
+      He knew the colour the sky took before a storm, the smell the wind carried
+      off the hills, the way the current pulled when the thaw was coming. He had
+      never left the valley, and he did not wish to; the whole world, he said,
+      passed over his ferry in time, and he had only to wait and watch and work
+      the oars, and the world would show him all it had.
+afterword: >-
+  The anthology closes here. The reader who has come this far is thanked, and
+  wished a quiet evening and a kind morning after it.

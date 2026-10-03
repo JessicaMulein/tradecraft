@@ -1,0 +1,92 @@
+# locale.yaml - the Berlin city Locale (content-expansion task 9.4).
+#
+# Validates against LocaleSchema (packages/content/src/kinds/locale.ts):
+#   { scope, date, currency, honorifics, address, terms, allowNames }
+#
+# This is the city override the era Locale (era-cold-war-early) falls back to,
+# field by field (design, city-then-era fallback chain). `scope.city` names the
+# Berlin City Definition by its bare id (namespaced city-berlin/berlin). It
+# fixes the local register the money/date/honorific/address formatters render
+# through, the Local Terms that join the help glossary, and the names the
+# Specifics Guard allows.
+#
+# Date: the German month and weekday names, in local order - months
+# January->December, weekdays Sunday->Saturday - so the date formatter names a
+# date in the city's own voice.
+#
+# Currency: the Deutsche Mark, written amount-then-symbol in the period style
+# ("12 DM"); the amount and symbol come from the City Definition's currency, the
+# Locale only fixes the layout.
+#
+# Honorifics: the German "Frau"/"Fraeulein" and "Herr" of the period.
+#
+# Local Terms: everyday Berlin words a player meets in the city's text, each
+# with a plain definition for the help glossary. allowNames adds the same common
+# nouns to the Specifics Guard allowlist so a bare mention of an Imbiss or a
+# Hinterhof is not read as a specific named entity. None equals a distinctive
+# entity alias (CE-ALLOWLIST). All terms are period-plain and original.
+
+- scope:
+    city: berlin
+  date:
+    long: '{weekday}, {day}. {month} {year}'
+    short: '{day}.{month}.{year}'
+    months:
+      - Januar
+      - Februar
+      - März
+      - April
+      - Mai
+      - Juni
+      - Juli
+      - August
+      - September
+      - Oktober
+      - November
+      - Dezember
+    weekdays:
+      - Sonntag
+      - Montag
+      - Dienstag
+      - Mittwoch
+      - Donnerstag
+      - Freitag
+      - Samstag
+  currency:
+    pattern: '{amount} {symbol}'
+  honorifics:
+    f: [Frau, Fräulein]
+    m: [Herr]
+  address: '{street} {number}, {district}'
+  terms:
+    - term: Imbiss
+      definition: A street stall or stand-up counter selling hot sausage, rolls and coffee.
+    - term: Kneipe
+      definition: A plain neighbourhood pub or corner bar.
+    - term: Kiosk
+      definition: A street booth selling newspapers, cigarettes, lottery slips and tram tickets.
+    - term: Hinterhof
+      definition: An inner courtyard behind a tenement block, reached through a passage from the street.
+    - term: Bezirk
+      definition: An administrative district of the city.
+    - term: Sektor
+      definition: One of the four occupation sectors into which the city is divided.
+    - term: Übergang
+      definition: A crossing point between sectors, where papers may be checked.
+    - term: Pfennig
+      definition: The subunit of the Deutsche Mark; one hundred Pfennig to the mark.
+    - term: Schrebergarten
+      definition: An allotment garden with a small summer hut on the city's outskirts.
+    - term: Trümmer
+      definition: The rubble of the bombed city, still heaped and being cleared through the period.
+  allowNames:
+    - Imbiss
+    - Kneipe
+    - Kiosk
+    - Hinterhof
+    - Bezirk
+    - Sektor
+    - Übergang
+    - Pfennig
+    - Schrebergarten
+    - Trümmer

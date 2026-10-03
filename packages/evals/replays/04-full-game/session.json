@@ -1,0 +1,1122 @@
+{
+  "seed": "win-by-arrest-22",
+  "preset": "easy",
+  "plan": [
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:cable/hq-st22"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:dossier/friedrich-mayrhofer-1"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:dossier/galina-travkin-2"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:dossier/katharina-vorwald-3"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:dossier/richard-zehetner-0"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "surveil",
+        "at": "loc:augarten-12",
+        "phases": 1
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "travel",
+        "to": "loc:the-station-15",
+        "countersurveillance": false
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-1-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "cable",
+        "body": {
+          "kind": "trace",
+          "target": "npc:richard-zehetner-0"
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:cable/hq-2-2-r1"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "read",
+        "doc": "doc:dossier/trace-hq-2-2-r1"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-2-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-2-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "JDUMP"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-1-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "RLPCOL"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-1-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "EEERRER"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-0-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "WECR"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-5-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "YBAEAXE"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-5-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "WZJWHHH"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-5-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "XWITPZ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-4-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-4-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "ISSK"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-3-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-3-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "GRIAY"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-3-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-8-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "TSYNDSQ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-8-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "LINZ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-7-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-7-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-7-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "XFVSR"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-6-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "BUJW"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-6-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-11-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "EGEOQ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-11-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "EZTULF"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-11-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "XOCECJ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-10-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-10-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-9-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-9-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-9-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "HIPKE"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-14-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "APGW"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:noise-tx-chan-noise-0-diplomatic-14-0",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "PDUAN"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-13-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-13-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "ZDVHFXC"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-13-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "DCCGQK"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-17-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "QEDHXT"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-17-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "JBGOG"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-17-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-16-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "VXKWTJ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-15-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "DFCWHF"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-15-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-15-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "ZMBYJBK"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-20-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-19-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "NBVUVF"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-19-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "QIRC"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-19-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-18-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-22-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/anthology-river-and-stone",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-21-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "NXRYMYL"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-21-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "NOWSJQ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-21-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "IEPFRNN"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-25-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "XVKQZE"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:plot-tx-stage-cipher-theft-suborn-the-clerk-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-24-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "IQGTB"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-23-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "SSLWKZ"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-23-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "YMISUM"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-23-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/timetable-vienna-tram-rail",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "wait",
+        "phases": 4
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "intercept"
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-larisa-marchenko-4-signal-27-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "vigenere",
+            "key": "BLRLA"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:hostile-tx-chan-larisa-marchenko-4-signal-27-2",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "book",
+            "textId": "doc:public-text/almanac-vienna-household",
+            "scheme": "page-line-word"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-27-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "YQGMHJI"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "decrypt",
+        "intercept": "int:cell-tx-chan-galina-travkin-2-signal-26-1",
+        "submission": {
+          "kind": "key",
+          "spec": {
+            "kind": "columnar",
+            "key": "AZFGGK"
+          }
+        }
+      }
+    },
+    {
+      "kind": "action",
+      "action": {
+        "kind": "arrest",
+        "npc": "npc:richard-zehetner-0"
+      }
+    }
+  ],
+  "modelsConfig": {
+    "endpoint": "http://localhost:1234/v1",
+    "profiles": {
+      "base": {
+        "voice": {
+          "model": "voice-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "fast": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "narrator": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "bookkeeping": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "judge": {
+          "model": "voice-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        }
+      }
+    },
+    "active": "base"
+  }
+}

@@ -1,0 +1,29 @@
+== City: Lisbon ==
+setting: city-lisbon/lisbon (year 1961)
+districts: 8
+locations: 16
+routes: 12
+
+== Districts ==
+- Alcântara [alcantara] — sector 
+- Alfama [alfama] — sector 
+- Baixa [baixa] — sector 
+- Belém [belem] — sector 
+- Cais do Sodré [cais-do-sodre] — sector 
+- Chiado [chiado] — sector 
+- Estrela [estrela] — sector 
+- Mouraria [mouraria] — sector 
+
+== Routes ==
+- Alcântara <-> Belém (cost 1)
+- Alfama <-> Cais do Sodré (cost 1)
+- Alfama <-> Mouraria (cost 0)
+- Baixa <-> Alfama (cost 1)
+- Baixa <-> Cais do Sodré (cost 0)
+- Baixa <-> Chiado (cost 0)
+- Baixa <-> Mouraria (cost 0)
+- Cais do Sodré <-> Alcântara (cost 1)
+- Cais do Sodré <-> Belém (cost 1)
+- Chiado <-> Cais do Sodré (cost 0)
+- Chiado <-> Estrela (cost 1)
+- Estrela <-> Alcântara (cost 1)

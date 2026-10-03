@@ -1,0 +1,250 @@
+# template-variants/template-variants.yaml — the Istanbul city Template Variants
+# (content-expansion task 9.6).
+#
+# Each validates against TemplateVariantSchema (packages/content/src/kinds/
+# locale.ts): { id, base, scope, template }. A Template Variant replaces a base
+# template for one city; at load its slot set is compared with its base's and a
+# mismatch is refused (CE-VARIANT, Req 8.3). Resolution order is city → era →
+# base (Req 8.2), so a city variant here renders in Istanbul in place of the
+# base. Scope is `{ city: istanbul }` throughout.
+#
+# A base is a Document template, addressed by its namespaced id: the shared core
+# templates (`core/...`) and this City Pack's own article/field-document
+# templates (`city-istanbul/...`, documents/articles.yaml). The variant's
+# `template` MUST reference exactly the base's slot set — the union of the base's
+# title pattern and every section body — no more and no fewer slots, or the
+# loader refuses it. Optional slots are referenced with `{?slot}…{/slot}`.
+#
+# The copy is Istanbul-voiced: ferries and the strait, Pera and the bazaar, the
+# quays and the consulates. Officials are named by office; every name in the
+# text is fictional; no anachronism.
+
+# =========================================================================
+# Variants of this City Pack's own article templates (slot sets per
+# documents/articles.yaml).
+# =========================================================================
+
+- id: var-city-news
+  base: city-istanbul/article-city-news
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {weekday}, {date}. From the {district} it is reported that
+    {subject} drew notice. {detail} The matter rests with the {office}; the
+    ferries ran to time across the strait.
+
+- id: var-court-record
+  base: city-istanbul/article-court-record
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, court record for {date}. In the {district} a charge of {offence}
+    was heard, arising near {place}. The party, {party}, was examined by the
+    {office}. {outcome}
+
+- id: var-shipping-arrivals
+  base: city-istanbul/article-shipping-arrivals
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. Arrived at the quays: the {vessel}, under the {flag},
+    with {cargo}, now at {berth}. Consignees apply to the agent, {agent}.
+
+- id: var-exchange-rates
+  base: city-istanbul/article-exchange-rates
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. On the Galata market {commodity} was {trend}. {detail}
+    So the money-changers posted it under the tower at the close.
+
+- id: var-ferry-notice
+  base: city-istanbul/article-ferry-notice
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. The {line} ferry will {change} from {effective}.
+    Passengers consult the board at the iskele; by notice of the {office}.
+
+- id: var-rail-notice
+  base: city-istanbul/article-rail-notice
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. On the railway: the {service} is advised thus — {detail}
+    Through-ticket holders apply at the terminus; by notice of the {office}.
+
+- id: var-consular-circular
+  base: city-istanbul/article-consular-circular
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. The {mission} gives notice touching {subject}. {detail}
+    Enquiries are received at the chancery in Pera during office hours.
+
+- id: var-society-pera
+  base: city-istanbul/article-society-pera
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. At {venue} there was {occasion}. {note} So the Grande
+    Rue season turns, as it does every winter.
+
+- id: var-bazaar-notice
+  base: city-istanbul/article-bazaar-notice
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. Among the {trade} of the covered market the talk runs on
+    {subject}. {detail} The guild answers to the {office}.
+
+- id: var-quarter-report
+  base: city-istanbul/article-quarter-report
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. In the {district} the week's chief matter was {subject}.
+    {detail}
+
+- id: var-weather
+  base: city-istanbul/article-weather
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. Over the Bosphorus the outlook is {outlook}. {detail}
+    The ferries and the shipping take notice.
+
+- id: var-almanac-note
+  base: city-istanbul/article-almanac-note
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. From the day's almanac: {entry}. {detail}
+
+- id: var-lost-and-found
+  base: city-istanbul/article-lost-and-found
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. Found and held: {item}, left at {place}. Owners apply,
+    with proof, to the {office}.
+
+- id: var-cinema-notice
+  base: city-istanbul/article-cinema-notice
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. At {house} this week: {programme}. {note}
+
+- id: var-public-notice
+  base: city-istanbul/article-public-notice
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. By notice of the {office}, from {effective}: {subject}.
+    {detail}
+
+- id: var-emigre-column
+  base: city-istanbul/article-emigre-column
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. Among the week's travellers: {traveller}, bound by
+    {route}. {note}
+
+- id: var-weather-warning
+  base: city-istanbul/article-weather-warning
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. A warning to small craft and the ferries: {warning}. By
+    the {office}.
+
+- id: var-charity-notice
+  base: city-istanbul/article-charity-notice
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. An appeal in aid of {appeal}. {detail} Subscriptions to
+    the {office}.
+
+- id: var-sport
+  base: city-istanbul/article-sport
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. {fixture}: {result}. {note}
+
+- id: var-correction
+  base: city-istanbul/article-correction
+  scope: { city: istanbul }
+  template: >-
+    {masthead}, {date}. A correction to our last edition: {correction} We regret
+    the error.
+
+- id: var-dossier-person
+  base: city-istanbul/dossier-istanbul-person
+  scope: { city: istanbul }
+  template: >-
+    File {file-ref}. Subject {subject}, known in the {quarter}.{?alias} Also
+    reported as {alias}.{/alias} Last placed at {last-seen}.{?association} In the
+    company of {association}.{/association} Station assessment: {assessment}
+
+- id: var-cable-field
+  base: city-istanbul/cable-istanbul-field
+  scope: { city: istanbul }
+  template: >-
+    {from-cover} AT ISTANBUL STATION STOP TO HEAD OFFICE STOP FILED {date} STOP
+    REFERENCE {cable-ref} STOP ON THE MATTER OF {subject} STOP {observation} STOP
+    {?request}REQUESTING {request} STOP{/request} HOLDING FOR ORDERS STOP CLOSE
+    STOP
+
+- id: var-seized-note
+  base: city-istanbul/seized-istanbul-note
+  scope: { city: istanbul }
+  template: >-
+    Recovered {date} at {place} by {recovered-by}. {description}; appears to
+    concern {subject}. Legible contents as found: {contents}
+
+# =========================================================================
+# Variants of the shared core Document templates (slot sets per
+# packs/core/documents.yaml), re-voiced for Istanbul.
+# =========================================================================
+
+- id: var-core-city
+  base: core/newspaper-wiener-tagblatt-city
+  scope: { city: istanbul }
+  template: >-
+    {masthead} — {weekday}, {date} ({edition} edition). {headline}. From the
+    {district}: {subject}. {detail} The matter rests with the {official-office}.
+    {?notice}Notice to readers: {notice}{/notice}
+
+- id: var-core-blotter
+  base: core/newspaper-wiener-tagblatt-blotter
+  scope: { city: istanbul }
+  template: >-
+    {masthead}: court and police record for {date}. In the {district} a charge
+    of {offence} arose near {place}; the party, {subject}, was questioned by the
+    {official-office}. {outcome}
+
+- id: var-core-notices
+  base: core/newspaper-amtsblatt-notices
+  scope: { city: istanbul }
+  template: >-
+    {masthead} — official notices, {date}. By order of the {official-office},
+    effective {effective-date}: {subject}, applying within the {district}.
+    {detail}
+
+- id: var-core-dossier
+  base: core/dossier-hq-person
+  scope: { city: istanbul }
+  template: >-
+    File {file-ref}. Subject {subject}; grade {source-grade}.{?alias} Also known
+    as {alias}.{/alias} Apparent allegiance: {allegiance-apparent}. Last at
+    {last-seen-place} about {last-seen-date}.{?association} With
+    {association}.{/association} Assessment: {assessment}
+
+- id: var-core-cable-directive
+  base: core/cable-hq-directive
+  scope: { city: istanbul }
+  template: >-
+    CABLE {cable-ref} {priority} STOP TO {to-station} STOP {date} STOP RE
+    {subject} STOP {instruction} STOP {?deadline}DEADLINE {deadline}
+    STOP{/deadline} {?budget-line}FUNDS {budget-line} STOP{/budget-line} ENDS
+    STOP
+
+- id: var-core-cable-field
+  base: core/cable-field-report
+  scope: { city: istanbul }
+  template: >-
+    SENDER {from-cover} STOP FOR HEAD OFFICE STOP DATED {date} STOP OUR NUMBER
+    {cable-ref} STOP CONCERNING {subject} STOP I OBSERVE {observation} STOP
+    {?request}I ASK {request} STOP{/request} MESSAGE CLOSE STOP
+
+- id: var-core-seized
+  base: core/seized-handwritten-note
+  scope: { city: istanbul }
+  template: >-
+    Recovered {date} at {place} by {recovered-by}; condition {condition}.
+    {description}; appears to concern {subject}. Contents as found: {contents}

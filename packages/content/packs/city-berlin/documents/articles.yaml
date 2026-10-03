@@ -1,0 +1,311 @@
+# documents/articles.yaml - Berlin newspaper article (Document) templates
+# (content-expansion task 9.4).
+#
+# Each entry validates against DocumentTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, kind: newspaper, titlePattern, sections:[{id, body}],
+# slots:[contentId] }. These are the article templates the newspaper composer
+# stamps concrete editions from, and the base templates the Berlin Template
+# Variants (template-variants/) override, re-voiced for the divided city.
+#
+# Grammar. `titlePattern` and every section `body` are template strings in the
+# content template language (packages/content/src/lib/template.ts). A bare
+# `{slot}` substitutes the composer's binding; `{?slot}...{/slot}` wraps text
+# that renders only when the slot is bound. The slot ids a template uses are
+# declared in its `slots` list. Plain prose and declared slots only - no
+# `{pick:pool}` references - so these templates validate in isolation. A
+# template's slot set (the union of its title and section slots) is exactly what
+# its Template Variant must bind, no more and no less (CE-VARIANT).
+#
+# Period: divided Berlin, 1948-1961. All mastheads, publishers and businesses
+# are invented. Officials are named by office (the sector commandant, the
+# district warden, the city magistrate), never by a real name. No real
+# atrocities, no anachronisms. The spread carries the divided city's texture:
+# western and eastern sheets, the airlift, the two currencies, the S-Bahn and
+# U-Bahn, the sector crossings.
+
+# =========================================================================
+# WESTERN MORNING PAPER OF RECORD
+# =========================================================================
+
+- id: morgen-city-lead
+  kind: newspaper
+  titlePattern: '{masthead}, {date} - city edition'
+  slots: [masthead, date, headline, district, subject, detail, office]
+  sections:
+    - id: lead
+      body: >-
+        {headline}. From the {district} our correspondent sends word that
+        {subject} drew notice this week. {detail} For now the matter rests with
+        the {office}.
+
+- id: morgen-around-the-city
+  kind: newspaper
+  titlePattern: '{masthead} - around the city'
+  slots: [masthead, note]
+  sections:
+    - id: round-up
+      body: >-
+        The S-Bahn held its time on the ring lines, the western markets opened
+        at the usual hour, and the transports came in low over the northern
+        field through the night. {note}
+
+- id: morgen-weather-and-river
+  kind: newspaper
+  titlePattern: '{masthead}: weather and river for {date}'
+  slots: [masthead, date, outlook, water-note]
+  sections:
+    - id: weather
+      body: >-
+        The forecast for the city and its outskirts: {outlook}. {water-note}
+        Barge masters are reminded that the stretch along the sector line is
+        watched from the far bank.
+
+# =========================================================================
+# AIRLIFT AND SUPPLY
+# =========================================================================
+
+- id: airlift-tonnage-report
+  kind: newspaper
+  titlePattern: '{masthead} - supply and the airlift, {date}'
+  slots: [masthead, date, commodity, tonnage-note, office]
+  sections:
+    - id: tonnage
+      body: >-
+        The incoming traffic held through the day. Stocks of {commodity} are
+        reported adequate for the week by the {office}. {tonnage-note}
+
+- id: ration-notice
+  kind: newspaper
+  titlePattern: '{masthead}: the ration for {period-label}'
+  slots: [masthead, period-label, ration-item, ration-detail, office]
+  sections:
+    - id: ration
+      body: >-
+        For {period-label} the ration of {ration-item} stands as set by the
+        {office}. {ration-detail} Queues formed early at the depots and
+        dispersed without incident.
+
+# =========================================================================
+# WESTERN EVENING SHEET
+# =========================================================================
+
+- id: abend-police-record
+  kind: newspaper
+  titlePattern: '{masthead}: the day book of the sectors, {date}'
+  slots: [masthead, date, district, offence, place, outcome]
+  sections:
+    - id: incident
+      body: >-
+        In the {district}, a matter of {offence} was logged near {place}. The
+        person concerned was taken in, questioned, and {outcome}.
+
+- id: abend-miscellany
+  kind: newspaper
+  titlePattern: '{masthead} - evening miscellany'
+  slots: [masthead, subject, place, detail]
+  sections:
+    - id: lead
+      body: >-
+        Talk of the evening in the western sectors turns on {subject}, seen at
+        {place}. {detail} A tram jumped its line on the ring and held the
+        traffic an hour.
+
+- id: abend-sport
+  kind: newspaper
+  titlePattern: '{masthead}: sport in the city'
+  slots: [masthead, event, result, crowd]
+  sections:
+    - id: report
+      body: >-
+        {event} went off on Sunday under a cold sky. {result} A {crowd} held
+        the terraces, glad of an afternoon out of the queues.
+
+# =========================================================================
+# EASTERN PARTY ORGAN
+# =========================================================================
+
+- id: tribuene-reconstruction
+  kind: newspaper
+  titlePattern: '{masthead} - the reconstruction, {date}'
+  slots: [masthead, date, district, subject, detail, office]
+  sections:
+    - id: lead
+      body: >-
+        The reconstruction advances. In the {district} the work of {subject}
+        goes forward ahead of plan, the {office} reports. {detail}
+
+- id: tribuene-vigilance
+  kind: newspaper
+  titlePattern: '{masthead}: a call to vigilance'
+  slots: [masthead, subject, office, appeal]
+  sections:
+    - id: warning
+      body: >-
+        The {office} warns the working people against the agents of provocation
+        who cross from the western sectors. The matter of {subject} is a case in
+        point. {appeal}
+
+# =========================================================================
+# OFFICIAL GAZETTE
+# =========================================================================
+
+- id: anzeiger-order
+  kind: newspaper
+  titlePattern: '{masthead} - orders of the administration, {date}'
+  slots: [masthead, date, office, order, district, effective]
+  sections:
+    - id: order
+      body: >-
+        By order of the {office}, in force from {effective}: {order}. It applies
+        within the {district} and at all crossings into it.
+
+- id: anzeiger-currency
+  kind: newspaper
+  titlePattern: '{masthead}: currency regulation'
+  slots: [masthead, office, ruling, exchange-note, effective]
+  sections:
+    - id: rule
+      body: >-
+        The {office} gives notice that, from {effective}, {ruling}. {exchange-note}
+        Exchange of the two marks outside the licensed offices remains an
+        offence.
+
+- id: anzeiger-registration
+  kind: newspaper
+  titlePattern: '{masthead} - a reminder on registration'
+  slots: [masthead, office, requirement, place]
+  sections:
+    - id: reminder
+      body: >-
+        The {office} reminds lodgers and the keepers of lodging houses that
+        {requirement}. Returns go to {place} in office hours, each new guest
+        entered in the book on the day of arrival.
+
+- id: anzeiger-lost-and-found
+  kind: newspaper
+  titlePattern: '{masthead}: lost and found'
+  slots: [masthead, items, office]
+  sections:
+    - id: list
+      body: >-
+        Given in and still unclaimed this week: {items}. Owners may call at the
+        {office} with proof of who they are during office hours.
+
+# =========================================================================
+# TRANSIT, UTILITIES AND THE CROSSINGS
+# =========================================================================
+
+- id: transit-service-notice
+  kind: newspaper
+  titlePattern: '{masthead}: S-Bahn and U-Bahn service'
+  slots: [masthead, line, change, reason]
+  sections:
+    - id: notice
+      body: >-
+        The {line} runs to a new timetable from Monday: {change}. The
+        undertaking lays it to {reason} and asks passengers to allow the longer
+        wait between trains.
+
+- id: crossing-regulation
+  kind: newspaper
+  titlePattern: '{masthead} - at the sector crossings'
+  slots: [masthead, office, requirement, crossing-note]
+  sections:
+    - id: rule
+      body: >-
+        The {office} notifies travellers that at the sector crossings
+        {requirement}. {crossing-note} Papers must be shown on request to any
+        patrol on either side of the line.
+
+- id: utilities-notice
+  kind: newspaper
+  titlePattern: '{masthead}: water and lighting'
+  slots: [masthead, quarter, interruption, hours]
+  sections:
+    - id: notice
+      body: >-
+        The supply to the {quarter} is to be cut for {interruption}, between
+        {hours}. Draw what you need beforehand and report any failure that runs
+        past the stated time.
+
+# =========================================================================
+# WESTERN LIBERAL WEEKLY
+# =========================================================================
+
+- id: wochenschau-feuilleton
+  kind: newspaper
+  titlePattern: '{masthead}: the week in the walled city'
+  slots: [masthead, subject, place, reflection]
+  sections:
+    - id: essay
+      body: >-
+        This week the city's talk is of {subject}. From {place} our contributor
+        sends a reflection on a city that lives between two clocks. {reflection}
+
+- id: wochenschau-arts
+  kind: newspaper
+  titlePattern: '{masthead} - concerts and the stage'
+  slots: [masthead, performer, hall, programme]
+  sections:
+    - id: review
+      body: >-
+        {performer} gave a programme of {programme} at {hall} to a full and
+        civil house, glad of an evening out of the cold.
+
+- id: wochenschau-books
+  kind: newspaper
+  titlePattern: '{masthead}: books of the week'
+  slots: [masthead, book-title, review-detail]
+  sections:
+    - id: review
+      body: >-
+        Noticed this week: {book-title}. {review-detail} Copies are to be had
+        from the antiquarian shops of the western centre.
+
+# =========================================================================
+# SMALL NOTICES, SITUATIONS AND LETTERS
+# =========================================================================
+
+- id: situations-and-lodgings
+  kind: newspaper
+  titlePattern: '{masthead} - situations and lodgings'
+  slots: [masthead, offer, terms, apply-to]
+  sections:
+    - id: column
+      body: >-
+        Offered through these columns this week: {offer}, on {terms}. Apply to
+        {apply-to}, in writing and first of all, naming two references known
+        about the city.
+
+- id: letters-to-the-paper
+  kind: newspaper
+  titlePattern: '{masthead}: letters to the paper'
+  slots: [masthead, subject, complaint, remedy]
+  sections:
+    - id: letter
+      body: >-
+        A correspondent writes on {subject}, holding that {complaint}. The
+        remedy he proposes is {remedy}; the editor sends it on to the proper
+        office and keeps his own counsel.
+
+- id: inquiries-after-persons
+  kind: newspaper
+  titlePattern: '{masthead} - inquiries after persons'
+  slots: [masthead, inquiry-detail, office]
+  sections:
+    - id: notice
+      body: >-
+        The following inquiry is published at the request of the {office}:
+        {inquiry-detail} Any person with word is asked to write to the office,
+        in confidence.
+
+- id: public-health-notice
+  kind: newspaper
+  titlePattern: '{masthead}: public health notice'
+  slots: [masthead, office, advice, quarter]
+  sections:
+    - id: notice
+      body: >-
+        The {office} tells householders of the {quarter} that {advice}. The step
+        is a precaution and nothing more, the office adds, in a season of
+        ordinary good health.

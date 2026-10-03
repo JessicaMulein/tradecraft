@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tradecraft</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the game</a>
+<header role="banner"><h1>Tradecraft</h1><div id="status" aria-live="off"></div>
+<button id="mute" type="button" aria-pressed="false">Sound on</button></header>
+<main id="main">
+<section id="title" aria-label="Title">
+<picture><source media="(min-width: 800px)" srcset="/art/box-wide.jpg"><img id="box" alt="Tradecraft box art" src="/art/box-square.jpg"></picture>
+<form id="new-game"><label>Preset <select id="preset"><option>easy</option><option selected>standard</option><option>hard</option></select></label>
+<label><input id="mole" type="checkbox"> Mole</label>
+<button type="submit">Begin</button></form>
+<p id="title-error" role="alert"></p>
+</section>
+<section id="game" hidden>
+<div id="scene" aria-label="Scene"></div>
+<div id="feed" role="log" aria-live="polite" aria-label="Story"></div>
+<div id="params" hidden></div>
+<ul id="actions" aria-label="Actions"></ul>
+<nav id="views" aria-label="Aids"><button data-view="journal" type="button">Journal</button><button data-view="map" type="button">Map</button><button data-view="people" type="button">People</button><button data-view="documents" type="button">Documents</button><button data-view="intercepts" type="button">Intercepts</button><button data-view="help" type="button">Help</button></nav>
+<pre id="aid" tabindex="0" hidden></pre>
+<div id="doc-list" hidden></div>
+<article id="reader" aria-label="Document" tabindex="-1" hidden><header><h2 id="reader-title"></h2><p id="reader-date" class="dim"></p><button id="reader-close" type="button">Close</button></header><div id="reader-body"></div></article>
+<form id="say"><label>Say <input id="line" autocomplete="off"></label><button type="submit">Speak</button><button id="end-scene" type="button">End scene</button></form>
+</section>
+<div id="notices" role="status" aria-live="polite"></div>
+</main>
+<script type="module" src="/static/js/client/main.js"></script>
+</body>
+</html>

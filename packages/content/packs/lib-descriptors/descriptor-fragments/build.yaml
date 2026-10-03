@@ -1,0 +1,31 @@
+# descriptor-fragments/build.yaml — the `build` slot.
+#
+# Physical build and carriage: the first line of a descriptor, the shape a
+# watcher reads at a distance before any detail resolves. Build is
+# gender-neutral and period-neutral, so no fragment carries `gender` or `years`.
+# Each validates against DescriptorFragmentSchema with `slot: build`.
+#
+# A `text` that contains a comma is quoted so the YAML flow mapping does not
+# read the comma as a key separator.
+- { id: build-lean-stooped, slot: build, text: lean and stooped }
+- { id: build-broad-shoulders, slot: build, text: broad through the shoulders }
+- { id: build-slight-quick, slot: build, text: slight and quick }
+- { id: build-heavyset, slot: build, text: heavyset and deliberate }
+- { id: build-average-forgettable, slot: build, text: "average height, forgettable" }
+- { id: build-tall-spare, slot: build, text: tall and spare }
+- { id: build-round-shouldered, slot: build, text: round-shouldered and soft }
+- { id: build-short-barrel, slot: build, text: short and barrel-chested }
+- { id: build-gaunt, slot: build, text: "gaunt, with a stooping walk" }
+- { id: build-wiry, slot: build, text: wiry and restless }
+- { id: build-stocky, slot: build, text: stocky and flat-footed }
+- { id: build-upright-military, slot: build, text: "upright, with a military carriage" }
+- { id: build-paunch, slot: build, text: running to a comfortable paunch }
+- { id: build-angular, slot: build, text: all angles and sharp elbows }
+- { id: build-powerful-slow, slot: build, text: powerfully built but slow-moving }
+- { id: build-neat-compact, slot: build, text: neat and compact }
+- { id: build-rawboned, slot: build, text: rawboned and loose-limbed }
+- { id: build-slight-stoop-cane, slot: build, text: "slight, leaning on a cane" }
+- { id: build-bull-necked, slot: build, text: bull-necked and heavy-handed }
+- { id: build-trim-light, slot: build, text: trim and light on the feet }
+- { id: build-broad-settled, slot: build, text: "broad and settled, past middle age" }
+- { id: build-frail, slot: build, text: "frail, with a careful shuffle" }

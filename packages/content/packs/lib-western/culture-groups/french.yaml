@@ -1,0 +1,367 @@
+# culture-groups/french.yaml — the French group.
+#
+# A CultureGroup (CultureGroupSchema). French surnames are not gender-inflected,
+# so family names are plain strings and the Naming Rule uses the generic
+# {given} {family} display the engine renders. Quantity (Req 11.4): at least 100
+# given and 100 family names, at least 300 distinct total. All names are
+# generic, common French names of the period in fictional use; none names a real
+# individual, and famous full-name combinations are avoided.
+- id: french
+  name: French
+  languages:
+    - fr
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Marie
+      - Jeanne
+      - Marguerite
+      - Germaine
+      - Yvonne
+      - Suzanne
+      - Louise
+      - Simone
+      - Madeleine
+      - Hélène
+      - Odette
+      - Denise
+      - Renée
+      - Thérèse
+      - Jacqueline
+      - Micheline
+      - Paulette
+      - Henriette
+      - Lucienne
+      - Antoinette
+      - Berthe
+      - Camille
+      - Delphine
+      - Eugénie
+      - Fernande
+      - Gabrielle
+      - Huguette
+      - Irène
+      - Josette
+      - Léontine
+      - Monique
+      - Nicole
+      - Olympe
+      - Pierrette
+      - Raymonde
+      - Solange
+      - Véronique
+      - Adèle
+      - Blanche
+      - Clémence
+      - Danielle
+      - Émilienne
+      - Florence
+      - Georgette
+      - Hortense
+      - Isabelle
+      - Juliette
+      - Laurence
+      - Mireille
+      - Noémie
+      - Octavie
+      - Philomène
+      - Rosalie
+      - Sidonie
+      - Valentine
+      - Augustine
+      - Céleste
+      - Félicie
+      - Ginette
+      - Léonie
+    m:
+      - Jean
+      - Pierre
+      - André
+      - René
+      - Marcel
+      - Henri
+      - Louis
+      - Georges
+      - Robert
+      - Maurice
+      - Roger
+      - Raymond
+      - Albert
+      - Gaston
+      - Lucien
+      - Fernand
+      - Émile
+      - Paul
+      - Jacques
+      - Charles
+      - Alphonse
+      - Baptiste
+      - Clément
+      - Désiré
+      - Edmond
+      - Félix
+      - Gaspard
+      - Hippolyte
+      - Isidore
+      - Jérôme
+      - Léon
+      - Mathieu
+      - Narcisse
+      - Octave
+      - Prosper
+      - Quentin
+      - Raoul
+      - Séverin
+      - Thibault
+      - Urbain
+      - Valentin
+      - Xavier
+      - Yves
+      - Adrien
+      - Barthélemy
+      - Césaire
+      - Damien
+      - Eugène
+      - Firmin
+      - Gautier
+      - Honoré
+      - Ignace
+      - Julien
+      - Léopold
+      - Médéric
+      - Norbert
+      - Olivier
+      - Philibert
+      - Rémy
+      - Sylvain
+  family:
+    - Bernard
+    - Dubois
+    - Moreau
+    - Laurent
+    - Lefebvre
+    - Mercier
+    - Fontaine
+    - Rousseau
+    - Vincent
+    - Chevalier
+    - Lemaire
+    - Boucher
+    - Dupont
+    - Gauthier
+    - Perrin
+    - Morin
+    - Girard
+    - Andre
+    - Lefevre
+    - Mercadier
+    - Legrand
+    - Garnier
+    - Faure
+    - Rousset
+    - Blanchard
+    - Giraud
+    - Marchand
+    - Duval
+    - Denis
+    - Lemoine
+    - Noel
+    - Meyer
+    - Dumont
+    - Marie
+    - Lambert
+    - Fournier
+    - Dupuis
+    - Lacroix
+    - Fabre
+    - Berger
+    - Renaud
+    - Barbier
+    - Caron
+    - Charpentier
+    - Delcourt
+    - Escoffier
+    - Ferrand
+    - Guillaume
+    - Hamon
+    - Imbert
+    - Jourdan
+    - Leclercq
+    - Masson
+    - Nicolas
+    - Olivier
+    - Pelletier
+    - Quemener
+    - Reynaud
+    - Sauvage
+    - Tessier
+    - Vallee
+    - Brun
+    - Collin
+    - Daunais
+    - Evrard
+    - Flament
+    - Gilbert
+    - Hebert
+    - Jacquet
+    - Lesage
+    - Maillard
+    - Navarre
+    - Pasquier
+    - Riviere
+    - Seguin
+    - Thevenet
+    - Vaillant
+    - Baudry
+    - Chauvin
+    - Delahaye
+    - Guerin
+    - Hardy
+    - Jolivet
+    - Langlois
+    - Monnier
+    - Poirier
+    - Raffin
+    - Salmon
+    - Texier
+    - Vasseur
+    - Brisson
+    - Chapuis
+    - Delmas
+    - Gautreau
+    - Herve
+    - Lemieux
+    - Marceau
+    - Perret
+    - Rondeau
+    - Sorel
+    - Allard
+    - Boisvert
+    - Chastain
+    - Deschamps
+    - Estienne
+    - Favrot
+    - Gaudin
+    - Hachette
+    - Isnard
+    - Jacquin
+    - Lalande
+    - Montagne
+    - Nadeau
+    - Oudin
+    - Peltier
+    - Quesnel
+    - Rochat
+    - Sarrazin
+    - Thibodeau
+    - Vernier
+    - Baudin
+    - Chauveau
+    - Delaunay
+    - Emond
+    - Fouquet
+    - Gaudreau
+    - Hamelin
+    - Jolicoeur
+    - Lavergne
+    - Mignard
+    - Nourrit
+    - Ponsard
+    - Rapin
+    - Sainclair
+    - Tanguy
+    - Valois
+    - Bourdon
+    - Clavel
+    - Desjardins
+    - Fontanel
+    - Grosjean
+    - Huguenin
+    - Jeannot
+    - Lescure
+    - Moulin
+    - Noblet
+    - Perron
+    - Ravel
+    - Sablon
+    - Turpin
+    - Verneuil
+    - Bachelet
+    - Chaput
+    - Dubreuil
+    - Faivre
+    - Gontier
+    - Houdin
+    - Jourdain
+    - Larcher
+    - Mathurin
+    - Nollet
+    - Picoche
+    - Ruffin
+    - Serval
+    - Thevenin
+    - Vigneron
+    - Blondeau
+    - Charmes
+    - Delon
+    - Fresnel
+    - Gravel
+    - Hennequin
+    - Joubert
+    - Lecompte
+    - Mortier
+    - Narcisse
+    - Pontet
+    - Rossignol
+    - Sauval
+    - Tourneur
+  voiceTraits:
+    - ironic and precise, fond of the well-placed shrug
+    - debates for pleasure and concedes nothing early
+    - laces warmth with a cool appraising eye
+    - treats bureaucracy with weary contempt
+    - softens a refusal with elaborate courtesy
+  mannerisms:
+    - punctuates a point with a lifted finger
+    - lingers over coffee as if the meeting could wait
+    - greets with a measured handshake and a half-step back
+    - dismisses an idea with a slow exhale
+    - keeps gloves on until the terms are agreed
+  backgrounds:
+    - text: Posted with the French occupation sector and quartered in the officers' mess.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Runs the local office of a Paris trading house and travels on its letterhead.
+      tags: []
+    - text: Teaches at the French lycée and keeps a careful list of the parents.
+      tags: []
+    - text: Came east as a journalist and files for a paper that pays in rumours.
+      tags: []
+    - text: Served in the Resistance and trusts almost no one with the whole of it.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Imports wine and perfume and knows which customs men take which favours.
+      tags: []
+    - text: Keeps the cultural institute's accounts and the attache's confidences.
+      tags: []
+    - text: Settled after the war to run a small hotel the right people pass through.
+      tags: []
+    - text: Represents an engineering firm bidding on the reconstruction contracts.
+      tags: []
+    - text: Married a local and now interprets for both families and neither fully.
+      tags: []
+    - text: Buys art for a Paris gallery and crosses the sectors with a dealer's ease.
+      tags: []
+    - text: Keeps the mission's cipher room and never speaks of the long nights.
+      tags: []
+    - text: Runs a brasserie near the station where the late trains bring strange company.
+      tags: []
+    - text: Advises on the currency talks and knows which rates were agreed in advance.
+      tags: []
+    - text: Came with the relief administration and stayed to run its warehouse.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Teaches fencing at a club the officers favour and hears the mess gossip.
+      tags: []

@@ -1,0 +1,248 @@
+# document-styles.yaml — the era document Style Guide (content-expansion 7.2).
+#
+# Validates against StyleRuleSchema (packages/content/src/kinds/era.ts):
+#   { id, appliesTo: ('fact-line' | 'document:<kind>')[], check, value?, message }
+#
+# These are the document styles for every slice Document kind — newspaper,
+# dossier, cable, seized and public-text — plus the Fact Line surface. A Style
+# Rule names the surfaces it applies to, the mechanical `check` the linter's
+# CE-STYLE rule runs (task 5.4) and the `message` the finding carries. `manual`
+# rules never fail the lint; they are listed as review reminders (design, "the
+# Style Guide's manual rules are listed as review reminders").
+#
+# The checks:
+#   max-words      value: number   — a surface's rendered text must be <= N words
+#   terminal-stop                  — text ends with a full stop
+#   no-exclamation                 — no exclamation marks
+#   no-first-person                — no first-person voice
+#   hedging        value: string[] — report naked assertions that lack a hedge
+#   spelling       value: string[] — flag the listed (anachronistic/foreign) spellings
+#   upper-case                     — the surface renders in upper case (cables)
+#   headline-words value: number   — a headline must be <= N words
+#   manual                         — a reviewer reminder; never fails the lint
+#
+# Period voice, 1945–1965: terse telegraphese on cables; restrained, hedged
+# officialese on dossiers and seized material; plain, third-person reporting in
+# the newspapers; and clean, non-exclamatory public texts.
+
+# =========================================================================
+# NEWSPAPER — plain third-person reporting, period headline length
+# =========================================================================
+
+- id: style-newspaper-headline-length
+  appliesTo: ['document:newspaper']
+  check: headline-words
+  value: 12
+  message: >-
+    A period masthead headline runs to a dozen words at most. Shorten the lead
+    line.
+
+- id: style-newspaper-no-exclamation
+  appliesTo: ['document:newspaper']
+  check: no-exclamation
+  message: >-
+    The city press of the period reports in a level voice. Drop the exclamation
+    mark.
+
+- id: style-newspaper-no-first-person
+  appliesTo: ['document:newspaper']
+  check: no-first-person
+  message: >-
+    News copy is written in the third person. Replace the first-person voice
+    with "our correspondent" or the office concerned.
+
+- id: style-newspaper-terminal-stop
+  appliesTo: ['document:newspaper']
+  check: terminal-stop
+  message: 'End the article paragraph with a full stop.'
+
+- id: style-newspaper-restraint
+  appliesTo: ['document:newspaper']
+  check: manual
+  message: >-
+    Reminder: the period press names officials by office, not by name, and
+    reports aftermath with restraint. Review for sensational phrasing before
+    promoting.
+
+# =========================================================================
+# DOSSIER — restrained, hedged, third-person officialese
+# =========================================================================
+
+- id: style-dossier-max-words
+  appliesTo: ['document:dossier']
+  check: max-words
+  value: 220
+  message: >-
+    A station dossier is a brief file, not an essay. Keep each dossier under
+    roughly two hundred words.
+
+- id: style-dossier-no-first-person
+  appliesTo: ['document:dossier']
+  check: no-first-person
+  message: >-
+    A dossier records apparent information impersonally. Avoid "I" and "we";
+    attribute to "the station" or "the source".
+
+- id: style-dossier-no-exclamation
+  appliesTo: ['document:dossier']
+  check: no-exclamation
+  message: 'A file carries no exclamation marks. Remove it.'
+
+- id: style-dossier-hedging
+  appliesTo: ['document:dossier']
+  check: hedging
+  value:
+    - reported
+    - apparent
+    - apparently
+    - believed
+    - assessed
+    - said to
+    - understood to
+    - on file
+    - uncorroborated
+  message: >-
+    A dossier states leads, not established fact. Hedge assertions with
+    "reported", "apparent", "assessed" or an equivalent qualifier.
+
+- id: style-dossier-terminal-stop
+  appliesTo: ['document:dossier']
+  check: terminal-stop
+  message: 'Close each dossier section with a full stop.'
+
+# =========================================================================
+# CABLE — telegraphese: upper case, STOP as separator, terse
+# =========================================================================
+
+- id: style-cable-upper-case
+  appliesTo: ['document:cable']
+  check: upper-case
+  message: >-
+    A period cable is transmitted in upper case. Render the cable body in
+    capitals.
+
+- id: style-cable-max-words
+  appliesTo: ['document:cable']
+  check: max-words
+  value: 90
+  message: >-
+    Cable traffic is costly and terse. Keep the cable short — ninety words at
+    the outside.
+
+- id: style-cable-no-exclamation
+  appliesTo: ['document:cable']
+  check: no-exclamation
+  message: 'A cable carries no exclamation marks. Use STOP for emphasis.'
+
+- id: style-cable-stop-separator
+  appliesTo: ['document:cable']
+  check: manual
+  message: >-
+    Reminder: separate clauses with STOP rather than punctuation, and end the
+    message with ENDS. Review the cable for telegraphic form before promoting.
+
+# =========================================================================
+# SEIZED MATERIAL — transcription voice, cautious and impersonal
+# =========================================================================
+
+- id: style-seized-no-first-person
+  appliesTo: ['document:seized']
+  check: no-first-person
+  message: >-
+    A seizure record is impersonal. Describe the item and its recovery without
+    "I" or "we".
+
+- id: style-seized-hedging
+  appliesTo: ['document:seized']
+  check: hedging
+  value:
+    - appears
+    - apparent
+    - legible
+    - as found
+    - transcribed
+    - incomplete
+    - no inference
+  message: >-
+    Seized material is transcribed, not interpreted. Qualify readings with
+    "as found", "appears" or "transcription may be incomplete".
+
+- id: style-seized-no-exclamation
+  appliesTo: ['document:seized']
+  check: no-exclamation
+  message: 'A seizure record carries no exclamation marks. Remove it.'
+
+- id: style-seized-terminal-stop
+  appliesTo: ['document:seized']
+  check: terminal-stop
+  message: 'End each seizure note with a full stop.'
+
+# =========================================================================
+# PUBLIC TEXT — clean, level, non-exclamatory book-cipher material
+# =========================================================================
+
+- id: style-public-text-no-exclamation
+  appliesTo: ['document:public-text']
+  check: no-exclamation
+  message: >-
+    An almanac, timetable or directory reads in a level voice. Remove the
+    exclamation mark.
+
+- id: style-public-text-terminal-stop
+  appliesTo: ['document:public-text']
+  check: terminal-stop
+  message: 'Close prose entries in a public text with a full stop.'
+
+- id: style-public-text-plain
+  appliesTo: ['document:public-text']
+  check: manual
+  message: >-
+    Reminder: public texts are the key material for book ciphers; keep lines
+    clean and period-plain, and verify public-domain provenance before
+    promoting.
+
+# =========================================================================
+# FACT LINE — the player-facing fact surface: short, plain, third-person
+# =========================================================================
+
+- id: style-fact-line-max-words
+  appliesTo: ['fact-line']
+  check: max-words
+  value: 40
+  message: >-
+    A Fact Line is a single plain observation. Keep it to forty words at most.
+
+- id: style-fact-line-no-exclamation
+  appliesTo: ['fact-line']
+  check: no-exclamation
+  message: 'A Fact Line is stated plainly, with no exclamation mark.'
+
+- id: style-fact-line-terminal-stop
+  appliesTo: ['fact-line']
+  check: terminal-stop
+  message: 'End the Fact Line with a full stop.'
+
+# =========================================================================
+# SHARED — period spelling discipline across every document surface
+# =========================================================================
+
+- id: style-period-spelling
+  appliesTo:
+    - 'fact-line'
+    - 'document:newspaper'
+    - 'document:dossier'
+    - 'document:cable'
+    - 'document:seized'
+    - 'document:public-text'
+  check: spelling
+  value:
+    - email
+    - e-mail
+    - online
+    - internet
+    - website
+    - radar-gun
+    - helicopter-gunship
+  message: >-
+    Anachronistic or out-of-period spelling. Use the period term in a
+    1945–1965 document.

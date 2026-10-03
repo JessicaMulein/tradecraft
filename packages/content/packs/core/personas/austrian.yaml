@@ -1,0 +1,141 @@
+# personas/austrian.yaml — the Viennese persona library.
+#
+# A Persona library (PersonaLibrarySchema) carries name pools by culture AND
+# gender plus the voice traits, mannerisms and background templates the dialogue
+# layer uses to dress an NPC. The generator picks a persona gender, then draws a
+# given name from the matching pool and a family name (gender-neutral); see
+# Requirement 1.7. All names are authentic-sounding Austrian names in FICTIONAL
+# combinations; none is a real person of the period.
+
+id: austrian
+namePools:
+  - culture: austrian
+    gender: male
+    given:
+      - Franz
+      - Josef
+      - Karl
+      - Anton
+      - Rudolf
+      - Alois
+      - Ferdinand
+      - Leopold
+      - Wilhelm
+      - Gustav
+      - Otto
+      - Heinrich
+      - Friedrich
+      - Walter
+      - Ernst
+      - Hermann
+      - Ludwig
+      - Johann
+      - Albert
+      - Oskar
+      - Richard
+      - Emil
+      - Robert
+      - Viktor
+    family:
+      - Huber
+      - Gruber
+      - Wagner
+      - Steiner
+      - Mayrhofer
+      - Hofbauer
+      - Brantner
+      - Pichler
+      - Weinhuber
+      - Lindner
+      - Kolar
+      - Vorwald
+      - Reichert
+      - Hartl
+      - Brunner
+      - Edelmann
+      - Draxler
+      - Zehetner
+      - Pokorny
+      - Novak
+      - Fuchs
+      - Baumgartner
+      - Haas
+      - Winkler
+      - Moser
+      - Aichinger
+      - Schober
+      - Leitner
+  - culture: austrian
+    gender: female
+    given:
+      - Maria
+      - Hedwig
+      - Gretl
+      - Elisabeth
+      - Johanna
+      - Theresia
+      - Anna
+      - Herta
+      - Ingrid
+      - Edith
+      - Hildegard
+      - Rosa
+      - Aloisia
+      - Franziska
+      - Grete
+      - Martha
+      - Leopoldine
+      - Josefine
+      - Wilhelmine
+      - Berta
+      - Katharina
+      - Irmgard
+      - Gertrude
+      - Pauline
+    family:
+      - Huber
+      - Gruber
+      - Wagner
+      - Steiner
+      - Mayrhofer
+      - Hofbauer
+      - Brantner
+      - Pichler
+      - Weinhuber
+      - Lindner
+      - Kolar
+      - Vorwald
+      - Reichert
+      - Hartl
+      - Brunner
+      - Edelmann
+      - Draxler
+      - Zehetner
+      - Pokorny
+      - Novak
+      - Fuchs
+      - Baumgartner
+      - Haas
+      - Winkler
+      - Moser
+      - Aichinger
+      - Schober
+      - Leitner
+voiceTraits:
+  - formal and courteous to a fault
+  - fond of the diminutive, softening every noun
+  - dry Viennese irony under the politeness
+  - circles a subject three times before naming it
+  - quick to invoke the way things were done before the war
+mannerisms:
+  - stirs a coffee long after the sugar has dissolved
+  - touches the brim of the hat in greeting
+  - lowers the voice whenever the occupiers are mentioned
+  - taps ash with a small, precise flick
+  - answers a question with a proverb
+backgrounds:
+  - Grew up in Leopoldstadt and never left the district for long.
+  - Kept the family trade going through the hard years after the war.
+  - Lost the family flat to the bombing and took rooms in a stranger's house.
+  - Served in the old administration and learned to say little and notice much.
+  - Waited out the occupation behind a shop counter, trusting no sector in particular.

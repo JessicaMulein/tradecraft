@@ -1,0 +1,11 @@
+== Fact Lines ==
+- Gustav Leitner is carrying the operation materiel.
+- Anatoly Zhukovsky uses the channel anatoly-zhukovsky-2/signal.
+- Gustav Leitner uses the channel gustav-leitner-1/courier.
+- tall and spare, a clipped moustache, a dark double-breasted suit gone shiny at the elbows, a double-breasted overcoat over a pressed suit, kid gloves MEETS_AT Gustav Leitner
+- Anatoly Zhukovsky belongs to the network.
+- Gustav Leitner belongs to the network.
+- lean and stooped, pale powder and a dark lipstick, a swagger coat over a day dress, a crocodile handbag belongs to the network.
+- tall and spare, a clipped moustache, a dark double-breasted suit gone shiny at the elbows, a double-breasted overcoat over a pressed suit, kid gloves belongs to the network.
+- Raisa Gorelik belongs to the network.
+- tall and spare, a clipped moustache, a dark double-breasted suit gone shiny at the elbows, a double-breasted overcoat over a pressed suit, kid gloves MEETS_AT Gustav Leitner

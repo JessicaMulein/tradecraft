@@ -1,0 +1,102 @@
+# The core pack's glossary (Requirement 26.5).
+#
+# Terms the Help view lists alongside the current Location's quoted actions. The
+# loader tolerates this file without a dedicated schema, so the shape is a
+# simple list of `{ term, definition }` entries kept in alphabetical order.
+#
+# Setting: 1950s occupied Vienna under four-power occupation. All terms are
+# game or tradecraft vocabulary; no real person or organisation is named.
+
+- term: Admiralty grade
+  definition: >-
+    The reliability-and-credibility grade you assign a Claim, from a trusted
+    source with confirmed information down to unreliable and improbable.
+
+- term: Agenda
+  definition: >-
+    What an NPC is privately trying to achieve, which shapes how they answer
+    you and what they volunteer.
+
+- term: Allegiance
+  definition: >-
+    Who a character truly serves: your Station, the Hostile Service, the Cell,
+    a neutral party, or unknown until you establish it.
+
+- term: Asset
+  definition: >-
+    A recruited source who reports to you. Assets carry trust and exposure and
+    may fall silent, be arrested or be quietly doubled.
+
+- term: Budget
+  definition: >-
+    Your operating funds. Spent on payments, retainers and services; running
+    out limits what you can do.
+
+- term: Case File
+  definition: >-
+    Your working record of Claims. You grade, link and corroborate them to
+    build evidence toward an arrest.
+
+- term: Cell
+  definition: >-
+    The clandestine network running the operation you are sent to uncover.
+
+- term: Channel
+  definition: >-
+    A means of covert communication, such as a radio frequency, a courier or a
+    dead drop.
+
+- term: Claim
+  definition: >-
+    A single statement about who did what, where and when, extracted from
+    something you saw, heard or read.
+
+- term: Cover identity
+  definition: >-
+    The false identity you operate under. Observable activity raises Cover
+    Suspicion; past a threshold your cover is burned.
+
+- term: Dead drop
+  definition: >-
+    A concealed location where material is left for later collection, avoiding a
+    face-to-face meeting.
+
+- term: Directive
+  definition: >-
+    A tasking from headquarters with a deadline. Meeting or failing it moves
+    your Standing.
+
+- term: Doctrine
+  definition: >-
+    The Hostile Service's standing disposition toward risk, security and
+    deception, which governs how it reacts to you.
+
+- term: Hostile Service
+  definition: >-
+    The opposing intelligence service operating against your Station in the
+    occupied city.
+
+- term: MICE
+  definition: >-
+    The four levers that motivate a potential source: money, ideology,
+    coercion and ego.
+
+- term: Plot
+  definition: >-
+    The hostile operation unfolding in stages toward a deadline, which you are
+    trying to understand and disrupt.
+
+- term: Standing
+  definition: >-
+    Your authority with headquarters. It rises and falls with Directives and
+    the quality of your work, and gates actions such as arrests.
+
+- term: Station
+  definition: >-
+    Your own service's post in the city, including the Chief of Station and
+    supporting staff.
+
+- term: Unidentified Subject
+  definition: >-
+    A person you have observed but cannot yet name. Corroboration can tie an
+    Unidentified Subject to a known individual.

@@ -1,0 +1,91 @@
+# descriptor-fragments/clothing.yaml — the `clothing` slot.
+#
+# The largest slot: an early-Cold-War wardrobe (1945–1965) across the social
+# register, from displaced-persons' remade coats to café-society tailoring.
+# Each fragment validates against DescriptorFragmentSchema with `slot: clothing`.
+#
+# PERIOD. Where a garment belongs to only part of the Period Window it carries a
+# `years` Year Range so the descriptor generator filters it by Game Year
+# (Req 6.4):
+#
+#   * 1945–1952  — austerity and the ration years: army-surplus, remade and
+#                  patched clothing, utility cut, make-do-and-mend.
+#   * 1948–1965  — the New Look and the easing of rationing: fuller skirts,
+#                  nipped waists, smarter postwar tailoring.
+#   * 1958–1965  — the cleaner late-period cut: slimmer suits, shorter coats.
+#
+# Fragments with no `years` are period-neutral across the whole window (the
+# plain suits, the loden coats, the working dress that changed little).
+#
+# GENDER. Garments that read as one gender carry `gender`; a double-breasted
+# man's suit is `m`, a dirndl-blouse or a New Look costume `f`. Overcoats,
+# raincoats and working overalls that either could wear carry no `gender`.
+#
+# CLIMATE. Winter and warm-weather dress is represented here, but no fragment
+# carries a `climate` Tag — the vocabulary ships none yet (see pack.yaml). A
+# fur-collared coat and a seersucker jacket both load; the generator leans on
+# the city's climate for selection, and a later vocabulary task can tag them.
+#
+# A `text` that contains a comma is quoted so the YAML flow mapping does not
+# read the comma as a key separator.
+
+# --- men's dress -----------------------------------------------------------
+- { id: cloth-m-dark-suit-shiny, slot: clothing, gender: m, text: a dark double-breasted suit gone shiny at the elbows }
+- { id: cloth-m-worsted-leather-buttons, slot: clothing, gender: m, text: a worsted jacket with leather buttons }
+- { id: cloth-m-knitted-waistcoat-tweed, slot: clothing, gender: m, text: a knitted waistcoat under a tweed jacket }
+- { id: cloth-m-charcoal-stiff-collar, slot: clothing, gender: m, text: a well-cut charcoal suit and a stiff collar }
+- { id: cloth-m-pinstripe-watch-chain, slot: clothing, gender: m, text: a pin-striped three-piece and a watch-chain }
+- { id: cloth-m-collarless-braces, slot: clothing, gender: m, text: a collarless shirt and braces }
+- { id: cloth-m-corduroy-hobnail, slot: clothing, gender: m, text: heavy corduroy trousers and hobnailed boots }
+- { id: cloth-m-grey-knitted-tie, slot: clothing, gender: m, text: a plain grey suit and a knitted tie }
+- { id: cloth-m-sports-jacket-flannels, slot: clothing, gender: m, text: a soft tweed jacket and flannel trousers }
+- { id: cloth-m-sleeve-protectors, slot: clothing, gender: m, text: a sports jacket with sleeve-protectors at the cuff }
+- { id: cloth-m-cardigan-plain-tie, slot: clothing, gender: m, text: a cardigan over a shirt and a plain tie }
+- { id: cloth-m-linen-suit-foreign, slot: clothing, gender: m, text: "a crumpled linen suit, foreign-cut" }
+- { id: cloth-m-civil-service-stripes, slot: clothing, gender: m, text: a dark coat and striped civil-service trousers }
+- { id: cloth-m-slim-suit-narrow-lapel, slot: clothing, gender: m, text: a slim-cut suit with narrow lapels, years: { from: 1958, to: 1965 } }
+- { id: cloth-m-demob-suit, slot: clothing, gender: m, text: "a boxy demob suit, barely broken in", years: { from: 1945, to: 1950 } }
+
+# --- women's dress ---------------------------------------------------------
+- { id: cloth-f-dirndl-blouse, slot: clothing, gender: f, text: a plain dirndl-blouse and a dark skirt }
+- { id: cloth-f-woollen-costume-modest, slot: clothing, gender: f, text: a woollen two-piece costume with a modest hem }
+- { id: cloth-f-housecoat-sensible, slot: clothing, gender: f, text: a belted housecoat and sensible shoes }
+- { id: cloth-f-blouse-cardigan-high, slot: clothing, gender: f, text: a plain blouse and a cardigan buttoned high }
+- { id: cloth-f-tailored-court-shoes, slot: clothing, gender: f, text: a severe tailored costume and court shoes }
+- { id: cloth-f-twinset-pleated, slot: clothing, gender: f, text: a buttoned twinset and a pleated skirt }
+- { id: cloth-f-belted-day-dress, slot: clothing, gender: f, text: a plain belted day dress }
+- { id: cloth-f-skirt-white-blouse, slot: clothing, gender: f, text: a dark skirt and a crisp white blouse }
+- { id: cloth-f-wool-dress-pearls, slot: clothing, gender: f, text: a dark wool dress and a short string of pearls }
+- { id: cloth-f-new-look-full-skirt, slot: clothing, gender: f, text: a New Look suit with a nipped waist and a full skirt, years: { from: 1948, to: 1965 } }
+- { id: cloth-f-costume-seamed-stockings, slot: clothing, gender: f, text: a tailored costume and seamed stockings, years: { from: 1948, to: 1965 } }
+- { id: cloth-f-cocktail-short-gloves, slot: clothing, gender: f, text: a dark cocktail dress and short gloves, years: { from: 1948, to: 1965 } }
+- { id: cloth-f-swagger-coat-day-dress, slot: clothing, gender: f, text: a swagger coat over a day dress }
+- { id: cloth-f-shift-dress-clean, slot: clothing, gender: f, text: a clean-lined shift dress, years: { from: 1959, to: 1965 } }
+- { id: cloth-f-utility-dress-plain, slot: clothing, gender: f, text: a plain utility dress with squared shoulders, years: { from: 1945, to: 1951 } }
+- { id: cloth-f-remade-blanket-coat, slot: clothing, gender: f, text: a woman's coat remade from a blanket, years: { from: 1945, to: 1950 } }
+- { id: cloth-f-astrakhan-coat, slot: clothing, gender: f, text: "an astrakhan coat, nipped at the waist" }
+
+# --- either gender: coats, raincoats, working and shabby dress -------------
+- { id: cloth-gabardine-raincoat, slot: clothing, text: a belted gabardine mackintosh }
+- { id: cloth-loden-coat-moss, slot: clothing, text: a loden coat the colour of moss }
+- { id: cloth-overcoat-velvet-collar, slot: clothing, text: a long dark overcoat with a velvet collar }
+- { id: cloth-sheepskin-coat, slot: clothing, text: a sheepskin-lined coat buttoned to the throat }
+- { id: cloth-fur-collared-galoshes, slot: clothing, text: a fur-collared coat and galoshes }
+- { id: cloth-loden-cape-sleet, slot: clothing, text: a loden cape beaded with sleet }
+- { id: cloth-trench-belt-tied, slot: clothing, text: "a rumpled trench coat with the belt tied, not buckled" }
+- { id: cloth-mackintosh-slacks, slot: clothing, text: a belted mackintosh over slacks }
+- { id: cloth-overalls-grime, slot: clothing, text: blue overalls stiff with grime }
+- { id: cloth-quilted-patched, slot: clothing, text: a quilted jacket patched at the cuff }
+- { id: cloth-leather-apron-flannel, slot: clothing, text: a leather apron over a flannel shirt }
+- { id: cloth-work-smock, slot: clothing, text: a work smock over a plain skirt }
+- { id: cloth-waiter-tailcoat-apron, slot: clothing, text: a waiter's black tailcoat and a long white apron }
+- { id: cloth-porter-brass-tunic, slot: clothing, text: a porter's brass-buttoned tunic }
+- { id: cloth-serge-conductor, slot: clothing, text: a tram conductor's dark serge uniform }
+- { id: cloth-tunic-no-insignia, slot: clothing, text: a pressed service tunic without insignia of rank }
+- { id: cloth-greatcoat-boots, slot: clothing, text: a greatcoat over polished boots }
+- { id: cloth-surplus-unpicked, slot: clothing, text: an army-surplus greatcoat with the insignia unpicked, years: { from: 1945, to: 1954 } }
+- { id: cloth-jacket-too-large-string, slot: clothing, text: "a jacket two sizes too large, cinched with string", years: { from: 1945, to: 1952 } }
+- { id: cloth-darned-pullover-patched, slot: clothing, text: a darned pullover and patched trousers, years: { from: 1945, to: 1953 } }
+- { id: cloth-ration-mended-coat, slot: clothing, text: a good coat carefully mended at the seams, years: { from: 1945, to: 1952 } }
+- { id: cloth-seersucker-summer, slot: clothing, text: a crumpled seersucker jacket for the heat }
+- { id: cloth-shirtsleeves-braces, slot: clothing, text: shirtsleeves and braces in the warm weather }

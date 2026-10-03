@@ -1,0 +1,62 @@
+# directory-trades.yaml — a public-text DIRECTORY record (task 7.4).
+#
+# Validates against PublicTextSchema (packages/content/src/kinds/era.ts):
+#   { id, title, kind, provenance: { kind, source? }, body: string[], city? }
+#
+# `kind: directory`. A commercial-and-trades directory of the kind sold or kept
+# on a counter in the first postwar decade: an alphabetical classified list of
+# trades with invented firm names and street addresses, plus the standing
+# front-matter. The merged content loader ignores `public-texts/`; this record
+# is validated only by PublicTextSchema and counted by the quantity rule. Every
+# firm, person and address is fictional and generic; no real business is named.
+# 40+ non-empty lines so the slice BOOK CIPHER has pages, lines and words.
+- id: directory-trades-and-professions
+  title: The Classified Directory of Trades and Professions
+  kind: directory
+  provenance:
+    kind: original
+  body:
+    - 'The Classified Directory of Trades and Professions, revised for the current year.'
+    - 'Entries are arranged under their trade and then by street; the proprietor name follows the sign.'
+    - 'Inclusion is by the subscription of the trade and is no warrant of the quality of the goods.'
+    - 'Corrections and new entries are received at the directory office until the first of the tenth month.'
+    - 'ACCOUNTANTS AND AGENTS'
+    - 'Hartmann and Son, ledger agents, 14 Chandlers Row, by the corn exchange.'
+    - 'The Reliable Commission Agency, 3 Postern Lane, first floor above the stationer.'
+    - 'BAKERS AND CONFECTIONERS'
+    - 'The Oven Door Bakery, 9 Market Street, rolls and rye from the morning bell.'
+    - 'Weiss, confectioner, 22 Lamp Court, wedding cakes and sugared almonds to order.'
+    - 'BOOKSELLERS AND STATIONERS'
+    - 'The Corner Bookshop, 1 Postern Lane, new and second-hand, maps and timetables kept.'
+    - 'Fenner, stationer and printer, 18 Chandlers Row, cards engraved while you wait.'
+    - 'CHEMISTS AND DRUGGISTS'
+    - 'The Blue Pestle Pharmacy, 7 Market Street, dispensing day and night by the side door.'
+    - 'Oster, druggist, 30 Harbour Road, photographic plates and developing chemicals in stock.'
+    - 'COAL AND FUEL MERCHANTS'
+    - 'The Wharf Coal Company, 5 Dock Approach, best house coal delivered by the sack or ton.'
+    - 'Brandt and Nephew, fuel factors, 12 Siding Lane, coke and anthracite for the furnace trade.'
+    - 'DRAPERS AND TAILORS'
+    - 'The New Season Drapery, 16 Market Street, cloth by the yard and ready garments upstairs.'
+    - 'Lindqvist, tailor, 4 Guild Court, suits cut to measure, three fittings in the week.'
+    - 'ENGINEERS AND IRONMONGERS'
+    - 'The Forge Works, 20 Siding Lane, locks, hinges and small castings to pattern.'
+    - 'Mayer, ironmonger, 11 Harbour Road, tools, nails and lamp oil at the counter.'
+    - 'GROCERS AND PROVISION DEALERS'
+    - 'The Family Grocer, 8 Market Street, tea, coffee and preserves weighed to order.'
+    - 'Novak and Daughters, provision dealers, 25 Lamp Court, cured meats and dairy.'
+    - 'HOTELS AND LODGINGS'
+    - 'The Station Hotel, 2 Approach Road, hot water and a late supper for the traveller.'
+    - 'The Three Lamps Lodging House, 19 Postern Lane, clean rooms by the night or week.'
+    - 'LOCKSMITHS AND WATCHMAKERS'
+    - 'Keyser, locksmith, 6 Guild Court, safes opened and keys cut, estimates given.'
+    - 'The Dial and Spring, watchmaker, 13 Market Street, clocks regulated and repaired.'
+    - 'PHOTOGRAPHERS AND OPTICIANS'
+    - 'The Portrait Studio, 17 Chandlers Row, cartes and passport likenesses by appointment.'
+    - 'Brandt, optician, 10 Guild Court, spectacles fitted and field glasses adjusted.'
+    - 'PRINTERS AND BINDERS'
+    - 'The Quick Press, 21 Siding Lane, handbills, cards and small-run work overnight.'
+    - 'Sommer and Co., binders, 15 Postern Lane, ledgers ruled and journals bound.'
+    - 'TOBACCONISTS AND NEWSAGENTS'
+    - 'The Kiosk at the Bridge, foot of Approach Road, papers, maps and the evening late edition.'
+    - 'Falk, tobacconist, 24 Market Street, pipes mended and foreign papers kept to order.'
+    - 'An index of streets and a plan of the quarter will be found at the back of this directory.'

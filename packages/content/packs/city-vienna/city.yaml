@@ -1,0 +1,73 @@
+# city.yaml — the Vienna City Definition (content-expansion task 9.1).
+#
+# One CityDefinition record (CityDefinitionSchema, packages/content/src/kinds/
+# city.ts): the city's identity, period and Start Date window, the Schilling
+# currency the money formatter renders, the languages spoken, the Culture-Group
+# weights the NPC-naming draw reads, the Service Definitions active in the city,
+# and the instantiation bounds the world generator draws its District and
+# Location counts from.
+#
+# Period: 1945–1955, the decade of the four-power occupation, from the end of
+# the war to the State Treaty that ended it. The Start Date window sits inside
+# the period so a scenario's opening day always falls while the occupation is in
+# force. The Game Year filters every year-ranged kind to what existed that year.
+#
+# Currency: the Austrian Schilling (reintroduced 1945), divided into 100
+# Groschen. The symbol "S" is written before the amount in the period style.
+# `budgetScale` and `rounding` scale the scenario and Difficulty-Preset money
+# fields at preset resolution.
+#
+# Culture Weights: the city's postwar population is overwhelmingly Austrian
+# German, with the Central-European émigré and displaced-person presence of the
+# period (Czech and Hungarian) and the Russian presence of the Soviet sector and
+# occupation administration. Every weight names a namespaced Culture Group from
+# the Library Packs this pack requires.
+#
+# Services: the shared Era-Pack services active here — the player's own service,
+# the three hostile services and the three allied liaison services — plus the
+# city-local-security service (the occupation city's own police/security
+# apparatus), a City-Scoped `local-security` service defined in this pack's
+# services/services.yaml and added to the list below (task 9.2).
+
+id: vienna
+name: Vienna
+country: Austria
+climate: climate:temperate
+period:
+  from: 1945
+  to: 1955
+startDates:
+  from: '1948-01-01'
+  to: '1953-12-31'
+currency:
+  name: Schilling
+  symbol: S
+  subunit: Groschen
+  format: '{symbol}{major}'
+  rounding: 1
+  budgetScale: 1
+languages:
+  - { id: de, name: German, share: 0.9 }
+  - { id: cs, name: Czech, share: 0.03 }
+  - { id: hu, name: Hungarian, share: 0.03 }
+  - { id: ru, name: Russian, share: 0.04 }
+cultureWeights:
+  - { group: lib-central-europe/austrian-german, weight: 80 }
+  - { group: lib-central-europe/czech, weight: 7 }
+  - { group: lib-central-europe/hungarian, weight: 6 }
+  - { group: lib-russian/russian, weight: 7 }
+services:
+  - era-cold-war-early/own-service
+  - era-cold-war-early/hostile-foreign-directorate
+  - era-cold-war-early/hostile-security-apparat
+  - era-cold-war-early/hostile-satellite-bureau
+  - era-cold-war-early/liaison-atlantic-agency
+  - era-cold-war-early/liaison-federal-service
+  - era-cold-war-early/liaison-neutral-section
+  # The city-local-security service (task 9.2): the occupation city's own
+  # police/security apparatus, a City-Scoped `local-security` service defined in
+  # this pack's services/services.yaml. A bare id resolves to city-vienna/<id>.
+  - city-security-directorate
+instantiation:
+  districts: [6, 8]
+  locations: [20, 28]

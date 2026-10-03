@@ -1,0 +1,245 @@
+# streets.yaml — the Lisbon street-name and venue-name pools (task 9.7).
+#
+# Each is a streets pool (packages/content/src/kinds/city.ts, StreetsPoolSchema):
+# an `id` and a list of names. The generator draws addresses from the street
+# pools, and a Location Type `namePatterns` entry `{pick:<pool>}` draws a venue
+# name from the matching pool here.
+#
+# The `street-*` pools are real streets, squares and quays of Lisbon, pooled by
+# texture so a Location can be placed on a plausible address for its District
+# (the real streets are attested in sources.yaml). They total well past the
+# release floor of 60 street names (Req 11.2).
+#
+# The venue-name pools (cafe-names, hotel-names, …) are INVENTED names in the
+# Portuguese of the period; none names a real Lisbon business of 1945–1965.
+# They supply the proper names the Location Types stamp.
+
+# =========================================================================
+# STREETS — real Lisbon streets, squares and quays (pooled by texture)
+# =========================================================================
+
+# --- the Baixa grid and the great squares ---------------------------------
+- id: street-baixa
+  names:
+    - Rua Augusta
+    - Rua do Ouro
+    - Rua da Prata
+    - Rua dos Fanqueiros
+    - Rua da Conceição
+    - Rua de São Julião
+    - Rua dos Correeiros
+    - Rua dos Sapateiros
+    - Rua da Vitória
+    - Rua de Santa Justa
+    - Praça do Comércio
+    - Praça do Rossio
+    - Praça da Figueira
+    - Rua da Madalena
+
+# --- the Chiado and the upper shopping streets ----------------------------
+- id: street-chiado
+  names:
+    - Rua Garrett
+    - Rua do Carmo
+    - Rua Nova do Almada
+    - Rua Serpa Pinto
+    - Rua Ivens
+    - Rua do Alecrim
+    - Largo do Chiado
+    - Calçada do Sacramento
+    - Rua Anchieta
+    - Rua Capelo
+    - Rua da Misericórdia
+    - Rua do Loreto
+
+# --- Alfama, Mouraria and the castle hill ---------------------------------
+- id: street-old-quarter
+  names:
+    - Rua de São Pedro
+    - Rua dos Remédios
+    - Rua de São Miguel
+    - Beco do Carneiro
+    - Rua da Regueira
+    - Largo das Portas do Sol
+    - Rua do Salvador
+    - Rua da Judiaria
+    - Rua dos Cegos
+    - Rua do Capelão
+    - Rua do Benformoso
+    - Largo da Severa
+    - Rua da Mouraria
+    - Calçada de Santo André
+
+# --- Cais do Sodré and the central river front ----------------------------
+- id: street-riverside
+  names:
+    - Rua do Alecrim
+    - Praça de São Paulo
+    - Rua Nova do Carvalho
+    - Rua da Ribeira Nova
+    - Rua do Cais do Sodré
+    - Cais do Sodré
+    - Rua de São Paulo
+    - Rua dos Remolares
+    - Largo do Corpo Santo
+
+# --- Estrela and the hill west --------------------------------------------
+- id: street-estrela
+  names:
+    - Calçada da Estrela
+    - Rua de São Bento
+    - Rua da Escola Politécnica
+    - Rua do Sol ao Rato
+    - Rua de Domingos Sequeira
+    - Rua Saraiva de Carvalho
+    - Rua Coelho da Rocha
+    - Praça da Estrela
+    - Rua Ferreira Borges
+    - Rua da Lapa
+
+# --- Alcântara and Belém, the dock districts ------------------------------
+- id: street-docks
+  names:
+    - Rua da Cozinha Económica
+    - Rua de Alcântara
+    - Rua Primeiro de Maio
+    - Avenida da Índia
+    - Rua de Belém
+    - Rua Vieira Portuense
+    - Calçada da Ajuda
+    - Rua da Junqueira
+    - Doca de Alcântara
+    - Doca do Bom Sucesso
+    - Rua do Embaixador
+
+# =========================================================================
+# VENUE NAME POOLS — invented period Portuguese names
+# =========================================================================
+
+- id: cafe-names
+  names:
+    - Café Portela do Rossio
+    - Café Marejada
+    - Café Nova Aurora
+    - Café do Comércio
+    - Café Primavera
+    - Café Lisbonense
+    - Café do Terreiro
+    - Café Atlântico
+
+- id: tabacaria-names
+  names:
+    - Tabacaria do Ouro
+    - Tabacaria Avenida
+    - Tabacaria do Rossio
+    - Tabacaria Central
+    - Tabacaria do Cais
+    - Tabacaria Estrela
+
+- id: library-names
+  names:
+    - Sala de Leitura do Grémio
+    - Biblioteca Popular de Lisboa
+    - Gabinete de Leitura do Chiado
+    - Sala de Leitura da Academia
+
+- id: bookshop-names
+  names:
+    - Livraria Alfarrabista do Carmo
+    - Alfarrabista Boto & Filhos
+    - Livraria Velha do Alecrim
+    - Alfarrabista do Loreto
+
+- id: hotel-names
+  names:
+    - Hotel Aviz-Lusitânia
+    - Hotel Metrópole Atlântico
+    - Hotel Avenida-Palace do Rossio
+    - Pensão-Hotel Internacional
+    - Hotel Bragança-Mar
+
+- id: bar-names
+  names:
+    - the Lusitano Bar
+    - the Blue Anchor
+    - the Winter Garden
+    - the Tejo Bar
+    - the Atlântico Bar
+
+- id: pensao-names
+  names:
+    - Pensão Beira-Tejo
+    - Pensão Flor da Mouraria
+    - Pensão do Castelo
+    - Pensão Dois Mundos
+    - Pensão Luz do Oriente
+
+- id: miradouro-names
+  names:
+    - Miradouro de Santa Luzia
+    - Miradouro da Graça
+    - Miradouro de São Pedro de Alcântara
+    - Jardim da Estrela
+    - Miradouro de Santa Catarina
+
+- id: elevador-names
+  names:
+    - Elevador da Glória
+    - Elevador da Bica
+    - Elevador do Lavra
+    - Elevador de Santa Justa
+
+- id: tram-stops
+  names:
+    - Largo do Chiado
+    - Praça Luís de Camões
+    - Martim Moniz
+    - Portas do Sol
+    - Praça da Figueira
+    - Rua da Alfândega
+
+- id: cais-names
+  names:
+    - Cais do Sodré River Station
+    - Estação Fluvial de Belém
+    - Cais da Alfândega
+    - Terreiro do Paço Ferry
+
+- id: doca-names
+  names:
+    - Doca de Alcântara
+    - Doca do Bom Sucesso
+    - Doca da Marinha
+    - Ocean Berths at Belém
+
+- id: warehouse-names
+  names:
+    - Armazém Freire — Cortiças e Vinhos
+    - Entreposto Vale & Nogueira
+    - Armazéns do Caes
+    - Depósito Aduaneiro do Norte
+
+- id: legation-names
+  names:
+    - Legation of the Northern Union
+    - Consular Office of the Free Commission
+    - Mission for Displaced Persons
+    - Commercial Agency of the Lowland States
+
+- id: airport-names
+  names:
+    - Portela Air Terminal
+    - Cabo Ruivo Seaplane Terminal
+
+- id: station-names
+  names:
+    - Rossio Station
+    - Cais do Sodré Station
+    - Santa Apolónia Station
+
+- id: cinema-names
+  names:
+    - Cinema São Luiz-Palace
+    - Cinema Tivoli-Monumental
+    - Cinema Éden-Politeama
+    - Cinema Condes-Avenida

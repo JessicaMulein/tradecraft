@@ -1,0 +1,72 @@
+# almanac-common-year.yaml — a public-text ALMANAC record (content-expansion task 7.4).
+#
+# Validates against PublicTextSchema (packages/content/src/kinds/era.ts):
+#   { id, title, kind, provenance: { kind, source? }, body: string[], city? }
+#
+# This is the era `public-text` CONTENT KIND, not the slice's book-cipher corpus
+# loader (public-texts-data.ts, which reserves almanac.yaml / anthology.yaml /
+# timetable.yaml with a different shape). The merged content loader ignores
+# everything under `public-texts/`, so this file does not change the Content Set
+# load; it is validated by PublicTextSchema (which the public-text kind
+# registers) and counted by the Pack Linter's quantity rule.
+#
+# `kind: almanac`. The body is original writing (provenance kind `original`):
+# the standing-matter pages of a cheap pocket almanac of the sort sold at a
+# kiosk in the first postwar decade — calendar notes, weights and measures,
+# tide and lamp-lighting tables, postal rates, a weather saw for each month.
+# All figures and places are generic or invented and period-correct for
+# 1945–1965; no real person, firm or trademark is named. The body is long
+# (40+ non-empty lines, each a "page line") so a slice BOOK CIPHER has ample
+# pages, lines and words to key against.
+- id: almanac-pocket-companion
+  title: The Pocket Companion Almanac for the Common Year
+  kind: almanac
+  provenance:
+    kind: original
+  body:
+    - 'The Pocket Companion Almanac, being a register of days, tides and useful tables for town and country.'
+    - 'Printed for the trade and sold at kiosks, stations and stationers throughout the season.'
+    - 'A common year numbers three hundred and sixty-five days; a leap year adds a day to the second month.'
+    - 'The four seasons turn upon the equinoxes of spring and autumn and the solstices of summer and winter.'
+    - 'Moveable feasts are reckoned from the first full moon that follows the spring equinox.'
+    - 'The quarter days fall at the turn of each season and are the customary dates for rents and hiring.'
+    - 'Table of weights: sixteen drams to the ounce, sixteen ounces to the pound, fourteen pounds to the stone.'
+    - 'Table of measures: twelve inches to the foot, three feet to the yard, five and a half yards to the rod.'
+    - 'A chain is twenty-two yards; ten chains make a furlong; eight furlongs make a mile.'
+    - 'Liquid measure: four gills to the pint, two pints to the quart, four quarts to the gallon.'
+    - 'Dry measure of grain is sold by the bushel; eight gallons dry make the bushel at market.'
+    - 'The metric pound of five hundred grammes is kept at many foreign counters; one kilogramme is two such pounds.'
+    - 'A metre is a little above the yard; a kilometre is five furlongs and a trifle over.'
+    - 'Lamp-lighting begins at the half hour after sunset and lamps are quenched at the first light of day.'
+    - 'January: the ice month. Keep the pipes lagged and the coal dry; the shortest days mend by a hen stride.'
+    - 'February: the mud month. A fair week early is paid for with a foul week late, say the old wives.'
+    - 'March: the wind month. Dust in March is worth a king ransom to the gardener and the tiller.'
+    - 'April: the showery month. Plant the early rows; a wet April fills the cellar and empties the purse.'
+    - 'May: the blossom month. Cast no clout till the thorn is white and the night frost is well past.'
+    - 'June: the long-day month. Cut the first hay dry; a leaky roof is best mended in fair weather.'
+    - 'July: the ripening month. Thunder in the hills curdles the milk and sours the standing water.'
+    - 'August: the harvest month. Bind the sheaves before the equinox gales come in off the plain.'
+    - 'September: the gathering month. Store the roots in sand and the apples apart from the pears.'
+    - 'October: the falling month. Lay in the winter coal while the roads are hard and the barges run.'
+    - 'November: the fog month. Trim the lamps early and keep a lantern by the door for the late traveller.'
+    - 'December: the dark month. Bank the fire at night and leave a crust on the sill for the small birds.'
+    - 'Postal rates inland: a sealed letter of the first weight carries at the standard stamp.'
+    - 'Each further weight step adds one half the first rate; a postcard carries at a third of a letter.'
+    - 'A registered packet is charged the letter rate and a fee besides, with a receipt given at the counter.'
+    - 'Printed matter and newspapers travel at the reduced band if left open at one end for inspection.'
+    - 'Foreign letters carry at twice the inland rate to the near countries and more to the far.'
+    - 'Telegrams are reckoned by the word; the address and signature are counted with the message.'
+    - 'A night letter telegram goes at half the day rate but is not delivered before the morning round.'
+    - 'Tide table, spring tides: the water runs highest at the new moon and the full, and slackest between.'
+    - 'High water at the river quay follows the coast by about one hour and a quarter in ordinary weather.'
+    - 'A neap tide neither floods the low wharves nor bares the deep channel; the ferrymen prefer it.'
+    - 'The mail coach and the branch omnibus keep summer time from the last Sunday of the fourth month.'
+    - 'Interest at five in the hundred doubles a sum in a little over fourteen years by simple reckoning.'
+    - 'To find the day of the week for any date, add the month key to the day and the year count, then cast out sevens.'
+    - 'A barometer falling fast foretells wind; falling slow, long rain; rising in frost, hard weather to come.'
+    - 'Rings about the moon betoken a change; the wider the ring, the nearer the wet or the gale.'
+    - 'Household hint: a pinch of salt in the lamp oil steadies the flame and spares the wick.'
+    - 'Household hint: brown paper and vinegar draws a bruise; a warmed brick wrapped in flannel eases the chill.'
+    - 'Market days are kept on the appointed weekdays; the great fairs fall at the quarter days as of old.'
+    - 'The publisher begs the reader to note that the tables are computed for the common meridian of the capital.'
+    - 'Corrections for the far provinces may be had on application to the trade, with a stamp for the reply.'

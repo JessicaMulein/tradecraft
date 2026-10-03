@@ -1,0 +1,11 @@
+== Fact Lines ==
+- Ernst Edelmann is carrying the operation materiel.
+- Ernst Edelmann uses the channel ernst-edelmann-1/courier.
+- Grete Moser uses the channel grete-moser-2/signal.
+- heavyset and deliberate, a trace of rosewater scent, a loden coat the colour of moss, a furled umbrella, a swagger coat over a day dress, a crocodile handbag MEETS_AT Ernst Edelmann
+- average height, forgettable, no powder, a swagger coat over a day dress, kid gloves belongs to the Cell.
+- Ernst Edelmann belongs to the Cell.
+- Grete Moser belongs to the Cell.
+- heavyset and deliberate, a trace of rosewater scent, a loden coat the colour of moss, a furled umbrella, a swagger coat over a day dress, a crocodile handbag belongs to the Cell.
+- Harold Ackerman belongs to the Cell.
+- heavyset and deliberate, a trace of rosewater scent, a loden coat the colour of moss, a furled umbrella, a swagger coat over a day dress, a crocodile handbag MEETS_AT Ernst Edelmann

@@ -1,0 +1,11 @@
+== Fact Lines ==
+- Josefine Kolar is carrying the operation materiel.
+- Josefine Kolar uses the channel josefine-kolar-1/courier.
+- Vera Panov uses the channel vera-panov-2/signal.
+- average height, forgettable, a pencil moustache, a dark double-breasted suit gone shiny at the elbows, a furled umbrella, a double-breasted overcoat over a pressed suit MEETS_AT Josefine Kolar
+- Josefine Kolar belongs to the Cell.
+- average height, forgettable, a pencil moustache, a dark double-breasted suit gone shiny at the elbows, a furled umbrella, a double-breasted overcoat over a pressed suit belongs to the Cell.
+- average height, forgettable, a clipped moustache, a pin-striped three-piece and a watch-chain belongs to the Cell.
+- Vera Panov belongs to the Cell.
+- average height, forgettable, a pencil moustache, a dark double-breasted suit gone shiny at the elbows, a furled umbrella, a double-breasted overcoat over a pressed suit MEETS_AT Josefine Kolar
+- average height, forgettable, a pencil moustache, a dark double-breasted suit gone shiny at the elbows, a furled umbrella, a double-breasted overcoat over a pressed suit MEETS_AT Josefine Kolar

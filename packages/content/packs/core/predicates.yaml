@@ -1,0 +1,222 @@
+# The core pack's predicate vocabulary.
+#
+# These are the 15 initial predicates the design fixes (design, "Predicate
+# Vocabulary"). Each is pure data: from it the Sim derives the second- and
+# third-person renderers, the Claim Extractor schema, the Cipher Engine's
+# field-message codes and truth evaluation (design, "Predicate definitions").
+# The only thing a pack cannot add is a new `evaluator` kind.
+#
+# Render templates may reference `{subject}` and `{object}` always, and
+# `{place}` / `{when}` only where this predicate's `place` / `window` rule
+# allows them — the predicate registry rejects a template that reaches for a
+# slot the rule forbids. Optional place/window are wrapped in `{?place}…{/place}`
+# / `{?when}…{/when}` so a Proposition that carries none still renders.
+#
+# `implication` rules are the Arrest Evidence table (design, "Arrest Evidence"):
+# `role` is which argument the implication attaches to, `other` the hostile
+# marks the other argument must carry for the implication to hold. `weight` is
+# how much one independently confirmed fact adds to the case against its target
+# (intent 3, membership/meetings/materiel 2, channel use 1); the arrest gate
+# compares the summed case score to the preset's `arrest.threshold`.
+#
+# fieldCodes are short, unique upper-case codes the Cipher Engine keys encoded
+# field-messages on; uniqueness across the set is checked by the loader.
+
+# --- organisation and chain-of-command -------------------------------------
+
+- id: MEMBER_OF
+  subject: [npc, unk]
+  object: { entity: [org] }
+  place: none
+  window: optional
+  evaluator: membership-transitive
+  fieldCode: MO
+  render:
+    second: "You belong to {object}{?when} {when}{/when}."
+    third: "{subject} belongs to {object}{?when} {when}{/when}."
+  extractorHint: "A person is a member of an organisation, cell or service."
+  implication: { role: subject, other: [hostile-org], weight: 2 }
+
+- id: WORKS_FOR
+  subject: [npc, unk]
+  object: { entity: [npc, unk, org] }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: WF
+  render:
+    second: "You work for {object}{?when} {when}{/when}."
+    third: "{subject} works for {object}{?when} {when}{/when}."
+  extractorHint: "A person is employed or directed by another person or organisation."
+  implication: { role: subject, other: [hostile-org], weight: 2 }
+
+- id: REPORTS_TO
+  subject: [npc, unk]
+  object: { entity: [npc, unk] }
+  place: none
+  window: optional
+  evaluator: membership-transitive
+  fieldCode: RT
+  render:
+    second: "You report to {object}{?when} {when}{/when}."
+    third: "{subject} reports to {object}{?when} {when}{/when}."
+  extractorHint: "A person reports up a chain of command to a handler or superior."
+  implication: { role: subject, other: [hostile-person, hostile-org], weight: 2 }
+
+# --- movement and presence --------------------------------------------------
+
+- id: MEETS_AT
+  subject: [npc, unk]
+  object: { entity: [npc, unk] }
+  place: required
+  window: required
+  evaluator: fact-match-symmetric
+  fieldCode: MT
+  render:
+    second: "You meet {object} at {place} {when}."
+    third: "{subject} meets {object} at {place} {when}."
+  extractorHint: "Two people meet at a place, usually on a schedule."
+  implication: { role: either, other: [hostile-person], weight: 2 }
+
+- id: LOCATED_AT
+  subject: [npc, unk]
+  object: { entity: [npc, unk] }
+  place: required
+  window: optional
+  evaluator: fact-match
+  fieldCode: LA
+  render:
+    second: "You are seen at {place}{?when} {when}{/when}."
+    third: "{subject} is seen at {place}{?when} {when}{/when}."
+  extractorHint: "A person is observed at a particular Location."
+
+- id: TRAVELS_TO
+  subject: [npc, unk]
+  object: { entity: [npc, unk] }
+  place: required
+  window: optional
+  evaluator: fact-match
+  fieldCode: TT
+  render:
+    second: "You travel to {place}{?when} {when}{/when}."
+    third: "{subject} travels to {place}{?when} {when}{/when}."
+  extractorHint: "A person travels to a Location or District."
+
+- id: SCHEDULED_FOR
+  subject: [npc, unk]
+  object: { literal: time }
+  place: optional
+  window: required
+  evaluator: fact-match
+  fieldCode: SF
+  render:
+    second: "You are expected {object}{?place} at {place}{/place} {when}."
+    third: "{subject} is expected {object}{?place} at {place}{/place} {when}."
+  extractorHint: "A person is scheduled for an appointment or routine at a time."
+
+# --- intent and operations --------------------------------------------------
+
+- id: PLANS
+  subject: [npc, unk]
+  object: { literal: text }
+  place: optional
+  window: optional
+  evaluator: fact-match
+  fieldCode: PL
+  render:
+    second: "You are planning {object}{?place} at {place}{/place}{?when} {when}{/when}."
+    third: "{subject} is planning {object}{?place} at {place}{/place}{?when} {when}{/when}."
+  extractorHint: "A person is planning an operation or act, named in free text."
+  implication: { role: subject, other: [none], weight: 3 }
+
+- id: TARGETS
+  subject: [npc, unk]
+  object: { entity: [npc, unk, org] }
+  place: optional
+  window: optional
+  evaluator: fact-match
+  fieldCode: TG
+  render:
+    second: "You are targeting {object}{?place} at {place}{/place}{?when} {when}{/when}."
+    third: "{subject} is targeting {object}{?place} at {place}{/place}{?when} {when}{/when}."
+  extractorHint: "A person or operation is directed against a person or organisation."
+  implication: { role: subject, other: [none], weight: 3 }
+
+# --- materiel and supply ----------------------------------------------------
+
+- id: CARRIES
+  subject: [npc, unk]
+  object: { literal: text }
+  place: optional
+  window: optional
+  evaluator: fact-match
+  fieldCode: CA
+  render:
+    second: "You are carrying {object}{?place} at {place}{/place}{?when} {when}{/when}."
+    third: "{subject} is carrying {object}{?place} at {place}{/place}{?when} {when}{/when}."
+  extractorHint: "A person is carrying an item, document or piece of materiel."
+  implication: { role: subject, other: [materiel], weight: 2 }
+
+- id: SUPPLIES
+  subject: [npc, unk]
+  object: { entity: [npc, unk] }
+  place: optional
+  window: optional
+  evaluator: fact-match
+  fieldCode: SU
+  render:
+    second: "You supply {object}{?place} at {place}{/place}{?when} {when}{/when}."
+    third: "{subject} supplies {object}{?place} at {place}{/place}{?when} {when}{/when}."
+  extractorHint: "A person supplies another with money, materiel or documents."
+  implication: { role: subject, other: [materiel], weight: 2 }
+
+- id: USES_CHANNEL
+  subject: [npc, unk]
+  object: { literal: text }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: UC
+  render:
+    second: "You use the channel {object}{?when} {when}{/when}."
+    third: "{subject} uses the channel {object}{?when} {when}{/when}."
+  extractorHint: "A person communicates over a named channel, frequency or dead drop."
+  implication: { role: subject, other: [hostile-channel], weight: 1 }
+
+# --- knowledge, suspicion and identity --------------------------------------
+
+- id: KNOWS
+  subject: [npc, unk, org]
+  object: { entity: [npc, unk, org] }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: KN
+  render:
+    second: "You know {object}{?when} {when}{/when}."
+    third: "{subject} knows {object}{?when} {when}{/when}."
+  extractorHint: "A person or organisation is acquainted with another person or organisation."
+
+- id: SUSPECTS
+  subject: [npc, unk, org]
+  object: { entity: [npc, unk, org] }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: SP
+  render:
+    second: "You suspect {object}{?when} {when}{/when}."
+    third: "{subject} suspects {object}{?when} {when}{/when}."
+  extractorHint: "A person or organisation suspects another of hostile activity."
+
+- id: IS_ALIAS_OF
+  subject: [npc, unk]
+  object: { entity: [npc, unk] }
+  place: none
+  window: none
+  evaluator: alias
+  fieldCode: AL
+  render:
+    second: "You are the same person as {object}."
+    third: "{subject} is the same person as {object}."
+  extractorHint: "An Unidentified Subject is the same person as a named individual."

@@ -1,0 +1,20 @@
+# era.yaml — the Era record for the early Cold War (content-expansion task 7.2).
+#
+# Validates against EraSchema (packages/content/src/kinds/era.ts):
+#   { id, period: { from, to }, climateDefault? }
+#
+# The Period Window is 1945–1965: from the end of the war in Europe to the
+# mid-1960s, spanning the four-power occupations of Vienna, Berlin and the Free
+# Territory of Trieste, the Berlin blockade and airlift, the division of the
+# city, and the first postwar decade of divided-Europe tradecraft the City Packs
+# (task 9) are set in. The loader filters every year-ranged kind — a District
+# sector, a Culture Weight, a public text, a Service Definition — against this
+# window at generation (design, "Setting selection").
+#
+# `climateDefault` is left unset: the core Tag Vocabulary ships no `climate:*`
+# Tag yet, and the field is optional, so the descriptor generator falls back to
+# a city's own climate Tags. A later task that adds climate Tags may set it.
+- id: cold-war-early
+  period:
+    from: 1945
+    to: 1965

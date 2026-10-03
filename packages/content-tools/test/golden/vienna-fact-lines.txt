@@ -1,0 +1,11 @@
+== Fact Lines ==
+- Robert Steiner is carrying the operation materiel.
+- Heinrich Wagner uses the channel heinrich-wagner-2/signal.
+- Robert Steiner uses the channel robert-steiner-1/courier.
+- round-shouldered and soft-spoken, clean-shaven, a plain dirndl-blouse and dark skirt, a dark wool dress and a short string of pearls MEETS_AT Robert Steiner
+- Heinrich Wagner belongs to the network.
+- round-shouldered and soft-spoken, clean-shaven, a plain dirndl-blouse and dark skirt, a dark wool dress and a short string of pearls belongs to the network.
+- Robert Steiner belongs to the network.
+- heavyset and deliberate, clean-shaven, a soft tweed jacket and flannel trousers belongs to the network.
+- Cedric Marchmont belongs to the network.
+- Harold Sanderson belongs to the network.

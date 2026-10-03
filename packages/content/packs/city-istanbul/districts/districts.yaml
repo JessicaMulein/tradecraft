@@ -1,0 +1,94 @@
+# districts/districts.yaml — the Istanbul Districts (content-expansion task 9.5).
+#
+# Each validates against DistrictSchema (city.ts): { id, city, name, aliases?,
+# description, atmosphere?, tags?, sector? }. Districts are the nodes of the
+# Route graph; the generator stamps a District entity from each and keys Routes
+# off `id`. Istanbul has no occupation-sector regime, so no District carries a
+# `sector` (unlike Vienna, Berlin or Trieste). Every District carries at least
+# one `setting:*` Tag (Req 4.3) naming its social register.
+#
+# Six Districts spanning both shores: the European side (Beyoğlu, Galata,
+# Sirkeci, Eminönü) and the Asian side (Kadıköy, Üsküdar), stitched together by
+# the ferries of the Routes file. All prose is original; the quarters are real,
+# and the sources file attests the landmarks named in the Locations.
+
+- id: beyoglu
+  city: istanbul
+  name: Beyoğlu
+  aliases:
+    - { text: Pera, distinctive: true }
+    - { text: the Grande Rue, distinctive: false }
+  description: >-
+    The cosmopolitan heart on the heights above Galata: the Grande Rue de Péra
+    with its grand hotels, consulates, cinemas and patisseries, the embassies
+    turned consulates after the capital moved to Ankara, and the back lanes of
+    meyhanes dropping toward the water. Half the city's foreign business and
+    most of its gossip pass along this one long street.
+  atmosphere: [polyglot and worldly, lively, European, quietly surveilled]
+  tags: [setting:commercial, setting:diplomatic]
+
+- id: galata
+  city: istanbul
+  name: Galata
+  aliases:
+    - { text: Karaköy, distinctive: false }
+  description: >-
+    The old Genoese quarter below Beyoğlu, running down the hill to the quays at
+    the mouth of the Golden Horn. Banks, shipping agents and money-changers
+    cluster under the tower; the funicular climbs to Pera and the Galata Bridge
+    carries the whole city across to the old town. A quarter of trade, cables
+    and comings and goings by sea.
+  atmosphere: [mercantile, steep, maritime, ever-thronged]
+  tags: [setting:commercial, setting:industrial]
+
+- id: sirkeci
+  city: istanbul
+  name: Sirkeci
+  aliases:
+    - { text: Eminönü shore, distinctive: false }
+  description: >-
+    The waterfront below the old city where the railway from Europe ends: the
+    Orient-Express terminus, the post and telegraph office, the ferry piers and
+    the hotels that catch the traveller stepping off the train. A place of
+    arrivals and departures, left-luggage and last trains.
+  atmosphere: [transient, thronged with travellers, railway, waterfront]
+  tags: [setting:commercial, setting:industrial]
+
+- id: eminonu
+  city: istanbul
+  name: Eminönü
+  aliases:
+    - { text: the bazaar quarter, distinctive: false }
+  description: >-
+    The commercial old town behind the Golden Horn quays: the Spice Bazaar and
+    the great covered Grand Bazaar, the hans of the wholesale trades, the new
+    mosque at the bridgehead and the money-changers' lanes. By day a solid wall
+    of crowd and commerce; by night shuttered and still.
+  atmosphere: [clamorous with trade, a warren of lanes, wholesale and shuttered, old]
+  tags: [setting:commercial]
+
+- id: kadikoy
+  city: istanbul
+  name: Kadıköy
+  aliases:
+    - { text: the Asian shore, distinctive: false }
+  description: >-
+    The prosperous town on the Asian side across the mouth of the Bosphorus: a
+    ferry pier and a market, tree-lined avenues of apartment houses, cafés and
+    cinemas, and a settled middle-class life a world away from the clamour of
+    the European quays. The boat from Eminönü ties the two together.
+  atmosphere: [settled, residential, leafy, provincial]
+  tags: [setting:residential, setting:commercial]
+
+- id: uskudar
+  city: istanbul
+  name: Üsküdar
+  aliases:
+    - { text: Scutari, distinctive: true }
+  description: >-
+    The old Asian shore town north of Kadıköy, religious and conservative, its
+    waterfront mosque and ferry pier facing the old city across the strait. Hilly
+    streets of timber houses climb to the great cypress cemeteries; the ferries
+    and the shore road carry the traffic between the two continents.
+  atmosphere: [conservative, hilly, devout, quiet]
+  tags: [setting:residential, setting:institutional]

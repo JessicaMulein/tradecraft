@@ -1,0 +1,608 @@
+# location-types/location-types.yaml — the Istanbul Location Types.
+#
+# Each entry validates against LocationTypeSchema (the slice location-type kind,
+# roles ALL_ROLES, not City-Scoped). A City Pack's Location Types are ordinary
+# slice Location Types that happen to live in the City Pack, so a City Location
+# references one by its namespaced id `city-istanbul/<id>`. These give Istanbul
+# its own texture — the çayhane and çay bahçesi, the meyhane, the covered
+# bazaar, the ferry iskele and the Pera consulate — while carrying the same Tag
+# Vocabulary `function:*`, `venue:*`, `access:*` and `setting:*` Tags the
+# generator's archetype schedules and Required Queries bind against. Between
+# them they cover every Location function the vocabulary needs (design, "Tag
+# Vocabulary"; Req 4.3, 4.4).
+#
+# Period: Istanbul 1950–1965. Everything here is of its time — trams on the
+# Grande Rue (they ran until 1961 on the European side), the Şirket-i Hayriye
+# and city-line ferries, coal smoke, the telegraph office, newspapers hawked at
+# the bridge, radios in the coffee houses. No anachronism: no television in
+# cafés, no self-service, no supermarkets, no later motorway or bridge.
+#
+# Action ids follow the slice Action union: talk, approach, confront,
+# turn-agent, travel, surveil, follow, arrange-meeting, service-drop, intercept,
+# read, cable, wait. travel is the arrival action and is allowed everywhere.
+# Weekdays: monday … sunday. Phases: early-morning, morning, midday, afternoon,
+# evening, night, late-night, dead-of-night.
+
+# --- 1. Kahvehane / çayhane (coffee & tea house) ---------------------------
+- id: kahvehane
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: midday, level: 0.6 }
+    - { weekday: monday, phase: afternoon, level: 0.8 }
+    - { weekday: monday, phase: evening, level: 0.7 }
+    - { weekday: friday, phase: afternoon, level: 0.9 }
+    - { weekday: sunday, phase: afternoon, level: 0.85 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.25 }
+    - { weather: cold, crowdMultiplier: 1.2 }
+    - { weather: hot, crowdMultiplier: 0.85 }
+  baseRisk: 0.15
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:cafe-names}'
+  descriptionPool:
+    - Low stools and copper trays; the boy swings a brazier of coals to the water-pipes and tea comes in tulip glasses.
+    - Men bent over backgammon under a haze of smoke, the dice rattling while a radio murmurs the afternoon news.
+    - A narrow room open to the lane, its mirrors foxed with age, where the same faces have held the same corner for years.
+    - Glasses of tea pass hand to hand on little saucers; nobody hurries and nobody minds who sits an hour over one.
+    - The hiss of the samovar, the click of worry-beads, and a view of the street framed by a bead curtain in the doorway.
+    - A tea garden under a plane tree, chairs set out to the kerb, where a quiet word is lost in the general murmur.
+  atmosphereTags: [smoky, unhurried, convivial, public]
+  tags: [venue:cafe, function:cafe, function:meeting-spot, access:public]
+
+# --- 2. Büfe / gazete bayii (newsstand kiosk) ------------------------------
+- id: gazete-bayii
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: sunday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.5 }
+    - { weekday: monday, phase: morning, level: 0.6 }
+    - { weekday: monday, phase: midday, level: 0.3 }
+    - { weekday: monday, phase: evening, level: 0.4 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.8 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:kiosk-names}'
+  descriptionPool:
+    - A green-painted kiosk at the tram stop, its front a wall of folded newspapers pegged against the wind.
+    - Cigarettes, matches, lottery slips and the morning editions in four languages, the vendor making change without looking.
+    - A booth the size of a wardrobe that smells of newsprint and tobacco, its shutter half down against the Bosphorus damp.
+    - Picture postcards of the mosques fan across the glass; the papers come off the ferry and are hawked before they are dry.
+    - A hole in the wall by the bridge where ferry crowds swirl past and a man can pause for a paper without being remarked.
+    - The French and Greek sheets hang beside the Turkish ones; the vendor keeps the foreign ones under the counter for regulars.
+  atmosphereTags: [cramped, everyday, watchful, public]
+  tags: [function:kiosk, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- 3. Reading room / public library --------------------------------------
+- id: kutuphane
+  public: true
+  allowedActions: [travel, talk, confront, turn-agent, surveil, follow, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.3 }
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: wednesday, phase: afternoon, level: 0.5 }
+    - { weekday: saturday, phase: midday, level: 0.6 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+    - { weather: hot, crowdMultiplier: 1.1 }
+  baseRisk: 0.1
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:library-names}'
+  descriptionPool:
+    - A hushed hall of long tables and brass reading-lamps, the air dry with the dust of old periodicals.
+    - Ranks of bound newspapers chained to their stands; a clerk stamps requests behind a wooden grille.
+    - Tall shuttered windows throw bars of light across readers who turn pages and never once look up.
+    - A gallery of shelving climbs into the gloom; the only sounds are the scratch of a nib and a radiator ticking.
+    - Students and retired clerks share the long benches in silence, each walled behind a rampart of borrowed volumes.
+    - A reading room of a learned society, its catalogue on cards, where a foreign scholar excites no comment at all.
+  atmosphereTags: [hushed, studious, discreet, public]
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+
+# --- 4. Sahaf (antiquarian / second-hand bookshop) -------------------------
+- id: sahaf
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.3 }
+    - { weekday: thursday, phase: afternoon, level: 0.35 }
+    - { weekday: saturday, phase: morning, level: 0.45 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.15 }
+  baseRisk: 0.15
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:bookshop-names}'
+  descriptionPool:
+    - Shelves lean overhead on every side in a courtyard of booksellers; a bell on the door and dust in the light.
+    - Stacks of unsorted volumes narrow the aisle to a single lane back to the dealer's cluttered desk.
+    - Leather spines, foxed French novels and runs of yellowed almanacs — a book cipher could hide a dozen keys here.
+    - A cat sleeps on the ledger while the dealer peers over half-moon glasses and names a price without troubling to look.
+    - Boxes of unpriced stock block the back room, where serious buyers are taken and the curtain is left half drawn.
+    - Prayer books, old maps and travellers' guides in five scripts; the dealer buys and sells letters as readily as books.
+  atmosphereTags: [dusty, quiet, bookish, discreet, public]
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+
+# --- 5. Hotel bar (Pera grand hotel) ---------------------------------------
+- id: otel-bar
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: tuesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: wednesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: thursday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: friday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: evening, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: evening, level: 0.5 }
+    - { weekday: monday, phase: night, level: 0.6 }
+    - { weekday: friday, phase: night, level: 0.9 }
+    - { weekday: friday, phase: late-night, level: 0.8 }
+    - { weekday: saturday, phase: night, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.1 }
+  baseRisk: 0.3
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:bar-names} at {pick:hotel-names}'
+  descriptionPool:
+    - A long bar of polished walnut and brass under a slow ceiling fan, a pianist turning over something in the corner.
+    - Correspondents and shipping agents hold the stools; the barman pours in four languages and forgets in all of them.
+    - Cut-glass and cigarette haze, the talk dropping to a murmur as you pass and lifting again behind your back.
+    - Deep leather chairs around low tables, a page in a braided coat by the revolving door, bottles lit from behind like relics.
+    - Wagon-lit travellers between trains nurse cognac here; a bowl of pistachios goes round and round the room.
+    - A terrace bar above the Horn where the lights of the old city shimmer and every third conversation is a half-truth.
+  atmosphereTags: [cosmopolitan, smoky, loose-tongued, watched, public]
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+
+# --- 6. Meyhane (wine tavern) ----------------------------------------------
+- id: meyhane
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: evening, closePhase: late-night }
+    - { weekday: tuesday, openPhase: evening, closePhase: late-night }
+    - { weekday: wednesday, openPhase: evening, closePhase: late-night }
+    - { weekday: thursday, openPhase: evening, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: evening, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: afternoon, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: night, level: 0.4 }
+    - { weekday: friday, phase: night, level: 0.85 }
+    - { weekday: friday, phase: late-night, level: 0.8 }
+    - { weekday: saturday, phase: evening, level: 0.7 }
+    - { weekday: saturday, phase: night, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.9 }
+    - { weather: hot, crowdMultiplier: 1.1 }
+  baseRisk: 0.25
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:meyhane-names}'
+  descriptionPool:
+    - Marble-topped tables crowd a narrow room; trays of mezze come unasked and the rakı turns the water cloudy white.
+    - A fish grill smokes at the back, a lute player works the tables, and the talk runs loud enough to cover anything.
+    - Barrels line one wall and strings of dried peppers the other; the waiter remembers every face but repeats nothing.
+    - Down a flight of steps off the fish market, lamplit and close, where strangers end the night as old friends.
+    - A back-street cellar of long benches, the floor sanded, the proprietor pouring from a jug and asking no names.
+    - A terrace of a dozen tables under a vine, the Horn below going dark, and voices climbing with each fresh carafe.
+  atmosphereTags: [convivial, loose-tongued, crowded, lamplit, public]
+  tags: [venue:tavern, function:hotel-bar, function:meeting-spot, access:public]
+
+# --- 7. Park / promenade ---------------------------------------------------
+- id: park
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.3 }
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: sunday, phase: midday, level: 0.8 }
+    - { weekday: sunday, phase: afternoon, level: 0.9 }
+    - { weekday: monday, phase: night, level: 0.1 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.4 }
+    - { weather: hot, crowdMultiplier: 1.2 }
+    - { weather: clear, crowdMultiplier: 1.3 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:park-names}'
+  descriptionPool:
+    - Gravel walks run between planes and judas trees; a tea kiosk steams at the gate and benches face the water.
+    - A promenade above the Bosphorus where families stroll on a Sunday and a man with a newspaper goes unremarked.
+    - Formal beds dug over for winter, a locked pavilion, and paths that carry the sound of every footstep behind you.
+    - A hilltop of cypresses over the old cemeteries, still and shaded, where two people may walk and not be overheard.
+    - A simit-seller tends his tray at the railings; the ferries slide past below and the gulls work the wake.
+    - Children chase pigeons across the square while nursemaids compare notes on a bench and miss nothing that passes.
+  atmosphereTags: [open-air, exposed, meeting-ground, public]
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- 8. Ferry pier (vapur iskelesi) ----------------------------------------
+# The city-line and Bosphorus ferries, and the piers they work. The constant
+# churn of passengers makes a pier a natural transit hub and a place a watched
+# person can lose a tail in the crush at the turnstile.
+- id: iskele
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.7 }
+    - { weekday: monday, phase: morning, level: 0.9 }
+    - { weekday: monday, phase: midday, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.9 }
+    - { weekday: monday, phase: late-night, level: 0.2 }
+    - { weekday: friday, phase: evening, level: 0.95 }
+  weatherModifiers:
+    - { weather: fog, crowdMultiplier: 0.6 }
+    - { weather: rain, crowdMultiplier: 0.9 }
+  baseRisk: 0.3
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:pier-names} İskelesi'
+    - '{pick:pier-names} vapur iskelesi'
+  descriptionPool:
+    - A timber pier under an iron canopy; the ferry noses in, the ramp clangs down, and the crowd pours off and on at once.
+    - A turnstile, a ticket window and a tea booth, with the smell of coal smoke and brine and the slap of water on piles.
+    - Passengers press four deep for the whistle; a man can step aboard at the last moment and leave a follower on the quay.
+    - The timetable is chalked on a board, the ferry's funnel streaming smoke across the Horn as it swings for the far shore.
+    - Porters shoulder baskets up the ramp while gulls wheel over the churn; the deckhands cast off without ceremony.
+    - A floating pontoon that rises and falls with the wash, lamplit after dark, where the last boat gathers a thin late crowd.
+  atmosphereTags: [crowded, transient, anonymous, salt-air, public]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- 9. Tram stop / street corner ------------------------------------------
+# Trams ran on the European side until 1961 and on the Asian side after; a stop
+# is an open, exposed meeting ground where a brush pass goes unseen in the press.
+- id: tramvay-duragi
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.6 }
+    - { weekday: monday, phase: morning, level: 0.85 }
+    - { weekday: monday, phase: evening, level: 0.8 }
+    - { weekday: monday, phase: midday, level: 0.4 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.9 }
+    - { weather: hot, crowdMultiplier: 0.95 }
+  baseRisk: 0.2
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:commercial} durağı'
+    - 'the corner of {pick:commercial}'
+  descriptionPool:
+    - A tram grinds up the hill and slows at the kerb; the waiting crowd shuffles and reforms as it clatters away.
+    - Rails curve off into the dusk between the shopfronts; the overhead wire sings and sparks blue at the junction.
+    - A knot of commuters under a tin shelter, newspapers up against the wind off the water.
+    - A pasted timetable peels under glass; the cobbles shine wet and the rails hum before the car comes into view.
+    - Two lines cross here and the stop is never empty for long — someone always boarding, someone always left behind.
+    - The conductor leans from the platform ringing his bell; the crowd surges and a careful man times his step to the last.
+  atmosphereTags: [transient, crowded, exposed, public]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+
+# --- 10. Railway terminus --------------------------------------------------
+# Sirkeci on the European shore (the end of the line from Europe, the
+# Orient-Express terminus) and Haydarpaşa on the Asian shore (the gate to
+# Anatolia and the lines east). Great crowded concourses, anonymous and watched.
+- id: gar
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: dead-of-night, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.7 }
+    - { weekday: monday, phase: morning, level: 0.8 }
+    - { weekday: monday, phase: midday, level: 0.6 }
+    - { weekday: monday, phase: evening, level: 0.85 }
+    - { weekday: monday, phase: late-night, level: 0.3 }
+    - { weekday: friday, phase: evening, level: 0.95 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.1 }
+    - { weather: fog, crowdMultiplier: 0.9 }
+  baseRisk: 0.35
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:station-names}'
+  descriptionPool:
+    - A vaulted hall under a sooty glass roof; a departures board clatters and steam drifts along the platforms.
+    - Porters wheel trunks past the ticket windows while a loudspeaker calls the sleeping-car express for Europe.
+    - Benches of waiting travellers, a left-luggage office, and a buffet from which you can watch the whole concourse.
+    - A great clock over the barrier, the crowd thickening and thinning with each train that comes and goes.
+    - Travellers of a dozen nations pass under the arrivals board with their cases, going opposite ways and never meeting twice.
+    - The left-luggage lockers run a cold corridor where a planted case waits unremarked among a hundred others for hours.
+  atmosphereTags: [crowded, transient, anonymous, public, watched]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- 11. Covered bazaar / market -------------------------------------------
+# The Grand Bazaar and Spice Bazaar and the smaller market streets. A labyrinth
+# of stalls, a crowd that never thins, and a hundred ways in and out.
+- id: carsi
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: evening }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.6 }
+    - { weekday: monday, phase: midday, level: 0.85 }
+    - { weekday: monday, phase: afternoon, level: 0.8 }
+    - { weekday: saturday, phase: midday, level: 0.95 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+    - { weather: hot, crowdMultiplier: 1.1 }
+  baseRisk: 0.3
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:market-names}'
+  descriptionPool:
+    - Vaulted lanes of stalls under painted arches; the din of a thousand bargains and the glint of lamplit brass and gold.
+    - Sacks of spice and coffee spill their colour and scent across the aisle; a boy threads the crowd with a tray of tea.
+    - A warren of covered streets where every turning looks the same and a follower is swallowed within three stalls.
+    - Carpet dealers call from their doorways, money-changers tally behind grilles, and porters bawl a way through the press.
+    - A hundred shutters, a hundred trades, and gates at every compass point — a place to vanish into or appear out of at will.
+    - Hanging lamps, the ring of a coppersmith's hammer, and a quiet han off the main lane where a deal is struck over coffee.
+  atmosphereTags: [crowded, labyrinthine, bustling, concealing, public]
+  tags: [venue:market, function:meeting-spot, function:transit-hub, function:dead-drop-site, access:public]
+
+# --- 12. Quay / customs wharf ----------------------------------------------
+# The Galata and Eminönü quays, the customs sheds and the Bosphorus shipping.
+# Where cargo and people move, materiel can be stored, and a drop can be served.
+- id: rihtim
+  public: true
+  allowedActions: [travel, talk, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.6 }
+    - { weekday: monday, phase: morning, level: 0.7 }
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.2 }
+  weatherModifiers:
+    - { weather: fog, crowdMultiplier: 0.7 }
+    - { weather: rain, crowdMultiplier: 0.6 }
+  baseRisk: 0.45
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:quay-names} rıhtımı'
+    - '{pick:quay-names} gümrük iskelesi'
+  descriptionPool:
+    - Cranes stand over the lighters; the water slides past grey and quick under a smell of oil, brine and wet rope.
+    - Stevedores haul crates up the gangways of a tramp steamer while a tug sounds somewhere out in the Bosphorus fog.
+    - A line of moored caïques, a customs shed, and the long quay where carts and lorries wait with their lamps lit.
+    - Coal dust blackens the setts; a derrick swings a net of crates overhead and no one below so much as glances up.
+    - A sentry box at the customs gate, a striped pole, and a tired official who checks manifests by lantern light.
+    - Oil-slicked water laps the piles; a chain of barges strains at its moorings as the current pulls down toward the sea.
+  atmosphereTags: [industrial, exposed, rough, salt-air]
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+
+# --- 13. Depot / han warehouse ---------------------------------------------
+- id: depo
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, surveil, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.4 }
+    - { weekday: monday, phase: afternoon, level: 0.3 }
+    - { weekday: monday, phase: night, level: 0.05 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.9 }
+  baseRisk: 0.5
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:warehouse-names}'
+  descriptionPool:
+    - A cold stone hall of a merchant han, stacked to the vaults with bales and sacking, a single bulb over the loading arch.
+    - Pallets and tarpaulins throw long shadows; somewhere a watchman's radio plays a slow song very low.
+    - Oil drums, packing straw and the echo of your own footsteps on the worn flags of the courtyard.
+    - A freight hoist with a concertina gate, a tally clerk's abandoned desk, and ledgers furred with dust.
+    - Rain drums on the sheet-iron roof; chains and tackle hang in the dark like something waiting to be used.
+    - Stencilled crates bound for a dozen ports crowd the bay, their consignee names half painted out and painted over.
+  atmosphereTags: [industrial, deserted, risky, concealing]
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+
+# --- 14. Safehouse (rented flat / konak room) ------------------------------
+- id: emin-ev
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.05 }
+    - { weekday: monday, phase: night, level: 0.05 }
+  weatherModifiers: []
+  baseRisk: 0.1
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:residential} apartman dairesi'
+    - 'a room on {pick:quiet}'
+  descriptionPool:
+    - 'A rented flat kept deliberately dull: a table, two chairs, a divan, and shutters always half closed.'
+    - A back room up three flights of a timber house, its one window giving onto a courtyard no one overlooks.
+    - Thin walls and a charcoal brazier; the kind of address a landlady forgets the moment the rent is in her hand.
+    - A single lamp, a kettle on a spirit stove, a wireless kept low — nothing in the room would survive a second glance.
+    - The stair creaks on the fourth tread, a free warning, and the door carries a chain and two heavy mortice locks.
+    - Dust sheets over the furniture of someone long gone; the place smells of cold ash and other people's absence.
+  atmosphereTags: [private, secure, spare, concealed]
+  tags: [function:safehouse, access:private]
+
+# --- 15. Consulate / foreign mission ---------------------------------------
+# After the capital moved to Ankara the embassies followed, but the grand
+# consulates stayed in Pera — a quarter of flags, dragomans and liaison offices.
+- id: konsoloshane
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, cable, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: afternoon }
+    - { weekday: tuesday, openPhase: morning, closePhase: afternoon }
+    - { weekday: wednesday, openPhase: morning, closePhase: afternoon }
+    - { weekday: thursday, openPhase: morning, closePhase: afternoon }
+    - { weekday: friday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: midday, level: 0.6 }
+    - { weekday: monday, phase: afternoon, level: 0.4 }
+  weatherModifiers: []
+  baseRisk: 0.25
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:consulate-names}'
+  descriptionPool:
+    - A guarded doorway under a flag on the Grande Rue, a visitors' book, and corridors of frosted glass and typewriter clatter.
+    - A dragoman carries files between offices; a porter checks your papers twice before the inner door is unlocked.
+    - High-ceilinged rooms of a Pera palazzo smelling of floor wax and sealing wax, telephones ringing behind closed doors.
+    - A waiting room of hard chairs and old magazines where petitioners sit for hours under a clerk's indifferent eye.
+    - A brass plate by the bell, a kavass in a braided coat at the gate, and a courtyard where a staff car idles under the limes.
+    - Filing cabinets line every corridor; a trolley of folders squeaks past and a bell summons someone unseen upstairs.
+  atmosphereTags: [official, guarded, bureaucratic, cover-friendly]
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+
+# --- 16. Cinema ------------------------------------------------------------
+- id: sinema
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: tuesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: wednesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: thursday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: friday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: midday, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: evening, level: 0.5 }
+    - { weekday: friday, phase: night, level: 0.85 }
+    - { weekday: saturday, phase: afternoon, level: 0.7 }
+    - { weekday: sunday, phase: afternoon, level: 0.8 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+    - { weather: hot, crowdMultiplier: 1.15 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:cinema-names}'
+  descriptionPool:
+    - A gilt-and-plush picture palace off the Grande Rue, its foyer hung with hand-painted bills for the week's programme.
+    - The dark auditorium swallows faces; a seat in the back rows is as private as any public place in the city.
+    - A newsreel flickers before the feature while latecomers feel their way down the aisle past the usherette's torch.
+    - Smoke drifts in the beam of the projector; the organ plays the crowd in and the exit curtains breathe with the draught.
+    - A summer cinema in a walled garden, deck chairs on the gravel, the film thrown on a whitewashed wall under the stars.
+    - A faded stalls-and-circle house where the same two features run all week and the box office knows every regular.
+  atmosphereTags: [dark, anonymous, crowded, public]
+  tags: [venue:cafe, function:cinema, function:meeting-spot, access:public]
+
+# --- 17. Station headquarters (your own Station) ---------------------------
+- id: istasyon-merkezi
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, intercept, cable, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: morning, closePhase: night }
+    - { weekday: sunday, openPhase: morning, closePhase: night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.4 }
+    - { weekday: monday, phase: afternoon, level: 0.4 }
+    - { weekday: monday, phase: night, level: 0.15 }
+  weatherModifiers: []
+  baseRisk: 0.05
+  allowsDeadDrops: false
+  namePatterns:
+    - the Station
+  descriptionPool:
+    - 'A floor of locked offices behind an unmarked door off a Pera courtyard: steel cabinets, a cipher room, a chattering teleprinter.'
+    - Blackout blinds, a safe, and the smell of carbon paper; the duty officer logs every entry by hand in a ledger.
+    - A wall map of the two shores, a bank of card indexes, and a wireless set humming in the corner room.
+    - A strongroom door stands ajar on rows of sealed files; the Chief's office is the only one with a carpet and a view of the Horn.
+    - A kettle on a ring, a wall of pigeonholes, and a window painted over so no one across the lane can read the room.
+    - The teleprinter chatters out the overnight traffic from London; a clerk tears the sheets and spikes them by priority.
+  atmosphereTags: [secure, official, home-ground, concealed]
+  tags: [venue:station-office, function:station, access:private]

@@ -1,0 +1,28 @@
+== City: Berlin ==
+setting: city-berlin/berlin (year 1949)
+districts: 7
+locations: 22
+routes: 12
+
+== Districts ==
+- Charlottenburg [charlottenburg] — sector British
+- Kreuzberg [kreuzberg] — sector American
+- Mitte [mitte] — sector Soviet
+- Reinickendorf [reinickendorf] — sector French
+- Schöneberg [schoneberg] — sector American
+- Tiergarten [tiergarten] — sector British
+- Wedding [wedding] — sector French
+
+== Routes ==
+- Charlottenburg <-> Wedding (cost 1)
+- Kreuzberg <-> Schöneberg (cost 1)
+- Kreuzberg <-> Tiergarten (cost 1)
+- Mitte <-> Charlottenburg (cost 1)
+- Mitte <-> Kreuzberg (cost 1)
+- Mitte <-> Tiergarten (cost 1)
+- Mitte <-> Wedding (cost 1)
+- Schöneberg <-> Charlottenburg (cost 1)
+- Schöneberg <-> Tiergarten (cost 1)
+- Tiergarten <-> Charlottenburg (cost 1)
+- Tiergarten <-> Wedding (cost 1)
+- Wedding <-> Reinickendorf (cost 1)

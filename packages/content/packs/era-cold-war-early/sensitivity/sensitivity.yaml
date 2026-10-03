@@ -1,0 +1,211 @@
+# sensitivity.yaml — the Sensitivity Term List for the early Cold War Era Pack.
+#
+# Validates against SensitivityTermSchema (packages/content/src/kinds/era.ts):
+#   { term, pattern }
+#
+# This is the Sensitivity Term List: slurs and demeaning terms that shipped
+# content MUST NOT contain. The linter's CE-SENSITIVE rule (task 5.3) rejects
+# any Fact Line, document, NPC name, cover identity or template that matches a
+# `pattern` here. The matcher tokenises with case and diacritic folding and
+# skips template slots, so a plain lower-case fragment is enough; the `term`
+# names the category for the reviewer, and the `pattern` is the surface the
+# matcher scans.
+#
+# The entries fall into three groups:
+#   1. Ethnic, national and racial slurs. The period setting — occupied Europe,
+#      divided cities, waves of refugees and émigrés — makes it tempting to
+#      reach for period-authentic abuse. The game does not. NPCs of every
+#      culture are named and described with dignity; prejudice may be a
+#      character's trait, but it is never rendered in slurs.
+#   2. Demeaning terms for religion, disability, sexuality and gender. These are
+#      excluded regardless of period "authenticity".
+#   3. Dehumanising and atrocity-trivialising language. The war's immediate
+#      aftermath is the backdrop; the game treats displacement, loss and
+#      atrocity with restraint (see the Style Guide's aftermath-restraint rule)
+#      and never with slang that trivialises them.
+#
+# NOTE ON PATTERNS: the patterns below are deliberately written as the specific
+# abusive surface forms the matcher must catch. They are listed here ONLY so the
+# linter can forbid them in generated and authored content — this file is the
+# exclusion list, the one place these forms are enumerated so they appear
+# nowhere else. Neutral descriptive words (a person's nationality, religion or
+# the plain name of a group) are NOT listed: those are the correct, respectful
+# terms the content uses.
+
+# =========================================================================
+# ETHNIC, NATIONAL & RACIAL SLURS
+# =========================================================================
+# The patterns are the demeaning forms. The respectful terms — German, Russian,
+# Austrian, Turkish, Greek, Armenian, Jewish, Roma, and so on — are used freely
+# in content and are not listed here.
+
+- term: anti-German slur (occupation-era abuse)
+  pattern: kraut
+
+- term: anti-German slur (occupation-era abuse)
+  pattern: jerry-bashing
+
+- term: anti-German slur (occupation-era abuse)
+  pattern: hun
+
+- term: anti-Russian / anti-Soviet slur
+  pattern: russki
+
+- term: anti-Russian / anti-Soviet slur
+  pattern: commie bastard
+
+- term: anti-Russian / anti-Soviet slur
+  pattern: red scum
+
+- term: anti-Italian slur
+  pattern: wop
+
+- term: anti-Italian slur
+  pattern: dago
+
+- term: anti-Italian / anti-southern-European slur
+  pattern: eyetie
+
+- term: anti-eastern-European / Slavic slur
+  pattern: polack
+
+- term: anti-eastern-European slur
+  pattern: bohunk
+
+- term: anti-Turkish / anti-Muslim slur
+  pattern: turk-dog
+
+- term: anti-Greek slur
+  pattern: greaseball
+
+- term: anti-Roma slur (highly offensive)
+  pattern: gyppo
+
+- term: anti-Roma slur (highly offensive)
+  pattern: gypo
+
+- term: antisemitic slur
+  pattern: kike
+
+- term: antisemitic slur
+  pattern: yid
+
+- term: antisemitic slur
+  pattern: hymie
+
+- term: antisemitic demeaning phrase
+  pattern: dirty jew
+
+- term: anti-Arab / anti-Levantine slur
+  pattern: wog
+
+- term: anti-Arab slur
+  pattern: raghead
+
+- term: anti-Asian slur
+  pattern: chink
+
+- term: anti-Asian slur
+  pattern: jap
+
+- term: anti-Asian slur
+  pattern: gook
+
+- term: anti-black racial slur (most severe)
+  pattern: nigger
+
+- term: anti-black racial slur
+  pattern: negro servant
+
+- term: anti-black racial slur
+  pattern: coon
+
+- term: anti-black racial slur
+  pattern: darkie
+
+- term: anti-Hispanic / Iberian slur
+  pattern: spic
+
+- term: anti-Irish slur
+  pattern: mick
+
+# =========================================================================
+# RELIGION, DISABILITY, SEXUALITY & GENDER — demeaning terms
+# =========================================================================
+
+- term: anti-Catholic slur
+  pattern: papist dog
+
+- term: anti-Protestant slur
+  pattern: prod scum
+
+- term: ableist slur
+  pattern: cripple-fool
+
+- term: ableist slur
+  pattern: imbecile stock
+
+- term: ableist slur (institutional)
+  pattern: feeble-minded degenerate
+
+- term: ableist slur
+  pattern: spastic idiot
+
+- term: ableist slur
+  pattern: mongoloid
+
+- term: anti-gay slur
+  pattern: faggot
+
+- term: anti-gay slur
+  pattern: queer deviant
+
+- term: anti-gay slur
+  pattern: poof
+
+- term: anti-gay slur
+  pattern: pansy boy
+
+- term: anti-lesbian slur
+  pattern: dyke
+
+- term: demeaning term for women
+  pattern: slut
+
+- term: demeaning term for women
+  pattern: whore of a woman
+
+- term: demeaning term for women
+  pattern: trollop
+
+# =========================================================================
+# DEHUMANISING & ATROCITY-TRIVIALISING LANGUAGE
+# =========================================================================
+# The aftermath of the war is backdrop, not spectacle. These forms treat
+# displacement, forced labour, imprisonment and mass death as slang or boast and
+# are excluded. Neutral terms — refugee, displaced person, survivor, prisoner,
+# the dead — are the respectful words the content uses.
+
+- term: dehumanising term for refugees / displaced persons
+  pattern: refugee vermin
+
+- term: dehumanising term for displaced persons
+  pattern: human cargo
+
+- term: dehumanising term for a person (sub-human)
+  pattern: subhuman
+
+- term: dehumanising ethnic-cleansing euphemism
+  pattern: cleanse the quarter
+
+- term: atrocity-trivialising slang
+  pattern: send them up the chimney
+
+- term: atrocity-trivialising slang
+  pattern: liquidate the lot
+
+- term: atrocity-trivialising boast
+  pattern: finish the job on them
+
+- term: dehumanising term for prisoners
+  pattern: cattle for the camps

@@ -1,0 +1,180 @@
+# location-types/location-types.yaml - Berlin's own Location Types (task 9.3).
+#
+# Each validates against LocationTypeSchema (packages/content/src/lib/kinds.ts).
+# These are the City-Scoped Location Types a Berlin world needs that the core
+# (Vienna-flavoured) set does not cover: the U-Bahn and S-Bahn transit hubs that
+# are the headline of divided-Berlin tradecraft, the Spree/canal wharf, and a
+# street Imbiss-and-newsstand kiosk. Every other place a Berlin Location is
+# stamped from - the café, library, bookshop, hotel bar, park, warehouse,
+# safehouse, mission, main-line station, the player's Station, cinema and market
+# - is a core Location Type, referenced from a Location's `type` as
+# `core/<id>`.
+#
+# Name patterns draw on the Berlin street and name pools in `streets/`
+# (`{pick:<pool>}`). Period: 1948-1961 - trams, the elevated and underground
+# railways, coal smoke, newspapers, the airlift droning overhead. No
+# anachronism.
+#
+# Tags are drawn from the core vocabulary's `venue`, `function` and `access`
+# facets. The U-Bahn and S-Bahn types both carry `function:transit` and
+# `function:transit-hub`; the S-Bahn, which crossed the sector boundary and
+# carried the long-distance and ring traffic, also carries
+# `function:newspaper-outlet` and dead-drop concealment.
+
+# --- U-Bahn station (underground railway) ----------------------------------
+# An underground-railway station. Several U-Bahn lines ran under the Soviet
+# sector between western stations; a few became "ghost stations" as the period
+# tightened, but through most of the window the underground was a way across.
+- id: u-bahn-station
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: morning, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.7 }
+    - { weekday: monday, phase: morning, level: 0.85 }
+    - { weekday: monday, phase: midday, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.85 }
+    - { weekday: monday, phase: late-night, level: 0.2 }
+    - { weekday: friday, phase: evening, level: 0.95 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.15 }
+    - { weather: snow, crowdMultiplier: 1.2 }
+    - { weather: sleet, crowdMultiplier: 1.2 }
+  baseRisk: 0.35
+  allowsDeadDrops: true
+  namePatterns:
+    - U-Bahnhof {pick:ubahn-names}
+    - the U-Bahn station at {pick:ubahn-names}
+  descriptionPool:
+    - Tiled stairs run down from the street to a cold platform where a draught carries the smell of brake-dust and wet wool.
+    - A row of enamel route-boards, a shuttered ticket booth, and the rails singing in the dark before the train lights swing into view.
+    - The platform fills and empties with each train; a man can board at the last second and leave a follower on the wrong side of the closing doors.
+    - White tiles yellowed by decades of smoke, a weighing machine, and a kiosk hatch where the morning papers are sold through a grille.
+    - Trains for the western lines and trains that run on under the eastern sector share the same platform; the destination boards tell you which is which.
+    - A long connecting passage lined with advertising hoardings, its far end lost in gloom, where footsteps echo and double back on themselves.
+  atmosphereTags: [underground, transient, echoing, anonymous, public]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- S-Bahn station (elevated / suburban railway) --------------------------
+# A city and suburban railway station. The S-Bahn, run from the eastern sector
+# across the whole city, bound the sectors together and carried the ring and
+# long-distance traffic; its stations are the great crossing points of the
+# divided city.
+- id: s-bahn-station
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: dead-of-night, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.75 }
+    - { weekday: monday, phase: morning, level: 0.9 }
+    - { weekday: monday, phase: midday, level: 0.6 }
+    - { weekday: monday, phase: evening, level: 0.9 }
+    - { weekday: monday, phase: late-night, level: 0.3 }
+    - { weekday: friday, phase: evening, level: 0.95 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.1 }
+    - { weather: snow, crowdMultiplier: 1.15 }
+    - { weather: fog, crowdMultiplier: 0.9 }
+  baseRisk: 0.4
+  allowsDeadDrops: true
+  namePatterns:
+    - S-Bahnhof {pick:sbahn-names}
+    - the S-Bahn station at {pick:sbahn-names}
+  descriptionPool:
+    - An elevated platform under a soot-blackened iron canopy, the city spread grey below and the signals clicking over the throat of the station.
+    - Red-and-cream carriages draw in with a long sigh of brakes; the loudspeaker names stations in both halves of the city without distinction.
+    - A vaulted concourse with a departures board, a left-luggage office, and a newsstand where a watched man can stand reading and miss nothing.
+    - The ring trains and the long-distance trains cross here; the crowd is a river of every sort of traveller, and no face is remarked for long.
+    - Stairs climb from the street to the platforms past a parade of kiosks; the whole station trembles when two trains pass on the viaduct above.
+    - A cold waiting hall with benches and a tiled floor, where the overnight travellers doze and a dropped case can wait among the luggage for hours.
+  atmosphereTags: [elevated, crowded, transient, anonymous, public, watched]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- Spree / canal wharf ---------------------------------------------------
+# A working wharf on the Spree or the Landwehr Canal, where coal, timber and
+# cargo move by barge and the water carries freight the roads would rather not.
+- id: spree-wharf
+  public: true
+  allowedActions: [travel, talk, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.6 }
+    - { weekday: monday, phase: morning, level: 0.7 }
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.2 }
+  weatherModifiers:
+    - { weather: fog, crowdMultiplier: 0.7 }
+    - { weather: rain, crowdMultiplier: 0.6 }
+    - { weather: snow, crowdMultiplier: 0.5 }
+  baseRisk: 0.45
+  allowsDeadDrops: true
+  namePatterns:
+    - the wharf at {pick:waterfront}
+    - Umschlagstelle {pick:waterfront}
+  descriptionPool:
+    - Coal barges lie three deep against the quay; a crane swings a net of crates over the oily water and the bargemen shout across the gap.
+    - A timber yard, a customs shed, and the long cobbled wharf where lorries wait with their side-lamps lit for the morning's cargo.
+    - The canal runs green and slow between brick embankments; a chain of lighters strains at its moorings as a tug works it round the bend.
+    - A loading stage of worn planking, a weighbridge, and a watchman's hut with a stove whose smoke the wind pulls flat along the water.
+    - Where the Spree touches the sector line a striped pole and a sentry box stand on the far bank, and the barges are watched across the water.
+    - Rusting bollards and heaped sacking; by dusk the wharf is deserted but for the slap of the water and a rat working along the pilings.
+  atmosphereTags: [industrial, exposed, rough, waterfront, boundary-edge]
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+
+# --- Imbiss / newsstand kiosk ----------------------------------------------
+# A street kiosk: a sausage stand, a tobacco-and-newspaper booth, a lottery
+# window. The small change of the street and a natural place to service a drop.
+- id: imbiss-kiosk
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: night }
+    - { weekday: sunday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.45 }
+    - { weekday: monday, phase: morning, level: 0.55 }
+    - { weekday: monday, phase: midday, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.4 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.75 }
+    - { weather: snow, crowdMultiplier: 0.6 }
+    - { weather: clear, crowdMultiplier: 1.1 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - the kiosk at {pick:ubahn-names}
+    - Zeitungskiosk {pick:commercial}
+  descriptionPool:
+    - A green-painted booth with a hatch, its shelf stacked with folded papers and the glass fogged by the steam of a sausage pan.
+    - Cigarette brands line the back wall; lottery slips and tram tickets fan across the counter, and the proprietor knows every regular's order.
+    - A sausage stand on the corner, a brazier glowing, a knot of men eating standing up and reading the headlines pegged on a wire.
+    - A narrow kiosk at the station mouth, the first light lit on the street at dawn, the morning editions dropped in a bale at its door.
+    - Postcards, matches, shoelaces and the evening paper; a small change of a counter where a folded note changes hands with the right coin.
+    - The shutter half-down against the wind, a queue of three forming and dissolving, the proprietor making change without looking up.
+  atmosphereTags: [cramped, everyday, watchful, street-corner, public]
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]

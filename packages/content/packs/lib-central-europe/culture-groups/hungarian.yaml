@@ -1,0 +1,365 @@
+# culture-groups/hungarian.yaml — the Hungarian group.
+#
+# A CultureGroup (CultureGroupSchema). Hungarian surnames are not gender-
+# inflected, so family names are plain strings. The Naming Rule uses the generic
+# {given} {family} display the engine renders; Magyar name order (family first)
+# is left to presentation. Quantity (Req 11.4): at least 100 given and 100
+# family names, at least 300 distinct total. All names are generic, common
+# Hungarian names of the period in fictional use; none names a real individual.
+- id: hungarian
+  name: Hungarian
+  languages:
+    - hu
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Mária
+      - Erzsébet
+      - Ilona
+      - Margit
+      - Katalin
+      - Julianna
+      - Rozália
+      - Irén
+      - Piroska
+      - Jolán
+      - Gizella
+      - Terézia
+      - Anna
+      - Magdolna
+      - Veronika
+      - Ágnes
+      - Borbála
+      - Csilla
+      - Dóra
+      - Emőke
+      - Franciska
+      - Gabriella
+      - Hajnalka
+      - Ibolya
+      - Judit
+      - Klára
+      - Lívia
+      - Melinda
+      - Noémi
+      - Olga
+      - Piri
+      - Renáta
+      - Sarolta
+      - Tünde
+      - Vilma
+      - Zsófia
+      - Adél
+      - Beáta
+      - Cecília
+      - Dalma
+      - Edit
+      - Flóra
+      - Györgyi
+      - Henrietta
+      - Izabella
+      - Johanna
+      - Kinga
+      - Lídia
+      - Márta
+      - Nóra
+      - Orsolya
+      - Petra
+      - Réka
+      - Szilvia
+      - Timea
+      - Valéria
+      - Zita
+      - Aranka
+      - Boglárka
+      - Etelka
+    m:
+      - István
+      - József
+      - János
+      - László
+      - Ferenc
+      - Sándor
+      - Imre
+      - Lajos
+      - Gábor
+      - Zoltán
+      - Béla
+      - András
+      - Károly
+      - Mihály
+      - Pál
+      - Tibor
+      - Géza
+      - Jenő
+      - Dezső
+      - Ernő
+      - Antal
+      - Balázs
+      - Csaba
+      - Dénes
+      - Elemér
+      - Frigyes
+      - Gergely
+      - Gyula
+      - Hubertusz
+      - Iván
+      - Kálmán
+      - Levente
+      - Márton
+      - Nándor
+      - Ödön
+      - Péter
+      - Rezső
+      - Szabolcs
+      - Tamás
+      - Vilmos
+      - Zsigmond
+      - Ákos
+      - Bálint
+      - Dániel
+      - Endre
+      - Fülöp
+      - Győző
+      - Henrik
+      - Ignác
+      - Jakab
+      - Kornél
+      - Lőrinc
+      - Miklós
+      - Ottó
+      - Richárd
+      - Simon
+      - Tódor
+      - Vince
+      - Zalán
+      - Barnabás
+  family:
+    - Nagy
+    - Kovács
+    - Tóth
+    - Szabó
+    - Horváth
+    - Varga
+    - Kiss
+    - Molnár
+    - Németh
+    - Farkas
+    - Balogh
+    - Papp
+    - Takács
+    - Juhász
+    - Lakatos
+    - Mészáros
+    - Oláh
+    - Simon
+    - Rácz
+    - Fekete
+    - Szilágyi
+    - Török
+    - Fehér
+    - Gál
+    - Balázs
+    - Kis
+    - Szűcs
+    - Kocsis
+    - Orsós
+    - Pintér
+    - Fodor
+    - Szalai
+    - Sipos
+    - Lukács
+    - Magyar
+    - Gulyás
+    - Biró
+    - Király
+    - László
+    - Katona
+    - Jakab
+    - Bálint
+    - Sándor
+    - Vincze
+    - Fülöp
+    - Pap
+    - Antal
+    - Boros
+    - Bogdán
+    - Fazekas
+    - Vass
+    - Hegedűs
+    - Deák
+    - Hajdu
+    - Barta
+    - Jónás
+    - Pataki
+    - Somogyi
+    - Dudás
+    - Veres
+    - Péter
+    - Barna
+    - Fábián
+    - Máté
+    - Székely
+    - Halász
+    - Pásztor
+    - Dobos
+    - Lengyel
+    - Soós
+    - Bognár
+    - Virág
+    - Novák
+    - Nemes
+    - Illés
+    - Bódis
+    - Czene
+    - Dávid
+    - Erdős
+    - Ferenczi
+    - Galambos
+    - Garai
+    - Gáspár
+    - Gömöri
+    - Harsányi
+    - Hídvégi
+    - Hollós
+    - Jánosi
+    - Kardos
+    - Kelemen
+    - Kemény
+    - Keresztes
+    - Kerényi
+    - Komáromi
+    - Kőrösi
+    - Kurucz
+    - Losonczi
+    - Madarász
+    - Márkus
+    - Medgyes
+    - Mohácsi
+    - Nyári
+    - Orbán
+    - Paksi
+    - Pálfi
+    - Pethő
+    - Pócs
+    - Rózsa
+    - Sáfár
+    - Salgó
+    - Sebők
+    - Solymosi
+    - Szekeres
+    - Szentes
+    - Tamási
+    - Temesvári
+    - Újvári
+    - Vámos
+    - Vékony
+    - Zsámbéki
+    - Ádám
+    - Bakos
+    - Baranyi
+    - Bene
+    - Berki
+    - Csák
+    - Csonka
+    - Darvas
+    - Dömötör
+    - Egri
+    - Faragó
+    - Gallai
+    - Göncz
+    - Gyarmati
+    - Hamar
+    - Herczeg
+    - Imre
+    - Kállai
+    - Kántor
+    - Kázmér
+    - Kolozsvári
+    - Kósa
+    - Lantos
+    - Makai
+    - Márffy
+    - Mezei
+    - Nádas
+    - Oros
+    - Palotai
+    - Récsei
+    - Sárközi
+    - Szarka
+    - Tölgyes
+    - Ungvári
+    - Vadász
+    - Zádori
+    - Almási
+    - Bakócz
+    - Csépányi
+    - Dombi
+    - Esztergomi
+    - Fónagy
+    - Gömbös
+    - Halmai
+    - Ihász
+    - Jászberényi
+    - Kecskeméti
+    - Lévai
+    - Mándoki
+    - Nyíri
+    - Óváry
+    - Pozsgai
+    - Rimaszombati
+    - Szatmári
+    - Tápai
+    - Veszprémi
+    - Zalatnai
+    - Bércesi
+    - Csóka
+    - Dévai
+    - Egerszegi
+    - Füzesi
+    - Gyöngyösi
+    - Hortobágyi
+    - Juhos
+    - Kaposvári
+    - Mezősi
+    - Nánási
+    - Ördögh
+    - Palócz
+    - Rácalmási
+    - Sziklai
+    - Tolnai
+    - Vámosi
+    - Zemplényi
+  voiceTraits:
+    - proud of a long memory, slow to forget a slight
+    - formal in address, warm once past the formality
+    - fond of toasts and the long way round a point
+    - speaks of the old kingdom with wistful pride
+    - careful with politics, generous with hospitality
+  mannerisms:
+    - raises a glass before every serious word
+    - presses food and drink on any guest
+    - clasps a hand in both of his to greet
+    - lapses into a sigh at talk of the past
+    - keeps the hat on until the second question
+  backgrounds:
+    - text: Came to the city for work and kept a room in a boarding house near the market.
+      tags: []
+    - text: Tended a coffee house kitchen and fed half the quarter on credit through the hard winters.
+      tags: []
+    - text: Served in the old army and keeps the discipline though the uniform is long gone.
+      tags: []
+    - text: Fled the countryside when the collectives came and never speaks of the village.
+      tags: []
+      years: { from: 1949, to: 1965 }
+    - text: Clerks at a trading office and knows which ledgers are kept in two hands.
+      tags: []
+    - text: Plays the violin at weddings and funerals both, and hears every family's quarrel.
+      tags: []
+    - text: Runs a tobacconist's near the station and trades news as freely as cigarettes.
+      tags: []
+    - text: Kept the family vineyard until it was taken, and now pours wine for others.
+      tags: []
+      years: { from: 1949, to: 1965 }

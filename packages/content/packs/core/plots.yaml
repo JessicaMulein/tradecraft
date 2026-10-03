@@ -1,0 +1,510 @@
+# Plot templates for the `core` pack — 1950s four-power-occupation Vienna.
+#
+# A Plot is the backbone of a generated game (Requirements 29.2, 31.7): the
+# hostile operation the player is working to uncover. Each template declares the
+# role slots the world generator fills from archetypes, the materiel and target
+# slots the operation threads through, a stage graph with deadlines and the
+# observable traces each stage emits, and the public-facing newspaper articles a
+# stage can surface.
+#
+# Every entry validates against PlotTemplateSchema in
+# packages/content/src/lib/kinds.ts.
+#
+# Content guardrails (Requirement 29.3): intelligence organisations are named
+# fictionally — the "Branch Directorate" for the hostile service, the "Western
+# Liaison Office" for the player's own station side. Any real official is
+# referred to by office, never by name (e.g. "the sector commandant", "the
+# four-power liaison officer"). Nothing here depicts a real atrocity; the drama
+# is tradecraft — surveillance, couriers, dead drops, a compromise attempt — in
+# a divided city.
+#
+# roleSlots[].archetypes reference archetype ids from archetypes.yaml. The Cell
+# roles (cell-leader, cell-courier, cell-radio-operator, cell-financier) and
+# hostile officers (hostile-resident, hostile-case-officer) carry the operation;
+# contacts and station staff appear where a plot touches them.
+#
+# Each stage's `traces` are structured TraceTemplates (task 26.1): a `kind`
+# (meeting, transmission, drop-loaded, drop-emptied, npc-moved), the `roles` the
+# event involves (role-slot ids on this template), an optional `place` (a
+# Location Type to stamp a Location from, or a `target` slot whose bound
+# Location hosts it), an optional `channel` kind (radio, numbers, courier) for a
+# transmission or courier run, an optional `materiel` slot a drop/courier
+# carries, the `evidences` (predicate ids the event makes observable), and the
+# prose `text` kept for the debrief and the Narrator. The world generator binds
+# every slot ref to a concrete world entity at instantiation (Requirements 3.3,
+# 3.6); the loader refuses any trace that names a role, target, materiel,
+# Location Type or predicate it cannot resolve (Requirement 31.2).
+# publicTraceArticles remain descriptive strings.
+
+# =========================================================================
+# Plot 1 — Compromise of the four-power liaison.
+#
+# The hostile Branch Directorate works to compromise a Western officer who sits
+# on the four-power liaison, so his access can be turned. The operation runs
+# from spotting, through a cultivated approach, to the attempt itself and the
+# exfiltration of what it yields.
+# =========================================================================
+
+- id: liaison-compromise
+  roleSlots:
+    - id: operation-director
+      archetypes: [hostile-resident]
+    - id: handling-officer
+      archetypes: [hostile-case-officer]
+    - id: cell-ringleader
+      archetypes: [cell-leader]
+    - id: street-courier
+      archetypes: [cell-courier]
+    - id: wireless-operator
+      archetypes: [cell-radio-operator]
+    - id: paymaster
+      archetypes: [cell-financier]
+    - id: inside-fixer
+      archetypes: [emigre-fixer]
+  materielSlots:
+    - id: compromise-file
+      description: >-
+        A folder of staged photographs and a forged debt note, assembled to put
+        pressure on the targeted liaison officer.
+    - id: courier-pouch
+      description: >-
+        A sealed pouch used to move the compromise file between the safehouse
+        and the handling officer without a face-to-face meeting.
+  targetSlots:
+    - id: liaison-officer
+      description: >-
+        A Western officer who sits on the four-power liaison, referred to by
+        office rather than by name; the operation aims to turn his access.
+    - id: liaison-office
+      description: >-
+        The four-power liaison office whose traffic the Branch Directorate wants
+        read; the ultimate prize the compromise is meant to open.
+  stages:
+    - id: spot-the-officer
+      requires: []
+      produces: [target-identified]
+      deadline: { min: 4, max: 8 }
+      traces:
+        - kind: meeting
+          roles: [cell-ringleader]
+          place: { query: [function:cafe] }
+          evidences: [LOCATED_AT, TARGETS]
+          text: >-
+            A watcher logs the liaison officer's café habits across three
+            mornings, noting which table he favours and who joins him.
+        - kind: npc-moved
+          roles: [street-courier]
+          place: { query: [function:transit] }
+          evidences: [TRAVELS_TO]
+          text: >-
+            A courier walks the officer's tram route end to end, timing the
+            crossings between sectors.
+      onDisrupted: { delay: 0.5, reroute: 0.4, abort: 0.1 }
+    - id: cultivate-approach
+      requires: [target-identified]
+      produces: [approach-made]
+      deadline: { min: 6, max: 12 }
+      traces:
+        - kind: meeting
+          roles: [inside-fixer, handling-officer]
+          place: { query: [function:hotel-bar] }
+          evidences: [MEETS_AT, REPORTS_TO]
+          text: >-
+            An émigré fixer arranges an apparently chance introduction at a hotel
+            bar, then reports the officer's weaknesses to the handling officer.
+        - kind: meeting
+          roles: [paymaster]
+          place: { target: liaison-officer }
+          evidences: [SUPPLIES]
+          text: >-
+            The paymaster quietly settles one of the officer's standing debts
+            through a front, leaving a thread to pull later.
+      onDisrupted: { delay: 0.5, reroute: 0.3, abort: 0.2 }
+    - id: stage-the-compromise
+      requires: [approach-made]
+      produces: [compromise-assembled]
+      deadline: { min: 5, max: 10 }
+      traces:
+        - kind: transmission
+          roles: [wireless-operator]
+          channel: radio
+          evidences: [USES_CHANNEL, CARRIES]
+          text: >-
+            A wireless operator signals the safehouse that the compromise file is
+            ready, using the night transmission window.
+        - kind: drop-emptied
+          roles: [street-courier]
+          place: { query: [function:park] }
+          materiel: courier-pouch
+          evidences: [CARRIES]
+          text: >-
+            A street courier collects the courier pouch from a dead drop in the
+            park and carries it to the safehouse.
+      onDisrupted: { delay: 0.4, reroute: 0.4, abort: 0.2 }
+    - id: make-the-pitch
+      requires: [compromise-assembled]
+      produces: [officer-turned]
+      deadline: { min: 3, max: 7 }
+      traces:
+        - kind: meeting
+          roles: [handling-officer]
+          place: { target: liaison-officer }
+          materiel: compromise-file
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            The handling officer meets the liaison officer alone in a back room
+            and lays out the compromise file.
+        - kind: meeting
+          roles: [cell-ringleader]
+          place: { target: liaison-officer }
+          evidences: [LOCATED_AT]
+          text: >-
+            A watcher confirms the liaison officer leaves the meeting shaken and
+            does not report it to his own service.
+      onDisrupted: { delay: 0.3, reroute: 0.3, abort: 0.4 }
+    - id: exfiltrate-product
+      requires: [officer-turned]
+      produces: [product-delivered]
+      deadline: { min: 4, max: 9 }
+      traces:
+        - kind: npc-moved
+          roles: [street-courier]
+          place: { target: liaison-office }
+          materiel: courier-pouch
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            Copies of four-power liaison traffic begin reaching the Branch
+            Directorate through a reused courier route.
+        - kind: transmission
+          roles: [operation-director]
+          channel: numbers
+          evidences: [USES_CHANNEL, REPORTS_TO]
+          text: >-
+            The operation director signals the Directorate that the channel is
+            open and running.
+      onDisrupted: { delay: 0.3, reroute: 0.2, abort: 0.5 }
+  publicTraceArticles:
+    - >-
+      WIENER TAGESBLATT — Liaison officer seen leaving late-night meetings at a
+      Ringstrasse hotel; colleagues decline to comment on his recent absences.
+    - >-
+      DIE ABENDPOST — Rumours of a quiet reshuffle at the four-power liaison
+      office follow weeks of unexplained delays in inter-sector paperwork.
+
+# =========================================================================
+# Plot 2 — Theft of a Western cipher component.
+#
+# The Branch Directorate sets out to steal a cipher component from the Western
+# Liaison Office's registry by suborning a clerk and smuggling the part out of
+# the sector. The stages run from reconnaissance to the lift to the handover.
+# =========================================================================
+
+- id: cipher-theft
+  roleSlots:
+    - id: operation-director
+      archetypes: [hostile-resident]
+    - id: handling-officer
+      archetypes: [hostile-case-officer]
+    - id: cell-ringleader
+      archetypes: [cell-leader]
+    - id: smuggling-courier
+      archetypes: [cell-courier]
+    - id: wireless-operator
+      archetypes: [cell-radio-operator]
+    - id: suborned-clerk
+      archetypes: [station-clerk, station-cipher-clerk]
+    - id: river-mover
+      archetypes: [dock-worker]
+  materielSlots:
+    - id: cipher-component
+      description: >-
+        A removable component from a Western cipher machine; small enough to
+        conceal, valuable enough that its loss would not be announced.
+    - id: duplicate-blank
+      description: >-
+        A blank stand-in slipped into the registry so the theft is not noticed
+        at the next inventory.
+  targetSlots:
+    - id: registry-room
+      description: >-
+        The Western Liaison Office registry where the cipher component is held
+        between uses; the room the operation must reach.
+    - id: cipher-traffic
+      description: >-
+        The Western cipher traffic the stolen component would let the Branch
+        Directorate read; the reason the part is worth the risk.
+  stages:
+    - id: survey-the-registry
+      requires: []
+      produces: [registry-mapped]
+      deadline: { min: 5, max: 10 }
+      traces:
+        - kind: meeting
+          roles: [cell-ringleader]
+          place: { query: [function:cafe] }
+          evidences: [LOCATED_AT, TARGETS]
+          text: >-
+            A watcher maps the registry's opening hours and the clerk's lunchtime
+            absences across a working week.
+        - kind: meeting
+          roles: [handling-officer, cell-ringleader]
+          place: { query: [function:cafe] }
+          evidences: [MEETS_AT, REPORTS_TO]
+          text: >-
+            The handling officer reviews a sketch of the registry room passed up
+            through a cut-out.
+      onDisrupted: { delay: 0.5, reroute: 0.4, abort: 0.1 }
+    - id: suborn-the-clerk
+      requires: [registry-mapped]
+      produces: [clerk-recruited]
+      deadline: { min: 6, max: 12 }
+      traces:
+        - kind: meeting
+          roles: [handling-officer, suborned-clerk]
+          place: { query: [function:cafe] }
+          evidences: [MEETS_AT, SUPPLIES]
+          text: >-
+            A front clears a debt for a registry clerk, who then begins meeting
+            the handling officer at a quiet kaffeehaus.
+        - kind: transmission
+          roles: [wireless-operator]
+          channel: radio
+          evidences: [USES_CHANNEL]
+          text: >-
+            A wireless operator logs a new recognition signal for the recruited
+            clerk in the night schedule.
+      onDisrupted: { delay: 0.5, reroute: 0.3, abort: 0.2 }
+    - id: lift-the-component
+      requires: [clerk-recruited]
+      produces: [component-taken]
+      deadline: { min: 3, max: 6 }
+      traces:
+        - kind: drop-loaded
+          roles: [suborned-clerk]
+          place: { target: registry-room }
+          materiel: cipher-component
+          evidences: [CARRIES]
+          text: >-
+            The clerk swaps the cipher component for a duplicate blank during a
+            thin afternoon shift and leaves it at a dead drop.
+        - kind: drop-emptied
+          roles: [smuggling-courier]
+          place: { query: [function:park] }
+          materiel: cipher-component
+          evidences: [CARRIES]
+          text: >-
+            A street courier recovers the drop and signals the lift is clean.
+      onDisrupted: { delay: 0.3, reroute: 0.3, abort: 0.4 }
+    - id: move-across-the-sector
+      requires: [component-taken]
+      produces: [component-moved]
+      deadline: { min: 4, max: 8 }
+      traces:
+        - kind: npc-moved
+          roles: [river-mover]
+          place: { query: [function:port] }
+          materiel: cipher-component
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            A dock worker carries the component in a goods crate across the sector
+            boundary on an early-morning barge.
+        - kind: meeting
+          roles: [cell-ringleader]
+          place: { query: [function:port] }
+          evidences: [LOCATED_AT]
+          text: >-
+            A watcher confirms the crate clears the river checkpoint without a
+            search.
+      onDisrupted: { delay: 0.4, reroute: 0.4, abort: 0.2 }
+    - id: hand-over-the-prize
+      requires: [component-moved]
+      produces: [component-delivered]
+      deadline: { min: 2, max: 5 }
+      traces:
+        - kind: meeting
+          roles: [handling-officer, river-mover]
+          place: { query: [function:embassy] }
+          materiel: cipher-component
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            The handling officer takes delivery of the component at an embassy
+            side entrance and signals the operation director.
+        - kind: transmission
+          roles: [operation-director]
+          channel: numbers
+          evidences: [USES_CHANNEL, REPORTS_TO]
+          text: >-
+            The Branch Directorate's reading room begins drafting against
+            recovered Western cipher traffic.
+      onDisrupted: { delay: 0.2, reroute: 0.2, abort: 0.6 }
+  publicTraceArticles:
+    - >-
+      WIENER TAGESBLATT — Clerk at a Western liaison office reported absent amid
+      a quiet internal review; officials say only that procedures are being
+      tightened.
+    - >-
+      DIE ABENDPOST — Dock crews on the Danube describe heightened checks on
+      early barges after an unspecified "security matter" at the waterfront.
+
+# =========================================================================
+# Plot 3 — Abduction of an émigré across the sector line.
+#
+# The hostile Branch Directorate means to seize a troublesome émigré — a former
+# officer of their own service who defected west and now talks to the wrong
+# people — and spirit him back across the sector boundary for a show trial no
+# newspaper will name. The operation runs from spotting the émigré's habits,
+# through suborning the man who can lure him to the boundary, the snatch itself,
+# and the run across the line. Fictional throughout: the Branch Directorate and
+# the Western Liaison Office are invented services, the émigré and every officer
+# are invented people, and the "trial" is left off-stage. Nothing here depicts a
+# real atrocity; the drama is tradecraft under a four-power map.
+# =========================================================================
+
+- id: emigre-abduction
+  roleSlots:
+    - id: operation-director
+      archetypes: [hostile-resident]
+    - id: handling-officer
+      archetypes: [hostile-case-officer]
+    - id: cell-ringleader
+      archetypes: [cell-leader]
+    - id: snatch-courier
+      archetypes: [cell-courier]
+    - id: wireless-operator
+      archetypes: [cell-radio-operator]
+    - id: paymaster
+      archetypes: [cell-financier]
+    - id: luring-fixer
+      archetypes: [emigre-fixer]
+  materielSlots:
+    - id: sedative-kit
+      description: >-
+        A small medical kit of sedatives and restraints, assembled to take the
+        émigré quietly and keep him quiet across the boundary.
+    - id: forged-transit
+      description: >-
+        Forged transit papers naming the émigré as a repatriated displaced
+        person, so a checkpoint waves the car through without a second look.
+  targetSlots:
+    - id: emigre-target
+      description: >-
+        The émigré the operation means to seize, referred to by his standing — a
+        former officer of the opposing service, now a Western source — never by
+        name; the person the whole operation is aimed at.
+    - id: boundary-crossing
+      description: >-
+        The sector-boundary crossing point the snatch car must clear; the place
+        the operation funnels the émigré through on the run east.
+  stages:
+    - id: spot-the-emigre
+      requires: []
+      produces: [emigre-located]
+      deadline: { min: 4, max: 8 }
+      traces:
+        - kind: meeting
+          roles: [cell-ringleader]
+          place: { query: [function:cafe] }
+          evidences: [LOCATED_AT, TARGETS]
+          text: >-
+            A watcher logs the émigré's café mornings across a week, marking the
+            table he takes and the hour he leaves.
+        - kind: npc-moved
+          roles: [snatch-courier]
+          place: { query: [function:transit] }
+          evidences: [TRAVELS_TO]
+          text: >-
+            A courier paces the émigré's walk back from the tram stop to his
+            lodgings, timing the quiet stretch where a car could pull alongside.
+      onDisrupted: { delay: 0.5, reroute: 0.4, abort: 0.1 }
+    - id: suborn-the-lure
+      requires: [emigre-located]
+      produces: [lure-arranged]
+      deadline: { min: 6, max: 12 }
+      traces:
+        - kind: meeting
+          roles: [luring-fixer, handling-officer]
+          place: { query: [function:hotel-bar] }
+          evidences: [MEETS_AT, REPORTS_TO]
+          text: >-
+            An émigré fixer the target trusts begins meeting the handling officer
+            at a hotel bar, carrying back the time the émigré will be alone.
+        - kind: meeting
+          roles: [paymaster]
+          place: { target: emigre-target }
+          evidences: [SUPPLIES]
+          text: >-
+            The paymaster settles the fixer's debts through a front, buying the
+            one evening the lure needs.
+      onDisrupted: { delay: 0.5, reroute: 0.3, abort: 0.2 }
+    - id: ready-the-snatch
+      requires: [lure-arranged]
+      produces: [snatch-ready]
+      deadline: { min: 5, max: 10 }
+      traces:
+        - kind: transmission
+          roles: [wireless-operator]
+          channel: radio
+          evidences: [USES_CHANNEL, CARRIES]
+          text: >-
+            A wireless operator signals the safehouse that the sedative kit and
+            forged papers are ready, using the night transmission window.
+        - kind: drop-emptied
+          roles: [snatch-courier]
+          place: { query: [function:park] }
+          materiel: sedative-kit
+          evidences: [CARRIES]
+          text: >-
+            A courier lifts the sedative kit from a dead drop in the park and
+            carries it to the staging flat.
+      onDisrupted: { delay: 0.4, reroute: 0.4, abort: 0.2 }
+    - id: take-the-emigre
+      requires: [snatch-ready]
+      produces: [emigre-taken]
+      deadline: { min: 3, max: 7 }
+      traces:
+        - kind: meeting
+          roles: [handling-officer]
+          place: { target: emigre-target }
+          materiel: sedative-kit
+          evidences: [MEETS_AT, CARRIES]
+          text: >-
+            On the evening the fixer bought, the handling officer and a courier
+            take the émigré off a quiet street and into a waiting car.
+        - kind: meeting
+          roles: [cell-ringleader]
+          place: { target: emigre-target }
+          evidences: [LOCATED_AT]
+          text: >-
+            A watcher confirms the émigré does not reach his door and that no
+            alarm is raised that night.
+      onDisrupted: { delay: 0.3, reroute: 0.3, abort: 0.4 }
+    - id: run-across-the-line
+      requires: [emigre-taken]
+      produces: [emigre-delivered]
+      deadline: { min: 4, max: 9 }
+      traces:
+        - kind: npc-moved
+          roles: [snatch-courier]
+          place: { target: boundary-crossing }
+          materiel: forged-transit
+          evidences: [TRAVELS_TO, CARRIES]
+          text: >-
+            The snatch car clears the sector boundary on forged transit papers
+            before the first morning checkpoint change.
+        - kind: transmission
+          roles: [operation-director]
+          channel: numbers
+          evidences: [USES_CHANNEL, REPORTS_TO]
+          text: >-
+            The operation director signals the Directorate that the parcel is
+            across and in hand.
+      onDisrupted: { delay: 0.3, reroute: 0.2, abort: 0.5 }
+  publicTraceArticles:
+    - >-
+      WIENER TAGESBLATT — A Western-sector émigré reported missing from his
+      lodgings; neighbours describe a car idling on the corner the night he was
+      last seen.
+    - >-
+      DIE ABENDPOST — Relief committee asks after a displaced former officer who
+      failed to keep an appointment, amid renewed worry over disappearances near
+      the sector line.

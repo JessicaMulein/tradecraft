@@ -1,0 +1,91 @@
+# locale.yaml — the Vienna city Locale (content-expansion task 9.2).
+#
+# Validates against LocaleSchema (packages/content/src/kinds/locale.ts):
+#   { scope, date, currency, honorifics, address, terms, allowNames }
+#
+# This is the city override the era Locale (era-cold-war-early) falls back to,
+# field by field (design, city-then-era fallback chain). `scope.city` names the
+# Vienna City Definition by its bare id (namespaced city-vienna/vienna). It
+# fixes the local register the money/date/honorific/address formatters render
+# through, the Local Terms that join the help glossary, and the names the
+# Specifics Guard allows.
+#
+# Date: the Viennese month and weekday names (German, with the Austrian
+# "Jänner"/"Feber" forms), in local order — months January→December, weekdays
+# Sunday→Saturday — so the date formatter names a date in the city's own voice.
+#
+# Currency: the Schilling, written symbol-first in the period style ("S120");
+# the amount and symbol come from the City Definition's currency, the Locale
+# only fixes the layout.
+#
+# Honorifics: the German "Frau"/"Fräulein" and "Herr" of the period.
+#
+# Local Terms: everyday Viennese words a player meets in the city's text, each
+# with a plain definition for the help glossary. allowNames adds the same common
+# nouns to the Specifics Guard allowlist so a bare mention of a Beisl or a Trafik
+# is not read as a specific named entity. None equals a distinctive entity alias
+# (CE-ALLOWLIST). All terms are period-plain and original to this pack.
+
+- scope:
+    city: vienna
+  date:
+    long: '{weekday}, {day}. {month} {year}'
+    short: '{day}.{month}.{year}'
+    months:
+      - Jänner
+      - Feber
+      - März
+      - April
+      - Mai
+      - Juni
+      - Juli
+      - August
+      - September
+      - Oktober
+      - November
+      - Dezember
+    weekdays:
+      - Sonntag
+      - Montag
+      - Dienstag
+      - Mittwoch
+      - Donnerstag
+      - Freitag
+      - Samstag
+  currency:
+    pattern: '{symbol}{amount}'
+  honorifics:
+    f: [Frau, Fräulein]
+    m: [Herr]
+  address: '{street} {number}, {district}'
+  terms:
+    - term: Beisl
+      definition: A small, plain neighbourhood tavern or pub.
+    - term: Kaffeehaus
+      definition: A Viennese coffee house, where a patron may sit for hours over one small coffee and the papers.
+    - term: Trafik
+      definition: A licensed tobacconist's kiosk selling cigarettes, stamps, newspapers and lottery slips.
+    - term: Heuriger
+      definition: A wine tavern on the city's edge serving the current year's new wine.
+    - term: Bezirk
+      definition: A numbered administrative district of the city.
+    - term: Ring
+      definition: The grand boulevard that circles the inner city on the line of the old walls.
+    - term: Groschen
+      definition: The subunit of the Schilling; one hundred Groschen to the Schilling.
+    - term: Sperrstunde
+      definition: The legal closing hour, after which licensed premises must shut.
+    - term: Greissler
+      definition: A small corner grocer selling everyday provisions.
+    - term: Fiaker
+      definition: A horse-drawn cab for hire, and its driver.
+  allowNames:
+    - Beisl
+    - Kaffeehaus
+    - Trafik
+    - Heuriger
+    - Bezirk
+    - Groschen
+    - Sperrstunde
+    - Greissler
+    - Fiaker

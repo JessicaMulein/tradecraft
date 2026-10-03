@@ -1,0 +1,71 @@
+# weather.yaml — the monthly weather tables of Trieste, 1947–1954
+# (content-expansion task 9.9).
+#
+# One WeatherTables record (WeatherTablesSchema): a weighted condition table per
+# calendar month (1 = January … 12 = December). The daily stream selects the
+# month from the date and draws one condition, weighted; Location Types key
+# their crowd modifiers off the condition `id` (clear, rain, bora, fog, …).
+#
+# Climate: the Adriatic head of the gulf — a Mediterranean climate of mild damp
+# winters and warm dry summers, but exposed to the BORA, the hard cold north-
+# easterly that funnels down off the Karst and can blow for days, especially in
+# the colder half of the year. Plain period weather words, no anachronism.
+- city: trieste
+  months:
+    '1':
+      - { id: clear, label: 'clear and cold', weight: 3 }
+      - { id: bora, label: 'the bora blowing hard', weight: 4 }
+      - { id: overcast, label: 'low grey cloud', weight: 3 }
+      - { id: rain, label: 'cold rain', weight: 2 }
+    '2':
+      - { id: clear, label: 'bright and cold', weight: 3 }
+      - { id: bora, label: 'a biting bora', weight: 4 }
+      - { id: overcast, label: 'grey and raw', weight: 3 }
+      - { id: rain, label: 'cold rain', weight: 2 }
+    '3':
+      - { id: clear, label: 'bright and freshening', weight: 4 }
+      - { id: bora, label: 'a gusting bora', weight: 3 }
+      - { id: rain, label: 'spring rain', weight: 3 }
+      - { id: overcast, label: 'overcast', weight: 2 }
+    '4':
+      - { id: clear, label: 'mild and clear', weight: 5 }
+      - { id: rain, label: 'passing showers', weight: 3 }
+      - { id: overcast, label: 'soft grey sky', weight: 2 }
+      - { id: bora, label: 'a brisk bora', weight: 2 }
+    '5':
+      - { id: clear, label: 'warm and clear', weight: 6 }
+      - { id: rain, label: 'a warm shower', weight: 2 }
+      - { id: overcast, label: 'hazy', weight: 2 }
+    '6':
+      - { id: clear, label: 'warm and bright', weight: 6 }
+      - { id: humid, label: 'close and still', weight: 2 }
+      - { id: thunderstorm, label: 'an evening thunderstorm', weight: 2 }
+    '7':
+      - { id: clear, label: 'hot and dry', weight: 7 }
+      - { id: humid, label: 'close and sultry', weight: 2 }
+      - { id: thunderstorm, label: 'a thunderstorm off the sea', weight: 1 }
+    '8':
+      - { id: clear, label: 'hot and bright', weight: 7 }
+      - { id: humid, label: 'heavy and still', weight: 2 }
+      - { id: thunderstorm, label: 'a late thunderstorm', weight: 1 }
+    '9':
+      - { id: clear, label: 'warm and clear', weight: 5 }
+      - { id: rain, label: 'warm rain', weight: 2 }
+      - { id: thunderstorm, label: 'an autumn storm', weight: 2 }
+      - { id: overcast, label: 'softening grey', weight: 1 }
+    '10':
+      - { id: clear, label: 'mild and bright', weight: 4 }
+      - { id: rain, label: 'steady rain', weight: 3 }
+      - { id: bora, label: 'the first hard bora', weight: 2 }
+      - { id: fog, label: 'morning sea fog', weight: 1 }
+    '11':
+      - { id: overcast, label: 'grey and damp', weight: 4 }
+      - { id: rain, label: 'cold rain', weight: 3 }
+      - { id: bora, label: 'a gusting bora', weight: 2 }
+      - { id: fog, label: 'thick fog on the gulf', weight: 1 }
+    '12':
+      - { id: bora, label: 'the bora blowing hard', weight: 4 }
+      - { id: overcast, label: 'low grey cloud', weight: 3 }
+      - { id: clear, label: 'clear and bitter', weight: 2 }
+      - { id: rain, label: 'cold rain', weight: 2 }
+      - { id: fog, label: 'river and harbour fog', weight: 1 }

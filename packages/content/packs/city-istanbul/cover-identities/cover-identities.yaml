@@ -1,0 +1,95 @@
+# cover-identities/cover-identities.yaml — the local Cover Identities issued in
+# Istanbul (content-expansion task 9.6).
+#
+# Each validates against CoverIdentitySchema (packages/content/src/lib/kinds.ts):
+#   { id, title, employerOrg, fitLocationTypes, suspicionModifiers, tags }.
+#
+# `fitLocationTypes` names the Istanbul Location Types where the cover sits
+# naturally; bare ids resolve to this City Pack's own Location Types (the ids in
+# location-types/location-types.yaml). `tags` draws from the core `cover:*`
+# facet (official | commercial | press | cultural). `atFit` is negative — the
+# cover lowers suspicion where it belongs; `elsewhere` is positive.
+#
+# Period: Istanbul 1950–1965, a neutral crossroads of consulates, shipping,
+# émigrés and wagon-lit travellers. Every title and employer is period-plausible
+# and WHOLLY FICTIONAL; none names a real firm, mission or body of the period.
+
+# --- 1. Shipping / maritime commerce (Galata) -------------------------------
+- id: shipping-agent
+  title: Shipping Agent
+  employerOrg: Levant Maritime & Forwarding Company
+  tags: [cover:commercial]
+  fitLocationTypes: [core/danube-port, depo, core/hotel-bar, core/kaffeehaus, iskele]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.2
+
+# --- 2. Wire-service correspondent (Pera) -----------------------------------
+- id: wire-service-stringer
+  title: Levant Press Stringer
+  employerOrg: Transcontinental News Bureau
+  tags: [cover:press]
+  fitLocationTypes: [core/hotel-bar, core/kaffeehaus, core/embassy, gar, kutuphane]
+  suspicionModifiers:
+    atFit: -0.1
+    elsewhere: 0.15
+
+# --- 3. Consular trade clerk ------------------------------------------------
+- id: consular-trade-clerk
+  title: Consular Trade Clerk
+  employerOrg: Allied Chamber of Commerce in the Levant
+  tags: [cover:official]
+  fitLocationTypes: [core/embassy, core/hotel-bar, kutuphane, carsi]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.2
+
+# --- 4. Carpet & antiquities buyer (bazaar) ---------------------------------
+- id: antiquities-buyer
+  title: Antiquities & Carpet Buyer
+  employerOrg: Bosphorus Fine Arts & Export House
+  tags: [cover:commercial]
+  fitLocationTypes: [carsi, sahaf, core/kaffeehaus, depo]
+  suspicionModifiers:
+    atFit: -0.18
+    elsewhere: 0.22
+
+# --- 5. Antiquarian book & manuscript dealer --------------------------------
+- id: manuscript-dealer
+  title: Antiquarian Book & Manuscript Dealer
+  employerOrg: Pera Bibliophile Society
+  tags: [cover:cultural]
+  fitLocationTypes: [sahaf, kutuphane, core/kaffeehaus]
+  suspicionModifiers:
+    atFit: -0.2
+    elsewhere: 0.25
+
+# --- 6. Relief / migration commission officer -------------------------------
+- id: migration-commission-officer
+  title: Migration Commission Officer
+  employerOrg: Commission for Levantine Resettlement
+  tags: [cover:official]
+  fitLocationTypes: [gar, iskele, core/embassy, kutuphane, park]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.18
+
+# --- 7. Travel-bureau courier (wagon-lit) -----------------------------------
+- id: travel-bureau-courier
+  title: Travel-Bureau Courier
+  employerOrg: Orient Wagon & Travel Office
+  tags: [cover:commercial]
+  fitLocationTypes: [gar, core/hotel-bar, iskele, core/tram-stop, sinema]
+  suspicionModifiers:
+    atFit: -0.1
+    elsewhere: 0.15
+
+# --- 8. Cultural-institute lecturer -----------------------------------------
+- id: institute-lecturer
+  title: Cultural Institute Lecturer
+  employerOrg: Bosphorus Institute for Oriental Studies
+  tags: [cover:cultural]
+  fitLocationTypes: [kutuphane, core/embassy, core/kaffeehaus, sahaf]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.22

@@ -1,0 +1,198 @@
+# tags.yaml — the core Tag Vocabulary (content-expansion task 7.1).
+#
+# This is the base Tag Vocabulary every scenario loads with the core pack. It
+# names the facets that partition the Tag space, the Tags themselves, and the
+# Required Queries the world generator and Tag Conformance guarantee (design,
+# "Tag Vocabulary"; Requirements 1.7, 4.1, 4.2, 4.3).
+#
+# The file validates against TagVocabularySchema (packages/content/src/kinds/
+# tag-vocabulary.ts): a single record `{ facets, tags, requiredQueries }`.
+#
+# - Facets partition the space and name the content kinds their Tags may apply
+#   to; the loader's Tag check (tag-check.ts, step 7) rejects a Tag used on a
+#   kind outside its facet's reach (Req 4.4).
+# - Every Tag id has the form `<facet>:<value>` and carries a description. A Tag
+#   inherits its facet's `appliesTo` unless it names its own.
+# - Required Queries are the Tag Queries the vocabulary guarantees. Each City
+#   Pack must bind at least `minStatic` of them statically, and the generator
+#   must instantiate at least `minInstantiated` in every city (Req 4.5, 4.6).
+#   Role and other archetype queries are satisfied from the Content Set as a
+#   whole, so their `minInstantiated` is 0.
+#
+# This vocabulary covers the slice's own content: every core Location Type,
+# archetype and Cover Identity is tagged from it (see location-types.yaml,
+# archetypes.yaml, cover-identities.yaml). The Required Queries name one query
+# per slice archetype role and one per Location function the generator's
+# archetype schedules and setting step draw on (the `function:*` tags the
+# schedules resolve to: cafe, safehouse, hotel-bar, park, kiosk, transit,
+# embassy, station, warehouse, port, library, bookshop, cinema), plus the
+# cross-cutting slots (dead-drop sites, meeting spots, newspaper outlets,
+# public-text sources, diplomatic settings, private and public access).
+
+# --- Facets ----------------------------------------------------------------
+# The facets from the design's "Tag Vocabulary" table, each naming the kinds
+# its Tags may apply to.
+facets:
+  - { id: venue,     appliesTo: [location, location-type] }
+  - { id: function,  appliesTo: [location, location-type] }
+  - { id: access,    appliesTo: [location, location-type, route] }
+  - { id: setting,   appliesTo: [location, location-type, district] }
+  - { id: sector,    appliesTo: [district, route] }
+  - { id: climate,   appliesTo: [city, descriptor-fragment] }
+  - { id: role,      appliesTo: [archetype] }
+  - { id: trade,     appliesTo: [archetype, persona-background] }
+  - { id: access-to, appliesTo: [archetype, local-org] }
+  - { id: social,    appliesTo: [archetype, persona-background] }
+  - { id: skill,     appliesTo: [archetype] }
+  - { id: org,       appliesTo: [local-org] }
+  - { id: cover,     appliesTo: [cover-identity] }
+  - { id: item,      appliesTo: [technology] }
+
+# --- Tags ------------------------------------------------------------------
+tags:
+  # venue: the kind of place a Location physically is.
+  - { id: "venue:cafe",            description: "Café or coffee house" }
+  - { id: "venue:tavern",          description: "Wine tavern or drinking garden" }
+  - { id: "venue:market",          description: "Open-air or covered market of stalls" }
+  - { id: "venue:station-office",  description: "The player's own Station headquarters" }
+  - { id: "venue:kiosk",           description: "A street kiosk, newsstand or tobacconist booth" }
+  - { id: "venue:hotel",           description: "A hotel, its bar and public rooms" }
+  - { id: "venue:cinema",          description: "A picture house or cinema auditorium" }
+
+  # function: what a place is used for in play. These are the slots the
+  # generator's archetype schedules and the setting step bind against; the
+  # `function:<name>` values below mirror the slice Location Type ids the
+  # archetype schedules name as their `at` queries.
+  - { id: "function:cafe",              description: "A café a character keeps as a regular haunt" }
+  - { id: "function:safehouse",         description: "A private, deniable room used for secure meetings" }
+  - { id: "function:hotel-bar",         description: "A hotel bar where correspondents and attachés gather" }
+  - { id: "function:park",              description: "An open-air meeting ground of paths and benches" }
+  - { id: "function:kiosk",             description: "A newsstand or tobacconist kiosk on the street" }
+  - { id: "function:transit",           description: "A tram stop, station or transit point a character passes through" }
+  - { id: "function:embassy",           description: "A legation, mission or embassy a character works out of" }
+  - { id: "function:station",           description: "The player's own Station, where staff report" }
+  - { id: "function:warehouse",         description: "A store or depot used for materiel and quiet handovers" }
+  - { id: "function:port",              description: "A wharf or river port where cargo and people move" }
+  - { id: "function:library",           description: "A reading hall a character frequents" }
+  - { id: "function:bookshop",          description: "An antiquarian bookshop a character frequents" }
+  - { id: "function:cinema",            description: "A picture house used as a quiet meeting ground" }
+  - { id: "function:dead-drop-site",    description: "Concealment possible; low passing attention — a dead drop can be serviced here" }
+  - { id: "function:meeting-spot",      description: "A public place a face-to-face meeting reads as unremarkable" }
+  - { id: "function:transit-hub",       description: "A busy transit node a watched person can move through anonymously" }
+  - { id: "function:newspaper-outlet",  description: "A place today's newspaper edition can be obtained" }
+  - { id: "function:public-text-source", description: "A source of public texts (almanacs, directories, timetables) for book ciphers" }
+  - { id: "function:materiel-store",    description: "A place materiel can be stored or handed over" }
+
+  # access: whether a place is open to the public or private, and (on a Route)
+  # whether a crossing passes a sector checkpoint.
+  - { id: "access:public",     description: "Open to the public; anyone can be present without arranging it" }
+  - { id: "access:private",    description: "Private or restricted; presence must be arranged or accounted for" }
+  - { id: "access:checkpoint", description: "A crossing controlled by a sector or zone-line checkpoint where papers are checked" }
+
+  # setting: the social register of a place or district.
+  - { id: "setting:diplomatic",  description: "A diplomatic setting — a legation, mission or liaison office" }
+  - { id: "setting:residential", description: "A residential quarter of flats, lodging houses and quiet streets" }
+  - { id: "setting:commercial",  description: "A commercial quarter of shops, markets and offices" }
+  - { id: "setting:industrial",  description: "An industrial fringe of yards, sidings, depots and the waterfront" }
+  - { id: "setting:institutional", description: "A quarter of hospitals, lecture halls, ministries and institutes" }
+
+  # sector: the occupation sector or administrative zone a district (or the
+  # route crossing between two) sits in. These name the four-power regimes of
+  # the occupied cities (Vienna, Berlin) and the zone regime of a free
+  # territory (Trieste); a City Pack tags its districts and sector-crossing
+  # routes with the sector that holds them. The `international` value covers an
+  # inter-allied / jointly administered zone (Vienna's Innere Stadt).
+  - { id: "sector:international", description: "A jointly administered inter-allied / international sector or zone" }
+  - { id: "sector:american",     description: "An American occupation sector" }
+  - { id: "sector:british",      description: "A British occupation sector" }
+  - { id: "sector:french",       description: "A French occupation sector" }
+  - { id: "sector:soviet",       description: "A Soviet occupation sector" }
+  - { id: "sector:allied",       description: "An Allied military-government zone (the western zone of a free territory, e.g. Trieste Zone A)" }
+  - { id: "sector:yugoslav",     description: "A Yugoslav military-government zone (e.g. Trieste Zone B)" }
+
+  # climate: the broad climate of a city, read by the descriptor generator when
+  # a Descriptor Fragment carries no climate Tag of its own. One value per
+  # climate band the shipped cities fall in.
+  - { id: "climate:temperate",     description: "A temperate continental climate of cold winters and warm summers" }
+  - { id: "climate:mediterranean", description: "A Mediterranean climate of mild wet winters and hot dry summers" }
+
+  # role: the generator role an archetype fills. One per slice archetype role.
+  - { id: "role:cell",            description: "A member of the hostile network the player is hunting" }
+  - { id: "role:hostile-officer", description: "A professional officer of the opposing service" }
+  - { id: "role:station-staff",   description: "A member of the player's own Station" }
+  - { id: "role:contact",         description: "A starting contact the player opens the game knowing" }
+  - { id: "role:civilian",        description: "A civilian of the city's background life" }
+
+  # cover: the register of a Cover Identity.
+  - { id: "cover:official",   description: "An official or quasi-official cover (attaché, liaison, commission)" }
+  - { id: "cover:commercial", description: "A commercial cover (trade, import-export, insurance)" }
+  - { id: "cover:press",      description: "A press or wire-service cover" }
+  - { id: "cover:cultural",   description: "A cultural or scholarly cover (lecturer, book dealer)" }
+
+  # org: the kind of local organisation a `local-org` is. These are the first
+  # values the `org` facet carries (the slice shipped none, as it had no local
+  # organisations); a City Pack tags each of its local organisations with one.
+  - { id: "org:government",  description: "An organ of government — a ministry, magistracy or municipal office" }
+  - { id: "org:security",    description: "A police, security or occupation-administration body" }
+  - { id: "org:commercial",  description: "A business — a bank, firm, trading house or café chain" }
+  - { id: "org:press",       description: "A newspaper, wire service or publishing house" }
+  - { id: "org:labour",      description: "A trade union, guild or workers' association" }
+  - { id: "org:cultural",    description: "A cultural, academic or charitable institution" }
+  - { id: "org:criminal",    description: "A black-market ring or other illicit organisation" }
+  - { id: "org:bank",        description: "A bank, exchange house or financial institution" }
+  - { id: "org:relief",      description: "A refugee-relief, welfare or resettlement body" }
+  - { id: "org:shipping",    description: "A shipping, navigation or freight line" }
+  - { id: "org:transport",   description: "A transport operator — tramway, railway or bus undertaking" }
+
+  # access-to: the kind of access a local organisation (or the archetypes drawn
+  # from it) affords. The slice shipped no values; a City Pack may tag a local
+  # organisation with the access its members carry.
+  - { id: "access-to:officials",  description: "Access to officials and the organs of government" }
+  - { id: "access-to:transit",    description: "Access to the transit system — trams, railways, the port" }
+  - { id: "access-to:press",      description: "Access to the press and what it is about to print" }
+  - { id: "access-to:black-market", description: "Access to the black market and its goods and rumour" }
+
+# --- Required Queries ------------------------------------------------------
+# One Required Query per slice archetype role and per Location function the
+# generator draws on, plus the cross-cutting slots. `minStatic` counts are set
+# to values the core pack's own content satisfies; `minInstantiated` is the
+# minimum the generator must place in every instantiated city (0 for queries
+# satisfied from the Content Set as a whole, such as the archetype-role
+# queries).
+requiredQueries:
+  # The player's own Station office.
+  - { id: rq-station-office, query: ["venue:station-office"], minStatic: 1, minInstantiated: 1 }
+
+  # Cross-cutting Location functions the generator needs.
+  - { id: rq-public-text-source, query: ["function:public-text-source"], minStatic: 2, minInstantiated: 1 }
+  - { id: rq-newspaper-outlet,   query: ["function:newspaper-outlet"],   minStatic: 3, minInstantiated: 2 }
+  - { id: rq-public-meet,        query: ["function:meeting-spot", "access:public"], minStatic: 6, minInstantiated: 3 }
+  - { id: rq-dead-drop,          query: ["function:dead-drop-site"],     minStatic: 5, minInstantiated: 2 }
+  - { id: rq-transit-hub,        query: ["function:transit-hub"],        minStatic: 2, minInstantiated: 1 }
+  - { id: rq-materiel-store,     query: ["function:materiel-store"],     minStatic: 2, minInstantiated: 1 }
+  - { id: rq-diplomatic,         query: ["setting:diplomatic"],          minStatic: 1, minInstantiated: 1 }
+  - { id: rq-private,            query: ["access:private"],              minStatic: 3, minInstantiated: 1 }
+
+  # One Required Query per Location function the archetype schedules draw on.
+  - { id: rq-fn-cafe,      query: ["function:cafe"],      minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-safehouse, query: ["function:safehouse"], minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-hotel-bar, query: ["function:hotel-bar"], minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-park,      query: ["function:park"],      minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-kiosk,     query: ["function:kiosk"],     minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-transit,   query: ["function:transit"],   minStatic: 2, minInstantiated: 1 }
+  - { id: rq-fn-embassy,   query: ["function:embassy"],   minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-station,   query: ["function:station"],   minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-warehouse, query: ["function:warehouse"], minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-port,      query: ["function:port"],      minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-library,   query: ["function:library"],   minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-bookshop,  query: ["function:bookshop"],  minStatic: 1, minInstantiated: 1 }
+  - { id: rq-fn-cinema,    query: ["function:cinema"],    minStatic: 1, minInstantiated: 1 }
+
+  # One Required Query per slice archetype role. Archetypes are not instantiated
+  # per city, so these are satisfied from the Content Set as a whole and their
+  # `minInstantiated` is 0. The `minStatic` counts are the core roster's sizes.
+  - { id: rq-role-cell,            query: ["role:cell"],            minStatic: 4,  minInstantiated: 0 }
+  - { id: rq-role-hostile-officer, query: ["role:hostile-officer"], minStatic: 2,  minInstantiated: 0 }
+  - { id: rq-role-station-staff,   query: ["role:station-staff"],   minStatic: 4,  minInstantiated: 0 }
+  - { id: rq-role-contact,         query: ["role:contact"],         minStatic: 3,  minInstantiated: 0 }
+  - { id: rq-role-civilian,        query: ["role:civilian"],        minStatic: 10, minInstantiated: 0 }

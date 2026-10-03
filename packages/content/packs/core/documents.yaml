@@ -1,0 +1,236 @@
+# documents.yaml — Document templates for 1950s occupied Vienna.
+#
+# These are the templates the Document composers (tasks 5.6, 9.1) stamp concrete
+# Documents from: newspapers, HQ Dossiers and Cables, and seized material. Each
+# entry validates against DocumentTemplateSchema in packages/content/src/lib/
+# kinds.ts: { id, kind, titlePattern, sections:[{id, body}], slots:[contentId] }.
+#
+# Grammar. `titlePattern` and every section `body` are template strings in the
+# content template language (packages/content/src/lib/template.ts). A bare
+# `{slot}` substitutes the binding the composer supplies for that slot; the slot
+# ids a template uses are declared in its `slots` list. `{?slot}…{/slot}` wraps
+# text that renders only when the slot is bound. We use plain prose and declared
+# slots only — no `{pick:pool}` references here, so these templates carry no
+# dependency on any flavour pool and validate in isolation.
+#
+# Period. Vienna in the early 1950s under four-power occupation. All mastheads,
+# publishers and businesses are invented. Officials are referred to by office
+# (the sector commandant, the district magistrate, the ration office) and never
+# by a real name. No real atrocities, no anachronisms.
+
+# =========================================================================
+# NEWSPAPERS — fictional Viennese mastheads
+# =========================================================================
+
+# City news: the general daily, drawing from ordinary city events.
+- id: newspaper-wiener-tagblatt-city
+  kind: newspaper
+  titlePattern: '{masthead} — {weekday}, {date}'
+  slots:
+    - masthead
+    - weekday
+    - date
+    - edition
+    - headline
+    - district
+    - subject
+    - detail
+    - official-office
+    - notice
+  sections:
+    - id: masthead-line
+      body: >-
+        {masthead}. {edition} edition. Price twenty groschen. Published daily
+        except Sundays in the four sectors of the city.
+    - id: lead
+      body: >-
+        {headline}. Our correspondent reports from the {district} that {subject}
+        drew notice this week. {detail} The matter is said to rest, for now,
+        with the {official-office}.
+    - id: around-the-city
+      body: >-
+        Around the city: the trams ran to schedule on the ring lines; the
+        markets opened at the usual hour; and the weather over the Danube held
+        fair enough for the barges. Readers are reminded that papers must be
+        shown on request at any sector checkpoint.
+    - id: notice
+      body: >-
+        {?notice}A notice to our readers: {notice}{/notice}
+
+# Crime blotter: the daily record of petty and serious incidents.
+- id: newspaper-wiener-tagblatt-blotter
+  kind: newspaper
+  titlePattern: '{masthead}: Police Record for {date}'
+  slots:
+    - masthead
+    - date
+    - district
+    - offence
+    - subject
+    - place
+    - official-office
+    - outcome
+  sections:
+    - id: heading
+      body: >-
+        From the police record of the {district}, as released to this paper by
+        the {official-office}.
+    - id: incident
+      body: >-
+        An incident of {offence} was reported near {place}. The party concerned,
+        described only as {subject}, was questioned. {outcome}
+    - id: standing-note
+      body: >-
+        The public is asked to report loiterers and unattended parcels to the
+        nearest patrol. Goods offered below the ration price should be refused
+        and reported; the trade in them remains an offence in every sector.
+
+# Official notices: the gazette of orders, permits and public announcements.
+- id: newspaper-amtsblatt-notices
+  kind: newspaper
+  titlePattern: '{masthead} — Official Notices, {date}'
+  slots:
+    - masthead
+    - date
+    - official-office
+    - subject
+    - district
+    - effective-date
+    - detail
+  sections:
+    - id: order
+      body: >-
+        By order of the {official-office}, the following takes effect on
+        {effective-date}: {subject}. The order applies within the {district}
+        and at all crossings into it.
+    - id: permits
+      body: >-
+        Permits and papers: residents of the {district} are reminded that
+        travel documents are inspected at the sector boundary. {detail}
+    - id: lost-and-found
+      body: >-
+        Lost and found at the central office: umbrellas, a quantity of keys, and
+        a leather document case, unclaimed. Owners may apply with proof of
+        identity during office hours.
+
+# =========================================================================
+# DOSSIER — an HQ file carrying apparent information only
+# =========================================================================
+
+- id: dossier-hq-person
+  kind: dossier
+  titlePattern: 'DOSSIER — {subject} (ref. {file-ref})'
+  slots:
+    - subject
+    - file-ref
+    - alias
+    - allegiance-apparent
+    - last-seen-place
+    - last-seen-date
+    - association
+    - assessment
+    - source-grade
+  sections:
+    - id: header
+      body: >-
+        File reference {file-ref}. Subject: {subject}. This file records
+        apparent information held by the station and is not an assessment of
+        fact. Grade of source material: {source-grade}.
+    - id: identity
+      body: >-
+        Known or reported as {subject}.{?alias} Also reported under the name
+        {alias}.{/alias} Apparent allegiance on file: {allegiance-apparent}.
+    - id: movements
+      body: >-
+        Last placed at {last-seen-place} on or about {last-seen-date}.{?association}
+        Reported in the company of {association}.{/association}
+    - id: assessment
+      body: >-
+        Station assessment: {assessment} This file is to be read as leads only.
+        Nothing herein is to be treated as established without corroboration.
+
+# =========================================================================
+# CABLE — period telegraphic style: short, upper-case, STOP as separator
+# =========================================================================
+
+- id: cable-hq-directive
+  kind: cable
+  titlePattern: 'CABLE {cable-ref} {priority}'
+  slots:
+    - cable-ref
+    - priority
+    - date
+    - to-station
+    - subject
+    - instruction
+    - deadline
+    - budget-line
+  sections:
+    - id: preamble
+      body: >-
+        FROM HEADQUARTERS STOP TO {to-station} STOP {date} STOP {priority} STOP
+        REF {cable-ref} STOP
+    - id: body
+      body: >-
+        RE {subject} STOP {instruction} STOP ACKNOWLEDGE SOONEST STOP
+    - id: closing
+      body: >-
+        {?deadline}DEADLINE {deadline} STOP{/deadline} {?budget-line}FUNDS
+        {budget-line} STOP{/budget-line} ENDS STOP
+    - id: footer
+      body: >-
+        MESSAGE ENDS STOP DESTROY AFTER READING STOP
+
+- id: cable-field-report
+  kind: cable
+  titlePattern: 'CABLE {cable-ref} FIELD'
+  slots:
+    - cable-ref
+    - date
+    - from-cover
+    - subject
+    - observation
+    - request
+  sections:
+    - id: preamble
+      body: >-
+        FROM {from-cover} STOP TO HEADQUARTERS STOP {date} STOP REF {cable-ref}
+        STOP
+    - id: report
+      body: >-
+        RE {subject} STOP {observation} STOP
+    - id: request
+      body: >-
+        {?request}REQUEST {request} STOP{/request} AWAIT INSTRUCTION STOP ENDS
+        STOP
+
+# =========================================================================
+# SEIZED MATERIAL — a document taken from a drop, courier or premises
+# =========================================================================
+
+- id: seized-handwritten-note
+  kind: seized
+  titlePattern: 'SEIZED — item recovered {date} at {place}'
+  slots:
+    - date
+    - place
+    - recovered-by
+    - description
+    - contents
+    - condition
+    - subject
+  sections:
+    - id: chain
+      body: >-
+        Item recovered on {date} at {place} by {recovered-by}. Logged as seized
+        material pending examination. Condition: {condition}.
+    - id: description
+      body: >-
+        Description: {description}. The item appears to concern {subject}.
+    - id: contents
+      body: >-
+        Legible contents, transcribed as found: {contents}
+    - id: caveat
+      body: >-
+        Transcription may be incomplete. Portions were smudged or torn. No
+        inference as to authorship is recorded here.

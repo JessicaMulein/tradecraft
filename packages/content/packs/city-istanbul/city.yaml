@@ -1,0 +1,71 @@
+# city.yaml — the Istanbul City Definition (content-expansion task 9.5).
+#
+# Validates against CityDefinitionSchema (packages/content/src/kinds/city.ts):
+#   { id, name, country, climate, period, startDates, currency, languages,
+#     cultureWeights, services, instantiation? }
+#
+# Istanbul, 1950–1965. The currency is the Turkish lira of the period (the lira
+# of 100 kuruş), written here with the plain "TL" abbreviation and the common
+# "L." prefix a 1950s price tag or ferry ticket would carry — no later symbol,
+# no decimal reform. The climate is Mediterranean (mild damp winters off the
+# Bosphorus, warm dry summers), the one `climate:*` band the Tag Vocabulary
+# gives for a city of this coast.
+#
+# Languages: Turkish is the language of the street and the state; the old
+# cosmopolitan city still carried Greek, Armenian, Ladino (Judeo-Spanish) and
+# the French of Pera's consulates, hotels and schools, which is why a traveller
+# could get by in French along the Grande Rue. The Culture Weights draw NPC
+# names from the matching Library groups; Turkish dominates, the minority
+# communities and the Levantine merchant families fill the rest.
+#
+# `services` lists the Era Pack services active in the city. Istanbul is a
+# neutral crossroads: the player's own Service runs here, the principal
+# opposing foreign-intelligence service works the émigré and shipping world,
+# and the Atlantic and neutral liaison services are both present. The city's
+# own local-security service — `city-istanbul/local-emniyet-directorate`, a
+# City-Scoped `local-security` service defined in `services/services.yaml`
+# (task 9.6) — is listed last.
+#
+# `instantiation` fixes how many Districts and Locations the generator draws:
+# the whole district set, and a generous Location count so a 1950–1965 world is
+# richly populated.
+
+id: istanbul
+name: Istanbul
+country: Turkey
+climate: climate:mediterranean
+period: { from: 1950, to: 1965 }
+startDates: { from: '1952-01-01', to: '1963-12-31' }
+
+currency:
+  name: Turkish lira
+  symbol: 'L.'
+  subunit: kuruş
+  format: '{symbol}{amount}'
+  rounding: 0.5
+  budgetScale: 1
+
+languages:
+  - { id: tr, name: Turkish, share: 0.82 }
+  - { id: el, name: Greek, share: 0.06 }
+  - { id: hy, name: Armenian, share: 0.04 }
+  - { id: lad, name: Judeo-Spanish, share: 0.03 }
+  - { id: fr, name: French, share: 0.05 }
+
+cultureWeights:
+  - { group: lib-eastern-mediterranean/turkish, weight: 60 }
+  - { group: lib-eastern-mediterranean/istanbul-greek, weight: 12 }
+  - { group: lib-eastern-mediterranean/armenian, weight: 10 }
+  - { group: lib-eastern-mediterranean/sephardic, weight: 8 }
+  - { group: lib-eastern-mediterranean/levantine, weight: 10 }
+
+services:
+  - era-cold-war-early/own-service
+  - era-cold-war-early/hostile-foreign-directorate
+  - era-cold-war-early/liaison-atlantic-agency
+  - era-cold-war-early/liaison-neutral-section
+  - city-istanbul/local-emniyet-directorate
+
+instantiation:
+  districts: [6, 6]
+  locations: [25, 34]

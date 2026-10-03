@@ -1,0 +1,315 @@
+# documents/articles.yaml — Trieste newspaper article (Document) templates
+# (content-expansion task 9.10).
+#
+# Each entry validates against DocumentTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, kind: newspaper, titlePattern, sections:[{id, body}],
+# slots:[contentId] }. These are the article templates the newspaper composer
+# stamps concrete editions from, and the base templates the Trieste Template
+# Variants (template-variants/) override, re-voiced for the free-port city.
+#
+# Grammar. `titlePattern` and every section `body` are template strings in the
+# content template language (packages/content/src/lib/template.ts). A bare
+# `{slot}` substitutes the composer's binding; `{?slot}...{/slot}` wraps text
+# that renders only when the slot is bound. The slot ids a template uses are
+# declared in its `slots` list. Plain prose and declared slots only — no
+# `{pick:pool}` references — so these templates validate in isolation. A
+# template's slot set (the union of its title and section slots) is exactly what
+# its Template Variant must bind, no more and no less (CE-VARIANT).
+#
+# Period: the Free Territory of Trieste, 1947–1954. All mastheads, publishers
+# and businesses are invented. Officials are named by office (the zone
+# commissioner, the harbour master, the questore, the civil-affairs officer),
+# never by a real name. No real atrocities, no anachronisms. The spread carries
+# the free-port city's texture: the quays and the shipping trade, the zone line
+# and its control points, the Opicina tram, the two administrations, the camps
+# and the émigré passage through the port.
+
+# =========================================================================
+# ITALIAN MORNING PAPER OF RECORD
+# =========================================================================
+
+- id: mattino-city-lead
+  kind: newspaper
+  titlePattern: '{masthead}, {date} — city edition'
+  slots: [masthead, date, headline, district, subject, detail, office]
+  sections:
+    - id: lead
+      body: >-
+        {headline}. From the {district} our correspondent sends word that
+        {subject} drew notice this week. {detail} For now the matter rests with
+        the {office}.
+
+- id: mattino-around-the-city
+  kind: newspaper
+  titlePattern: '{masthead} — around the city'
+  slots: [masthead, note]
+  sections:
+    - id: round-up
+      body: >-
+        The trams held their time on the city lines, the markets opened at the
+        usual hour, and the morning steamers warped in along the rive under a
+        clearing sky. {note}
+
+- id: mattino-weather-and-gulf
+  kind: newspaper
+  titlePattern: '{masthead}: weather and the gulf for {date}'
+  slots: [masthead, date, outlook, sea-note]
+  sections:
+    - id: weather
+      body: >-
+        The forecast for the city and the gulf: {outlook}. {sea-note} Masters of
+        the coasting craft are reminded that the bora may rise hard off the
+        Karst with little warning.
+
+# =========================================================================
+# THE PORT AND THE SHIPPING TRADE
+# =========================================================================
+
+- id: shipping-movements
+  kind: newspaper
+  titlePattern: '{masthead} — shipping movements, {date}'
+  slots: [masthead, date, vessel-note, cargo-note, office]
+  sections:
+    - id: movements
+      body: >-
+        Arrivals and sailings held through the day along the quays. {vessel-note}
+        Bonded goods in the free-port sheds stand as entered by the {office}.
+        {cargo-note}
+
+- id: harbour-notice
+  kind: newspaper
+  titlePattern: '{masthead}: notice to the quays'
+  slots: [masthead, office, requirement, berth-note]
+  sections:
+    - id: notice
+      body: >-
+        The {office} gives notice to the shipping agents and the quay foremen
+        that {requirement}. {berth-note} Manifests are to be lodged before the
+        goods are landed, as the free-port rules require.
+
+# =========================================================================
+# ITALIAN EVENING SHEET
+# =========================================================================
+
+- id: sera-police-record
+  kind: newspaper
+  titlePattern: '{masthead}: the day book of the city, {date}'
+  slots: [masthead, date, district, offence, place, outcome]
+  sections:
+    - id: incident
+      body: >-
+        In the {district}, a matter of {offence} was logged near {place}. The
+        person concerned was taken in, questioned, and {outcome}.
+
+- id: sera-miscellany
+  kind: newspaper
+  titlePattern: '{masthead} — evening miscellany'
+  slots: [masthead, subject, place, detail]
+  sections:
+    - id: lead
+      body: >-
+        Talk of the evening in the city turns on {subject}, seen at {place}.
+        {detail} A tram jumped its line on the hill section and held the traffic
+        the better part of an hour.
+
+- id: sera-sport
+  kind: newspaper
+  titlePattern: '{masthead}: sport in the city'
+  slots: [masthead, event, result, crowd]
+  sections:
+    - id: report
+      body: >-
+        {event} went off on Sunday under a brisk gulf wind. {result} A {crowd}
+        held the terraces, glad of an afternoon by the water.
+
+# =========================================================================
+# SLOVENE-MINORITY PAPER
+# =========================================================================
+
+- id: glas-community
+  kind: newspaper
+  titlePattern: '{masthead} — the week in the villages, {date}'
+  slots: [masthead, date, district, subject, detail, office]
+  sections:
+    - id: lead
+      body: >-
+        In the {district} the week's business turned on {subject}, as the
+        {office} would have it. {detail} The parishes of the plateau kept their
+        own quiet counsel, as ever.
+
+- id: glas-land-and-market
+  kind: newspaper
+  titlePattern: '{masthead}: land and market'
+  slots: [masthead, produce, price-note, office]
+  sections:
+    - id: market
+      body: >-
+        The upland market brought down {produce} to the city stalls this week.
+        {price-note} The {office} is asked again to ease the passage of the
+        growers across the line.
+
+# =========================================================================
+# OFFICIAL GAZETTE OF THE MILITARY GOVERNMENT
+# =========================================================================
+
+- id: bollettino-order
+  kind: newspaper
+  titlePattern: '{masthead} — orders of the government, {date}'
+  slots: [masthead, date, office, order, district, effective]
+  sections:
+    - id: order
+      body: >-
+        By order of the {office}, in force from {effective}: {order}. It applies
+        within the {district} and at all control points into it.
+
+- id: bollettino-currency
+  kind: newspaper
+  titlePattern: '{masthead}: currency and customs'
+  slots: [masthead, office, ruling, exchange-note, effective]
+  sections:
+    - id: rule
+      body: >-
+        The {office} gives notice that, from {effective}, {ruling}.
+        {exchange-note} Movement of currency and bonded goods across the zone
+        line outside the licensed points remains an offence.
+
+- id: bollettino-registration
+  kind: newspaper
+  titlePattern: '{masthead} — a reminder on registration'
+  slots: [masthead, office, requirement, place]
+  sections:
+    - id: reminder
+      body: >-
+        The {office} reminds lodgers and the keepers of lodging houses that
+        {requirement}. Returns go to {place} in office hours, each new guest
+        entered in the book on the day of arrival.
+
+- id: bollettino-lost-and-found
+  kind: newspaper
+  titlePattern: '{masthead}: lost and found'
+  slots: [masthead, items, office]
+  sections:
+    - id: list
+      body: >-
+        Given in and still unclaimed this week: {items}. Owners may call at the
+        {office} with proof of who they are during office hours.
+
+# =========================================================================
+# TRANSIT, UTILITIES AND THE ZONE LINE
+# =========================================================================
+
+- id: tram-service-notice
+  kind: newspaper
+  titlePattern: '{masthead}: tram and funicular service'
+  slots: [masthead, line, change, reason]
+  sections:
+    - id: notice
+      body: >-
+        The {line} runs to a new timetable from Monday: {change}. The
+        undertaking lays it to {reason} and asks passengers to allow the longer
+        wait between cars on the hill section.
+
+- id: zone-line-regulation
+  kind: newspaper
+  titlePattern: '{masthead} — at the zone line'
+  slots: [masthead, office, requirement, crossing-note]
+  sections:
+    - id: rule
+      body: >-
+        The {office} notifies travellers that at the control points on the zone
+        line {requirement}. {crossing-note} Papers must be shown on request to
+        any patrol on either side of the line.
+
+- id: utilities-notice
+  kind: newspaper
+  titlePattern: '{masthead}: water and lighting'
+  slots: [masthead, quarter, interruption, hours]
+  sections:
+    - id: notice
+      body: >-
+        The supply to the {quarter} is to be cut for {interruption}, between
+        {hours}. Draw what you need beforehand and report any failure that runs
+        past the stated time.
+
+# =========================================================================
+# MARITIME AND COMMERCIAL BULLETIN
+# =========================================================================
+
+- id: gazzetta-exchange
+  kind: newspaper
+  titlePattern: '{masthead}: exchange and freight rates'
+  slots: [masthead, rate-note, commodity, trend]
+  sections:
+    - id: rates
+      body: >-
+        The free-port exchange moved little on the day. {rate-note} Freight on
+        {commodity} is quoted {trend}, the agents of the Borgo report, with the
+        northern lines steady.
+
+- id: gazzetta-trade-notes
+  kind: newspaper
+  titlePattern: '{masthead} — notes of the trade'
+  slots: [masthead, firm-note, subject, detail]
+  sections:
+    - id: notes
+      body: >-
+        Among the trading houses this week: {firm-note} The talk on the quays is
+        of {subject}. {detail}
+
+# =========================================================================
+# COMMENT, ARTS AND SMALL NOTICES
+# =========================================================================
+
+- id: feuilleton-essay
+  kind: newspaper
+  titlePattern: '{masthead}: the week in the free port'
+  slots: [masthead, subject, place, reflection]
+  sections:
+    - id: essay
+      body: >-
+        This week the city's talk is of {subject}. From {place} our contributor
+        sends a reflection on a city that lives between two zones and three
+        tongues. {reflection}
+
+- id: arts-and-stage
+  kind: newspaper
+  titlePattern: '{masthead} — concerts and the stage'
+  slots: [masthead, performer, hall, programme]
+  sections:
+    - id: review
+      body: >-
+        {performer} gave a programme of {programme} at {hall} to a full and
+        civil house, glad of an evening out of the bora.
+
+- id: situations-and-lodgings
+  kind: newspaper
+  titlePattern: '{masthead} — situations and lodgings'
+  slots: [masthead, offer, terms, apply-to]
+  sections:
+    - id: column
+      body: >-
+        Offered through these columns this week: {offer}, on {terms}. Apply to
+        {apply-to}, in writing and first of all, naming two references known
+        about the city.
+
+- id: inquiries-after-persons
+  kind: newspaper
+  titlePattern: '{masthead} — inquiries after persons'
+  slots: [masthead, inquiry-detail, office]
+  sections:
+    - id: notice
+      body: >-
+        The following inquiry is published at the request of the {office}:
+        {inquiry-detail} Any person with word is asked to write to the office,
+        in confidence.
+
+- id: public-health-notice
+  kind: newspaper
+  titlePattern: '{masthead}: public health notice'
+  slots: [masthead, office, advice, quarter]
+  sections:
+    - id: notice
+      body: >-
+        The {office} tells householders of the {quarter} that {advice}. The step
+        is a precaution and nothing more, the office adds, in a season of
+        ordinary good health.

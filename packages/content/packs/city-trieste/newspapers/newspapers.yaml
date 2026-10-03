@@ -1,0 +1,91 @@
+# newspapers/newspapers.yaml — the fictional Trieste mastheads
+# (content-expansion task 9.10).
+#
+# Each entry is a Newspaper (NewspaperSchema, packages/content/src/kinds/
+# city.ts): { id, city, masthead, language, stance, register, days[weekday],
+# price, soldAt: TagQuery, years? }. `city` references the Trieste City
+# Definition by its bare id (the loader namespaces it city-trieste/trieste).
+#
+# `soldAt` is a Tag Query naming where a copy can be had — the generator binds
+# it against the city's Locations, whose Effective Tags carry the
+# `function:newspaper-outlet` slot (the edicola kiosk, the Stazione Centrale and
+# the covered market Location Types). `price` is in centesimi, the subunit of
+# the lira in everyday use.
+#
+# Period: the Free Territory of Trieste, 1947–1954. EVERY masthead is invented —
+# no real Trieste paper of the period is named. The spread is the Adriatic
+# free-port press: a sober Italian morning daily of record, a quick Italian
+# evening sheet of the police court and the quays, a Slovene-language paper for
+# the minority and the Karst villages, the Allied military government's official
+# gazette, and a maritime-and-commercial bulletin of the shipping trade.
+# `years` run the length of the zone regime.
+
+# A sober Italian morning daily of record: the established paper of the city
+# centre, read in the great cafés of the Borgo and the shipping offices,
+# careful and non-partisan under military-government licence.
+- id: corriere-adriatico-mattino
+  city: trieste
+  masthead: Il Corriere dell'Adriatico
+  language: Italian
+  stance: independent Italian paper of record
+  register: sober, formal, cautious
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 20
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1947, to: 1954 }
+
+# The popular Italian evening sheet: sold from the edicole and the station
+# bookstalls, quick with the police court, the football and the shipping and
+# tram news, light on politics and heavy on the port's small dramas.
+- id: eco-della-sera
+  city: trieste
+  masthead: L'Eco della Sera
+  language: Italian
+  stance: popular Italian evening sheet
+  register: brisk, plain, anecdotal
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 15
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1947, to: 1954 }
+
+# The Slovene-language paper of the minority: read in the Karst villages above
+# the city and among the Slovene quarters, careful under the zone censorship,
+# attentive to the land, the parishes and the far side of the line.
+- id: primorski-glas
+  city: trieste
+  masthead: Primorski glas
+  language: Slovene
+  stance: Slovene-minority paper
+  register: measured, communal, guarded
+  days: [tuesday, thursday, saturday]
+  price: 15
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1947, to: 1954 }
+
+# The official notices gazette of the Allied military government: zone orders,
+# permits, currency and zone-line crossing regulations, printed dry in Italian
+# and English and read for what it is forced to disclose.
+- id: bollettino-ufficiale-gma
+  city: trieste
+  masthead: Bollettino Ufficiale del Governo Militare
+  language: Italian and English
+  stance: official administrative gazette
+  register: dry, bureaucratic, impersonal
+  days: [wednesday, saturday]
+  price: 10
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1947, to: 1954 }
+
+# A maritime and commercial bulletin of the free port: sailings and arrivals,
+# the bonded-warehouse notices, exchange rates and the shipping-agents' columns,
+# printed for the quays and the trading houses of the Borgo Teresiano.
+- id: gazzetta-marittima
+  city: trieste
+  masthead: La Gazzetta Marittima e Commerciale
+  language: Italian
+  stance: maritime and commercial bulletin
+  register: factual, mercantile, terse
+  days: [monday, wednesday, friday, saturday]
+  price: 25
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1947, to: 1954 }

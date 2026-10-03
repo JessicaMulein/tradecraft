@@ -1,0 +1,92 @@
+# cover-identities.yaml — the local Cover Identities for occupied Vienna
+# (content-expansion task 9.2).
+#
+# Each entry is a CoverIdentity (CoverIdentitySchema, packages/content/src/lib/
+# kinds.ts): { id, title, employerOrg, fitLocationTypes, suspicionModifiers,
+# tags }. `fitLocationTypes` names the city Location Types where the cover sits
+# plausibly (bare ids resolved to this pack's Location Types, city-vienna/<id>);
+# `tags` draws from the core `cover:*` facet (required — a Cover Identity must
+# carry at least one Tag). `suspicionModifiers.atFit` is negative (the cover
+# lowers suspicion where it belongs) and `elsewhere` positive.
+#
+# These are Vienna-specific covers to set beside the core roster: each is tied
+# to a local employer and the city's own Location Types (the Kaffeehaus, the
+# Lesehalle, the Donauhafen, the Legation, and so on). EVERY title and employer
+# is period-plausible for 1945–1955 occupied Vienna and wholly fictional.
+
+# A clerk of the municipal registry: a plausible reason to be in the offices,
+# the reading halls and the cafés where the city's paperwork is discussed.
+- id: magistrate-clerk
+  title: Registry Clerk
+  employerOrg: The Municipal Registry Office
+  tags: [cover:official]
+  fitLocationTypes: [legation, lesehalle, kaffeehaus, haltestelle]
+  suspicionModifiers:
+    atFit: -0.14
+    elsewhere: 0.2
+
+# A café-house correspondent for the liberal weekly: at home among the marble
+# tables, the reading halls and the hotel bars where the talk is.
+- id: feuilleton-correspondent
+  title: Feuilleton Correspondent
+  employerOrg: Donau-Rundschau
+  tags: [cover:press]
+  fitLocationTypes: [kaffeehaus, lesehalle, hotelbar, kino, heuriger]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.16
+
+# A freight agent of the Danube trading house: belongs at the river port, the
+# warehouses, the goods markets and the station.
+- id: danube-freight-agent
+  title: Freight Agent
+  employerOrg: Donau Trading House
+  tags: [cover:commercial]
+  fitLocationTypes: [donauhafen, lagerhaus, markt, bahnhof]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.22
+
+# A relief visitor for the displaced-persons committee: a reason to be at the
+# station, the markets, the reading halls and the parks where the queues form.
+- id: relief-visitor
+  title: Relief Visitor
+  employerOrg: The Committee for Displaced Persons' Relief
+  tags: [cover:official]
+  fitLocationTypes: [bahnhof, markt, lesehalle, park, haltestelle]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.18
+
+# An antiquarian's runner who values and collects books: at home in the
+# antiquariat, the reading halls and the cafés, and a natural servicer of drops.
+- id: antiquarian-runner
+  title: Antiquarian's Runner
+  employerOrg: Antiquariat Lindner
+  tags: [cover:cultural]
+  fitLocationTypes: [antiquariat, lesehalle, kaffeehaus, trafik]
+  suspicionModifiers:
+    atFit: -0.2
+    elsewhere: 0.24
+
+# A transport inspector for the workers' association: a reason to be at every
+# tram stop, the station and the river port, checking schedules and crews.
+- id: transport-inspector
+  title: Transport Inspector
+  employerOrg: The Transport Workers' Association
+  tags: [cover:commercial]
+  fitLocationTypes: [haltestelle, bahnhof, donauhafen, markt]
+  suspicionModifiers:
+    atFit: -0.13
+    elsewhere: 0.19
+
+# A liaison interpreter attached to the inter-allied offices: moves between the
+# legations, the grand hotels and the cafés of the inner city.
+- id: liaison-interpreter
+  title: Liaison Interpreter
+  employerOrg: The Four-Power Liaison Office
+  tags: [cover:official]
+  fitLocationTypes: [legation, hotelbar, kaffeehaus, lesehalle]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.23

@@ -1,0 +1,61 @@
+# manual-household-wireless.yaml — a public-text MANUAL record (task 7.4).
+#
+# Validates against PublicTextSchema (packages/content/src/kinds/era.ts):
+#   { id, title, kind, provenance: { kind, source? }, body: string[], city? }
+#
+# `kind: manual`. An ORIGINAL owner's manual for a valve (vacuum-tube) household
+# wireless receiver, in the instructional prose of the first postwar decade:
+# installation, operation, care and a fault table. The merged content loader
+# ignores `public-texts/`; this record is validated only by PublicTextSchema
+# and counted by the quantity rule. The receiver and maker are invented and generic;
+# everything named (valves, aerials, the mains) is period-correct for 1945–1965
+# and no real brand is used. 40+ non-empty lines for the slice BOOK CIPHER.
+- id: manual-valve-wireless
+  title: Owner's Manual for the Household Valve Wireless Receiver
+  kind: manual
+  provenance:
+    kind: original
+  body:
+    - 'Owner Manual for the Household Valve Wireless Receiver, Model of the Common Series.'
+    - 'Read these instructions through before the wireless is connected to the mains for the first time.'
+    - 'The receiver is built for alternating current at the standard voltage marked on the back panel.'
+    - 'Before connecting, confirm that the voltage selector agrees with the supply at your wall point.'
+    - 'If the selector is wrong, set it with the supply switched off and the plug withdrawn.'
+    - 'INSTALLATION'
+    - 'Stand the receiver on a firm shelf clear of the stove, the window and the damp of an outer wall.'
+    - 'Leave a hand breadth of air behind the cabinet so the valves may lose their heat freely.'
+    - 'Run the aerial wire as high and as clear of the house wiring as the room allows.'
+    - 'A good earth, taken to a water pipe by a clean clamp, will sharpen the tuning and quiet the noise.'
+    - 'Do not coil the surplus aerial wire behind the cabinet; cut it to length and make a sound joint.'
+    - 'OPERATION'
+    - 'Switch on and allow a full half minute for the valves to warm before a station is sought.'
+    - 'Turn the volume to a third, then move the tuning slowly until a carrier whistle is heard.'
+    - 'Pass through the whistle until the speech or music stands clear, then trim for the least hiss.'
+    - 'The waveband switch selects the long, the medium or the short band as marked on the dial.'
+    - 'On the short band, tune with great care; the stations are close and the dial is crowded.'
+    - 'Set the volume no higher than the room requires; an overdriven speaker shortens its own life.'
+    - 'CARE OF THE RECEIVER'
+    - 'Switch off at the receiver and at the wall before the back is opened for any reason whatever.'
+    - 'A warm valve is a fragile valve; let the wireless cool before it is moved or a valve is drawn.'
+    - 'Dust the cabinet with a dry cloth; keep all liquid, and all small metal, away from the openings.'
+    - 'Once a year, with the wireless cold and unplugged, draw each valve and clear the dust from its holder.'
+    - 'Replace a valve only with one of the type printed on the chart pasted inside the back panel.'
+    - 'The dial lamp may be renewed from the front; the fuse is behind the small cover beside the lead.'
+    - 'FAULT TABLE'
+    - 'No sound and the dial dark: check the wall point, the plug fuse and the chassis fuse in that order.'
+    - 'The dial lit but silent: suspect the output valve or the speaker lead; have the dealer test them.'
+    - 'A loud hum under all stations: the earth is poor, or a smoothing part has aged; refer the receiver.'
+    - 'Weak and distant on every band: the aerial has come adrift, or the first valve has lost its life.'
+    - 'Crackle that follows the tuning knob: a dirty contact; a trained hand should clean the wiper.'
+    - 'Whistles that shift as a hand nears the cabinet: move the aerial lead clear of the mains flex.'
+    - 'The receiver drifts off a station as it warms: this settles in the first minutes and is not a fault.'
+    - 'SAFETY'
+    - 'There are dangerous voltages within the cabinet even a while after the wireless is switched off.'
+    - 'The owner should attempt no repair inside the receiver beyond the renewal of the fuse and the dial lamp.'
+    - 'Do not run the wireless from a frayed flex, and do not stand a vessel of water upon the cabinet.'
+    - 'Keep children from the back of the cabinet and from the warm valves seen through the ventilation.'
+    - 'GUARANTEE'
+    - 'The maker guarantees the receiver against faulty work for the term printed on the card enclosed.'
+    - 'The guarantee is void if the seal is broken or the wireless is worked from the wrong supply.'
+    - 'For service, apply to the dealer whose stamp appears below, quoting the number on the back panel.'
+    - 'Keep this manual with the guarantee card for the life of the wireless.'

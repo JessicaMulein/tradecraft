@@ -1,0 +1,112 @@
+# local-orgs.yaml - the fictional local organisations of divided Berlin
+# (content-expansion task 9.4).
+#
+# Each entry is a LocalOrg (LocalOrgSchema, packages/content/src/kinds/city.ts):
+#   { id, city, name, aliases, kind, tags, members: TagQuery[], years? }
+# `city` references the Berlin City Definition by its bare id (namespaced to
+# city-berlin/berlin by the loader). The generator adds these to WorldState as
+# non-player organisations - employers and Rumour subjects (design, "Organisa-
+# tions and documents").
+#
+# `tags` draws from the core `org:*` facet (the kind of institution) and the
+# `access-to:*` facet (the access its members carry); both facets apply to
+# `local-org` and ship Tags in the core vocabulary, so no new Tag is invented
+# here. `members` is a list of Tag Queries describing the archetypes an
+# organisation's members are drawn from; the only populated archetype facet is
+# `role:*`, so the member queries bind against the archetype roster by role.
+#
+# The spread carries the divided-city texture: a western municipal office and
+# the western sector police, set against the eastern-sector transport
+# authority that still ran the S-Bahn across the whole city; the airlift relief
+# effort of the blockade winter; a western bank of the currency-reform city; and
+# the sector-line black market that fed on the gap between the two marks.
+#
+# EVERYTHING IS FICTIONAL. No real Berlin ministry, bank, union, authority,
+# paper or business of the period is named. Officials are referred to by office,
+# never by a personal name. Period: 1948-1961 divided Berlin.
+
+# The western city's municipal office: ration cards, residence permits, the
+# registry of persons - the counter every west Berliner must visit and the
+# clerks who see everyone's papers.
+- id: bezirksamt-west
+  city: berlin
+  name: The Western District Registry
+  aliases:
+    - { text: the District Registry, distinctive: true }
+    - { text: the registry office, distinctive: false }
+    - { text: the ration office, distinctive: false }
+  kind: municipal government office
+  tags: [org:government]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1948, to: 1961 }
+
+# The western sectors' own police and public-order body: the uniformed and
+# plain-clothes officers who work the western streets under the eye of the three
+# occupying powers, and who man the sector-line posts on the western side.
+- id: ordnungspolizei-west
+  city: berlin
+  name: The Western Sector Constabulary
+  aliases:
+    - { text: the Constabulary, distinctive: true }
+    - { text: the sector police, distinctive: false }
+    - { text: the western police, distinctive: false }
+  kind: municipal police and security body
+  tags: [org:security, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1948, to: 1961 }
+
+# The city-railway and transport authority, run from the eastern sector but
+# working the whole city's S-Bahn, U-Bahn and tram lines: conductors, drivers,
+# signalmen and ticket clerks who know every timetable and every crossing face.
+- id: verkehrsbetriebe-ost
+  city: berlin
+  name: The City Railway Authority
+  aliases:
+    - { text: the Railway Authority, distinctive: true }
+    - { text: the transport authority, distinctive: false }
+  kind: railway and transport undertaking
+  tags: [org:labour, access-to:transit]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1948, to: 1961 }
+
+# The airlift and blockade relief committee of the western sectors: the depots,
+# the coal and flour queues, the welfare clerks and the volunteers who know who
+# has just come over from the east and who is trying to get a child out.
+- id: luftbrueckenhilfe
+  city: berlin
+  name: The Western Relief Committee
+  aliases:
+    - { text: the Relief Committee, distinctive: true }
+    - { text: the welfare committee, distinctive: false }
+  kind: relief and welfare committee
+  tags: [org:cultural, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1948, to: 1961 }
+
+# A western commercial bank of the currency-reform city: the counters where the
+# new D-Mark was paid out, the exchange desks that watched the gap between the
+# western and eastern marks, and the clerks who saw which firms were flush.
+- id: spreebank
+  city: berlin
+  name: The Spree Commercial Bank
+  aliases:
+    - { text: the Spreebank, distinctive: true }
+    - { text: the commercial bank, distinctive: false }
+  kind: commercial bank and exchange house
+  tags: [org:commercial, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1948, to: 1961 }
+
+# A loose black-market ring that worked the sector line: cigarettes, coffee,
+# the two currencies, penicillin and ration coupons traded across the open
+# boundary. A source of rumour and a standing danger.
+- id: grenzschieber-ring
+  city: berlin
+  name: The Sector-Line Ring
+  aliases:
+    - { text: the Ring, distinctive: false }
+    - { text: the Grenzschieber, distinctive: true }
+  kind: black-market ring
+  tags: [org:criminal, access-to:black-market]
+  members: [[role:cell], [role:civilian]]
+  years: { from: 1948, to: 1961 }

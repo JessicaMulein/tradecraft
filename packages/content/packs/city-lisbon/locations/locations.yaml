@@ -1,0 +1,499 @@
+# locations.yaml — the authored Locations of Lisbon (task 9.7).
+#
+# Each is a City Location (packages/content/src/kinds/city.ts,
+# CityLocationSchema): a place pinned to a District and stamped from a Location
+# Type (a Lisbon type from `location-types/`, or a core slice type by its
+# `core/<id>` id). A Location's Effective Tags are its own `tags` together with
+# its Location Type's Tags; the loader's Tag Conformance stage (task 2.3) counts
+# a Location toward a Required Query when its Effective Tags satisfy the query
+# within the city's Period Window.
+#
+# There are 27 Locations spread across all eight Districts — comfortably past
+# the release floor of 25 Locations over 6 Districts (Req 11.2) — and tagged so
+# every Required Query in the core Tag Vocabulary clears its per-city static
+# minimum with margin, feasible for any Start Date in 1945–1965. The two
+# year-ranged entries (the seaplane terminal, phased out as the land airport
+# grew; a dockside bar that closed mid-period) exercise the Year Range filter
+# while leaving every Required Query bound across the whole window.
+#
+# `basis` records how each Location relates to the real city: `real-landmark`
+# for a place that really stood (and is cited in sources.yaml), `real-inspired`
+# for a fictional place drawn from a real type of place, `fictional` for a
+# wholly invented one. Every real landmark cites at least one Source. All names
+# of cafés, hotels, shops, bars and firms are invented; the quarters, squares,
+# monuments, stations, trams and lifts they sit on or beside are real.
+
+# =========================================================================
+# BAIXA — the commercial lower town
+# =========================================================================
+
+- id: cafe-rossio
+  name: Café Portela do Rossio
+  type: core/kaffeehaus
+  district: baixa
+  public: true
+  description: >-
+    A grand marble-and-mirror café on the Rossio, its outdoor tables under the
+    arcade facing the fountains and the ceaseless churn of the square.
+  atmosphere: [grand-marble, arcade-seating, rossio-society]
+  city: lisbon
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-rossio]
+
+- id: tabacaria-ouro
+  name: Tabacaria da Rua do Ouro
+  type: tabacaria
+  district: baixa
+  public: true
+  description: >-
+    A tiled kiosk on the Rua do Ouro among the jewellers and banks, the foreign
+    papers pegged on a line and the lottery results chalked up by the till.
+  atmosphere: [tiled-booth, jewellers-row, lottery-queue]
+  city: lisbon
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-baixa-grid]
+
+- id: estacao-rossio
+  name: Rossio Station
+  type: estacao
+  district: baixa
+  public: true
+  description: >-
+    The horseshoe-arched terminus at the head of the Rossio, its booking hall
+    loud under the glass roof, the Sintra trains and the night expresses coming
+    and going past the left-luggage lockers.
+  atmosphere: [horseshoe-arch, glass-roof-din, sintra-trains]
+  city: lisbon
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+  basis: real-landmark
+  sources: [src-rossio-station]
+
+- id: posto-baixa
+  name: the Station
+  type: posto
+  district: baixa
+  public: false
+  description: >-
+    A floor of locked offices behind an unmarked door off a Baixa side street,
+    the cipher room and the file registry giving onto a light-well no one
+    overlooks.
+  atmosphere: [station-secure, unmarked-door, cipher-room-quiet]
+  city: lisbon
+  tags: [venue:station-office, function:station, access:private]
+  basis: fictional
+
+- id: banco-ultramar
+  name: Casa Bancária Vale & Nogueira
+  type: armazem
+  district: baixa
+  public: false
+  description: >-
+    The strongroom floor of a private banking house on the Rua Augusta, its
+    bonded store of ledgers, bullion crates and shipping documents behind a
+    grilled door and a night watchman.
+  atmosphere: [strongroom-guarded, bullion-crates, deserted-after-dark]
+  city: lisbon
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+# =========================================================================
+# CHIADO — the elegant upper quarter
+# =========================================================================
+
+- id: cafe-chiado
+  name: Café Marejada
+  type: core/kaffeehaus
+  district: chiado
+  public: true
+  description: >-
+    A literary café on the Chiado of dark wood and smoked mirrors, the writers'
+    and journalists' tables along the back wall, the day's papers on their canes
+    by the door.
+  atmosphere: [smoked-mirrors, writers-corner, candid-chatter]
+  city: lisbon
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-chiado]
+
+- id: livraria-chiado
+  name: Livraria Alfarrabista do Carmo
+  type: alfarrabista
+  district: chiado
+  public: true
+  description: >-
+    A cramped second-hand bookshop in a Chiado side street, its shelves leaning
+    overhead and its back room of unpriced stock a place a book cipher's keys
+    could hide for years.
+  atmosphere: [leaning-shelves, foxed-paper, back-room-hush]
+  city: lisbon
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-chiado]
+
+- id: biblioteca-academia
+  name: Reading Room of the Academia das Ciências
+  type: biblioteca
+  district: chiado
+  public: true
+  description: >-
+    A hushed reading hall of long tables and brass lamps off the Chiado, its
+    almanacs and directories and bound runs of the daily press open to any
+    reader who signs the grille-keeper's register.
+  atmosphere: [brass-lamps, reading-hall-silence, bound-periodicals]
+  city: lisbon
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-academia]
+
+- id: teatro-cinema-chiado
+  name: Cinema São Luiz-Palace
+  type: core/cinema
+  district: chiado
+  public: true
+  description: >-
+    A gilt picture house off the Chiado, its back rows kept for courting couples
+    and anyone who would rather watch the door than the screen through the long
+    afternoon matinee.
+  atmosphere: [gilt-picture-house, back-row-dark, matinee-cover]
+  city: lisbon
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-chiado]
+
+- id: elevador-gloria
+  name: Elevador da Glória
+  type: elevador
+  district: chiado
+  public: true
+  description: >-
+    The varnished funicular car grinding up the cobbled slope from the
+    Restauradores to the upper town on its cable, the two cars passing at the
+    halfway loop in a press of passengers.
+  atmosphere: [varnished-car, cable-climb, halfway-loop]
+  city: lisbon
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-funiculars]
+
+# =========================================================================
+# ALFAMA — the old Moorish quarter under the castle
+# =========================================================================
+
+- id: miradouro-santa-luzia
+  name: Miradouro de Santa Luzia
+  type: core/park
+  district: alfama
+  public: true
+  description: >-
+    A tiled belvedere terrace above Alfama's roofs, the river spread out below
+    silver and wide, a trellis of bougainvillaea and benches where two men
+    taking the air pass for tourists.
+  atmosphere: [tiled-terrace, bougainvillaea-trellis, river-overlook]
+  city: lisbon
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-miradouros]
+
+- id: pensao-alfama
+  name: Pensão Beira-Tejo
+  type: pensao
+  district: alfama
+  public: false
+  description: >-
+    A boarding house up three flights of stepped alley, its one back window on a
+    light-well, the sort of address a landlady can be made to forget the moment
+    the rent is paid.
+  atmosphere: [three-flights-up, back-light-well, forgotten-address]
+  city: lisbon
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+- id: tabacaria-alfama
+  name: Tabacaria do Chafariz
+  type: tabacaria
+  district: alfama
+  public: true
+  description: >-
+    A hole-in-the-wall kiosk by the old fountain in Alfama, cigarettes and
+    lottery slips under the glass and the morning papers a day late on a wire.
+  atmosphere: [chafariz-corner, hole-in-the-wall, neighbourly-regulars]
+  city: lisbon
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-alfama]
+
+# =========================================================================
+# MOURARIA — the crowded far side of the castle hill
+# =========================================================================
+
+- id: tasca-mouraria
+  name: Tasca do Beco das Farinhas
+  type: hotel-bar
+  district: mouraria
+  public: true
+  description: >-
+    A low fado tavern in a Mouraria alley, benches crowded under a vine, the
+    guitars starting late and the talk running loose in a dozen trades once the
+    wine has gone round.
+  atmosphere: [vine-shaded-benches, late-guitars, loose-after-wine]
+  city: lisbon
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-mouraria]
+
+- id: pensao-mouraria
+  name: Pensão Flor da Mouraria
+  type: pensao
+  district: mouraria
+  public: false
+  description: >-
+    A cheap lodging house of thin walls and a shared landing, the register kept
+    in pencil and amended more often than it should be, transients coming and
+    going with their cases.
+  atmosphere: [thin-walls, shared-landing, pencil-register]
+  city: lisbon
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+- id: cafe-mouraria
+  name: Café do Martim Moniz
+  type: core/kaffeehaus
+  district: mouraria
+  public: true
+  description: >-
+    A plain tiled café at the foot of the hill, loud with dominoes and the
+    wireless, a corner table by the window with a clear view of the square and
+    the tram stop.
+  atmosphere: [domino-din, wireless-corner, square-view]
+  city: lisbon
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-mouraria]
+
+# =========================================================================
+# CAIS DO SODRÉ — the riverside sailors' quarter
+# =========================================================================
+
+- id: cais-sodre-ferry
+  name: Cais do Sodré River Station
+  type: cais-fluvial
+  district: cais-do-sodre
+  public: true
+  description: >-
+    The iron ferry shed over the water, the Cacilhas boat churning in to the
+    pontoon while the morning crowd of commuters, fishwives and bicycles presses
+    at the barrier.
+  atmosphere: [ferry-shed, cacilhas-boat, morning-crush]
+  city: lisbon
+  tags: [function:transit, function:transit-hub, function:port, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-cais-sodre]
+
+- id: bar-sodre
+  name: The Lusitano Bar
+  type: hotel-bar
+  district: cais-do-sodre
+  public: true
+  description: >-
+    A sailors' bar off the quay, open all night, the stools held by ships'
+    officers and wire-service men and the agents of every service, the talk in
+    five languages and none of it quite the truth.
+  atmosphere: [all-night-stools, five-languages, half-truths]
+  city: lisbon
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-cais-sodre]
+
+- id: bar-sodre-anchor
+  name: The Blue Anchor
+  type: hotel-bar
+  district: cais-do-sodre
+  public: true
+  description: >-
+    A dance-bar by the fish market that drew the crews off the transatlantic
+    boats, loud and smoky until it lost its licence and shuttered in the late
+    fifties.
+  atmosphere: [dance-bar, transatlantic-crews, licence-lost]
+  city: lisbon
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-inspired
+  years: { from: 1945, to: 1957 }
+  sources: [src-cais-sodre]
+
+- id: estacao-sodre
+  name: Cais do Sodré Station
+  type: estacao
+  district: cais-do-sodre
+  public: true
+  description: >-
+    The riverside terminus of the Cascais line, its concourse full of the dawn
+    tide of clerks and bathers down from the coast, the kiosk by the barrier
+    commanding the whole hall.
+  atmosphere: [cascais-line, dawn-commuters, barrier-kiosk]
+  city: lisbon
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+  basis: real-landmark
+  sources: [src-cais-sodre]
+
+# =========================================================================
+# ESTRELA — the legation hill
+# =========================================================================
+
+- id: legacao-estrela
+  name: Legation of the Northern Union
+  type: core/embassy
+  district: estrela
+  public: false
+  description: >-
+    A walled villa on the Estrela hill behind a gravel drive and a flag, its
+    visa queue winding down the steps and along the railings, a staff car idling
+    under the jacaranda in the courtyard.
+  atmosphere: [flag-over-door, visa-queue, jacaranda-courtyard]
+  city: lisbon
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: fictional
+
+- id: consulado-estrela
+  name: Consular Office of the Free Commission
+  type: core/embassy
+  district: estrela
+  public: false
+  description: >-
+    A consular suite of frosted glass and typewriter clatter above a quiet
+    Estrela street, its waiting room of hard chairs full of the stateless with
+    their papers clutched against the Atlantic wind.
+  atmosphere: [frosted-glass, typewriter-clatter, stateless-waiting]
+  city: lisbon
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: fictional
+
+- id: jardim-estrela
+  name: Jardim da Estrela
+  type: core/park
+  district: estrela
+  public: true
+  description: >-
+    The shaded public garden across from the basilica, bandstand and duck pond,
+    gravel walks under old trees where nursemaids and pensioners and the odd
+    attaché on a bench miss nothing that passes.
+  atmosphere: [bandstand-garden, duck-pond, gravel-walks]
+  city: lisbon
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-estrela]
+
+- id: hotel-estrela-bar
+  name: The Winter Garden at the Hotel Aviz-Lusitânia
+  type: hotel-bar
+  district: estrela
+  public: true
+  description: >-
+    The palm-filled bar of a discreet residential hotel favoured by diplomats
+    and the better class of refugee, deep cane chairs around low tables and a
+    page in buttons by the revolving door.
+  atmosphere: [palm-filled-bar, deep-cane-chairs, revolving-door]
+  city: lisbon
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-estrela]
+
+# =========================================================================
+# ALCÂNTARA — the working docks
+# =========================================================================
+
+- id: armazem-alcantara
+  name: Armazém Freire — Cortiças e Vinhos
+  type: armazem
+  district: alcantara
+  public: false
+  description: >-
+    A cold bonded warehouse under the Alcântara viaduct, stacked to the rafters
+    with cork bales and crated wine, a side door onto an alley off the quay and
+    a watchman's wireless playing a fado low.
+  atmosphere: [cork-bales, viaduct-shadow, side-door-alley]
+  city: lisbon
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: real-inspired
+  sources: [src-alcantara]
+
+- id: doca-alcantara
+  name: Doca de Alcântara
+  type: doca
+  district: alcantara
+  public: true
+  description: >-
+    The dock basin where the cork and wine and sardine cargoes load, cranes over
+    the berths, a customs shed and a line of bonded sheds, lorries idling on the
+    quay road with their lamps lit.
+  atmosphere: [cargo-cranes, dock-basin, idling-lorries]
+  city: lisbon
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-port]
+
+- id: tasca-alcantara
+  name: Tasca do Caes
+  type: hotel-bar
+  district: alcantara
+  public: true
+  description: >-
+    A dockers' tavern on the quay road open round the clock for the shifts, zinc
+    counter and trestle tables, grilled fish and rough red wine and a back
+    corner the stevedores keep for their own.
+  atmosphere: [shift-trade, trestle-tables, stevedores-corner]
+  city: lisbon
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-alcantara]
+
+# =========================================================================
+# BELÉM — the river mouth, liners and flying boats
+# =========================================================================
+
+- id: doca-belem
+  name: Ocean Berths at Belém
+  type: doca
+  district: belem
+  public: true
+  description: >-
+    The long ocean quays below the monastery where the transatlantic liners take
+    on emigrants, the gangways thronged with roped trunks and a customs officer
+    working the baggage line under a tin lamp.
+  atmosphere: [ocean-quays, emigrant-gangways, baggage-line]
+  city: lisbon
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-port, src-belem]
+
+- id: cais-ruivo-seaplane
+  name: Cabo Ruivo Seaplane Terminal
+  type: aerodromo
+  district: belem
+  public: true
+  description: >-
+    The flying-boat base out on the river, where the great transatlantic boats
+    settle in a long curtain of spray and taxi to the mooring buoy, its customs
+    hall of trestle tables thick with aviation spirit and cigarette smoke.
+  atmosphere: [flying-boat-base, spray-on-the-river, mooring-buoy]
+  city: lisbon
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  years: { from: 1945, to: 1958 }
+  sources: [src-seaplanes]
+
+- id: miradouro-belem
+  name: The Belém Quayside Walk
+  type: core/park
+  district: belem
+  public: true
+  description: >-
+    The open riverside walk by the tower, gulls over the slip and the sea wind
+    off the estuary, a kiosk selling coffee and lemonade and benches facing the
+    water where a meeting reads as two men watching the boats.
+  atmosphere: [quayside-walk, gulls-over-slip, benches-facing-water]
+  city: lisbon
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-belem]

@@ -1,0 +1,878 @@
+# locations.yaml — the authored Locations of Trieste, 1947–1954
+# (content-expansion task 9.9).
+#
+# Each is a CityLocation (CityLocationSchema): a place pinned to a District and
+# stamped from a city Location Type (bare `type` refs namespace to this pack,
+# e.g. `kaffeehaus` -> `city-trieste/kaffeehaus`). The city's café, park, port,
+# embassy and tram Location Types carry the slice's generic bare ids
+# (`kaffeehaus`, `park`, `danube-port`, `embassy`, `tram-stop`) so the core Plot
+# Templates — which key their traces on those Location-Type ids — bind to the
+# city's own Locations. It carries its own Tags, a `basis`
+# (real-landmark | real-inspired | fictional) that drives the Sources
+# requirement, an optional Year Range, the `sources` that attest a real
+# landmark, and an optional weighted-fill `weight`.
+#
+# A Location's Effective Tags are its own Tags together with its Location Type's
+# Tags; Tag Conformance counts binders among these (Req 4.5). The set below
+# spreads ≥25 Locations across all seven Districts and carries, with margin,
+# every core Required Query the generator must bind in the city: the Station
+# office, public meeting spots, dead-drop sites, newspaper outlets, transit
+# hubs, a materiel store, a diplomatic setting, private places, and one of every
+# Location function the archetype schedules draw on.
+#
+# Real landmarks (the Molo Audace, the Canal Grande, Piazza Unità, the castle of
+# San Giusto, the Stazione Centrale, the Opicina tramway, the free-port
+# warehouses) are named as period texture and cited in sources.yaml. Every
+# business, firm, office and name attached to them is fictional.
+
+# =========================================================================
+# BORGO TERESIANO (Zone A) — the Teresian grid and the Canal Grande
+# =========================================================================
+
+- id: caffe-tergesteo
+  name: Caffè Tergesteo
+  type: kaffeehaus
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A grand coffee house under the arcades off the great square, its mirrored
+    room loud with shipping men and the clatter of dominoes, the foreign papers
+    on their wands by the door.
+  atmosphere: [grand, smoky, cosmopolitan]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-arcades]
+
+- id: caffe-del-canale
+  name: Caffè del Canale
+  type: kaffeehaus
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A quieter café on the quay of the Canal Grande, its window tables looking
+    out on the moored coasters and the Serbian-Orthodox dome across the water.
+  atmosphere: [canal-side, genteel, unhurried]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-canal-grande]
+
+- id: edicola-ponterosso
+  name: Edicola di Ponterosso
+  type: edicola
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A green kiosk at the foot of the Ponterosso bridge over the canal, its racks
+    fanned with the morning editions in Italian, Slovene, German and English.
+  atmosphere: [everyday, watchful, canal-side]
+  city: trieste
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-canal-grande]
+
+- id: libreria-saba
+  name: Libreria Antiquaria del Ponterosso
+  type: libreria-antiquaria
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A narrow antiquarian bookshop a few doors back from the canal, its shelves
+    leaning overhead, strong on old Adriatic charts, almanacs and sailing
+    directions.
+  atmosphere: [dusty, bookish, discreet]
+  city: trieste
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: banca-adriatica
+  name: Banca Adriatica di Deposito
+  type: embassy
+  district: borgo-teresiano
+  public: false
+  description: >-
+    The marble banking hall of a deposit house in the Teresian grid, its private
+    rooms upstairs let for discreet meetings; a commissionaire checks every
+    caller at the inner door.
+  atmosphere: [official, guarded, bureaucratic]
+  city: trieste
+  tags: [function:meeting-spot, access:private]
+  basis: fictional
+
+- id: appartamento-ponterosso
+  name: A flat on the Androna
+  type: appartamento
+  district: borgo-teresiano
+  public: false
+  description: >-
+    A rented flat up three flights off a narrow androna behind the canal, kept
+    deliberately dull, its shutters half closed on a courtyard no one overlooks.
+  atmosphere: [private, spare, concealed]
+  city: trieste
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# CITTÀ VECCHIA (Zone A) — the old town on the hill of San Giusto
+# =========================================================================
+
+- id: caffe-san-giusto
+  name: Caffè San Giusto
+  type: kaffeehaus
+  district: citta-vecchia
+  public: true
+  description: >-
+    A small smoky café on a stepped lane below the cathedral, a few marble
+    tables and a card game that never quite ends, the trams clanging up from the
+    square below.
+  atmosphere: [old, smoky, local]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-san-giusto]
+
+- id: osteria-rena
+  name: Osteria della Rena Vecchia
+  type: osteria
+  district: citta-vecchia
+  public: true
+  description: >-
+    A low vaulted osteria in the warren below San Giusto, trestle benches and a
+    chalked board of Istrian wine, a back room where cards are played and a word
+    in the din goes unremarked.
+  atmosphere: [convivial, loud, loose-tongued]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: biblioteca-civica
+  name: Sala di Lettura Civica
+  type: biblioteca
+  district: citta-vecchia
+  public: true
+  description: >-
+    A hushed civic reading hall in an old palazzo on the hill, long tables and
+    green-shaded lamps, chained periodicals in a dozen languages and a clerk at
+    a brass grille.
+  atmosphere: [hushed, studious, discreet]
+  city: trieste
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-san-giusto]
+
+- id: libreria-cittavecchia
+  name: Libreria Antiquaria del Teatro Romano
+  type: libreria-antiquaria
+  district: citta-vecchia
+  public: true
+  description: >-
+    A cramped bookshop by the Roman theatre, stacks of unsorted volumes crowding
+    the aisle, the proprietor peering over half-moon glasses from a shaded desk
+    at the back.
+  atmosphere: [dusty, quiet, bookish]
+  city: trieste
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-roman-theatre]
+
+- id: appartamento-sangiusto
+  name: A room below the castle
+  type: appartamento
+  district: citta-vecchia
+  public: false
+  description: >-
+    A back room up four flights in a tenement under the castle walls, one window
+    on a blind courtyard, the stair creaking a free warning on the fourth tread.
+  atmosphere: [private, secure, concealed]
+  city: trieste
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# PIAZZA DELL'UNITÀ (Zone A) — the civic heart and the diplomatic quarter
+# =========================================================================
+
+- id: hotel-della-piazza
+  name: the American Bar at the Hotel della Piazza
+  type: hotel-bar
+  district: piazza-unita
+  public: true
+  description: >-
+    A low-lit bar of walnut and brass in a grand hotel on the great square,
+    correspondents and liaison officers on the stools, the lit facade of the
+    municipio through the long windows.
+  atmosphere: [cosmopolitan, smoky, watched]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: missione-alleata
+  name: Allied Information Mission
+  type: embassy
+  district: piazza-unita
+  public: false
+  description: >-
+    A guarded suite of offices in a shipping-company palace on the square, a
+    flag over the door, corridors of frosted glass and typewriter clatter and a
+    staff car idling in the court.
+  atmosphere: [official, guarded, cover-friendly]
+  city: trieste
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: fictional
+
+- id: consolato-elvetico
+  name: Helvetic Consular Agency
+  type: embassy
+  district: piazza-unita
+  public: false
+  description: >-
+    A discreet consular agency behind garden gates off the square, a brass plate
+    by the bell and a waiting room of hard chairs where petitioners sit under a
+    clerk's indifferent eye.
+  atmosphere: [official, bureaucratic, discreet]
+  city: trieste
+  tags: [function:embassy, setting:diplomatic, access:private]
+  basis: fictional
+
+- id: giardino-piazza
+  name: the seafront by the Molo Audace
+  type: park
+  district: piazza-unita
+  public: true
+  description: >-
+    The open promenade along the water at the edge of the great square, benches
+    facing the gulf and the stone mole running out into the harbour, the light
+    coming hard off the sea.
+  atmosphere: [open-air, exposed, meeting-ground]
+  city: trieste
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-molo-audace, src-piazza-unita]
+
+- id: molo-audace
+  name: the Molo Audace
+  type: danube-port
+  district: piazza-unita
+  public: true
+  description: >-
+    The long stone mole running straight out from the square into the harbour,
+    the gulf opening on either hand and the city stepped up behind — a place to
+    walk and be seen to walk, and to see who walks behind you.
+  atmosphere: [open-air, exposed, maritime]
+  city: trieste
+  tags: [function:port, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-molo-audace]
+
+- id: ufficio-della-stazione
+  name: the Station
+  type: ufficio-stazione
+  district: piazza-unita
+  public: false
+  description: >-
+    A floor of locked offices behind an unmarked door above the square — steel
+    cabinets, a cipher room, a teleprinter chattering, and maps of the two zones
+    on the wall.
+  atmosphere: [secure, official, own-ground]
+  city: trieste
+  tags: [function:station, access:private]
+  basis: fictional
+
+# =========================================================================
+# PORTO VECCHIO (Zone A) — the free-port warehouses and sidings
+# =========================================================================
+
+- id: magazzino-punto-franco
+  name: Free-Port Warehouse No. 7
+  type: magazzino
+  district: porto-vecchio
+  public: false
+  description: >-
+    A cold bonded shed in the free-port, stacked to the rafters with coffee,
+    hides and oil drums, a single bulb over the loading door and a watchman's
+    wireless playing low somewhere in the dark.
+  atmosphere: [industrial, deserted, risky]
+  city: trieste
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: real-inspired
+  sources: [src-porto-vecchio]
+
+- id: magazzino-levante
+  name: the Levant Line bonded store
+  type: magazzino
+  district: porto-vecchio
+  public: false
+  description: >-
+    A long shed by the basins where the Levant line works its cargo, pallets and
+    tarpaulins throwing shadows, stencilled cases bound for a dozen ports with
+    their consignees half painted out.
+  atmosphere: [industrial, concealing, rough]
+  city: trieste
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+- id: molo-sanitario
+  name: the passenger quay
+  type: danube-port
+  district: porto-vecchio
+  public: true
+  description: >-
+    The passenger quay where the Istria and Dalmatia steamers warp in beam-on to
+    the stone, porters and emigrants and the shipping-line touts crowding the
+    gangways under the cranes.
+  atmosphere: [maritime, busy, transient]
+  city: trieste
+  tags: [function:port, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-porto-vecchio]
+
+- id: osteria-del-porto
+  name: Buffet del Porto
+  type: osteria
+  district: porto-vecchio
+  public: true
+  description: >-
+    A dockside buffet, standing room only at noon, a slab of boiled ham on the
+    counter and carafes of dark wine, loud with stevedores and railwaymen off
+    the sidings.
+  atmosphere: [convivial, loud, rough]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: edicola-stazione-porto
+  name: the kiosk at the goods gate
+  type: edicola
+  district: porto-vecchio
+  public: true
+  description: >-
+    A hole-in-the-wall kiosk at the free-port goods gate, newspapers pegged on a
+    wire and a shutter half down against the bora, the first light lit on the
+    street at dawn.
+  atmosphere: [cramped, watchful, everyday]
+  city: trieste
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+# =========================================================================
+# SAN VITO E CAMPI ELISI (Zone A) — the residential and consular quarters
+# =========================================================================
+
+- id: caffe-sanvito
+  name: Caffè San Vito
+  type: kaffeehaus
+  district: san-vito
+  public: true
+  description: >-
+    A neighbourhood café on a quiet residential corner, a few regulars over the
+    morning paper and the seafront a short walk down the hill.
+  atmosphere: [genteel, quiet, local]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: cinema-elisi
+  name: Cinema Eliseo
+  type: cinema
+  district: san-vito
+  public: true
+  description: >-
+    A picture house on the long seafront street, a gilt proscenium and a velvet
+    curtain, the back rows kept for anyone who would rather watch the door than
+    the newsreel.
+  atmosphere: [dark, anonymous, meeting-ground]
+  city: trieste
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: giardino-pubblico
+  name: the Giardino Pubblico
+  type: park
+  district: san-vito
+  public: true
+  description: >-
+    The public garden of clipped limes and busts of forgotten worthies, gravel
+    walks and a bandstand, a pram and a dog and a man who may or may not be
+    reading his paper.
+  atmosphere: [open-air, exposed, genteel]
+  city: trieste
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [src-giardino]
+
+- id: consolato-sanvito
+  name: Levantine Trade Delegation
+  type: embassy
+  district: san-vito
+  public: false
+  description: >-
+    A consular villa behind garden walls in San Vito, a brass plate by the gate,
+    high rooms smelling of floor wax and sealing wax and telephones ringing
+    behind closed doors.
+  atmosphere: [official, guarded, discreet]
+  city: trieste
+  tags: [function:embassy, setting:diplomatic, access:private]
+  basis: fictional
+
+- id: appartamento-campielisi
+  name: A flat in the Campi Elisi
+  type: appartamento
+  district: san-vito
+  public: false
+  description: >-
+    A rented flat in an apartment block toward the sea, dust sheets over the
+    furniture of someone long gone, the place smelling of cold ash and other
+    people's absence.
+  atmosphere: [private, spare, concealed]
+  city: trieste
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# OPICINA E IL CARSO (Zone A) — the Karst plateau and the Opicina tram
+# =========================================================================
+
+- id: tram-opicina-basso
+  name: the Opicina tram at the lower terminus
+  type: tram-stop
+  district: opicina-carso
+  public: true
+  description: >-
+    A single green tramcar waiting at the lower terminus by the public garden,
+    its cable gear ready for the steep pull up the escarpment, a knot of
+    commuters and marketing women crowding the platform.
+  atmosphere: [transient, climbing, public]
+  city: trieste
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-opicina-tram]
+
+- id: caffe-opicina
+  name: Caffè Obelisco
+  type: kaffeehaus
+  district: opicina-carso
+  public: true
+  description: >-
+    A café by the obelisk at the top of the tramway, a terrace looking down the
+    escarpment to the whole gulf, the bora rattling the shutters and the Karst
+    villages beyond.
+  atmosphere: [upland, windswept, scenic]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [src-opicina-tram]
+
+- id: osteria-carso
+  name: Gostilna sul Carso
+  type: osteria
+  district: opicina-carso
+  public: true
+  description: >-
+    A Slovene-Italian country tavern among the limestone of the plateau, dark
+    Terrano wine and cured ham, loud on a market day and close enough to the
+    zone line to feel it.
+  atmosphere: [rustic, loose-tongued, border-close]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: appartamento-opicina
+  name: A cottage above Opicina
+  type: appartamento
+  district: opicina-carso
+  public: false
+  description: >-
+    A shuttered stone cottage on the edge of the village, a vine over the gate
+    and a clear view of the lane in both directions, the last houses before the
+    plateau runs out toward the line.
+  atmosphere: [private, concealed, border-close]
+  city: trieste
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# THE STAZIONE CENTRALE (Zone A) — placed on the Borgo edge of the centre
+# =========================================================================
+
+- id: stazione-centrale
+  name: the Stazione Centrale
+  type: stazione
+  district: borgo-teresiano
+  public: true
+  description: >-
+    The main terminus under its sooty glass roof, a departures board clattering
+    out the Venice and the north, porters wheeling trunks, and a kiosk by the
+    gate from which the whole concourse is in view.
+  atmosphere: [crowded, transient, anonymous, watched]
+  city: trieste
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+  basis: real-landmark
+  sources: [src-stazione]
+
+- id: mercato-coperto
+  name: the Mercato Coperto
+  type: mercato
+  district: borgo-teresiano
+  public: true
+  description: >-
+    The covered produce market near the canal, rows of awned stalls and a glass
+    roof dripping over the fish slabs, the crowd packing the lanes between the
+    trestles in the morning hours.
+  atmosphere: [crowded, bustling, concealing]
+  city: trieste
+  tags: [function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+  basis: real-inspired
+  sources: [src-markets]
+
+# =========================================================================
+# IL RETROTERRA ISTRIANO (Zone B) — the Yugoslav-administered hinterland
+# =========================================================================
+
+- id: caffe-zona-b
+  name: a café in the Zone B market town
+  type: kaffeehaus
+  district: istrian-hinterland
+  public: true
+  description: >-
+    A plain café on the square of a small Istrian market town across the line,
+    marble tables and a card game, the talk guarded and every stranger
+    remembered.
+  atmosphere: [plain, watched, closed]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: magazzino-zona-b
+  name: a cooperative store in Zone B
+  type: magazzino
+  district: istrian-hinterland
+  public: false
+  description: >-
+    A cooperative depot off the hinterland road, sacking and crates and farm
+    machinery under a corrugated roof, a storekeeper who notes who comes and
+    goes.
+  atmosphere: [agrarian, deserted, watched]
+  city: trieste
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+- id: osteria-zona-b
+  name: a tavern on the hinterland road
+  type: osteria
+  district: istrian-hinterland
+  public: true
+  description: >-
+    A roadside tavern in the Istrian hinterland, a trestle under a vine and a
+    carafe of Terrano, the last stop before the market and a place where a
+    traveller's business is quietly weighed.
+  atmosphere: [rustic, closed, remembered]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+# =========================================================================
+# ADDITIONAL AUTHORED LOCATIONS (task 10.1 — widen the instantiation pool so
+# the per-seed Location selection varies and the Coverage Variety Metric falls
+# below target). These are APPENDED at the end so the positional lint.yaml
+# suppressions (keyed by array index into the earlier entries) stay valid.
+#
+# Every place below is fictional (`basis: fictional`, no sources), reuses the
+# city's existing Location Types so it binds exactly as the earlier Locations
+# do, carries only valid vocabulary Tags, and has an original, globally-unique
+# name, description and atmosphere so none trips a new CE-DUPTEXT / CE-NEARDUP.
+# They spread across all seven Districts of the Free Territory.
+
+# --- Borgo Teresiano (Zone A) — further Teresian-grid places ---------------
+
+- id: caffe-dei-portici
+  name: Caffè dei Portici Rossi
+  type: kaffeehaus
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A corner coffee house under the red arcading of an insurance palace, its
+    revolving door turning out clerks on their mid-morning break and a telephone
+    cabinet at the back where a caller cannot be overheard.
+  atmosphere: [brisk, panelled, clerkly]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: edicola-piazza-goldoni
+  name: Edicola di Piazza Goldoni
+  type: edicola
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A squat newsstand marooned on a traffic island below the great stairway,
+    hemmed by tram wires, its racks weighted with lead against the gusts and the
+    foreign weeklies clipped up out of children's reach.
+  atmosphere: [islanded, gusty, hemmed]
+  city: trieste
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: sala-lettura-mercantile
+  name: Reading Room of the Mercantile Exchange
+  type: biblioteca
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A members' reading room above the commodity floor, shipping registers and
+    tide tables chained to sloping lecterns, where a visitor signing the ledger
+    in a fair hand is seldom questioned twice.
+  atmosphere: [ledgered, sloping, incurious]
+  city: trieste
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: pasticceria-canale
+  name: Pasticceria del Canale
+  type: osteria
+  district: borgo-teresiano
+  public: true
+  description: >-
+    A marble-countered cake shop by the water with four small tables at the
+    rear, famed for its presnitz and for the discretion of a proprietress who
+    forgets a face the instant the bill is settled.
+  atmosphere: [sugared, marbled, forgetful]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Città Vecchia (Zone A) — further old-town places ----------------------
+
+- id: edicola-arco-riccardo
+  name: the stall by the Arco di Riccardo
+  type: edicola
+  district: citta-vecchia
+  public: true
+  description: >-
+    A plank-and-canvas newsstand wedged against the Roman arch, its vendor a
+    one-armed veteran who keeps the racing sheets under the counter and misses
+    nothing that passes up the stepped lane.
+  atmosphere: [wedged, veteran, missing-nothing]
+  city: trieste
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: osteria-del-ghetto
+  name: Osteria del Portico Vecchio
+  type: osteria
+  district: citta-vecchia
+  public: true
+  description: >-
+    A cellar tavern down worn steps in the old Jewish quarter, barrels for
+    tables and a single oil lamp, where émigrés argue politics in four tongues
+    and the landlord pretends to understand none of them.
+  atmosphere: [cellar, argumentative, pretending]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: cinema-san-giusto
+  name: Cinema Vittoria
+  type: cinema
+  district: citta-vecchia
+  public: true
+  description: >-
+    A cramped flea-pit off the hill lanes with a screen patched at one corner
+    and seats that have given up their springs, its afternoon programme of
+    reissues drawing nobody who wishes to be noticed.
+  atmosphere: [flea-pit, screen-patched, unnoticed]
+  city: trieste
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Piazza dell'Unità (Zone A) — further places on the civic square -------
+
+- id: caffe-degli-specchi-nuovo
+  name: Caffè della Loggia
+  type: kaffeehaus
+  district: piazza-unita
+  public: true
+  description: >-
+    A terrace café set out across the flags of the great square, its wicker
+    chairs angled at the sea, where a man nursing a granita commands an open
+    view of every door and delegation along the arcade.
+  atmosphere: [terraced, wickered, commanding]
+  city: trieste
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: ufficio-telegrafico
+  name: the International Cable Office
+  type: embassy
+  district: piazza-unita
+  public: false
+  description: >-
+    A public telegraph bureau in a palace off the square, its brass grilles and
+    rows of forms busy with press men filing copy, the back counters reserved
+    for traffic that pays for a sealed pouch.
+  atmosphere: [grilled, filing, sealed]
+  city: trieste
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: fictional
+
+- id: libreria-del-municipio
+  name: Libreria Antiquaria sotto il Municipio
+  type: libreria-antiquaria
+  district: piazza-unita
+  public: true
+  description: >-
+    A long dim bookshop tucked beneath the town-hall colonnade, its specialty
+    the law and the sea, with a reading ladder on a rail and a mezzanine from
+    which the whole floor can be watched unseen.
+  atmosphere: [colonnaded, legal, overlooking]
+  city: trieste
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Porto Vecchio (Zone A) — further free-port and quayside places --------
+
+- id: magazzino-caffe
+  name: the Coffee Bond
+  type: magazzino
+  district: porto-vecchio
+  public: false
+  description: >-
+    A towering bonded store that reeks of green coffee, its gantries and sack
+    barrows worked by a gang who clock off at the siren, leaving long aisles
+    where a parcel left among the lots would wait unremarked for a week.
+  atmosphere: [reeking, towering, abandoned-at-dusk]
+  city: trieste
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+- id: pontile-pescatori
+  name: the fishermen's jetty
+  type: danube-port
+  district: porto-vecchio
+  public: true
+  description: >-
+    A low working jetty beyond the passenger basins where the Chioggia boats
+    land at first light, nets drying on the rail and ice-men trundling barrows,
+    a place of constant small comings and goings nobody counts.
+  atmosphere: [low, netted, uncounted]
+  city: trieste
+  tags: [function:port, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: mensa-dei-camalli
+  name: the dockers' canteen
+  type: osteria
+  district: porto-vecchio
+  public: true
+  description: >-
+    A tin-roofed canteen by the goods gate serving bean soup and rough red to
+    the shift gangs, trestle benches sticky with spilled wine and a din loud
+    enough to swallow any conversation whole.
+  atmosphere: [tin-roofed, soupy, swallowing]
+  city: trieste
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+# --- San Vito e Campi Elisi (Zone A) — further residential places ----------
+
+- id: giardino-rimembranze
+  name: the garden of remembrance
+  type: park
+  district: san-vito
+  public: true
+  description: >-
+    A terraced memorial garden on the slope of San Vito, cypress walks and a
+    long balustrade over the roofs to the gulf, so quiet on a weekday that two
+    strollers meeting there are the only witnesses to each other.
+  atmosphere: [cliff-terraced, cypress-walked, witnessless]
+  city: trieste
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: edicola-oberdan
+  name: the kiosk on the viale
+  type: edicola
+  district: san-vito
+  public: true
+  description: >-
+    A tidy green kiosk on a leafy residential avenue, its proprietor a widow who
+    sets aside the morning editions for her regulars by name and takes in parcels
+    for neighbours who are out.
+  atmosphere: [leafy, tidy, obliging]
+  city: trieste
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: appartamento-chiadino
+  name: a villa room above Chiadino
+  type: appartamento
+  district: san-vito
+  public: false
+  description: >-
+    A let room in a garden villa on the eastern slope, its own stair from a side
+    gate, a wisteria screening the window and a landlord abroad who asks only
+    that the rent arrive by post.
+  atmosphere: [gardened, side-gated, screened]
+  city: trieste
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# --- Opicina e il Carso (Zone A) — further plateau places ------------------
+
+- id: tram-opicina-vetta
+  name: the Opicina tram at the obelisk halt
+  type: tram-stop
+  district: opicina-carso
+  public: true
+  description: >-
+    The upper halt where the cable car swings onto the level and the villagers
+    board for the descent, a weatherboard shelter against the bora and a view
+    that takes in the whole gulf and the lie of the zone line beyond.
+  atmosphere: [upper, weatherboarded, overlooking-the-line]
+  city: trieste
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: biblioteca-slovena-opicina
+  name: the plateau reading circle
+  type: biblioteca
+  district: opicina-carso
+  public: true
+  description: >-
+    A single-room lending library in a Karst village hall, its shelves of
+    Slovene and Italian almanacs tended by a schoolmaster, the stove lit against
+    the upland cold and the register open for any reader to sign.
+  atmosphere: [single-roomed, bilingual, stove-warmed]
+  city: trieste
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+  basis: fictional
+
+# --- Il retroterra istriano (Zone B) — further hinterland places -----------
+
+- id: mercato-zona-b
+  name: the hinterland market square
+  type: mercato
+  district: istrian-hinterland
+  public: true
+  description: >-
+    A weekly market on the square of a Zone B town, trestle stalls of hinterland
+    produce and a travelling knife-grinder, watched over by a militiaman who logs
+    the number plates of every lorry that unloads.
+  atmosphere: [weekly, trestled, logged]
+  city: trieste
+  tags: [function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+  basis: fictional
+
+- id: edicola-zona-b
+  name: the cooperative news counter
+  type: edicola
+  district: istrian-hinterland
+  public: true
+  description: >-
+    A news counter inside the Zone B cooperative store, the official sheets
+    pinned up in Slovene and the few permitted foreign titles kept behind the
+    grille, a ledger noting who buys what.
+  atmosphere: [state-run, wall-pinned, name-noted]
+  city: trieste
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional

@@ -1,0 +1,96 @@
+# rumours/rumours.yaml - Berlin Rumour distortion templates
+# (content-expansion task 9.4).
+#
+# Each entry validates against RumourTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, predicate, distortions, shiftDays? }. `predicate` is one of
+# the existing UPPER_SNAKE_CASE predicate ids (core predicates.yaml);
+# `distortions` is a non-empty list drawn from swap-subject | shift-day |
+# invent-target; `shiftDays` bounds how far a day can slide where a shift-day
+# distortion applies.
+#
+# A Rumour takes one of the vocabulary predicates and the distortions that turn
+# a true - or wholly invented - fact into the garbled belief a Background NPC
+# passes along (design, "Organisations and documents"). The player's job is to
+# notice the drift: the wrong face named, the day slid, a target conjured from
+# nothing. These set beside the core Rumour templates with the divided-city's
+# own gossip - who crossed at which Uebergang, who was seen on the S-Bahn, who
+# is said to deal across the sector line.
+#
+# Content guardrail: rumours name no real people and depict no real atrocities -
+# they are cafe and queue gossip about who met whom and where. Period: divided
+# Berlin, 1948-1961.
+
+# A crossing-point meeting rumour with the wrong person at its centre: the queue
+# at the Uebergang puts the wrong face at the table on the far side.
+- id: berlin-rumour-swapped-crossing-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject]
+
+# An S-Bahn sighting whose day has drifted in the retelling.
+- id: berlin-rumour-drifted-sbahn-sighting
+  predicate: LOCATED_AT
+  distortions: [shift-day]
+  shiftDays: 2
+
+# "Someone said he draws the eastern mark" - the wrong employer pinned on the
+# wrong person, as queue talk hardens into assumption.
+- id: berlin-rumour-mistaken-paymaster
+  predicate: WORKS_FOR
+  distortions: [swap-subject]
+
+# A crossing rumour that both names the wrong traveller and slides the day.
+- id: berlin-rumour-garbled-crossing
+  predicate: TRAVELS_TO
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3
+
+# An invented plot: the courtyard insists someone is "planning something" over
+# in the eastern sector, a target conjured where there is none.
+- id: berlin-rumour-invented-plot
+  predicate: PLANS
+  distortions: [invent-target]
+
+# A black-market supply rumour with an imagined recipient - who is said to be
+# running coffee and the two marks across the line, the recipient made up.
+- id: berlin-rumour-phantom-supply
+  predicate: SUPPLIES
+  distortions: [invent-target]
+
+# A membership rumour pinned on the wrong person: the classic "I heard he's one
+# of the Ring."
+- id: berlin-rumour-mistaken-member
+  predicate: MEMBER_OF
+  distortions: [swap-subject]
+
+# A fully garbled target rumour: wrong accuser, invented victim, day slipped -
+# the third-hand story that falls apart on checking.
+- id: berlin-rumour-tangled-target
+  predicate: TARGETS
+  distortions: [swap-subject, invent-target, shift-day]
+  shiftDays: 4
+
+# A reporting rumour pinned on the wrong person: queue talk puts the wrong face
+# at the end of a chain of command.
+- id: berlin-rumour-mistaken-handler
+  predicate: REPORTS_TO
+  distortions: [swap-subject]
+
+# A channel rumour whose day has drifted - "I heard the wireless was on Tuesday,
+# or was it Thursday?"
+- id: berlin-rumour-drifted-signal
+  predicate: USES_CHANNEL
+  distortions: [shift-day]
+  shiftDays: 2
+
+# A knowing rumour with an invented acquaintance: the courtyard insists someone
+# is "in with" a person who was never there.
+- id: berlin-rumour-phantom-acquaintance
+  predicate: KNOWS
+  distortions: [invent-target]
+
+# A fully garbled meeting rumour: wrong person, wrong day - the third-hand story
+# of a rendezvous at a kiosk that falls apart on checking.
+- id: berlin-rumour-tangled-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3

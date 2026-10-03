@@ -1,0 +1,367 @@
+# culture-groups/levantine.yaml — the Levantine group.
+#
+# A CultureGroup (CultureGroupSchema) for the Arabic-speaking Levantine
+# communities of the eastern Mediterranean — the merchant and professional
+# families of the coastal cities, Christian and Muslim alike. Names are given in
+# Latin transliteration for the slice renderer and Specifics Guard. Levantine
+# Arabic surnames are not gender-inflected, so family names are plain strings
+# and the Naming Rule is the generic {given} {family}. Quantity (Req 11.4): at
+# least 100 given and 100 family names, at least 300 distinct total. All names
+# are generic, common Levantine names of the period in fictional use; none names
+# a real individual.
+- id: levantine
+  name: Levantine
+  languages:
+    - ar
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Mona
+      - Leila
+      - Nadia
+      - Samira
+      - Hoda
+      - Widad
+      - Thuraya
+      - Najat
+      - Amal
+      - Salwa
+      - Fayza
+      - Ilham
+      - Wafaa
+      - Suad
+      - Nawal
+      - Rima
+      - Jamila
+      - Afifa
+      - Badriya
+      - Dalal
+      - Fadia
+      - Ghada
+      - Hayat
+      - Inaya
+      - Jouliet
+      - Karima
+      - Lamia
+      - Maha
+      - Nahla
+      - Olfat
+      - Rawda
+      - Sana
+      - Thurayya
+      - Umayma
+      - Wisal
+      - Yasmina
+      - Zahra
+      - Adiba
+      - Bahija
+      - Dunya
+      - Fatin
+      - Hiyam
+      - Iman
+      - Juman
+      - Khadija
+      - Loubna
+      - Mayada
+      - Nabila
+      - Qamar
+      - Randa
+      - Souad
+      - Taghrid
+      - Wafiya
+      - Yusra
+      - Zeina
+      - Abeer
+      - Buthayna
+      - Dima
+      - Faten
+      - Hind
+    m:
+      - Nabil
+      - Fouad
+      - Georges
+      - Elias
+      - Michel
+      - Samir
+      - Khalil
+      - Antoine
+      - Habib
+      - Youssef
+      - Rafic
+      - Tanios
+      - Wadih
+      - Nicolas
+      - Sélim
+      - Farid
+      - Boutros
+      - Camille
+      - Daoud
+      - Edmond
+      - Fares
+      - Gaby
+      - Hanna
+      - Issa
+      - Jamil
+      - Karam
+      - Labib
+      - Marwan
+      - Naji
+      - Oussama
+      - Philippe
+      - Qassem
+      - Riad
+      - Sami
+      - Toufic
+      - Wassef
+      - Yacoub
+      - Zahi
+      - Adib
+      - Basile
+      - Chafic
+      - Deeb
+      - Emile
+      - Fawzi
+      - Ghassan
+      - Hikmat
+      - Ibrahim
+      - Jirjis
+      - Kamal
+      - Lutfi
+      - Mounir
+      - Nadim
+      - Omar
+      - Pierre
+      - Raja
+      - Souheil
+      - Tawfiq
+      - Wajih
+      - Yusuf
+      - Ziad
+  family:
+    - Haddad
+    - Khoury
+    - Sayegh
+    - Nassar
+    - Rizk
+    - Saba
+    - Tabet
+    - Zogby
+    - Aoun
+    - Boutros
+    - Chamoun
+    - Daher
+    - Eid
+    - Farah
+    - Ghanem
+    - Habib
+    - Issa
+    - Jabbour
+    - Karam
+    - Lahoud
+    - Maalouf
+    - Nahas
+    - Obeid
+    - Rahme
+    - Saad
+    - Tueni
+    - Wehbe
+    - Yazbek
+    - Zakhour
+    - Abboud
+    - Bitar
+    - Chidiac
+    - Debbas
+    - Estephan
+    - Fakhoury
+    - Gemayel
+    - Hage
+    - Jreissati
+    - Kassab
+    - Lteif
+    - Mansour
+    - Naccache
+    - Okais
+    - Rizkallah
+    - Sfeir
+    - Tamer
+    - Wakim
+    - Yammine
+    - Zoghbi
+    - Antoun
+    - Baroudi
+    - Chartouni
+    - Darwish
+    - Ephrem
+    - Frangieh
+    - Geagea
+    - Hobeika
+    - Jammal
+    - Kanaan
+    - Labaki
+    - Matar
+    - Nehme
+    - Rizkala
+    - Salameh
+    - Trad
+    - Wazen
+    - Younes
+    - Zein
+    - Achkar
+    - Barakat
+    - Chehab
+    - Doumit
+    - Fadel
+    - Gharios
+    - Helou
+    - Jadaa
+    - Kattan
+    - Lawand
+    - Massoud
+    - Nader
+    - Rahbani
+    - Sarkis
+    - Taan
+    - Wahbe
+    - Yaacoub
+    - Zahlan
+    - Asmar
+    - Boustany
+    - Chalhoub
+    - Dagher
+    - Fayad
+    - Gebara
+    - Harb
+    - Khater
+    - Lteif-Saadeh
+    - Moukarzel
+    - Naeffeh
+    - Rached
+    - Semaan
+    - Aramouni
+    - Bustros
+    - Chammas
+    - Daccache
+    - Farhat
+    - Gharzouzi
+    - Hajjar
+    - Jabre
+    - Kahale
+    - Lahham
+    - Maroun
+    - Nassour
+    - Rizkallah-Khoury
+    - Sacy
+    - Tabbara
+    - Wehbi
+    - Yared
+    - Zalzal
+    - Abou-Khalil
+    - Baaklini
+    - Choueiri
+    - Doumani
+    - Faddoul
+    - Ghosn
+    - Hobeiche
+    - Jurdak
+    - Khalaf
+    - Lahoud-Nassar
+    - Mouawad
+    - Nasrallah
+    - Rahhal
+    - Sarrouf
+    - Tahan
+    - Wakim-Sayegh
+    - Younan
+    - Zein-Haddad
+    - Achkouti
+    - Barbari
+    - Chidiac-Rahme
+    - Deeb-Khoury
+    - Feghali
+    - Ghattas
+    - Hashem
+    - Jammoul
+    - Khoueiry
+    - Lteif-Nasr
+    - Moubarak
+    - Nehmeh
+    - Rahbani-Haddad
+    - Sakr
+    - Tannous
+    - Wehbe-Issa
+    - Yazbeck
+    - Zakhem
+    - Aad
+    - Bou-Said
+    - Chehade
+    - Daouk
+    - Farran
+    - Gebran
+    - Hamadeh
+    - Jebara
+    - Khoury-Saad
+    - Lteif-Habib
+    - Mikati
+    - Naffah
+    - Rizk-Nassar
+    - Salloum
+    - Tueni-Eid
+    - Wazzan
+    - Younes-Karam
+    - Zaarour
+    - Abela
+    - Bardawil
+    - Charara
+    - Dagher-Khoury
+    - Fakhry
+    - Ghanem-Saba
+    - Hanania
+    - Ingea
+    - Jamal-Eddine
+  voiceTraits:
+    - fluent across tongues, charming and watchful
+    - makes commerce of conversation and conversation of commerce
+    - veils a hard bargain in generous courtesy
+    - names no faction and keeps counsel with all
+    - closes an awkward turn with a proverb and a smile
+  mannerisms:
+    - pours coffee for the guest's cup before his own
+    - clasps the forearm in a warm greeting
+    - lets the silence after an offer stretch deliberately
+    - fingers a string of amber beads while talking
+    - sees a visitor to the gate and waits until he turns the corner
+  backgrounds:
+    - text: Keeps an import office on the quay and brokers goods across the sea.
+      tags: []
+    - text: Clerks for a French bank and keeps correspondence in three languages.
+      tags: []
+    - text: Runs a hotel in the mixed quarter where every passport is welcome.
+      tags: []
+    - text: Trades in silk and olive oil and settles accounts in gold when the lira slips.
+      tags: []
+    - text: Interprets at a consulate and carries word between the merchant houses.
+      tags: []
+    - text: Teaches at a mission college and reads the papers of four capitals.
+      tags: []
+    - text: Keeps a pharmacy on the corniche and the quarter's quiet confidences.
+      tags: []
+    - text: Deals in antiquities and knows which collectors prefer no paperwork.
+      tags: []
+    - text: Manages a shipping agent's books and the manifests the agent would rather lose.
+      tags: []
+    - text: Came from the mountain villages to the port and kept the old caution.
+      tags: []
+    - text: Keeps a money-changer's window and knows the rates before the banks post them.
+      tags: []
+    - text: Runs a coffeehouse where the rival committees each keep a table.
+      tags: []
+    - text: Owns a cinema on the avenue and lets the back office to anyone discreet.
+      tags: []
+    - text: Clerks at the port and knows which cargoes travel under a false bill.
+      tags: []
+    - text: Keeps a tailor's shop that fits the consuls and overhears their fittings.
+      tags: []
+    - text: Edits a small French-language weekly and prints only what keeps it open.
+      tags: []

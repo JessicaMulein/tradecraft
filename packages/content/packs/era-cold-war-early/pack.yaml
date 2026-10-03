@@ -1,0 +1,27 @@
+# The era-cold-war-early Era Pack manifest (content-expansion task 7.2).
+#
+# An Era Pack supplies the period a scenario is set in: the `era` record, the
+# `technology` list with years of introduction, the `cipher-conventions` the
+# Cipher Engine reads, the document Style Guide, the era Locale (the era-wide
+# formatting fallback a City Pack overrides) and the shared Service Definitions
+# (the Station's own service, the hostile services and the allied liaison
+# services). The quality lists (anachronisms, Real-Person Blocklist, sensitivity
+# terms) and the public-text corpus arrive with tasks 7.3 and 7.4.
+#
+# This pack covers the early Cold War, 1945–1965: the four-power occupations,
+# the opening of the Iron Curtain divide and the first fifteen postwar years.
+# Every name here — services, countries, mastheads — is fictional. No real
+# intelligence agency and no real person is named.
+#
+# It declares `role: era` and `contentSchema: 2`, and requires the core pack
+# (its Tag Vocabulary, predicates and slice kinds). The loader enforces exactly
+# one Era Pack per City Pack (task 2.1); the City Packs of task 9 require this
+# pack.
+id: era-cold-war-early
+version: 1.0.0
+contentSchema: 2
+role: era
+requires:
+  - id: core
+    range: '^1.0.0'
+overrides: []

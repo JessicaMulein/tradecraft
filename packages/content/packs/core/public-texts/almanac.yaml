@@ -1,0 +1,93 @@
+# public-texts/almanac.yaml — an original period-plausible almanac.
+#
+# A public text the world generator issues as a readable Document and, more
+# importantly, the kind of text a BOOK CIPHER keys off (Requirement 9.2): the
+# cipher names a word by its position in the text, so the corpus must be long
+# and have plenty of ordinary words. The loader tolerates files under
+# public-texts/, so the shape here is chosen for the composers that read it
+# (task 5.6), not for a schema. Keep it clean, consistent YAML.
+#
+# Everything here is ORIGINAL and invented. Figures, fairs and offices are
+# period-plausible for 1950s Vienna but fictional in their particulars; no real
+# person is named, and officials appear only by office.
+
+id: almanac-vienna-household
+kind: public-text
+title: The Household Almanac and Register for the Year
+publisher: Donaustadt Printing House
+genre: almanac
+# `lines` is the keyable body: an ordered list the book cipher counts words
+# across. Keep each line a plain sentence of ordinary words.
+lines:
+  - The almanac opens with a word on the seasons and the work each one asks of a
+    careful household.
+  - In the first month the days are short and the river runs cold under a grey
+    and heavy sky.
+  - A prudent family lays in coal early, mends what the autumn wore thin, and
+    keeps the lamp trimmed against the long evening.
+  - The second month brings a thaw that is not to be trusted, for the frost
+    returns by night and the streets turn to glass before dawn.
+  - By the third month the market stalls show the first green of the year and
+    the price of eggs begins at last to fall.
+  - In spring the gardener turns the beds, sows the early roots, and watches the
+    almanac for the days the moon favours planting.
+  - The fourth month is the month of rain, when the gutters run and the washing
+    will not dry, and patience is the only remedy.
+  - High summer fills the orchards along the slow bend of the river and the
+    evenings grow long and warm and full of dust.
+  - A good cook preserves in the seventh month what the eighth month will not
+    keep, and labels every jar in a plain and honest hand.
+  - Autumn is the season of accounts, when the wise settle their debts before
+    the cold and reckon the year that is closing.
+  - The ninth month brings the fairs, the harvest home, and the first fires lit
+    against the evening chill.
+  - By the tenth month the leaves are down, the barges run low in the water, and
+    the fog sits on the river until midday.
+  - The eleventh month asks the household to look to its stores, its boots and
+    its roof before the true winter comes.
+  - In the last month the year turns inward, the days are shortest, and the
+    family gathers close about the single warm room.
+  - A table of weights and measures follows, for the market, the kitchen and the
+    yard, that no honest trader be cheated.
+  - A pound is reckoned here in the old manner and again in the new, that buyer
+    and seller may agree before the scale is read.
+  - The register of fairs lists the spring cattle fair, the midsummer cloth
+    fair, the autumn produce fair and the winter market by the old gate.
+  - Each fair opens at the eighth hour and closes when the light fails, and no
+    stall may be struck before the bell.
+  - A note on the post advises that letters within the city are collected twice
+    daily and that parcels require a stamp of the proper weight.
+  - The office of the district magistrate keeps its hours from the ninth hour to
+    the fourth, and is closed upon the day of rest.
+  - The ration office opens early and the queue forms earlier still, so the
+    almanac counsels the reader to carry a book and a patient temper.
+  - A page of household remedies offers honey for the throat, chamomile for the
+    nerves, and a hot brick wrapped in flannel for the cold bed.
+  - The almanac warns against the quack and the pedlar of miracle cures, and
+    recommends instead rest, broth and the plain advice of a sober physician.
+  - A column of sayings reminds the reader that a stitch in time saves nine, that
+    the early bird takes the worm, and that a watched pot is slow to boil.
+  - The gardener's calendar names the days to prune, the days to sow and the days
+    to leave the beds alone and trust the weather.
+  - A table of the tides on the great rivers follows, for those whose trade rides
+    the water from the mountains to the sea.
+  - The almanac closes its first part with a prayer for a mild winter, a kind
+    harvest and a quiet year at the crossing posts.
+  - The second part is given over to the register of the city and the plain facts
+    a householder should keep near the door.
+  - The city stands upon the river where the plain meets the last of the hills,
+    and has stood there, by the chronicles, a very long time.
+  - Its streets are laid in rings about an old inner town, and a broad avenue
+    circles where the walls once ran before they were pulled down.
+  - The water is drawn from the mountains by a long aqueduct and is counted among
+    the sweetest a city ever drank.
+  - The markets gather by district, each on its appointed day, and the almanac
+    prints the days in order that no cook arrive to a shuttered square.
+  - The register of weights for bread fixes the honest loaf, and the baker who
+    sells short is named to the magistrate and fined.
+  - A short history of the almanac itself boasts that it has been printed every
+    year, through hard winters and lean ones, without a single year missed.
+  - The printer thanks the reader, commends the almanac to the household shelf,
+    and promises a corrected and enlarged edition when the year comes round again.
+  - A final page of blank ruled lines invites the family to keep its own accounts,
+    its birthdays and its small triumphs, against the almanac's own.

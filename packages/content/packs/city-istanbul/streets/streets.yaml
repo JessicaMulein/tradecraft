@@ -1,0 +1,103 @@
+# streets/streets.yaml — the Istanbul street-name pools (task 9.5).
+#
+# Each entry validates against StreetsPoolSchema (city.ts): { id, names[] }. The
+# generator draws addresses from these pools, and Location Type `namePatterns`
+# reference them via `{pick:<pool>}` (e.g. `{pick:commercial} durağı`,
+# `a room on {pick:quiet}`). Pools are grouped by texture so a place is given a
+# plausible street for its District.
+#
+# These are real Istanbul streets, avenues and squares of the period, used as a
+# name pool for texture; no address names a real business or person. Across the
+# five pools there are well over sixty names (Req 11.2 target: at least sixty).
+
+# --- grand: the Pera / Beyoğlu thoroughfares and squares --------------------
+- id: grand
+  names:
+    - İstiklal Caddesi
+    - Cumhuriyet Caddesi
+    - Meşrutiyet Caddesi
+    - Sıraselviler Caddesi
+    - Tarlabaşı Bulvarı
+    - Tepebaşı
+    - Taksim Meydanı
+    - Galatasaray Meydanı
+    - Asmalı Mescit Sokağı
+    - Nuri Ziya Sokağı
+    - Hamalbaşı Caddesi
+    - Yeni Çarşı Caddesi
+
+# --- commercial: trade, market and tram streets -----------------------------
+- id: commercial
+  names:
+    - Bankalar Caddesi
+    - Voyvoda Caddesi
+    - Perşembe Pazarı Caddesi
+    - Rıhtım Caddesi
+    - Kemeraltı Caddesi
+    - Necatibey Caddesi
+    - Mahmutpaşa Yokuşu
+    - Uzunçarşı Caddesi
+    - Çakmakçılar Yokuşu
+    - Hasırcılar Caddesi
+    - Tahtakale Caddesi
+    - Vasıf Çınar Caddesi
+    - Hamidiye Caddesi
+    - Ankara Caddesi
+    - Söğütlüçeşme Caddesi
+    - Bahariye Caddesi
+    - Muvakkithane Caddesi
+    - Hakimiyet-i Milliye Caddesi
+
+# --- waterfront: quays, shore roads and pier approaches ---------------------
+- id: waterfront
+  names:
+    - Kennedy Caddesi
+    - Sahil Yolu
+    - Karaköy Rıhtımı
+    - Eminönü Meydanı
+    - Galata Rıhtımı
+    - Sirkeci Rıhtımı
+    - Salacak Sahili
+    - Harem Sahil Yolu
+    - Kadıköy İskele Meydanı
+    - Üsküdar İskele Meydanı
+    - Paşalimanı Caddesi
+    - Kuzguncuk Sahili
+
+# --- residential: quiet quarters and side-streets ---------------------------
+- id: residential
+  names:
+    - Serdar-ı Ekrem Sokağı
+    - Lüleci Hendek Caddesi
+    - Boğazkesen Caddesi
+    - Çukurcuma Caddesi
+    - Faik Paşa Yokuşu
+    - Kadıköy Moda Caddesi
+    - Mühürdar Caddesi
+    - Rasimpaşa Sokağı
+    - Doğancılar Caddesi
+    - Selmanipak Caddesi
+    - Çavuşdere Caddesi
+    - Hakkı Bey Sokağı
+    - Yeldeğirmeni Sokağı
+    - Nailbey Sokağı
+
+# --- quiet: lanes and alleys for safehouses and dead corners ----------------
+- id: quiet
+  names:
+    - Timarcı Sokağı
+    - Kallavi Sokağı
+    - Postacılar Sokağı
+    - Oteller Sokağı
+    - Sofyalı Sokağı
+    - Jurnal Sokağı
+    - Balo Sokağı
+    - İmam Adnan Sokağı
+    - Bekar Sokağı
+    - Kumbaracı Yokuşu
+    - Şahkulu Bostanı Sokağı
+    - Pavlonya Sokağı
+    - Çilingir Sokağı
+    - Tatlıkuyu Sokağı
+    - Macuncu Sokağı
+    - Zincirlikuyu Sokağı

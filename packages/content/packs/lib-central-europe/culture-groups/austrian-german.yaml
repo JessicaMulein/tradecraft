@@ -1,0 +1,358 @@
+# culture-groups/austrian-german.yaml — the Viennese Austrian-German group.
+#
+# A CultureGroup (CultureGroupSchema): id, name, languages, Naming Rule, given
+# names by gender, family names, voice traits, mannerisms and Year-ranged
+# persona backgrounds (Req 6.1, 7.1). German surnames are not gender-inflected,
+# so family names are plain strings. Quantity (Req 11.4, CE-QUANTITY): at least
+# 100 given and 100 family names, at least 300 distinct names total.
+#
+# All names are generic, common Austrian names of the period in fictional use;
+# none names a real individual.
+- id: austrian-german
+  name: Austrian German
+  languages:
+    - de
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Maria
+      - Anna
+      - Elisabeth
+      - Johanna
+      - Theresia
+      - Hedwig
+      - Franziska
+      - Katharina
+      - Josefine
+      - Wilhelmine
+      - Leopoldine
+      - Aloisia
+      - Rosa
+      - Gertrude
+      - Hildegard
+      - Irmgard
+      - Edith
+      - Martha
+      - Herta
+      - Ingrid
+      - Berta
+      - Pauline
+      - Grete
+      - Gretl
+      - Hertha
+      - Emma
+      - Klara
+      - Agnes
+      - Barbara
+      - Cäcilia
+      - Dorothea
+      - Elfriede
+      - Ernestine
+      - Friederike
+      - Gisela
+      - Helene
+      - Ida
+      - Juliana
+      - Karoline
+      - Luise
+      - Magdalena
+      - Mathilde
+      - Notburga
+      - Ottilie
+      - Philippine
+      - Regina
+      - Sidonie
+      - Stefanie
+      - Veronika
+      - Walburga
+      - Amalia
+      - Antonia
+      - Brigitta
+      - Christine
+      - Eleonore
+      - Franzi
+      - Henriette
+      - Isabella
+      - Josepha
+      - Konstanze
+    m:
+      - Franz
+      - Josef
+      - Karl
+      - Anton
+      - Rudolf
+      - Alois
+      - Ferdinand
+      - Leopold
+      - Wilhelm
+      - Gustav
+      - Otto
+      - Heinrich
+      - Friedrich
+      - Walter
+      - Ernst
+      - Hermann
+      - Ludwig
+      - Johann
+      - Albert
+      - Oskar
+      - Richard
+      - Emil
+      - Robert
+      - Viktor
+      - Georg
+      - Hans
+      - Felix
+      - Konrad
+      - Maximilian
+      - Sebastian
+      - Benedikt
+      - Christoph
+      - Dominik
+      - Engelbert
+      - Florian
+      - Gottfried
+      - Hubert
+      - Ignaz
+      - Jakob
+      - Kaspar
+      - Lorenz
+      - Markus
+      - Norbert
+      - Paul
+      - Raimund
+      - Severin
+      - Theodor
+      - Valentin
+      - Wolfgang
+      - Augustin
+      - Bernhard
+      - Clemens
+      - Erwin
+      - Gottlieb
+      - Herwig
+      - Josef-Maria
+      - Kilian
+      - Matthias
+      - Reinhold
+      - Siegfried
+  family:
+    - Huber
+    - Gruber
+    - Wagner
+    - Steiner
+    - Mayrhofer
+    - Hofbauer
+    - Brantner
+    - Pichler
+    - Weinhuber
+    - Lindner
+    - Kolar
+    - Vorwald
+    - Reichert
+    - Hartl
+    - Brunner
+    - Edelmann
+    - Draxler
+    - Zehetner
+    - Pokorny
+    - Fuchs
+    - Baumgartner
+    - Haas
+    - Winkler
+    - Moser
+    - Aichinger
+    - Schober
+    - Leitner
+    - Berger
+    - Bauer
+    - Lehner
+    - Maier
+    - Schmid
+    - Egger
+    - Reiter
+    - Fischer
+    - Wimmer
+    - Hofer
+    - Schuster
+    - Köck
+    - Fellner
+    - Haider
+    - Wallner
+    - Ebner
+    - Stadler
+    - Kaltenbrunner
+    - Riegler
+    - Kogler
+    - Scheibl
+    - Trenkwalder
+    - Prantl
+    - Hintermayer
+    - Deutsch
+    - Breuer
+    - Grabner
+    - Zauner
+    - Hummel
+    - Sattler
+    - Weiss
+    - Gassner
+    - Lechner
+    - Prem
+    - Rauch
+    - Danninger
+    - Köhler
+    - Puchberger
+    - Scharinger
+    - Hollerer
+    - Birnbacher
+    - Krainer
+    - Ottenschläger
+    - Weiskopf
+    - Lanner
+    - Grimmer
+    - Dollinger
+    - Eigenberger
+    - Rumpler
+    - Pfeiffer
+    - Haberl
+    - Kittel
+    - Senn
+    - Schagerl
+    - Tauber
+    - Nussbaumer
+    - Freundlich
+    - Lassnig
+    - Hochegger
+    - Resch
+    - Pernkopf
+    - Weilhammer
+    - Doppler
+    - Ruhland
+    - Zeilinger
+    - Scherz
+    - Wiesinger
+    - Buchegger
+    - Haberfellner
+    - Pühringer
+    - Daxböck
+    - Reindl
+    - Steinwender
+    - Kreuzer
+    - Nagl
+    - Himmelbauer
+    - Vielhaber
+    - Lugmayr
+    - Pointner
+    - Sturmlechner
+    - Angerer
+    - Dirnberger
+    - Jöchl
+    - Reitmayer
+    - Schweighofer
+    - Wiesbauer
+    - Zehentner
+    - Gschwandtner
+    - Mitterhuber
+    - Oberleitner
+    - Prandstetter
+    - Rechberger
+    - Steinbauer
+    - Unterberger
+    - Weichselbaum
+    - Zöchling
+    - Buchberger
+    - Enzinger
+    - Gartlehner
+    - Holzinger
+    - Kaltenböck
+    - Lindenmayr
+    - Mühlbacher
+    - Oberndorfer
+    - Pichlmayr
+    - Rossmann
+    - Scheuchenpflug
+    - Tiefenbacher
+    - Vollmann
+    - Waldhäusl
+    - Zebenholzer
+    - Breitenfellner
+    - Diesenreiter
+    - Feichtinger
+    - Grünberger
+    - Hinterberger
+    - Kirchmayr
+    - Loidolt
+    - Neubauer
+    - Ortner
+    - Pühretmair
+    - Rohrmoser
+    - Schachinger
+    - Trattner
+    - Weinberger
+    - Zellhofer
+    - Aschauer
+    - Brandstetter
+    - Ehrenreich
+    - Falkner
+    - Grasböck
+    - Hagenauer
+    - Käferböck
+    - Lohninger
+    - Mitterlehner
+    - Niederhuber
+    - Penninger
+    - Rieplhuber
+    - Schmidinger
+    - Thalhammer
+    - Voglhuber
+    - Wiesmüller
+    - Zinnhobler
+    - Bogensberger
+    - Dürnberger
+    - Freudenthaler
+    - Grünwald
+    - Hartlauer
+    - Kiesenhofer
+    - Lindenbauer
+    - Markhofer
+    - Neuhauser
+    - Obermayr
+    - Pfneisl
+    - Riedlberger
+    - Schweinberger
+  voiceTraits:
+    - formal and courteous to a fault
+    - fond of the diminutive, softening every noun
+    - dry Viennese irony under the politeness
+    - circles a subject three times before naming it
+    - quick to invoke the way things were done before the war
+    - defers with a title where a name would do
+  mannerisms:
+    - stirs a coffee long after the sugar has dissolved
+    - touches the brim of the hat in greeting
+    - lowers the voice whenever the occupiers are mentioned
+    - taps ash with a small, precise flick
+    - answers a question with a proverb
+    - folds the newspaper to a quarter before reading
+  backgrounds:
+    - text: Grew up in Leopoldstadt and never left the district for long.
+      tags: []
+    - text: Kept the family trade going through the hard years after the war.
+      tags: []
+    - text: Lost the family flat to the bombing and took rooms in a stranger's house.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Served in the old administration and learned to say little and notice much.
+      tags: []
+    - text: Waited out the occupation behind a shop counter, trusting no sector in particular.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Tends the counter of a coffee house that has stood on the same corner for forty years.
+      tags: []
+    - text: Returned from a prisoner-of-war camp to find the city divided into quarters.
+      tags: []
+      years: { from: 1945, to: 1953 }
+    - text: Plays second violin in a café orchestra and knows which guests tip and which listen.
+      tags: []

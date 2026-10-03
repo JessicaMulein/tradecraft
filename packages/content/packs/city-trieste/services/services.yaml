@@ -1,0 +1,45 @@
+# services/services.yaml — the City-Scoped local-security Service Definition for
+# the Free Territory of Trieste (content-expansion task 9.10).
+#
+# Validates against ServiceDefinitionSchema (packages/content/src/kinds/
+# service.ts):
+#   { id, name, aliases, kind, country, doctrineBase, years?, tags? }
+#
+# This is the ONE City-Scoped service a City Pack defines: Zone A's own civil
+# police and public-security apparatus (`kind: local-security`), standing under
+# the Allied military government of the occupied city. The shared Era-Pack
+# services (the player's own service, the hostile foreign, security and
+# satellite services, and the allied liaison services) stay in the Era Pack and
+# are referenced from city.yaml by id; this file adds only the local-security
+# service, and its id is added to city.yaml's `services` list (Req 19.1, 19.2).
+#
+# FICTIONAL. The service is invented. The "country" is the Free Territory of
+# Trieste, the real polity of the period an Era Pack may name; the civil police
+# of Zone A answered to the Allied military government through the Venezia Giulia
+# police administration. Its temper is that of a hard-pressed frontier-port
+# police under military-government oversight: cautious, very security-conscious
+# with a guarded zone line a few miles out, and with little taste for the
+# deception games the foreign services run through the camps and the shipping
+# lines. Zone B's own apparatus, under the Yugoslav military government, is
+# covered by the Era Pack's hostile services, not here.
+#
+# The zone regime holds across the whole window, so `years` spans 1947–1954.
+# `tags` is omitted (no facet in the core Tag Vocabulary applies to `service`).
+
+- id: zone-security-office
+  name: The Zone Office of Civil Security
+  aliases:
+    - { text: the Office of Civil Security, distinctive: true }
+    - { text: the Civil Security Office, distinctive: false }
+    - { text: the zone police, distinctive: false }
+    - { text: the civil police, distinctive: false }
+    - { text: the port police, distinctive: false }
+  kind: local-security
+  country: Free Territory of Trieste
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.75
+    deceptionAppetite: 0.2
+  years:
+    from: 1947
+    to: 1954

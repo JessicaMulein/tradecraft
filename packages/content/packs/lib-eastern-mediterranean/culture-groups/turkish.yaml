@@ -1,0 +1,365 @@
+# culture-groups/turkish.yaml — the Turkish group.
+#
+# A CultureGroup (CultureGroupSchema). Turkish surnames (fixed by the 1934
+# Surname Law) are not gender-inflected, so family names are plain strings and
+# the Naming Rule uses the generic {given} {family} display. Names are given in
+# modern Turkish Latin orthography (the slice renderer and Specifics Guard work
+# in Latin text). Quantity (Req 11.4): at least 100 given and 100 family names,
+# at least 300 distinct total. All names are generic, common Turkish names of
+# the period in fictional use; none names a real individual.
+- id: turkish
+  name: Turkish
+  languages:
+    - tr
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Ayşe
+      - Fatma
+      - Emine
+      - Hatice
+      - Zeynep
+      - Elif
+      - Meryem
+      - Havva
+      - Şükran
+      - Nurten
+      - Sevim
+      - Güler
+      - Nazmiye
+      - Münevver
+      - Saniye
+      - Hediye
+      - Melahat
+      - Perihan
+      - Sabiha
+      - Mükerrem
+      - Nuray
+      - Gülten
+      - Nebahat
+      - Semra
+      - Türkan
+      - Ayten
+      - Belgin
+      - Cemile
+      - Dilek
+      - Ferhan
+      - Gönül
+      - Handan
+      - İnci
+      - Jale
+      - Kadriye
+      - Leyla
+      - Melek
+      - Nilüfer
+      - Oya
+      - Pervin
+      - Rukiye
+      - Suna
+      - Tülay
+      - Ülkü
+      - Vildan
+      - Yıldız
+      - Zehra
+      - Bahar
+      - Ceren
+      - Dilara
+      - Esma
+      - Feriha
+      - Gülnur
+      - Hülya
+      - Işıl
+      - Kıymet
+      - Lale
+      - Mihriban
+      - Necla
+      - Özlem
+    m:
+      - Ahmet
+      - Mehmet
+      - Mustafa
+      - Ali
+      - Hüseyin
+      - Hasan
+      - İbrahim
+      - İsmail
+      - Osman
+      - Yusuf
+      - Ramazan
+      - Kemal
+      - Süleyman
+      - Rıza
+      - Fuat
+      - Niyazi
+      - Şevket
+      - Cemal
+      - Nuri
+      - Sadık
+      - Bekir
+      - Cevdet
+      - Doğan
+      - Erol
+      - Ferit
+      - Galip
+      - Hamdi
+      - İlhan
+      - Kadir
+      - Lütfi
+      - Macit
+      - Nedim
+      - Orhan
+      - Peyami
+      - Reşat
+      - Sabri
+      - Tahsin
+      - Ümit
+      - Vedat
+      - Yakup
+      - Zeki
+      - Adnan
+      - Bülent
+      - Cahit
+      - Dursun
+      - Enver
+      - Faruk
+      - Gürkan
+      - Hayri
+      - İzzet
+      - Kenan
+      - Levent
+      - Metin
+      - Necmi
+      - Ömer
+      - Rauf
+      - Selim
+      - Turgut
+      - Vefa
+      - Yaşar
+  family:
+    - Yılmaz
+    - Kaya
+    - Demir
+    - Çelik
+    - Şahin
+    - Yıldız
+    - Yıldırım
+    - Öztürk
+    - Aydın
+    - Özdemir
+    - Arslan
+    - Doğan
+    - Kılıç
+    - Aslan
+    - Çetin
+    - Kara
+    - Koç
+    - Kurt
+    - Özkan
+    - Şimşek
+    - Korkmaz
+    - Çakır
+    - Erdoğan
+    - Yücel
+    - Taş
+    - Aksoy
+    - Bulut
+    - Güneş
+    - Keskin
+    - Çevik
+    - Avcı
+    - Polat
+    - Turan
+    - Ateş
+    - Yavuz
+    - Çiftçi
+    - Bozkurt
+    - Köse
+    - Aktaş
+    - Erdem
+    - Güler
+    - Yalçın
+    - Tekin
+    - Acar
+    - Çakmak
+    - Duman
+    - Ekinci
+    - Fidan
+    - Gündoğdu
+    - Hacıoğlu
+    - Işık
+    - Karaca
+    - Mutlu
+    - Nalbant
+    - Oral
+    - Pekcan
+    - Sarı
+    - Taşkın
+    - Ulusoy
+    - Varol
+    - Yüksel
+    - Zengin
+    - Altun
+    - Baştürk
+    - Civelek
+    - Değirmenci
+    - Eroğlu
+    - Ferhatoğlu
+    - Gökçe
+    - Halıcı
+    - İnan
+    - Kahraman
+    - Lekesiz
+    - Mengü
+    - Nazlı
+    - Okur
+    - Pamuk
+    - Resuloğlu
+    - Soylu
+    - Tunç
+    - Uğur
+    - Vural
+    - Yağcı
+    - Zorlu
+    - Akın
+    - Berber
+    - Candan
+    - Dalkıran
+    - Erbil
+    - Fırat
+    - Gürsel
+    - Hamzaoğlu
+    - İpekçi
+    - Közoğlu
+    - Mercan
+    - Orhan
+    - Pınar
+    - Sönmez
+    - Topal
+    - Üstün
+    - Akbulut
+    - Bayram
+    - Coşkun
+    - Demirci
+    - Erten
+    - Fırıncı
+    - Göktürk
+    - Hancı
+    - Ilgaz
+    - Kaplan
+    - Levend
+    - Mavi
+    - Nebioğlu
+    - Ozan
+    - Pekmez
+    - Sayar
+    - Taner
+    - Uyar
+    - Yurdakul
+    - Akyol
+    - Başaran
+    - Çobanoğlu
+    - Doğru
+    - Ergün
+    - Gökmen
+    - Hastürk
+    - İnce
+    - Karabulut
+    - Latifoğlu
+    - Mazhar
+    - Nuhoğlu
+    - Oktay
+    - Peker
+    - Saraç
+    - Toprak
+    - Ulaş
+    - Yetkin
+    - Alkan
+    - Bingöl
+    - Çalışkan
+    - Demiröz
+    - Erkan
+    - Güvenç
+    - Hoşgör
+    - İmamoğlu
+    - Kemal
+    - Lekoğlu
+    - Mutluay
+    - Narin
+    - Özçelik
+    - Parlak
+    - Soydan
+    - Tunalı
+    - Uzun
+    - Yıldızoğlu
+    - Arıcan
+    - Baydar
+    - Çınar
+    - Demiralay
+    - Erdoğmuş
+    - Günay
+    - Hıdır
+    - İpek
+    - Kayalı
+    - Mengüç
+    - Nalçacı
+    - Okutan
+    - Pamukçu
+    - Söğüt
+    - Tezcan
+    - Ulusan
+    - Yener
+    - Aral
+    - Bozdağ
+    - Çaylak
+    - Dündar
+    - Erbaş
+    - Gültekin
+    - Hazar
+    - İşcan
+  voiceTraits:
+    - courteous and indirect, saving face on both sides
+    - offers hospitality before any business is raised
+    - veils a hard point in proverb and parable
+    - weighs a stranger slowly, then opens all at once
+    - speaks of officials with careful, polished neutrality
+  mannerisms:
+    - presses tea on a guest and will not be refused
+    - touches the heart in greeting
+    - fingers worry beads while thinking
+    - lowers the voice when the state is the subject
+    - rises to see a guest all the way to the door
+  backgrounds:
+    - text: Keeps a stall in the covered bazaar and hears the city's business before the papers do.
+      tags: []
+    - text: Clerks at a shipping agency on the quay and knows which cargoes clear fastest.
+      tags: []
+    - text: Served as an officer and now holds a quiet post in a ministry annex.
+      tags: []
+    - text: Runs a hotel in the European quarter where every nation signs the register.
+      tags: []
+    - text: Interprets at a consulate and carries messages no cable records.
+      tags: []
+    - text: Came from Anatolia to the city for work and kept the village wariness.
+      tags: []
+    - text: Deals in carpets and antiquities and crosses the straits on a dealer's papers.
+      tags: []
+    - text: Drives a taxi off the main square and remembers every foreign fare.
+      tags: []
+    - text: Teaches at a lycée and reads three languages of newspaper each morning.
+      tags: []
+    - text: Keeps the books for a tobacco exporter and the exporter's secrets with them.
+      tags: []
+    - text: Ferries passengers across the straits and overhears the morning crowd.
+      tags: []
+    - text: Tends a barbershop near the ministries where officials talk too freely.
+      tags: []
+    - text: Buys and sells foreign currency in a back room off the grand bazaar.
+      tags: []
+    - text: Keeps a coffeehouse where the émigré factions each take a corner.
+      tags: []
+    - text: Clerks at the customs house and knows which crates are never opened.
+      tags: []
+    - text: Served in the gendarmerie and still trades favours with his old command.
+      tags: []

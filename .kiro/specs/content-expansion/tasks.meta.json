@@ -1,0 +1,1384 @@
+{
+  "pbtResults": {
+    "2.7 Write the property test for the Locale date round-trip": {
+      "status": "passed",
+      "lastRunTimestamp": 1791303570140
+    },
+    "2.8 Write the property test for the Provenance gate": {
+      "status": "passed",
+      "lastRunTimestamp": 1791305763198
+    }
+  },
+  "executionHistory": {
+    "1.1 Add Pack Roles, `contentSchema` 2 and the file envelope": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299345907
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299356047
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299827045
+      }
+    ],
+    "1.2 Implement the Content Kind Registry": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299345950
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299358575
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299827969
+      }
+    ],
+    "1.3 Add the Tag Vocabulary kind and Tag fields on slice kinds": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299345999
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299831865
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300441252
+      }
+    ],
+    "1.4 Add the City kinds": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346060
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299832800
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300442167
+      }
+    ],
+    "1.5 Add the Era kinds": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346099
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299833804
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300443078
+      }
+    ],
+    "1.6 Add the Library kinds": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346141
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300448396
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301051763
+      }
+    ],
+    "1.7 Add the Locale and Template Variant kinds and the pure formatters": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346192
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299834560
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300444008
+      }
+    ],
+    "1.8 Add the Service Definition kind": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346269
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300449323
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301052723
+      }
+    ],
+    "2.1 Implement the role rules and city-scope checks": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346317
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791300450090
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301050807
+      }
+    ],
+    "2.2 Implement Template Variant compilation and `resolveTemplate`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346358
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301058997
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791303454191
+      }
+    ],
+    "2.3 Implement the Tag checks and Tag Conformance": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346420
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791303460593
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304471839
+      }
+    ],
+    "2.4 Implement the Provenance gate": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346459
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304478190
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305653651
+      }
+    ],
+    "2.5 Write the property test for load-order independence": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346501
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305664956
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306576424
+      }
+    ],
+    "2.6 Write the property test for Template Variant resolution": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346551
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304479126
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305654583
+      }
+    ],
+    "2.7 Write the property test for the Locale date round-trip": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346618
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791303462508
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304473227
+      }
+    ],
+    "2.8 Write the property test for the Provenance gate": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346666
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305665700
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306577216
+      }
+    ],
+    "3.1 Add `setting` to the `ScenarioConfig` schema": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346709
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301058163
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791303455105
+      }
+    ],
+    "3.2 Implement the Setting Stream, `drawSetting` and `yearFilter`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346750
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791303461607
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304470901
+      }
+    ],
+    "3.3 Implement `instantiateCity`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346791
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304480043
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305655542
+      }
+    ],
+    "3.4 Implement `nameNpc` and the new Npc setting fields": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346833
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305664008
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306575526
+      }
+    ],
+    "3.5 Implement `describeNpc`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346896
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306584168
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308974046
+      }
+    ],
+    "3.6 Wire Locale, Template Variants and currency into rendering": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346935
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308981764
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309787126
+      }
+    ],
+    "3.7 Apply the Era cipher conventions in the Cipher Engine": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299346982
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791310076629
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312374615
+      }
+    ],
+    "3.8 Wire the setting into `generate()`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347024
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312383392
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334949533
+      }
+    ],
+    "3.9 Write the property test for bindability": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347085
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334961659
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791335367527
+      }
+    ],
+    "3.10 Write the property test for year filtering": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347150
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334962575
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791335368462
+      }
+    ],
+    "3.11 Write the property test for naming soundness": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347192
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334963533
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336316473
+      }
+    ],
+    "3.12 Write the property test for descriptor uniqueness": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347236
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334964947
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791335369898
+      }
+    ],
+    "3.13 Write the property test for cipher conventions": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347293
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334965624
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791335370495
+      }
+    ],
+    "3.14 Write the property test for setting determinism": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347331
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336325805
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336889655
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338188394
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338698994
+      }
+    ],
+    "3.15 Write the property test for solvability in every city": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347368
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336320870
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336890596
+      }
+    ],
+    "3.16 Write the property test for side-by-side projection": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347436
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336321801
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336892009
+      }
+    ],
+    "3.17 Write unit and smoke tests for the setting wiring": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347481
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336323208
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336892947
+      }
+    ],
+    "3.18 Write the property test for setting step isolation": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347525
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336324157
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336893710
+      }
+    ],
+    "4. Checkpoint: engine on generated cities": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347567
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338730045
+      }
+    ],
+    "5.1 Create the `content-tools` package and the `pnpm content` CLI entry": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347633
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301057238
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791303456032
+      }
+    ],
+    "5.2 Implement the linter framework": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347676
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791304481005
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305656798
+      }
+    ],
+    "5.3 Implement the reference, identity and text-safety Lint Rules": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347853
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305662561
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306574086
+      }
+    ],
+    "5.4 Implement the period, style, quantity and stability Lint Rules": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347923
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306583336
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308971813
+      }
+    ],
+    "5.5 Write the property test for defect detection": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299347968
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308985073
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309783124
+      }
+    ],
+    "5.6 Write the property test for suppression semantics": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348092
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308985952
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309786387
+      }
+    ],
+    "5.7 Write the property test for the anachronism rule": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348143
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309862660
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791310067799
+      }
+    ],
+    "5.8 Write the property test for id stability": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348217
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309863181
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791310068542
+      }
+    ],
+    "5.9 Implement the Preview CLI": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348267
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336898734
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791337950793
+      }
+    ],
+    "5.10 Write the property test for preview determinism and gating": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348319
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339986761
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340293399
+      }
+    ],
+    "5.11 Implement the Coverage Report": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348394
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336899671
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338184456
+      }
+    ],
+    "5.12 Write the property test for coverage accounting": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348443
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339984977
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340295028
+      }
+    ],
+    "5.13 Implement the Authoring Aid and promotion": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348493
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791310073137
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312372267
+      }
+    ],
+    "5.14 Write unit tests for the Authoring Aid with a mocked client": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348539
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312382610
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334950377
+      }
+    ],
+    "6. Checkpoint: tools on a fixture city": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348584
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340371165
+      }
+    ],
+    "7.1 Add the core Tag Vocabulary": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348636
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791305661656
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306572704
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343905063
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344557480
+      }
+    ],
+    "7.2 Write the Era Pack `era-cold-war-early` (1945–1965): era, technology, ciphers and styles": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348711
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306582395
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308973235
+      }
+    ],
+    "7.3 Write the Era Pack quality lists": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348760
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308983161
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309785455
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343904446
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344556548
+      }
+    ],
+    "7.4 Write at least 6 public texts": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348808
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791310076359
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312374568
+      }
+    ],
+    "8.1 Write `lib-central-europe` and `lib-russian`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348858
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791308984110
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791309784056
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343900709
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344553266
+      }
+    ],
+    "8.2 Write `lib-western`, `lib-eastern-mediterranean` and `lib-iberian`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348899
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791310074073
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312370893
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343902104
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344554699
+      }
+    ],
+    "8.3 Write `lib-archetypes`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348940
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312381673
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791334951101
+      }
+    ],
+    "8.4 Write `lib-descriptors`": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299348983
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336900628
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343903055
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344555648
+      }
+    ],
+    "9.1 Write the `city-vienna` geography (1945–1955)": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349053
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338735052
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339971291
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791345246324
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346614309
+      }
+    ],
+    "9.2 Write the `city-vienna` institutions and voice": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349099
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340375433
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343776633
+      }
+    ],
+    "9.3 Write the `city-berlin` geography (1948–1961)": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349140
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338736417
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339972214
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791345247314
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346615258
+      }
+    ],
+    "9.4 Write the `city-berlin` institutions and voice, to the same targets as 9.2": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349177
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340376373
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343778058
+      }
+    ],
+    "9.5 Write the `city-istanbul` geography (1950–1965)": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349218
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338737365
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339973676
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791345243033
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346612917
+      }
+    ],
+    "9.6 Write the `city-istanbul` institutions and voice, to the same targets as 9.2": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349260
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340378730
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343778975
+      }
+    ],
+    "9.7 Write the `city-lisbon` geography (1945–1965)": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349303
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338738315
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339974616
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791345244472
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346616170
+      }
+    ],
+    "9.8 Write the `city-lisbon` institutions and voice, to the same targets as 9.2": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349368
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340377783
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343780364
+      }
+    ],
+    "9.9 Write the `city-trieste` geography (1947–1954)": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349415
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791338739282
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791339975591
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791345245374
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346611969
+      }
+    ],
+    "9.10 Write the `city-trieste` institutions and voice, to the same targets as 9.2": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349467
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340379658
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343781074
+      }
+    ],
+    "10.1 Add the CI gates": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349510
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344564478
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346620459
+      }
+    ],
+    "10.2 Write the shipped-city generation tests": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349574
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344562727
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346621410
+      }
+    ],
+    "10.3 Record golden previews": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349647
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344563662
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346622257
+      }
+    ],
+    "11. Final checkpoint: expanded world": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791299349692
+      },
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346727087
+      }
+    ],
+    "1. Extend the content schemas": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791301052766
+      }
+    ],
+    "2. Extend the loader": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791306577274
+      }
+    ],
+    "7. Author the core and Era content": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791312374644
+      }
+    ],
+    "3. Add setting selection and authored city generation to the engine": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791336893748
+      }
+    ],
+    "5. Build the authoring tools (`content-tools`)": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791340295071
+      }
+    ],
+    "9. Author the City Packs": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791343781126
+      }
+    ],
+    "8. Author the Library Packs": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791344555706
+      }
+    ],
+    "10. Integrate the shipped content": [
+      {
+        "executionId": "e361d02b-9873-4549-9a71-c1149276d9fd",
+        "chatSessionId": "sess_0418d2c9-e297-4bd3-a2da-d08dd9288953",
+        "timestamp": 1791346622300
+      }
+    ]
+  }
+}

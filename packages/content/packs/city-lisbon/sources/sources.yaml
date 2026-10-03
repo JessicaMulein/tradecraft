@@ -1,0 +1,122 @@
+# sources.yaml — the bibliography for Lisbon's real landmarks (task 9.7).
+#
+# Each is a Source (packages/content/src/kinds/city.ts, SourceSchema): the
+# record a `real-landmark` (or `real-inspired`) Location cites so its historical
+# texture can be checked at review (Req 3.1, CE-SOURCE). `kind` is one of book,
+# map, guide, archive, newspaper, other.
+#
+# These attest the real quarters, squares, stations, quays, trams and funiculars
+# the Locations are drawn from — the Baixa grid, the Rossio and its station, the
+# Chiado, Alfama and Mouraria on the castle hill, the Cais do Sodré river front,
+# the Estrela hill, the Alcântara and Belém docks, the Tagus ferries, the ocean
+# berths and the Cabo Ruivo flying-boat base. The organisations and people who
+# appear in play are fictional; only the geography and public infrastructure
+# cited here is real.
+
+- id: src-baixa-grid
+  title: The Pombaline Reconstruction of the Baixa after 1755
+  kind: book
+  note: >-
+    The regular grid of the lower town — Rua Augusta, Rua do Ouro, Rua da Prata
+    — rebuilt to a uniform plan after the 1755 earthquake, and its banks and
+    shipping offices in the mid-twentieth century.
+
+- id: src-rossio
+  title: The Rossio and the Praça do Comércio — Lisbon's Public Squares
+  kind: guide
+  note: >-
+    The wave-pattern paving, the fountains and the arcaded cafés of the Rossio,
+    and the great riverside square at the foot of the Baixa.
+
+- id: src-rossio-station
+  title: Rossio Railway Station and the Lisbon–Sintra Line
+  kind: archive
+  year: 1950
+  note: >-
+    The horseshoe-arched Manueline façade and the booking hall of the terminus
+    at the head of the Rossio, and the suburban and night services it worked.
+
+- id: src-chiado
+  title: The Chiado — Cafés, Booksellers and the Lisbon Opera
+  kind: book
+  note: >-
+    The elegant upper quarter above the Baixa, its grand cafés, its print shops
+    and booksellers and the São Carlos opera, the literary heart of the city.
+
+- id: src-academia
+  title: Reading Rooms and Public Libraries of Lisbon
+  kind: guide
+  note: >-
+    The learned-society reading rooms and public libraries of the central
+    quarters and their holdings of almanacs, directories and the bound press.
+
+- id: src-funiculars
+  title: The Lisbon Funiculars and the Santa Justa Lift
+  kind: archive
+  note: >-
+    The hill funiculars (the Glória, the Bica, the Lavra) and the Santa Justa
+    street lift that climbed between the lower town and the upper quarters.
+
+- id: src-miradouros
+  title: The Belvederes of the Lisbon Hills
+  kind: guide
+  note: >-
+    The tiled belvedere terraces — Santa Luzia, the Graça, São Pedro de
+    Alcântara — laid out over the roofs with views across the river.
+
+- id: src-alfama
+  title: Alfama — the Old Quarter under the Castle
+  kind: book
+  note: >-
+    The medieval maze of stepped alleys, fountains and tiled housefronts
+    climbing the São Jorge castle hill, oldest quarter of the city.
+
+- id: src-mouraria
+  title: Mouraria and the Fado of the Lisbon Hills
+  kind: book
+  note: >-
+    The crowded quarter on the north flank of the castle hill, its tenements,
+    taverns and the fado sung in its lanes.
+
+- id: src-cais-sodre
+  title: Cais do Sodré — Station, Ferry and the Sailors' Quarter
+  kind: guide
+  note: >-
+    The riverside by the Cascais-line terminus and the Cacilhas ferry, with its
+    fish market, shipping offices and all-night sailors' bars.
+
+- id: src-estrela
+  title: The Estrela Quarter — Basilica, Garden and the Legations
+  kind: guide
+  note: >-
+    The quiet hill west of the centre, the Estrela basilica and its public
+    garden, and the walled villas and legations of the diplomatic quarter.
+
+- id: src-alcantara
+  title: The Alcântara Docks and the Cork and Wine Trades
+  kind: archive
+  note: >-
+    The working waterfront under the viaduct, its dock basin, bonded warehouses
+    and goods yards, and the cork and wine cargoes worked there.
+
+- id: src-port
+  title: The Port of Lisbon — Quays, Customs and Ocean Berths
+  kind: archive
+  year: 1952
+  note: >-
+    The Tagus port works, the customs quays and the ocean berths from which the
+    transatlantic liners carried emigrants to the Americas.
+
+- id: src-belem
+  title: Belém — the Monastery, the Tower and the River Mouth
+  kind: guide
+  note: >-
+    The open riverside district at the mouth of the Tagus, its monastery and
+    tower and the long quays and monuments along the water.
+
+- id: src-seaplanes
+  title: The Cabo Ruivo Flying-Boat Base and Transatlantic Air Travel
+  kind: archive
+  note: >-
+    The seaplane terminal on the Tagus where the wartime and early-postwar
+    transatlantic flying boats moored, before the land airport took the traffic.

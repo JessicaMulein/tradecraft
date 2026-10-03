@@ -1,0 +1,38 @@
+# descriptor-fragments/carried.yaml — the `carried` slot.
+#
+# Something the subject is holding or carrying — the last line of a descriptor,
+# a prop a watcher can follow through a crowd. Each fragment validates against
+# DescriptorFragmentSchema with `slot: carried`.
+#
+# GENDER. A crocodile handbag or a wicker market basket read `f`; a furled
+# umbrella and a leather document case suit either. A few gendered accessories
+# carry `gender`; the rest do not. Carried items were period-stable, so none
+# carries `years`. No `climate` Tag is attached (the vocabulary ships none —
+# see pack.yaml).
+#
+# A `text` that contains a comma is quoted so the YAML flow mapping does not
+# read the comma as a key separator.
+- { id: carr-string-shopping-bag, slot: carried, text: a string shopping bag }
+- { id: carr-furled-umbrella, slot: carried, text: a furled umbrella }
+- { id: carr-leather-document-case, slot: carried, text: a scuffed leather document case }
+- { id: carr-folded-newspaper, slot: carried, text: a folded newspaper under one arm }
+- { id: carr-wrapped-parcel-string, slot: carried, text: a brown-paper parcel tied with string }
+- { id: carr-canvas-tool-roll, slot: carried, text: a canvas tool roll }
+- { id: carr-enamel-billy-can, slot: carried, text: a battered enamel billy-can }
+- { id: carr-fibre-suitcase, slot: carried, text: a cheap fibre suitcase }
+- { id: carr-worn-briefcase, slot: carried, text: a worn briefcase buckled twice }
+- { id: carr-folders-under-arm, slot: carried, text: a bundle of folders under one arm }
+- { id: carr-walking-stick, slot: carried, text: a plain walking stick }
+- { id: carr-cigarette-case-gold, slot: carried, text: a slim gold cigarette case }
+- { id: carr-camera-worn-strap, slot: carried, text: a camera on a worn strap }
+- { id: carr-net-market-bag, slot: carried, text: a loaded net market bag }
+- { id: carr-oilcloth-bundle, slot: carried, text: a bundle wrapped in oilcloth }
+- { id: carr-violin-case, slot: carried, text: a battered violin case }
+- { id: carr-bunch-flowers, slot: carried, text: a wilting bunch of flowers }
+- { id: carr-pipe-tobacco-pouch, slot: carried, text: a pipe and a worn tobacco pouch }
+- { id: carr-folded-raincoat-arm, slot: carried, text: a folded mackintosh over one arm }
+- { id: carr-crocodile-handbag, slot: carried, gender: f, text: a crocodile handbag }
+- { id: carr-string-net-purse, slot: carried, gender: f, text: a small beaded purse }
+- { id: carr-market-basket, slot: carried, gender: f, text: a wicker market basket }
+- { id: carr-gloves-in-hand, slot: carried, text: "a pair of kid gloves held, not worn" }
+- { id: carr-rolled-umbrella-cane, slot: carried, gender: m, text: a tightly rolled umbrella carried like a cane }

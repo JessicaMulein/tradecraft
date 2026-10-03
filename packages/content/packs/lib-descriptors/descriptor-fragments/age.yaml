@@ -1,0 +1,25 @@
+# descriptor-fragments/age.yaml — the `age` slot.
+#
+# The apparent age band a watcher would guess: not a precise age, but the
+# impression. Age is gender- and period-neutral, so no fragment carries
+# `gender` or `years`. Each validates against DescriptorFragmentSchema with
+# `slot: age`.
+#
+# A `text` that contains a comma is quoted so the YAML flow mapping does not
+# read the comma as a key separator.
+- { id: age-barely-twenty, slot: age, text: barely out of their teens }
+- { id: age-early-twenties, slot: age, text: in their early twenties }
+- { id: age-late-twenties, slot: age, text: in their late twenties }
+- { id: age-young-adult, slot: age, text: "young, perhaps thirty" }
+- { id: age-mid-thirties, slot: age, text: somewhere in the mid-thirties }
+- { id: age-settled-forties, slot: age, text: settled into middle age }
+- { id: age-late-forties, slot: age, text: in their late forties }
+- { id: age-greying-fifties, slot: age, text: "greying, past fifty" }
+- { id: age-older-sixties, slot: age, text: "an older figure, well past sixty" }
+- { id: age-elderly, slot: age, text: "elderly, moving slowly" }
+- { id: age-young-but-worn, slot: age, text: "young, but prematurely worn" }
+- { id: age-hard-to-place, slot: age, text: of an age hard to place }
+- { id: age-ageless-weathered, slot: age, text: weathered and ageless }
+- { id: age-boyish, slot: age, text: "boyish-looking, whatever the years" }
+- { id: age-matronly, slot: age, text: of a matronly middle age }
+- { id: age-vigorous-older, slot: age, text: "older, but still vigorous" }

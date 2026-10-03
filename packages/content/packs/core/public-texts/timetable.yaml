@@ -1,0 +1,193 @@
+# public-texts/timetable.yaml — a period Vienna tram and rail timetable.
+#
+# A public text and a keyable corpus for the book cipher (Requirement 9.2). A
+# timetable is a classic book-cipher key: it is public, widely held, printed in
+# a fixed order, and dense with words, numbers, station names and line numbers.
+# The loader tolerates files under public-texts/, so the shape serves the
+# composers (task 5.6) rather than a schema; keep it clean, consistent YAML.
+#
+# Period and setting: tram and local rail in 1950s occupied Vienna. Line numbers
+# and the ring layout are period-plausible; every station and halt name here is
+# INVENTED, and any business or square named is fictional. Times are given in
+# the 24-hour clock as a public timetable of the day would print them.
+
+id: timetable-vienna-tram-rail
+kind: public-text
+title: City Tramway and Local Railway Timetable
+publisher: Municipal Transport Office
+genre: timetable
+notes:
+  - Services run daily unless marked. Sunday and holiday services are reduced.
+  - Passengers must show papers on request at any crossing between sectors.
+  - The first and last departures are printed for each line; intermediate cars
+    run at the stated interval.
+  - Fares are by zone. A transfer ticket is valid for one hour from the time of
+    issue and may not be used for a return journey.
+
+# --- Tram lines ------------------------------------------------------------
+# Each line lists its number, its named stops in order, and its service hours.
+tram_lines:
+  - line: 1
+    name: Inner Ring
+    direction: clockwise about the old town
+    first_departure: '05:12'
+    last_departure: '23:48'
+    interval_minutes: 6
+    stops:
+      - Cathedral Square
+      - Old Gate
+      - Linden Avenue
+      - Mint Court
+      - River Steps
+      - Lamplighters' Row
+      - Chancery Corner
+      - Cathedral Square
+  - line: 2
+    name: Outer Ring
+    direction: anti-clockwise about the old town
+    first_departure: '05:04'
+    last_departure: '23:40'
+    interval_minutes: 6
+    stops:
+      - North Gate Market
+      - Arsenal Walk
+      - Foundry Bridge
+      - Hospital Lane
+      - Botanic Gardens
+      - Observatory Hill
+      - West Barracks
+      - North Gate Market
+  - line: 5
+    name: River Line
+    direction: from the inner town to the port
+    first_departure: '04:50'
+    last_departure: '00:12'
+    interval_minutes: 8
+    stops:
+      - Cathedral Square
+      - Customs House
+      - Grain Quay
+      - Timber Wharf
+      - Ferry Steps
+      - Port Office
+      - Lower Harbour
+  - line: 9
+    name: Vineyard Line
+    direction: from the ring to the northern hills
+    first_departure: '05:30'
+    last_departure: '22:54'
+    interval_minutes: 12
+    stops:
+      - Chancery Corner
+      - University Gate
+      - Printers' Square
+      - Elm Terrace
+      - Vineyard Halt
+      - Hilltop Chapel
+      - Belvedere Turn
+  - line: 11
+    name: Factory Line
+    direction: from the ring to the eastern works
+    first_departure: '04:36'
+    last_departure: '23:06'
+    interval_minutes: 7
+    stops:
+      - Old Gate
+      - Canal Bridge
+      - Gasworks Halt
+      - Weavers' Yard
+      - Rolling Mill
+      - East Depot
+  - line: 18
+    name: Cemetery Line
+    direction: from the south gate to the great cemetery
+    first_departure: '05:18'
+    last_departure: '21:42'
+    interval_minutes: 15
+    stops:
+      - South Gate
+      - Rose Market
+      - Stonemasons' Row
+      - Chapel of Rest
+      - Great Cemetery
+
+# --- Local railway ---------------------------------------------------------
+# Named halts with scheduled times at the principal stations, as a public
+# timetable would set them out in columns.
+railway_lines:
+  - line: Eastern Local
+    terminus_from: Central Station
+    terminus_to: River Crossing
+    services:
+      - departs_central: '06:02'
+        arrives_crossing: '06:41'
+        calling_at:
+          - Central Station
+          - Market Halt
+          - Brickworks
+          - Willow Bank
+          - River Crossing
+      - departs_central: '07:14'
+        arrives_crossing: '07:53'
+        calling_at:
+          - Central Station
+          - Market Halt
+          - Brickworks
+          - Willow Bank
+          - River Crossing
+      - departs_central: '08:26'
+        arrives_crossing: '09:05'
+        calling_at:
+          - Central Station
+          - Market Halt
+          - Brickworks
+          - Willow Bank
+          - River Crossing
+  - line: Northern Local
+    terminus_from: Central Station
+    terminus_to: Pine Halt
+    services:
+      - departs_central: '06:20'
+        arrives_pine: '07:08'
+        calling_at:
+          - Central Station
+          - Foundry Bridge
+          - Orchard Lane
+          - Spring Valley
+          - Pine Halt
+      - departs_central: '07:40'
+        arrives_pine: '08:28'
+        calling_at:
+          - Central Station
+          - Foundry Bridge
+          - Orchard Lane
+          - Spring Valley
+          - Pine Halt
+  - line: Southern Local
+    terminus_from: South Gate
+    terminus_to: Lake View
+    services:
+      - departs_south: '06:08'
+        arrives_lake: '06:59'
+        calling_at:
+          - South Gate
+          - Rose Market
+          - Meadow Halt
+          - Birch Crossing
+          - Lake View
+      - departs_south: '07:30'
+        arrives_lake: '08:21'
+        calling_at:
+          - South Gate
+          - Rose Market
+          - Meadow Halt
+          - Birch Crossing
+          - Lake View
+
+# A closing public notice, as the printed timetable would carry.
+notice: >-
+  The transport office regrets that services may be delayed at crossings between
+  sectors when papers are inspected. Passengers are asked to allow extra time in
+  the early morning and the evening, to keep their tickets until the end of the
+  journey, and to give up their seats to the elderly and to mothers with young
+  children. The office thanks the public for its patience and good order.

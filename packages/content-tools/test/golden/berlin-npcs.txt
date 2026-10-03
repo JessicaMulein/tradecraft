@@ -1,0 +1,11 @@
+== NPCs (10) ==
+- lean and stooped, a pencil moustache, a knitted waistcoat under a tweed jacket  [apparent: neutral]
+- lean and stooped, clean-shaven, a black tailcoat and a long white apron  [apparent: neutral]
+- average height, forgettable, pale powder and a dark lipstick, a belted gabardine raincoat  [apparent: neutral]
+- lean and stooped, a clipped moustache, a black waistcoat over a pressed white shirt  [apparent: neutral]
+- round-shouldered and soft-spoken, a trace of rosewater scent, a trim uniform jacket and a knee-length skirt  [apparent: neutral]
+- round-shouldered and soft-spoken, no powder, blue overalls stiff with grime  [apparent: neutral]
+- slight and quick, a neat spade beard, a dark double-breasted suit gone shiny at the elbows, a soft grey felt hat  [apparent: neutral]
+- lean and stooped, pale powder and a dark lipstick, an usher's short braided jacket, white cotton gloves  [apparent: neutral]
+- round-shouldered and soft-spoken, a clipped moustache, a conductor's belted coat and leggings  [apparent: neutral]
+- heavyset and deliberate, a trace of rosewater scent, a work smock over a plain skirt  [apparent: neutral]

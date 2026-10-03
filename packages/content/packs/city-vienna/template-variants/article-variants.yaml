@@ -1,0 +1,244 @@
+# article-variants.yaml — Vienna variants of the city article base templates
+# (content-expansion task 9.2).
+#
+# Each entry is a TemplateVariant (TemplateVariantSchema): { id, base, scope,
+# template }. `base` is a city-vienna article Document template (see
+# documents/articles.yaml); the variant gives that article a second, closer
+# register in the city's own voice. Resolution is city-then-era-then-base, so a
+# city variant replaces its base article when rendered in Vienna (Req 8.2).
+#
+# SLOT-SET CONTRACT (Req 8.3): each variant's slot set equals its base's — every
+# slot the base article declares, named once here, no more and no less. The
+# comment above each variant lists the base's slots; a mismatch is a load error
+# (CE-VARIANT).
+#
+# These give the city thirty Template Variants in all (seven over the core
+# Document bases in core-variants.yaml, twenty-three here), the CE-QUANTITY
+# target for a City Pack. Period voice: offices by title, no real names, no
+# anachronisms.
+
+# base: article-reconstruction-report
+# slots: masthead, district, subject, detail, official-office
+- id: v-reconstruction-report
+  base: city-vienna/article-reconstruction-report
+  scope: { city: vienna }
+  template: >-
+    {masthead}. In the {district} the work of rebuilding continues: {subject} is
+    reported under way. {detail} The programme answers to the {official-office},
+    and the coal stock for the winter is watched closely.
+
+# base: article-ration-notice
+# slots: masthead, period-label, ration-item, ration-detail, official-office
+- id: v-ration-notice
+  base: city-vienna/article-ration-notice
+  scope: { city: vienna }
+  template: >-
+    {masthead}. The {official-office} announces the ration for {period-label}.
+    The allowance of {ration-item} stands as follows: {ration-detail} Cards are
+    presented in the holder's own Bezirk.
+
+# base: article-tram-service
+# slots: masthead, line, change-detail, effective-date, official-office
+- id: v-tram-service
+  base: city-vienna/article-tram-service
+  scope: { city: vienna }
+  template: >-
+    {masthead}. From {effective-date} the {line} runs to an altered service.
+    {change-detail} The change is published by the {official-office}; the last
+    cars run before the Sperrstunde.
+
+# base: article-weather-river
+# slots: masthead, weather-detail, river-detail
+- id: v-weather-river
+  base: city-vienna/article-weather-river
+  scope: { city: vienna }
+  template: >-
+    {masthead}. Over the Danube the outlook is this: {weather-detail} On the
+    water, {river-detail} The ferries keep their times, fog permitting.
+
+# base: article-sector-order
+# slots: masthead, official-office, order-subject, effective-date, district
+- id: v-sector-order
+  base: city-vienna/article-sector-order
+  scope: { city: vienna }
+  template: >-
+    {masthead}. By order of the {official-office}, from {effective-date}:
+    {order-subject}. The order applies within the {district} and at its sector
+    crossings, and is posted at the district office.
+
+# base: article-court-record
+# slots: masthead, offence, outcome, official-office
+- id: v-court-record
+  base: city-vienna/article-court-record
+  scope: { city: vienna }
+  template: >-
+    {masthead}. Before the district court a charge of {offence} was heard.
+    {outcome} The proceedings were reported by the {official-office}; the public
+    gallery is open on weekday mornings.
+
+# base: article-permit-notice
+# slots: masthead, permit-subject, permit-detail, official-office, district
+- id: v-permit-notice
+  base: city-vienna/article-permit-notice
+  scope: { city: vienna }
+  template: >-
+    {masthead}. The {official-office} gives notice on {permit-subject}.
+    {permit-detail} Residents of the {district} apply in person, with proof of
+    residence and two photographs.
+
+# base: article-lost-found
+# slots: masthead, found-item, place, official-office
+- id: v-lost-found
+  base: city-vienna/article-lost-found
+  scope: { city: vienna }
+  template: >-
+    {masthead}. Handed in and unclaimed: {found-item}, left at {place}, now held
+    by the {official-office}. Owners apply with proof of identity in office
+    hours.
+
+# base: article-market-prices
+# slots: masthead, market-name, price-detail, shortage-note
+- id: v-market-prices
+  base: city-vienna/article-market-prices
+  scope: { city: vienna }
+  template: >-
+    {masthead}. At the {market-name} the week's trade stood thus: {price-detail}
+    {?shortage-note}A word of warning: {shortage-note}{/shortage-note}
+    Controlled goods carry a fixed price off the stalls as on them.
+
+# base: article-black-market-warning
+# slots: masthead, goods, district, official-office
+- id: v-black-market-warning
+  base: city-vienna/article-black-market-warning
+  scope: { city: vienna }
+  template: >-
+    {masthead}. The {official-office} warns against the illicit trade in
+    {goods}, reported active in the {district}. Buyer and seller alike are
+    liable; the public is asked to refuse the goods and report the traffic.
+
+# base: article-business-notice
+# slots: masthead, firm, business-detail, district
+- id: v-business-notice
+  base: city-vienna/article-business-notice
+  scope: { city: vienna }
+  template: >-
+    {masthead}. {firm}, of the {district}, gives notice: {business-detail}
+    Notices are received at the counter until the Thursday before publication.
+
+# base: article-concert-notice
+# slots: masthead, event, venue, event-date, review-note
+- id: v-concert-notice
+  base: city-vienna/article-concert-notice
+  scope: { city: vienna }
+  template: >-
+    {masthead}. {event} is given at {venue} on {event-date}.
+    {?review-note}Our critic writes: {review-note}{/review-note} Tickets are had
+    at the box office from the morning.
+
+# base: article-cinema-programme
+# slots: masthead, cinema, programme-detail
+- id: v-cinema-programme
+  base: city-vienna/article-cinema-programme
+  scope: { city: vienna }
+  template: >-
+    {masthead}. This week at {cinema}: {programme-detail} The newsreel precedes
+    the main picture; the last performance ends before the Sperrstunde.
+
+# base: article-book-review
+# slots: masthead, book-title, review-detail
+- id: v-book-review
+  base: city-vienna/article-book-review
+  scope: { city: vienna }
+  template: >-
+    {masthead}. Of the week's new books, {book-title} draws notice.
+    {review-detail} The antiquarian trade of the inner districts reports steady
+    custom.
+
+# base: article-society-column
+# slots: masthead, item-one, item-two
+- id: v-society-column
+  base: city-vienna/article-society-column
+  scope: { city: vienna }
+  template: >-
+    {masthead}. About the city this week: {item-one} And in another quarter:
+    {item-two} The column reports what is seen and said in the public rooms.
+
+# base: article-appointments
+# slots: masthead, office, appointment-detail, official-office
+- id: v-appointments
+  base: city-vienna/article-appointments
+  scope: { city: vienna }
+  template: >-
+    {masthead}. The {official-office} announces concerning the {office}:
+    {appointment-detail} The office is named by its title; the holder takes up
+    duties at the published date.
+
+# base: article-situations
+# slots: masthead, situation-detail, district
+- id: v-situations
+  base: city-vienna/article-situations
+  scope: { city: vienna }
+  template: >-
+    {masthead}. Situations offered and sought in the {district}:
+    {situation-detail} Replies are left at the counter under the box number
+    given.
+
+# base: article-missing-persons
+# slots: masthead, inquiry-detail, official-office
+- id: v-missing-persons
+  base: city-vienna/article-missing-persons
+  scope: { city: vienna }
+  template: >-
+    {masthead}. Inquiries after missing and displaced persons, published by the
+    {official-office}: {inquiry-detail} Those with word of a named person are
+    asked to send it to the relief committee.
+
+# base: article-police-blotter
+# slots: masthead, offence, place, outcome, official-office
+- id: v-police-blotter
+  base: city-vienna/article-police-blotter
+  scope: { city: vienna }
+  template: >-
+    {masthead}. From the police record, released by the {official-office}: an
+    incident of {offence} near {place}. {outcome} The public is asked to carry
+    papers and to report unattended parcels to the nearest patrol.
+
+# base: article-curfew-notice
+# slots: masthead, hours-detail, district, official-office
+- id: v-curfew-notice
+  base: city-vienna/article-curfew-notice
+  scope: { city: vienna }
+  template: >-
+    {masthead}. The {official-office} sets the hours for the {district}:
+    {hours-detail} Premises shut at the Sperrstunde; those abroad after the hour
+    should expect to show papers.
+
+# base: article-public-health
+# slots: masthead, health-subject, health-detail, official-office
+- id: v-public-health
+  base: city-vienna/article-public-health
+  scope: { city: vienna }
+  template: >-
+    {masthead}. The {official-office} gives notice on {health-subject}:
+    {health-detail} The clinics of the institutional district keep their
+    published hours.
+
+# base: article-almanac-corner
+# slots: masthead, almanac-note, saints-day
+- id: v-almanac-corner
+  base: city-vienna/article-almanac-corner
+  scope: { city: vienna }
+  template: >-
+    {masthead}. From the almanac for the week: {almanac-note}
+    {?saints-day}The day is kept as {saints-day}.{/saints-day} The corner marks
+    the fairs and the market days, as the old household almanacs did.
+
+# base: article-correspondence
+# slots: masthead, letter-subject, letter-detail
+- id: v-correspondence
+  base: city-vienna/article-correspondence
+  scope: { city: vienna }
+  template: >-
+    {masthead}. On the question of {letter-subject}, a reader writes:
+    {letter-detail} Letters are printed at the editor's discretion and shortened
+    as needed.

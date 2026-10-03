@@ -1,0 +1,20 @@
+# lint.yaml — the city-lisbon Pack Linter Suppressions file (content-expansion
+# task 9.8).
+#
+# Validates against the Suppressions schema (packages/content-tools/src/lint/
+# suppressions.ts): a list of `{ rule, path, justification }` entries. A
+# Suppression for a SUPPRESSIBLE rule, with a non-empty justification and a path
+# matching a located finding, downgrades that finding to informational and is
+# listed in the report (Req 13.5). A Suppression naming a NON-suppressible rule
+# (CE-SCHEMA, CE-REF, CE-DUPID, CE-SLOT, CE-TAG, CE-CONFORM, CE-REALPERSON,
+# CE-SENSITIVE, CE-PROVENANCE, CE-VARIANT, CE-QUANTITY, …) is rejected with a
+# CE-SCHEMA error (Req 13.6).
+#
+# The city-lisbon pack lints clean under the `release` profile — the Pack Linter
+# reports ZERO findings against it — so this pack needs NO suppressions. The
+# file is shipped empty on purpose: it documents that nothing here is silenced
+# (every finding, should one ever appear, is to be fixed, not suppressed), and
+# gives a reviewer a home for a future, justified suppression should a
+# suppressible rule ever fire on reviewed, correct content. Add an entry only
+# for a suppressible rule and only with a genuine justification.
+[]

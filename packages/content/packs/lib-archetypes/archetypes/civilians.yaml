@@ -1,0 +1,1327 @@
+# archetypes/civilians.yaml — the shared civilian roster (content-expansion
+# task 8.3; Req 6.2, 11.5).
+#
+# At least 40 civilian archetypes drawn from the background life of an early-
+# Cold-War European city: the trades, services and street people a generated
+# city is populated with. Each is the template the World Generator stamps a
+# Background NPC from (slice Req 29.1). Every character produced is fictional;
+# no archetype represents a real historical individual.
+#
+# Each entry validates against ArchetypeSchema (packages/content/src/lib/
+# kinds.ts): `role: civilian`, `allowedAllegiances: [neutral, unknown]` (a
+# civilian reads as neutral, or unknown until the player establishes it), a
+# `tags` list of at least one vocabulary Tag (every civilian carries
+# `role:civilian`), MICE ranges, `wariness`, `personaPools`, `descriptorPools`,
+# a Tag Query `schedule` and a `fallback` Tag Query.
+#
+# Schedules bind through the core `function:*` Tag Vocabulary (design, "Library
+# content"): each slot's `at` resolves to the Instantiated City's Binders of
+# that query, and `fallback` is used when a city binds none of a slot's `at`.
+#
+# personaPools/descriptorPools name the slice `core` pack's pools with explicit
+# `core/...` namespacing (this pack ships none of its own). Persona pools:
+# core/austrian, core/soviet, core/american, core/british, core/french,
+# core/central-european. Descriptor pools: core/street-clothes,
+# core/worker-clothes, core/waiter-dress, core/uniform-work-dress,
+# core/office-dress, core/bourgeois-dress, core/smart-womens-dress,
+# core/correspondent-dress, core/shabby-dress, core/occupation-dress,
+# core/officer-bearing, core/professional-dress, core/service-uniform,
+# core/winter-coat.
+
+# =========================================================================
+# Transport and the street
+# =========================================================================
+
+- id: lib-dockworker
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.1, max: 0.5 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:port] }
+    - { weekday: wednesday, phase: midday, at: [function:warehouse] }
+    - { weekday: friday, phase: afternoon, at: [function:port] }
+    - { weekday: saturday, phase: evening, at: [function:cafe] }
+  fallback: [function:port]
+  knowledgeHooks:
+    - cargo-manifests
+    - quayside-arrivals
+
+- id: lib-stevedore-foreman
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.8 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes, core/professional-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:port] }
+    - { weekday: thursday, phase: afternoon, at: [function:warehouse] }
+    - { weekday: saturday, phase: midday, at: [function:port] }
+  fallback: [function:port]
+  knowledgeHooks:
+    - loading-rosters
+    - which-crews-work-nights
+
+- id: lib-tram-conductor
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/uniform-work-dress]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:transit] }
+    - { weekday: tuesday, phase: midday, at: [function:transit-hub] }
+    - { weekday: thursday, phase: evening, at: [function:transit] }
+  fallback: [function:transit]
+  knowledgeHooks:
+    - passenger-sightings
+    - route-timings
+
+- id: lib-tram-driver
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/uniform-work-dress]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:transit] }
+    - { weekday: wednesday, phase: afternoon, at: [function:transit-hub] }
+    - { weekday: friday, phase: evening, at: [function:transit] }
+  fallback: [function:transit]
+  knowledgeHooks:
+    - who-boards-where
+    - late-service-faces
+
+- id: lib-taxi-driver
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/street-clothes]
+  schedule:
+    - { weekday: tuesday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: thursday, phase: night, at: [function:transit-hub] }
+    - { weekday: saturday, phase: late-night, at: [function:cafe] }
+  fallback: [function:transit-hub]
+  knowledgeHooks:
+    - late-night-fares
+    - where-the-well-off-go
+
+- id: lib-railway-porter
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/uniform-work-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:transit-hub] }
+    - { weekday: wednesday, phase: midday, at: [function:transit] }
+    - { weekday: friday, phase: evening, at: [function:transit-hub] }
+  fallback: [function:transit-hub]
+  knowledgeHooks:
+    - who-travels-with-trunks
+    - departure-boards
+
+- id: lib-street-sweeper
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.0, max: 0.2 }
+  wariness: { min: 0.2, max: 0.4 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/worker-clothes, core/shabby-dress]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:park] }
+    - { weekday: wednesday, phase: early-morning, at: [function:kiosk] }
+    - { weekday: saturday, phase: morning, at: [function:transit] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - who-is-out-before-dawn
+    - what-is-left-on-benches
+
+- id: lib-newspaper-boy
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.1, max: 0.4 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/shabby-dress, core/street-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:newspaper-outlet] }
+    - { weekday: wednesday, phase: morning, at: [function:transit-hub] }
+    - { weekday: friday, phase: midday, at: [function:kiosk] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - which-corner-sells-fastest
+    - headline-chatter
+
+# =========================================================================
+# Cafés, bars, hotels and kitchens
+# =========================================================================
+
+- id: lib-cafe-waiter
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/waiter-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:cafe] }
+    - { weekday: wednesday, phase: afternoon, at: [function:cafe] }
+    - { weekday: friday, phase: evening, at: [function:cafe] }
+    - { weekday: sunday, phase: midday, at: [function:cafe] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - regular-patrons
+    - overheard-talk
+
+- id: lib-head-waiter
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/waiter-dress, core/professional-dress]
+  schedule:
+    - { weekday: tuesday, phase: midday, at: [function:cafe] }
+    - { weekday: thursday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: saturday, phase: evening, at: [function:cafe] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - who-reserves-the-corner-table
+    - which-guests-tip-for-silence
+
+- id: lib-barman
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/waiter-dress, core/professional-dress]
+  schedule:
+    - { weekday: wednesday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: friday, phase: night, at: [function:hotel-bar] }
+    - { weekday: saturday, phase: late-night, at: [function:hotel-bar] }
+  fallback: [function:hotel-bar]
+  knowledgeHooks:
+    - who-drinks-alone
+    - late-bar-conversations
+
+- id: lib-hotel-concierge
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/professional-dress, core/uniform-work-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:hotel-bar] }
+    - { weekday: wednesday, phase: afternoon, at: [function:hotel-bar] }
+    - { weekday: friday, phase: evening, at: [function:hotel-bar] }
+  fallback: [function:hotel-bar]
+  knowledgeHooks:
+    - guest-register
+    - who-asks-for-discretion
+
+- id: lib-hotel-chambermaid
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/uniform-work-dress, core/smart-womens-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:hotel-bar] }
+    - { weekday: tuesday, phase: midday, at: [function:hotel-bar] }
+    - { weekday: thursday, phase: afternoon, at: [function:hotel-bar] }
+  fallback: [function:hotel-bar]
+  knowledgeHooks:
+    - what-is-left-in-rooms
+    - who-does-not-sleep-in-their-bed
+
+- id: lib-night-porter
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/uniform-work-dress]
+  schedule:
+    - { weekday: monday, phase: night, at: [function:hotel-bar] }
+    - { weekday: wednesday, phase: late-night, at: [function:hotel-bar] }
+    - { weekday: friday, phase: dead-of-night, at: [function:hotel-bar] }
+  fallback: [function:hotel-bar]
+  knowledgeHooks:
+    - late-arrivals
+    - who-checks-out-before-dawn
+
+- id: lib-cook
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes, core/waiter-dress]
+  schedule:
+    - { weekday: tuesday, phase: midday, at: [function:cafe] }
+    - { weekday: thursday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: saturday, phase: afternoon, at: [function:cafe] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - kitchen-deliveries
+    - supplier-gossip
+
+# =========================================================================
+# Shops, stalls and trades
+# =========================================================================
+
+- id: lib-kiosk-vendor
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:kiosk] }
+    - { weekday: wednesday, phase: morning, at: [function:newspaper-outlet] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - newspaper-headlines
+    - street-gossip
+
+- id: lib-tobacconist
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/professional-dress, core/street-clothes]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:kiosk] }
+    - { weekday: thursday, phase: afternoon, at: [function:kiosk] }
+    - { weekday: saturday, phase: morning, at: [function:newspaper-outlet] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - regular-customers
+    - who-buys-foreign-brands
+
+- id: lib-flower-seller
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/street-clothes, core/shabby-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:park] }
+    - { weekday: thursday, phase: midday, at: [function:transit] }
+    - { weekday: sunday, phase: afternoon, at: [function:park] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - street-corner-sightings
+    - regular-buyers
+
+- id: lib-greengrocer
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:kiosk] }
+    - { weekday: wednesday, phase: morning, at: [function:kiosk] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - market-prices
+    - who-pays-in-foreign-coin
+
+- id: lib-butcher
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:kiosk] }
+    - { weekday: thursday, phase: morning, at: [function:kiosk] }
+    - { weekday: friday, phase: afternoon, at: [function:warehouse] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - meat-rationing
+    - back-door-supply
+
+- id: lib-tailor
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/professional-dress, core/bourgeois-dress]
+  schedule:
+    - { weekday: monday, phase: midday, at: [function:bookshop] }
+    - { weekday: wednesday, phase: afternoon, at: [function:cafe] }
+    - { weekday: saturday, phase: morning, at: [function:kiosk] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - who-orders-a-second-suit
+    - measurements-and-marks
+
+- id: lib-watchmaker
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/professional-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:bookshop] }
+    - { weekday: thursday, phase: midday, at: [function:cafe] }
+    - { weekday: friday, phase: afternoon, at: [function:kiosk] }
+  fallback: [function:bookshop]
+  knowledgeHooks:
+    - repair-tickets
+    - who-pawns-and-redeems
+
+- id: lib-pawnbroker
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.6, max: 1.0 }
+    ideology: { min: 0.0, max: 0.2 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.5, max: 0.8 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/professional-dress, core/shabby-dress]
+  schedule:
+    - { weekday: monday, phase: afternoon, at: [function:kiosk] }
+    - { weekday: wednesday, phase: evening, at: [function:cafe] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - who-is-short-of-money
+    - what-comes-in-the-back-door
+
+- id: lib-black-market-trader
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.6, max: 1.0 }
+    ideology: { min: 0.0, max: 0.2 }
+    coercion: { min: 0.3, max: 0.7 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.5, max: 0.8 }
+  personaPools: [core/austrian, core/soviet]
+  descriptorPools: [core/street-clothes, core/shabby-dress]
+  schedule:
+    - { weekday: tuesday, phase: night, at: [function:warehouse] }
+    - { weekday: thursday, phase: late-night, at: [function:port] }
+    - { weekday: saturday, phase: evening, at: [function:kiosk] }
+  fallback: [function:warehouse]
+  knowledgeHooks:
+    - black-market-goods
+    - smuggling-routes
+
+- id: lib-currency-tout
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.7, max: 1.0 }
+    ideology: { min: 0.0, max: 0.2 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.5, max: 0.8 }
+  personaPools: [core/central-european, core/soviet]
+  descriptorPools: [core/street-clothes, core/shabby-dress]
+  schedule:
+    - { weekday: monday, phase: midday, at: [function:transit-hub] }
+    - { weekday: thursday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: saturday, phase: afternoon, at: [function:kiosk] }
+  fallback: [function:transit-hub]
+  knowledgeHooks:
+    - the-day-rate
+    - who-changes-dollars
+
+# =========================================================================
+# Books, print and the press
+# =========================================================================
+
+- id: lib-emigre-bookseller
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.8 }
+    ideology: { min: 0.3, max: 0.7 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/soviet, core/central-european]
+  descriptorPools: [core/bourgeois-dress, core/shabby-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:bookshop] }
+    - { weekday: thursday, phase: afternoon, at: [function:bookshop] }
+    - { weekday: saturday, phase: midday, at: [function:cafe] }
+  fallback: [function:bookshop]
+  knowledgeHooks:
+    - emigre-circles
+    - who-reads-which-journals
+
+- id: lib-antiquarian
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.2, max: 0.6 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/bourgeois-dress, core/professional-dress]
+  schedule:
+    - { weekday: monday, phase: afternoon, at: [function:bookshop] }
+    - { weekday: wednesday, phase: midday, at: [function:library] }
+    - { weekday: friday, phase: afternoon, at: [function:bookshop] }
+  fallback: [function:bookshop]
+  knowledgeHooks:
+    - rare-editions
+    - which-almanacs-are-sought
+
+- id: lib-librarian
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.2, max: 0.5 }
+    ideology: { min: 0.2, max: 0.6 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/bourgeois-dress, core/office-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:library] }
+    - { weekday: thursday, phase: afternoon, at: [function:library] }
+    - { weekday: saturday, phase: midday, at: [function:bookshop] }
+  fallback: [function:library]
+  knowledgeHooks:
+    - reading-room-regulars
+    - archive-requests
+
+- id: lib-newspaper-vendor
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:newspaper-outlet] }
+    - { weekday: wednesday, phase: morning, at: [function:newspaper-outlet] }
+    - { weekday: friday, phase: afternoon, at: [function:kiosk] }
+  fallback: [function:newspaper-outlet]
+  knowledgeHooks:
+    - which-editions-sell-out
+    - who-asks-for-foreign-papers
+
+- id: lib-wire-service-stringer
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.4, max: 0.8 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.4, max: 0.8 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/american, core/british]
+  descriptorPools: [core/correspondent-dress]
+  schedule:
+    - { weekday: monday, phase: afternoon, at: [function:hotel-bar] }
+    - { weekday: wednesday, phase: evening, at: [function:cafe] }
+    - { weekday: friday, phase: midday, at: [function:newspaper-outlet] }
+  fallback: [function:hotel-bar]
+  knowledgeHooks:
+    - press-rumours
+    - which-dispatches-are-held
+
+- id: lib-photographer
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.2, max: 0.6 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian, core/american]
+  descriptorPools: [core/correspondent-dress, core/street-clothes]
+  schedule:
+    - { weekday: tuesday, phase: afternoon, at: [function:park] }
+    - { weekday: thursday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: saturday, phase: midday, at: [function:transit-hub] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - who-does-not-want-a-picture-taken
+    - events-on-the-street
+
+# =========================================================================
+# Offices, clerks and officials
+# =========================================================================
+
+- id: lib-ministry-clerk
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.2, max: 0.6 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/office-dress, core/professional-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:embassy] }
+    - { weekday: wednesday, phase: midday, at: [function:cafe] }
+    - { weekday: friday, phase: afternoon, at: [function:embassy] }
+  fallback: [function:embassy]
+  knowledgeHooks:
+    - permit-queues
+    - which-files-cross-the-desk
+
+- id: lib-registry-official
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.2, max: 0.5 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/office-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:embassy] }
+    - { weekday: tuesday, phase: midday, at: [function:library] }
+    - { weekday: thursday, phase: afternoon, at: [function:embassy] }
+  fallback: [function:embassy]
+  knowledgeHooks:
+    - registration-records
+    - residence-permits
+
+- id: lib-customs-officer
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/uniform-work-dress, core/office-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:port] }
+    - { weekday: wednesday, phase: afternoon, at: [function:transit-hub] }
+    - { weekday: friday, phase: midday, at: [function:warehouse] }
+  fallback: [function:port]
+  knowledgeHooks:
+    - declared-cargo
+    - who-passes-without-inspection
+
+- id: lib-postal-clerk
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/office-dress, core/uniform-work-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:transit] }
+    - { weekday: wednesday, phase: midday, at: [function:kiosk] }
+    - { weekday: friday, phase: afternoon, at: [function:transit] }
+  fallback: [function:transit]
+  knowledgeHooks:
+    - poste-restante-collections
+    - who-sends-abroad
+
+- id: lib-telephone-operator
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/office-dress, core/smart-womens-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:embassy] }
+    - { weekday: wednesday, phase: afternoon, at: [function:station] }
+    - { weekday: friday, phase: evening, at: [function:cafe] }
+  fallback: [function:embassy]
+  knowledgeHooks:
+    - trunk-call-bookings
+    - who-calls-which-numbers
+
+- id: lib-bank-teller
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/office-dress, core/professional-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:embassy] }
+    - { weekday: wednesday, phase: midday, at: [function:cafe] }
+    - { weekday: thursday, phase: afternoon, at: [function:embassy] }
+  fallback: [function:embassy]
+  knowledgeHooks:
+    - large-withdrawals
+    - foreign-accounts
+
+# =========================================================================
+# Medicine, faith, learning and the arts
+# =========================================================================
+
+- id: lib-pharmacist
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.2, max: 0.5 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/professional-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:kiosk] }
+    - { weekday: wednesday, phase: afternoon, at: [function:cafe] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - who-fills-which-prescriptions
+    - night-dispensary-callers
+
+- id: lib-doctor
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.3, max: 0.6 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.4, max: 0.7 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/bourgeois-dress, core/professional-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:cafe] }
+    - { weekday: thursday, phase: afternoon, at: [function:library] }
+    - { weekday: saturday, phase: midday, at: [function:cafe] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - house-calls
+    - who-asks-no-questions
+
+- id: lib-nurse
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.2, max: 0.5 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/uniform-work-dress, core/smart-womens-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:transit] }
+    - { weekday: wednesday, phase: evening, at: [function:cafe] }
+    - { weekday: friday, phase: night, at: [function:transit-hub] }
+  fallback: [function:transit]
+  knowledgeHooks:
+    - ward-admissions
+    - who-is-brought-in-after-dark
+
+- id: lib-priest
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.1, max: 0.4 }
+    ideology: { min: 0.4, max: 0.8 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/professional-dress]
+  schedule:
+    - { weekday: sunday, phase: morning, at: [function:park] }
+    - { weekday: wednesday, phase: evening, at: [function:library] }
+    - { weekday: friday, phase: afternoon, at: [function:cafe] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - confession-whispers
+    - parish-charities
+
+- id: lib-schoolteacher
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.3, max: 0.7 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/professional-dress, core/bourgeois-dress]
+  schedule:
+    - { weekday: monday, phase: afternoon, at: [function:library] }
+    - { weekday: wednesday, phase: evening, at: [function:cafe] }
+    - { weekday: saturday, phase: morning, at: [function:park] }
+  fallback: [function:library]
+  knowledgeHooks:
+    - which-families-moved-away
+    - staffroom-politics
+
+- id: lib-university-student
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.4, max: 0.9 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/shabby-dress, core/street-clothes]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:library] }
+    - { weekday: thursday, phase: afternoon, at: [function:cafe] }
+    - { weekday: friday, phase: evening, at: [function:cafe] }
+  fallback: [function:library]
+  knowledgeHooks:
+    - student-politics
+    - who-attends-which-meetings
+
+- id: lib-music-student
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.3, max: 0.7 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/shabby-dress, core/bourgeois-dress]
+  schedule:
+    - { weekday: monday, phase: afternoon, at: [function:cinema] }
+    - { weekday: wednesday, phase: evening, at: [function:cafe] }
+    - { weekday: sunday, phase: midday, at: [function:park] }
+  fallback: [function:cinema]
+  knowledgeHooks:
+    - concert-circles
+    - who-plays-in-which-cafes
+
+- id: lib-cinema-usher
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.3, max: 0.6 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/uniform-work-dress]
+  schedule:
+    - { weekday: wednesday, phase: evening, at: [function:cinema] }
+    - { weekday: friday, phase: night, at: [function:cinema] }
+    - { weekday: sunday, phase: afternoon, at: [function:cinema] }
+  fallback: [function:cinema]
+  knowledgeHooks:
+    - matinee-regulars
+    - back-row-meetings
+
+- id: lib-cabaret-singer
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.4, max: 0.8 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/smart-womens-dress, core/bourgeois-dress]
+  schedule:
+    - { weekday: thursday, phase: night, at: [function:hotel-bar] }
+    - { weekday: friday, phase: late-night, at: [function:hotel-bar] }
+    - { weekday: saturday, phase: late-night, at: [function:cafe] }
+  fallback: [function:hotel-bar]
+  knowledgeHooks:
+    - who-sits-at-the-front-table
+    - late-club-talk
+
+# =========================================================================
+# Displaced, émigré and marginal
+# =========================================================================
+
+- id: lib-refugee-clerk
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.8 }
+    ideology: { min: 0.2, max: 0.6 }
+    coercion: { min: 0.3, max: 0.7 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/soviet, core/central-european]
+  descriptorPools: [core/office-dress, core/shabby-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:transit] }
+    - { weekday: wednesday, phase: midday, at: [function:library] }
+    - { weekday: friday, phase: afternoon, at: [function:embassy] }
+  fallback: [function:transit]
+  knowledgeHooks:
+    - registration-records
+    - displaced-persons
+
+- id: lib-emigre-landlady
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/soviet, core/central-european]
+  descriptorPools: [core/bourgeois-dress, core/shabby-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:kiosk] }
+    - { weekday: thursday, phase: afternoon, at: [function:cafe] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - who-lodges-where
+    - who-cannot-pay-the-rent
+
+- id: lib-emigre-chess-player
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.3, max: 0.7 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/soviet, core/central-european]
+  descriptorPools: [core/shabby-dress, core/bourgeois-dress]
+  schedule:
+    - { weekday: monday, phase: afternoon, at: [function:cafe] }
+    - { weekday: wednesday, phase: afternoon, at: [function:cafe] }
+    - { weekday: sunday, phase: midday, at: [function:park] }
+  fallback: [function:cafe]
+  knowledgeHooks:
+    - emigre-circles
+    - old-country-news
+
+- id: lib-fortune-teller
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.6, max: 1.0 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.3, max: 0.6 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/central-european, core/soviet]
+  descriptorPools: [core/shabby-dress, core/street-clothes]
+  schedule:
+    - { weekday: tuesday, phase: evening, at: [function:kiosk] }
+    - { weekday: friday, phase: night, at: [function:cafe] }
+    - { weekday: sunday, phase: afternoon, at: [function:park] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - who-comes-with-worries
+    - whispered-confidences
+
+- id: lib-beggar
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.7, max: 1.0 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.3, max: 0.7 }
+    ego: { min: 0.0, max: 0.2 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/shabby-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:transit-hub] }
+    - { weekday: wednesday, phase: midday, at: [function:park] }
+    - { weekday: saturday, phase: afternoon, at: [function:newspaper-outlet] }
+  fallback: [function:transit-hub]
+  knowledgeHooks:
+    - who-passes-this-corner
+    - who-stops-and-who-hurries
+
+- id: lib-street-musician
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.6, max: 0.9 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/central-european, core/austrian]
+  descriptorPools: [core/shabby-dress, core/street-clothes]
+  schedule:
+    - { weekday: tuesday, phase: afternoon, at: [function:park] }
+    - { weekday: thursday, phase: evening, at: [function:transit-hub] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - who-lingers-to-listen
+    - which-crowds-gather-where
+
+# =========================================================================
+# Caretaking, repair and the quiet watchers of a building
+# =========================================================================
+
+- id: lib-building-caretaker
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:safehouse] }
+    - { weekday: wednesday, phase: evening, at: [function:cafe] }
+    - { weekday: friday, phase: morning, at: [function:kiosk] }
+  fallback: [function:safehouse]
+  knowledgeHooks:
+    - who-comes-and-goes
+    - which-flats-stand-empty
+
+- id: lib-locksmith
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.2, max: 0.5 }
+  wariness: { min: 0.4, max: 0.7 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes, core/professional-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:kiosk] }
+    - { weekday: thursday, phase: afternoon, at: [function:warehouse] }
+    - { weekday: saturday, phase: midday, at: [function:kiosk] }
+  fallback: [function:kiosk]
+  knowledgeHooks:
+    - who-needs-a-second-key
+    - which-doors-were-forced
+
+- id: lib-electrician
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:warehouse] }
+    - { weekday: wednesday, phase: afternoon, at: [function:safehouse] }
+    - { weekday: friday, phase: midday, at: [function:embassy] }
+  fallback: [function:warehouse]
+  knowledgeHooks:
+    - which-lines-were-tapped
+    - after-hours-repairs
+
+- id: lib-chimney-sweep
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: tuesday, phase: early-morning, at: [function:safehouse] }
+    - { weekday: thursday, phase: morning, at: [function:kiosk] }
+    - { weekday: saturday, phase: midday, at: [function:cafe] }
+  fallback: [function:safehouse]
+  knowledgeHooks:
+    - rooftop-vantage
+    - which-chimneys-smoke-at-odd-hours
+
+- id: lib-gravedigger
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes, core/shabby-dress]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:park] }
+    - { weekday: wednesday, phase: afternoon, at: [function:park] }
+    - { weekday: friday, phase: midday, at: [function:cafe] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - whose-funeral-draws-a-crowd
+    - unmarked-burials
+
+# =========================================================================
+# River, water and the open air
+# =========================================================================
+
+- id: lib-ferryman
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.8 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.2, max: 0.5 }
+    ego: { min: 0.1, max: 0.4 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/austrian, core/central-european]
+  descriptorPools: [core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: early-morning, at: [function:port] }
+    - { weekday: wednesday, phase: midday, at: [function:transit-hub] }
+    - { weekday: friday, phase: afternoon, at: [function:port] }
+  fallback: [function:port]
+  knowledgeHooks:
+    - who-crosses-at-dawn
+    - cross-water-passengers
+
+- id: lib-barge-hand
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.5, max: 0.9 }
+    ideology: { min: 0.1, max: 0.4 }
+    coercion: { min: 0.3, max: 0.6 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.3, max: 0.6 }
+  personaPools: [core/central-european, core/austrian]
+  descriptorPools: [core/worker-clothes, core/shabby-dress]
+  schedule:
+    - { weekday: tuesday, phase: morning, at: [function:port] }
+    - { weekday: thursday, phase: evening, at: [function:warehouse] }
+    - { weekday: saturday, phase: night, at: [function:cafe] }
+  fallback: [function:port]
+  knowledgeHooks:
+    - upriver-cargo
+    - what-moves-by-night-barge
+
+- id: lib-park-attendant
+  role: civilian
+  allowedAllegiances: [neutral, unknown]
+  tags: [role:civilian]
+  mice:
+    money: { min: 0.4, max: 0.7 }
+    ideology: { min: 0.0, max: 0.3 }
+    coercion: { min: 0.1, max: 0.4 }
+    ego: { min: 0.0, max: 0.3 }
+  wariness: { min: 0.2, max: 0.5 }
+  personaPools: [core/austrian]
+  descriptorPools: [core/uniform-work-dress, core/worker-clothes]
+  schedule:
+    - { weekday: monday, phase: morning, at: [function:park] }
+    - { weekday: wednesday, phase: afternoon, at: [function:park] }
+    - { weekday: sunday, phase: midday, at: [function:park] }
+  fallback: [function:park]
+  knowledgeHooks:
+    - who-meets-on-the-benches
+    - regulars-of-the-paths

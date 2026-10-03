@@ -1,0 +1,214 @@
+# streets.yaml — the street-name and name-entity pools of Trieste
+# (content-expansion task 9.9).
+#
+# Each pool is a StreetsPool (`{ id, names }`). The generator draws addresses
+# from the street pools, and Location Type `namePatterns` draw entity names via
+# `{pick:<pool>}`. The street names are real streets, squares and quays of
+# Trieste and its hinterland (period texture, cited collectively in
+# sources.yaml); the entity names (cafés, hotels, firms) are fictional.
+#
+# The street pools below carry well over sixty distinct Triestine street names
+# across the quarters (Req: ≥60 streets).
+
+# --- Street-name pools (the ≥60 streets) -----------------------------------
+
+# Borgo Teresiano — the Teresian grid and the canal.
+- id: borgo
+  names:
+    - Corso Italia
+    - Via Carducci
+    - Via Mazzini
+    - Via Dante Alighieri
+    - Via San Nicolò
+    - Via Roma
+    - Via Genova
+    - Via Trenta Ottobre
+    - Via Cassa di Risparmio
+    - Via del Teatro
+    - Via delle Torri
+    - Via San Spiridione
+    - Riva Tre Novembre
+    - Via Filzi
+    - Via Ghega
+    - Via Milano
+
+# Città Vecchia — the old town on the hill of San Giusto.
+- id: oldtown
+  names:
+    - Via della Cattedrale
+    - Via del Castello
+    - Androna di San Giusto
+    - Via del Teatro Romano
+    - Via dei Capitelli
+    - Via San Michele
+    - Via Felice Venezian
+    - Via della Pescheria
+    - Androna degli Orti
+    - Via Donota
+    - Via Riborgo
+    - Via Crosada
+    - Scala dei Giganti
+    - Via Madonna del Mare
+
+# Piazza dell'Unità and the civic front.
+- id: civic
+  names:
+    - Piazza dell'Unità
+    - Piazza della Borsa
+    - Molo Audace
+    - Riva del Mandracchio
+    - Via dell'Orologio
+    - Piazza Grande
+    - Androna del Pane
+    - Via del Municipio
+
+# San Vito, Campi Elisi and the seafront.
+- id: residential
+  names:
+    - Viale XX Settembre
+    - Via San Vito
+    - Via Giulia
+    - Via dell'Istria
+    - Viale Campi Elisi
+    - Via Rossetti
+    - Via Revoltella
+    - Via Commerciale
+    - Via Cologna
+    - Via del Boschetto
+    - Riva Grumula
+    - Via dell'Università
+    - Via Fabio Severo
+    - Via Donizetti
+
+# Porto Vecchio and the free-port.
+- id: waterfront
+  names:
+    - Riva Nazario Sauro
+    - Punto Franco Vecchio
+    - Via del Porto
+    - Molo Quarto
+    - Molo Quinto
+    - Riva del Pedocin
+    - Via dei Magazzini Generali
+    - Via dell'Arsenale
+
+# Opicina, the Karst and the hinterland.
+- id: carso
+  names:
+    - Strada per Opicina
+    - Obelisco di Opicina
+    - Via Nazionale
+    - Strada del Friuli
+    - Villaggio del Pescatore
+    - Strada per Prosecco
+    - Via dei Campi
+    - Strada del Carso
+
+# --- Entity-name pools for Location Type namePatterns ----------------------
+# Fictional names drawn by `{pick:<pool>}`. None names a real business.
+
+- id: cafe-names
+  names:
+    - Caffè Tergesteo
+    - Caffè del Molo
+    - Caffè degli Specchi Nuovi
+    - Caffè San Marco di Riva
+    - Caffè Adria
+    - Caffè Obelisco
+    - Caffè del Canale
+    - Caffè San Vito
+
+- id: hotel-names
+  names:
+    - Hotel della Piazza
+    - Albergo Adriatico
+    - Hotel Vittoria
+    - Albergo del Porto
+    - Hotel Miramare al Corso
+    - Pensione Trieste
+
+- id: bar-names
+  names:
+    - the American Bar
+    - the Marina Bar
+    - the Lloyd Bar
+    - the Bar Adriatico
+
+- id: bookshop-names
+  names:
+    - Libreria Antiquaria del Ponterosso
+    - Libreria del Teatro Romano
+    - Antiquariato Adriatico
+    - Libreria Internazionale
+
+- id: kiosk-names
+  names:
+    - Edicola di Ponterosso
+    - Edicola della Stazione
+    - Edicola del Corso
+    - Chiosco di Piazza della Borsa
+
+- id: library-names
+  names:
+    - Sala di Lettura Civica
+    - Gabinetto di Lettura
+    - Lesesaal am Corso
+    - Sala di Lettura del Porto
+
+- id: garden-names
+  names:
+    - the Giardino Pubblico
+    - the seafront promenade
+    - the Boschetto
+    - the Parco della Rimembranza
+
+- id: wharf-names
+  names:
+    - the Molo Audace
+    - the passenger quay
+    - Molo Quarto
+    - the Sacchetta
+
+- id: warehouse-names
+  names:
+    - Free-Port Warehouse No. 7
+    - the Levant Line bonded store
+    - Magazzino Generale
+    - the coffee bond
+
+- id: mission-names
+  names:
+    - Allied Information Mission
+    - Helvetic Consular Agency
+    - Levantine Trade Delegation
+    - Adriatic Commission for Refugees
+    - Four-Power Liaison Office
+
+- id: osteria-names
+  names:
+    - Osteria della Rena Vecchia
+    - Buffet del Porto
+    - Gostilna sul Carso
+    - Osteria al Terrano
+    - Buffet alla Stazione
+
+- id: cinema-names
+  names:
+    - Cinema Eliseo
+    - Cinema Fenice
+    - Cinema Nazionale
+    - Lichtspiele am Corso
+
+- id: market-names
+  names:
+    - the Mercato Coperto
+    - the fish market
+    - the Mercato di Ponterosso
+    - the Piazza Grande stalls
+
+- id: tram-stops
+  names:
+    - the lower terminus
+    - the Scorcola halt
+    - the Vetta Scorcola halt
+    - the Obelisco stop

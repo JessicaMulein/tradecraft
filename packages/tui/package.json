@@ -1,0 +1,28 @@
+{
+  "name": "@tradecraft/tui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@tradecraft/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@tradecraft/player-view": "workspace:*",
+    "ink": "^5.2.1",
+    "react": "^18.3.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31",
+    "ink-testing-library": "^4.0.0"
+  }
+}

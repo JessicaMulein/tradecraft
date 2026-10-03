@@ -1,0 +1,288 @@
+# template-variants.yaml - the Berlin Template Variants (content-expansion task
+# 9.4).
+#
+# Each entry validates against TemplateVariantSchema (packages/content/src/
+# kinds/locale.ts): { id, base, scope, template }. A variant replaces a base
+# template for one city; `scope: { city: berlin }` scopes it to this pack's City
+# Definition (namespaced city-berlin/berlin). At load the variant's template is
+# compiled and its slot set compared with its base's union of titlePattern and
+# section-body slots - they must be EXACTLY equal, or the loader refuses the
+# pack (task 2.2, CE-VARIANT). Resolution is city, then era, then base (Req 8.2).
+#
+# Two families of base:
+#   1. The Berlin article Document templates in this pack's documents/ (base
+#      `city-berlin/<id>`) - localised here into the divided city's house voice.
+#   2. The shared core Document templates (base `core/<id>`) - the newspaper,
+#      dossier, cable and seized-material bases - re-voiced for Berlin: the
+#      Deutsche Mark, the sector crossings, the S-Bahn, officials named by
+#      office (the sector commandant, the district warden, the Office of Public
+#      Order).
+#
+# Every slot the base binds is bound here and no other; the prose between the
+# slots is Berlin's. All people and bodies named are fictional; no anachronism
+# past 1961.
+
+# =========================================================================
+# 1. VARIANTS OVER THE BERLIN ARTICLE BASES
+# =========================================================================
+
+- id: v-morgen-city-lead
+  base: city-berlin/morgen-city-lead
+  scope: { city: berlin }
+  template: >-
+    {masthead}, {date} - city edition. {headline}. From the {district} our man
+    sends word that {subject} is the talk of the week. {detail} For now the
+    business sits with the {office}, and there it is likely to stay.
+
+- id: v-morgen-around-the-city
+  base: city-berlin/morgen-around-the-city
+  scope: { city: berlin }
+  template: >-
+    {masthead} - around the city. The ring trains kept their time, the western
+    markets opened early, and the transports droned in over the rooftops of the
+    northern field all night long. {note}
+
+- id: v-morgen-weather-and-river
+  base: city-berlin/morgen-weather-and-river
+  scope: { city: berlin }
+  template: >-
+    {masthead}: weather and river for {date}. Over the city and its lakes,
+    {outlook}. {water-note} The barge traffic keeps to the daylight hours along
+    the sector line.
+
+- id: v-airlift-tonnage-report
+  base: city-berlin/airlift-tonnage-report
+  scope: { city: berlin }
+  template: >-
+    {masthead} - supply and the airlift, {date}. The incoming traffic held
+    through the day; stocks of {commodity} are reported adequate for the week by
+    the {office}. {tonnage-note}
+
+- id: v-ration-notice
+  base: city-berlin/ration-notice
+  scope: { city: berlin }
+  template: >-
+    {masthead}: the ration for {period-label}. The ration of {ration-item}
+    stands as set by the {office}. {ration-detail} Holders of a western card
+    should present it unmarked at the depot counter.
+
+- id: v-abend-police-record
+  base: city-berlin/abend-police-record
+  scope: { city: berlin }
+  template: >-
+    {masthead}: police record for {date}. In the {district}, a matter of
+    {offence} was logged near {place}. The person concerned was taken in,
+    questioned, and {outcome}.
+
+- id: v-abend-miscellany
+  base: city-berlin/abend-miscellany
+  scope: { city: berlin }
+  template: >-
+    {masthead} - evening miscellany. The talk of the evening turns on {subject},
+    seen at {place}. {detail} A barrel-organ man worked the courtyards off the
+    boulevard until the rain sent him in.
+
+- id: v-abend-sport
+  base: city-berlin/abend-sport
+  scope: { city: berlin }
+  template: >-
+    {masthead}: sport in the city. {event} went off on Sunday under a cold sky.
+    {result} A {crowd} held the terraces, glad of an afternoon out of the
+    queues.
+
+- id: v-tribuene-reconstruction
+  base: city-berlin/tribuene-reconstruction
+  scope: { city: berlin }
+  template: >-
+    {masthead} - the reconstruction, {date}. The work advances. In the
+    {district} the labour of {subject} goes forward ahead of plan, the {office}
+    reports. {detail}
+
+- id: v-tribuene-vigilance
+  base: city-berlin/tribuene-vigilance
+  scope: { city: berlin }
+  template: >-
+    {masthead}: a call to vigilance. The {office} warns the working people
+    against the agents of provocation who cross from the western sectors; the
+    matter of {subject} is a case in point. {appeal}
+
+- id: v-anzeiger-order
+  base: city-berlin/anzeiger-order
+  scope: { city: berlin }
+  template: >-
+    {masthead} - official notices, {date}. By order of the {office}, in force
+    from {effective}: {order}. It holds within the {district} and at every
+    crossing into it; residents are reminded to carry their papers.
+
+- id: v-anzeiger-currency
+  base: city-berlin/anzeiger-currency
+  scope: { city: berlin }
+  template: >-
+    {masthead}: currency regulation. The {office} gives notice that, from
+    {effective}, {ruling}. {exchange-note} Exchange of the two marks outside the
+    licensed offices remains an offence.
+
+- id: v-anzeiger-registration
+  base: city-berlin/anzeiger-registration
+  scope: { city: berlin }
+  template: >-
+    {masthead} - a reminder on registration. The {office} reminds lodgers and
+    the keepers of lodging houses that {requirement}. Returns go to {place} in
+    office hours, each new guest entered on the day of arrival.
+
+- id: v-anzeiger-lost-and-found
+  base: city-berlin/anzeiger-lost-and-found
+  scope: { city: berlin }
+  template: >-
+    {masthead}: lost and found. Given in and still unclaimed this week: {items}.
+    Owners may call at the {office} with proof of who they are during office
+    hours.
+
+- id: v-transit-service-notice
+  base: city-berlin/transit-service-notice
+  scope: { city: berlin }
+  template: >-
+    {masthead}: S-Bahn and U-Bahn service. The {line} runs to a new timetable
+    from Monday: {change}. The undertaking lays it to {reason} and asks
+    passengers to allow the longer wait between trains.
+
+- id: v-crossing-regulation
+  base: city-berlin/crossing-regulation
+  scope: { city: berlin }
+  template: >-
+    {masthead} - at the sector crossings. The {office} notifies travellers that
+    at the sector crossings {requirement}. {crossing-note} Papers must be shown
+    on request to any patrol on either side of the line.
+
+- id: v-utilities-notice
+  base: city-berlin/utilities-notice
+  scope: { city: berlin }
+  template: >-
+    {masthead}: water and lighting. The supply to the {quarter} is to be cut for
+    {interruption}, between {hours}. Draw what you need beforehand and report
+    any failure that runs past the stated time.
+
+- id: v-wochenschau-feuilleton
+  base: city-berlin/wochenschau-feuilleton
+  scope: { city: berlin }
+  template: >-
+    {masthead}: the week in the walled city. The city's talk this week is of
+    {subject}. From {place} our contributor sends a reflection on a town that
+    lives between two clocks. {reflection}
+
+- id: v-wochenschau-arts
+  base: city-berlin/wochenschau-arts
+  scope: { city: berlin }
+  template: >-
+    {masthead} - concerts and the stage. {performer} gave a programme of
+    {programme} at {hall} to a full and civil house, glad of an evening out of
+    the cold.
+
+- id: v-wochenschau-books
+  base: city-berlin/wochenschau-books
+  scope: { city: berlin }
+  template: >-
+    {masthead}: books of the week. Noticed this week: {book-title}.
+    {review-detail} Copies are to be had from the antiquarian shops of the
+    western centre.
+
+- id: v-situations-and-lodgings
+  base: city-berlin/situations-and-lodgings
+  scope: { city: berlin }
+  template: >-
+    {masthead} - situations and lodgings. Offered through these columns this
+    week: {offer}, on {terms}. Apply to {apply-to}, in writing and first of all,
+    naming two references known about the city.
+
+- id: v-letters-to-the-paper
+  base: city-berlin/letters-to-the-paper
+  scope: { city: berlin }
+  template: >-
+    {masthead}: letters to the paper. A correspondent writes on {subject},
+    holding that {complaint}. The remedy he proposes is {remedy}; the editor
+    sends it on to the proper office and keeps his own counsel.
+
+- id: v-inquiries-after-persons
+  base: city-berlin/inquiries-after-persons
+  scope: { city: berlin }
+  template: >-
+    {masthead} - inquiries after persons. The following inquiry is published at
+    the request of the {office}: {inquiry-detail} Any person with word is asked
+    to write to the office, in confidence.
+
+- id: v-public-health-notice
+  base: city-berlin/public-health-notice
+  scope: { city: berlin }
+  template: >-
+    {masthead}: public health notice. The {office} tells householders of the
+    {quarter} that {advice}. The step is a precaution and nothing more, the
+    office adds, in a season of ordinary good health.
+
+# =========================================================================
+# 2. VARIANTS OVER THE SHARED CORE DOCUMENT BASES
+# =========================================================================
+
+# --- newspaper bases ---
+- id: v-core-newspaper-city
+  base: core/newspaper-wiener-tagblatt-city
+  scope: { city: berlin }
+  template: >-
+    {masthead} - {weekday}, {date}. {edition} edition; twenty Pfennig at the
+    kiosks. {headline}. From the {district} it is reported that {subject} drew
+    notice this week. {detail} The matter rests with the {official-office}.{?notice}
+    A word to readers: {notice}{/notice}
+
+- id: v-core-newspaper-blotter
+  base: core/newspaper-wiener-tagblatt-blotter
+  scope: { city: berlin }
+  template: >-
+    {masthead}: police record for {date}. From the record of the {district}, as
+    given to this paper by the {official-office}: a case of {offence} was
+    reported near {place}. The person concerned, described only as {subject},
+    was questioned at the station, {outcome}.
+
+- id: v-core-newspaper-notices
+  base: core/newspaper-amtsblatt-notices
+  scope: { city: berlin }
+  template: >-
+    {masthead} - official notices, {date}. By order of the {official-office}, in
+    force from {effective-date}: {subject}. It applies within the {district} and
+    at its crossings. {detail}
+
+# --- dossier base ---
+- id: v-core-dossier-person
+  base: core/dossier-hq-person
+  scope: { city: berlin }
+  template: >-
+    Station file {file-ref}. Subject: {subject}. Apparent information only,
+    graded {source-grade}; nothing herein is established.{?alias} Also reported
+    as {alias}.{/alias} Apparent allegiance on file: {allegiance-apparent}. Last
+    placed at {last-seen-place} about {last-seen-date}.{?association} In the
+    company of {association}.{/association} Station reading: {assessment}
+
+# --- cable bases ---
+- id: v-core-cable-directive
+  base: core/cable-hq-directive
+  scope: { city: berlin }
+  template: >-
+    CABLE {cable-ref} {priority} STOP TO {to-station} STOP {date} STOP RE
+    {subject} STOP {instruction} STOP ACKNOWLEDGE SOONEST STOP{?deadline}
+    DEADLINE {deadline} STOP{/deadline}{?budget-line} FUNDS {budget-line}
+    STOP{/budget-line} ENDS STOP
+
+- id: v-core-cable-field
+  base: core/cable-field-report
+  scope: { city: berlin }
+  template: >-
+    CABLE {cable-ref} FIELD STOP FROM {from-cover} STOP TO HEADQUARTERS STOP
+    {date} STOP RE {subject} STOP {observation} STOP{?request} REQUEST {request}
+    STOP{/request} AWAIT INSTRUCTION STOP ENDS STOP
+
+# --- seized base ---
+- id: v-core-seized-note
+  base: core/seized-handwritten-note
+  scope: { city: berlin }
+  template: >-
+    Item recovered {date} at {place} by {recovered-by}; logged as seized pending
+    examination. Condition: {condition}. Description: {description}; the item
+    appears to concern {subject}. Legible contents, as found: {contents}

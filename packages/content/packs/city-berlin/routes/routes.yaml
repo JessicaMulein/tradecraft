@@ -1,0 +1,56 @@
+# routes/routes.yaml - the Berlin Route graph (task 9.3).
+#
+# Each validates against CityRouteSchema (packages/content/src/kinds/city.ts):
+#   { a, b, cost: 0 | 1, tags?, years? }. `a` and `b` are District ids; `cost`
+#   is 0 or 1 travel phases. A Route may carry checkpoint `tags` (from the core
+#   `access` facet, which applies to `route`) and a `years` Year Range so a
+#   sector-crossing can open or close over the period.
+#
+# The graph connects all eight districts. Routes that stay within one
+# occupation sector, or that run between the three western sectors (which were
+# administered together and crossed freely), carry no checkpoint tag. Routes
+# that cross the Soviet-sector boundary into or out of the east carry
+# `access:checkpoint` and a Year Range: in 1948 a man walked or rode across with
+# little more than a glance, but the boundary tightened year by year, and the
+# open crossings were sealed in August 1961. The eastern crossings are therefore
+# year-ranged to 1948-1961 (open for the window, barred at its close), while the
+# intra-western and intra-sector routes carry no Year Range and stand for the
+# whole period.
+#
+# Sector map: mitte, prenzlauer-berg = Soviet (east); kreuzberg, schoneberg =
+# American; tiergarten, charlottenburg = British; wedding, reinickendorf =
+# French. The three western sectors interconnect freely; every west-east pair
+# that touches the boundary is a checkpoint crossing.
+
+# --- within the Soviet sector (east) ---------------------------------------
+- { a: mitte, b: prenzlauer-berg, cost: 1 }
+
+# --- within the western sectors (free movement between west sectors) -------
+# American <-> American
+- { a: kreuzberg, b: schoneberg, cost: 1 }
+# British <-> British
+- { a: tiergarten, b: charlottenburg, cost: 1 }
+# French <-> French
+- { a: wedding, b: reinickendorf, cost: 1 }
+# American <-> British (west-west, no checkpoint)
+- { a: schoneberg, b: tiergarten, cost: 1, tags: [access:public] }
+- { a: kreuzberg, b: tiergarten, cost: 1, tags: [access:public] }
+# British <-> French (west-west, no checkpoint)
+- { a: charlottenburg, b: wedding, cost: 1, tags: [access:public] }
+- { a: tiergarten, b: wedding, cost: 1, tags: [access:public] }
+# American <-> French via the western ring (no checkpoint)
+- { a: schoneberg, b: charlottenburg, cost: 1, tags: [access:public] }
+
+# --- sector-crossing routes: west <-> Soviet east --------------------------
+# Each crosses the Soviet-sector boundary: a controlled crossing where papers
+# are checked, open across the period and sealed at its close (1948-1961).
+
+# Mitte (Soviet) touches the American, British and French sectors at the centre.
+- { a: mitte, b: kreuzberg,       cost: 1, tags: [access:checkpoint], years: { from: 1948, to: 1961 } }
+- { a: mitte, b: tiergarten,      cost: 1, tags: [access:checkpoint], years: { from: 1948, to: 1961 } }
+- { a: mitte, b: wedding,         cost: 1, tags: [access:checkpoint], years: { from: 1948, to: 1961 } }
+- { a: mitte, b: charlottenburg,  cost: 1, tags: [access:checkpoint], years: { from: 1948, to: 1961 } }
+
+# Prenzlauer Berg (Soviet) touches the French north and the American boundary.
+- { a: prenzlauer-berg, b: wedding,    cost: 1, tags: [access:checkpoint], years: { from: 1948, to: 1961 } }
+- { a: prenzlauer-berg, b: kreuzberg,  cost: 1, tags: [access:checkpoint], years: { from: 1948, to: 1961 } }

@@ -1,0 +1,5 @@
+# Per-take timing, by file stem then take number. Seconds.
+Burned:
+  1:
+    sections:
+      first: [0, 68]

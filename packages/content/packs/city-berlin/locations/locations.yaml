@@ -1,0 +1,883 @@
+# locations/locations.yaml - the authored Locations of Berlin (task 9.3).
+#
+# Each validates against CityLocationSchema (packages/content/src/kinds/
+# city.ts): the slice Location fields (id, name, aliases, `type`, `district`,
+# `public`, description, atmosphere) plus the City-Scoped additions (`city`,
+# `tags`, `basis`, optional `years`, `sources`, optional `weight`).
+#
+# `type` names the Location Type the place is stamped from: a Berlin City-Scoped
+# type by its bare id (`u-bahn-station`, `s-bahn-station`, `spree-wharf`,
+# `imbiss-kiosk`) or a core type as `core/<id>`. A Location's Effective Tags are
+# its own `tags` here together with its Location Type's tags; Tag Conformance
+# counts those against the city's Required Queries, so the set below places at
+# least the required number of binders for every query, across all eight
+# districts.
+#
+# `basis` is `real-landmark` for a place drawn from a real site of the period
+# (which then cites `sources`), `real-inspired` for a fictional place modelled
+# on a real kind of site, and `fictional` for a wholly invented one. Every
+# proper name attached to a business, café, shop, hotel or office is fictional;
+# the streets, stations, park, canal and airfield are real topography, cited.
+#
+# Counts: 48 Locations across the eight districts. The upper instantiation
+#   bound (`instantiation.locations` [20, 28]) draws at most 28, so the authored
+#   pool comfortably exceeds the per-seed selection and different seeds draw
+#   different subsets — this is what keeps the Coverage Report's Variety Metric
+#   (mean pairwise Jaccard of the per-seed Location sets) below the 0.6 target.
+#   Required Query coverage grows with the additions and never falls below the
+#   originals' margins: station-office 1, public-text-source 2, newspaper-outlet
+#   8, public meeting spot 20, dead-drop 24, transit-hub 5, materiel-store 3,
+#   diplomatic 2, private 7, and at least one of every per-function query.
+
+# =========================================================================
+# MITTE (Soviet sector)
+# =========================================================================
+
+- id: stadtmitte-ubahn
+  name: Stadtmitte U-Bahn station
+  aliases:
+    - { text: the Stadtmitte interchange, distinctive: true }
+  type: u-bahn-station
+  district: mitte
+  public: true
+  description: >-
+    An interchange deep under the eastern centre where two lines cross; the
+    platforms run beneath the sector boundary, and a traveller can change here
+    for trains that surface in either half of the city.
+  atmosphere: [underground, echoing, watched]
+  city: berlin
+  tags: [function:transit, function:transit-hub]
+  basis: real-landmark
+  sources: [berlin-railway-guide, berlin-city-plan]
+
+- id: lindenallee-cafe
+  name: Café Lindenblick
+  aliases:
+    - { text: the Lindenblick, distinctive: true }
+  type: core/kaffeehaus
+  district: mitte
+  public: true
+  description: >-
+    A high old coffee house on the great avenue, its mirrors darkened and its
+    marble tables chipped, where ministry clerks take a bitter coffee and the
+    waiter remembers who sat with whom.
+  atmosphere: [smoky, genteel, watched]
+  city: berlin
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+
+- id: staatsbibliothek-reading-room
+  name: The eastern reading hall
+  aliases:
+    - { text: the reading hall, distinctive: false }
+  type: core/library
+  district: mitte
+  public: true
+  description: >-
+    A hushed public reading hall of long oak tables and green-shaded lamps,
+    its catalogue walls patched where the war took the upper galleries; readers
+    sit walled behind borrowed books and no one hurries them.
+  atmosphere: [hushed, studious, discreet]
+  city: berlin
+  tags: [function:library, function:public-text-source, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [berlin-street-directory]
+
+- id: friedrichstrasse-sbahn
+  name: Friedrichstraße S-Bahn station
+  aliases:
+    - { text: the Friedrichstraße crossing, distinctive: true }
+    - { text: the great interchange, distinctive: false }
+  type: s-bahn-station
+  district: mitte
+  public: true
+  description: >-
+    The city's busiest crossing point: a vaulted hall of iron and glass where
+    the underground, the city railway and the long-distance trains all meet, and
+    where a traveller from the west steps off into the eastern sector among a
+    river of strangers.
+  atmosphere: [crowded, transient, anonymous, watched]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide, berlin-city-plan]
+
+# =========================================================================
+# PRENZLAUER BERG (Soviet sector)
+# =========================================================================
+
+- id: kollwitzplatz-market
+  name: The Kollwitzplatz market
+  type: core/market
+  district: prenzlauer-berg
+  public: true
+  description: >-
+    Rows of canvas-awned stalls around a tenement square, loud with haggling in
+    the morning; barrows of winter roots and a flower stall bright against the
+    grey, and a crowd dense enough to pass a parcel in without breaking stride.
+  atmosphere: [crowded, bustling, everyday, concealing]
+  city: berlin
+  tags: [function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: schonhauser-kiosk
+  name: The Schönhauser Allee kiosk
+  type: imbiss-kiosk
+  district: prenzlauer-berg
+  public: true
+  description: >-
+    A green-painted booth under the elevated line, its shelf stacked with folded
+    papers and the glass fogged by a sausage pan, where the morning editions are
+    dropped in a bale at dawn and a note can change hands with the right coin.
+  atmosphere: [cramped, everyday, watchful]
+  city: berlin
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: hinterhof-safehouse-east
+  name: The Rykestraße back room
+  aliases:
+    - { text: the back room, distinctive: false }
+  type: core/safehouse
+  district: prenzlauer-berg
+  public: false
+  description: >-
+    A rented room up four flights off an inner courtyard no one overlooks, the
+    stair creaking a free warning on the fourth tread; a table, two chairs and a
+    wireless kept low, and nothing in it that would survive a second glance.
+  atmosphere: [private, secure, spare, concealed]
+  city: berlin
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+- id: eberswalder-kino
+  name: Kino Nordstern
+  aliases:
+    - { text: the Nordstern, distinctive: true }
+  type: core/cinema
+  district: prenzlauer-berg
+  public: true
+  description: >-
+    A picture house with a gilt proscenium gone shabby, the newsreel droning its
+    headlines before the feature; the back rows are kept for courting couples
+    and for anyone who would rather watch the door than the screen.
+  atmosphere: [dark, anonymous, meeting-ground]
+  city: berlin
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+# =========================================================================
+# KREUZBERG (American sector)
+# =========================================================================
+
+- id: kottbusser-ubahn
+  name: Kottbusser Tor U-Bahn station
+  type: u-bahn-station
+  district: kreuzberg
+  public: true
+  description: >-
+    A busy underground station hard against the sector boundary, its tiled
+    passages carrying the morning crowd between the lines; a man can board at
+    the last second and leave a follower on the wrong side of the closing doors.
+  atmosphere: [underground, transient, anonymous]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide]
+
+- id: landwehr-wharf
+  name: The Gröbenufer wharf
+  type: spree-wharf
+  district: kreuzberg
+  public: true
+  description: >-
+    A working stage on the canal where coal barges lie three deep and a crane
+    swings crates over the oily water; where the water touches the sector line a
+    striped pole and a sentry box stand on the far bank, watching across.
+  atmosphere: [industrial, exposed, rough, boundary-edge]
+  city: berlin
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-waterways-guide, berlin-city-plan]
+
+- id: oranienstrasse-druckerei
+  name: The Oranienstraße depot
+  aliases:
+    - { text: the print depot, distinctive: false }
+  type: core/warehouse
+  district: kreuzberg
+  public: false
+  description: >-
+    A cold hall behind a print works, stacked to the rafters with reels of paper
+    and sacking, a single bulb swinging over the loading door; chains and tackle
+    hang in the dark like something waiting to be used.
+  atmosphere: [industrial, deserted, risky, concealing]
+  city: berlin
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+- id: bergmann-bookshop
+  name: Antiquariat Bergmann
+  aliases:
+    - { text: the Bergmann bookshop, distinctive: true }
+  type: core/bookshop
+  district: kreuzberg
+  public: true
+  description: >-
+    Leaning shelves on every side, a bell on the door and dust in the
+    window-light; boxes of unpriced stock block the back room, where a book
+    cipher could hide a dozen keys among the foxed almanacs no one buys.
+  atmosphere: [dusty, quiet, bookish, discreet]
+  city: berlin
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: gorlitzer-park
+  name: The Görlitzer ground
+  aliases:
+    - { text: the old goods-yard park, distinctive: false }
+  type: core/park
+  district: kreuzberg
+  public: true
+  description: >-
+    Rough open ground where a bombed goods yard has gone back to grass and
+    scrub, gravel paths running between the saplings; a pram, a dog, and a man
+    who may or may not be reading his paper on a cold bench.
+  atmosphere: [open-air, exposed, meeting-ground]
+  city: berlin
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+# =========================================================================
+# SCHÖNEBERG (American sector)
+# =========================================================================
+
+- id: rathaus-schoneberg-office
+  name: The western administration offices
+  aliases:
+    - { text: the town-hall offices, distinctive: false }
+  type: core/embassy
+  district: schoneberg
+  public: false
+  description: >-
+    A guarded doorway in the great red-brick town hall, a visitors' book and
+    corridors of frosted glass and typewriter clatter, where the western city's
+    liaison staff keep offices and a porter checks papers twice before the inner
+    door.
+  atmosphere: [official, guarded, bureaucratic]
+  city: berlin
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: real-inspired
+  sources: [berlin-city-plan]
+
+- id: winterfeldt-cafe
+  name: Café Winterfeld
+  aliases:
+    - { text: the Winterfeld, distinctive: true }
+  type: core/kaffeehaus
+  district: schoneberg
+  public: true
+  description: >-
+    A corner coffee house with velvet banquettes and a rack of day-old foreign
+    papers, where clerks from the administration fill the tables at noon and a
+    man can nurse one small coffee a whole afternoon and be left in peace.
+  atmosphere: [smoky, genteel, unhurried]
+  city: berlin
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: schoneberg-sbahn
+  name: Schöneberg S-Bahn station
+  type: s-bahn-station
+  district: schoneberg
+  public: true
+  description: >-
+    An elevated station on the ring line under a soot-blackened iron canopy, the
+    city spread grey below; the ring trains cross here and the crowd is a river
+    of travellers in which no face is remarked for long.
+  atmosphere: [elevated, crowded, transient]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide]
+
+- id: station-berlin-west
+  name: The Station
+  aliases:
+    - { text: the Station, distinctive: false }
+  type: core/station-hq
+  district: schoneberg
+  public: false
+  description: >-
+    A floor of locked offices behind an unmarked door in a quiet apartment
+    house: steel cabinets, a cipher room and a teleprinter chattering out the
+    overnight traffic, the duty officer logging every entry by hand, a window
+    painted over so no one across the street can read the room.
+  atmosphere: [secure, official, guarded-base, concealed]
+  city: berlin
+  tags: [venue:station-office, function:station, access:private]
+  basis: fictional
+
+# =========================================================================
+# TIERGARTEN (British sector)
+# =========================================================================
+
+- id: tiergarten-park
+  name: The Tiergarten
+  aliases:
+    - { text: the great park, distinctive: true }
+  type: core/park
+  district: tiergarten
+  public: true
+  description: >-
+    The city's great park, its trees thinned by the winters when Berlin burned
+    them for fuel, the paths running quiet between the lawns; a chestnut seller
+    tends his brazier at the gate and the smoke drifts across the empty deck
+    chairs.
+  atmosphere: [open-air, exposed, meeting-ground]
+  city: berlin
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-parks-and-gardens, berlin-city-plan]
+
+- id: embassy-row-mission
+  name: The Allied Liaison Mission
+  aliases:
+    - { text: the Mission, distinctive: false }
+    - { text: the liaison office, distinctive: false }
+  type: core/embassy
+  district: tiergarten
+  public: false
+  description: >-
+    A walled villa on the embassy row, a flag over the guarded gate, a staff car
+    idling in the courtyard; high-ceilinged rooms smelling of floor wax and
+    sealing wax, where telephones ring behind closed doors and petitioners wait
+    on hard chairs.
+  atmosphere: [official, guarded, cover-friendly]
+  city: berlin
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: real-inspired
+  sources: [berlin-city-plan]
+
+- id: tiergarten-safehouse
+  name: The Hofjägerallee flat
+  type: core/safehouse
+  district: tiergarten
+  public: false
+  description: >-
+    A quiet first-floor flat behind a garden wall, kept deliberately dull: a
+    table, a bed, curtains always half-drawn, and a landlady who forgets the
+    tenant the moment the rent is paid.
+  atmosphere: [private, secure, spare]
+  city: berlin
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# CHARLOTTENBURG (British sector)
+# =========================================================================
+
+- id: zoo-sbahn
+  name: Zoologischer Garten S-Bahn station
+  aliases:
+    - { text: the Zoo station, distinctive: true }
+    - { text: the western terminus, distinctive: false }
+  type: s-bahn-station
+  district: charlottenburg
+  public: true
+  description: >-
+    The great western crossing: a vaulted concourse where the city railway, the
+    underground and the long-distance trains meet, a departures board clattering
+    over a left-luggage office and a newsstand, and a crowd of every sort of
+    traveller passing through at every hour.
+  atmosphere: [crowded, transient, anonymous, watched]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide, berlin-city-plan]
+
+- id: kurfurstendamm-hotel-bar
+  name: The bar at the Hotel Kaiserhof-West
+  aliases:
+    - { text: the Kaiserhof-West bar, distinctive: true }
+  type: core/hotel-bar
+  district: charlottenburg
+  public: true
+  description: >-
+    A low-lit bar of polished walnut and brass off the great boulevard, a piano
+    turning over something slow; correspondents and attachés hold the stools,
+    the talk runs in four languages and none of it is quite the truth, and the
+    barman pours and forgets with equal skill.
+  atmosphere: [cosmopolitan, smoky, loose-tongued, watched]
+  city: berlin
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: kantstrasse-bookshop
+  name: Buchhandlung Vogler
+  aliases:
+    - { text: the Vogler bookshop, distinctive: true }
+  type: core/bookshop
+  district: charlottenburg
+  public: true
+  description: >-
+    A narrow antiquarian shop whose window has not changed in a decade - maps, a
+    globe, a run of yellowed almanacs; the proprietor peers over half-moon
+    glasses and names a price without looking up, and the serious buyers are
+    taken to the back room.
+  atmosphere: [dusty, quiet, bookish, discreet]
+  city: berlin
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: wittenbergplatz-ubahn
+  name: Wittenbergplatz U-Bahn station
+  type: u-bahn-station
+  district: charlottenburg
+  public: true
+  description: >-
+    A grand old underground station on the western shopping streets, its hall
+    lined with enamel route-boards and a kiosk hatch selling the morning papers;
+    the platforms fill and empty with each train in the shopping-hour crush.
+  atmosphere: [underground, busy, anonymous]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide]
+
+- id: savignyplatz-cafe
+  name: Café Savigny
+  type: core/kaffeehaus
+  district: charlottenburg
+  public: true
+  description: >-
+    A bright café under the railway arches with a rack of foreign papers and a
+    billiard table behind the pillars, where the western city's writers and
+    stringers keep a long table and the waiters move unhurried between them.
+  atmosphere: [smoky, genteel, loose-tongued]
+  city: berlin
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+# =========================================================================
+# WEDDING (French sector)
+# =========================================================================
+
+- id: wedding-warehouse
+  name: The Gerichtstraße store
+  type: core/warehouse
+  district: wedding
+  public: false
+  description: >-
+    A freight store by the goods yard, oil drums and packing straw and the echo
+    of your own footsteps on the concrete; a tally clerk's abandoned desk, a
+    freight lift with a concertina gate, and ledgers furred with dust.
+  atmosphere: [industrial, deserted, risky, concealing]
+  city: berlin
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+- id: gesundbrunnen-sbahn
+  name: Gesundbrunnen S-Bahn station
+  type: s-bahn-station
+  district: wedding
+  public: true
+  description: >-
+    A northern crossing station where the ring and the northern lines meet over
+    a tangle of goods tracks; a cold waiting hall with benches and a tiled floor
+    where the overnight travellers doze and a dropped case waits among the
+    luggage for hours.
+  atmosphere: [elevated, transient, anonymous]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide]
+
+- id: nordufer-wharf
+  name: The Nordufer coal stage
+  type: spree-wharf
+  district: wedding
+  public: true
+  description: >-
+    A coal and timber wharf on the ship canal, cranes standing over the barges
+    and the water running green and slow between brick embankments; by dusk the
+    stage is deserted but for the slap of the water and a watchman's stove smoke
+    pulled flat along the surface.
+  atmosphere: [industrial, exposed, waterfront]
+  city: berlin
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [berlin-waterways-guide]
+
+- id: wedding-kiosk
+  name: The Müllerstraße kiosk
+  type: imbiss-kiosk
+  district: wedding
+  public: true
+  description: >-
+    A sausage stand and newsstand on the corner, a brazier glowing, a knot of
+    men eating standing up and reading the headlines pegged on a wire; the first
+    light lit on the street at dawn and the last out at night.
+  atmosphere: [cramped, everyday, street-corner]
+  city: berlin
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+# =========================================================================
+# REINICKENDORF (French sector)
+# =========================================================================
+
+- id: airfield-perimeter-cafe
+  name: Café Startbahn
+  aliases:
+    - { text: the Startbahn, distinctive: true }
+  type: core/kaffeehaus
+  district: reinickendorf
+  public: true
+  description: >-
+    A plain café on the road to the airlift field, its windows rattling as the
+    transports come in low overhead minute by minute; aircrew and ground staff
+    fill the tables between flights and the coffee is poured without ceremony.
+  atmosphere: [plain, busy, airfield]
+  city: berlin
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  sources: [berlin-airlift-record]
+
+- id: reinickendorf-library
+  name: The district reading room
+  type: core/library
+  district: reinickendorf
+  public: true
+  description: >-
+    A small branch reading room with tall windows and periodicals chained to
+    their stands, a clerk stamping requests behind a grille; students and
+    pensioners share the long tables in silence under a radiator that ticks as
+    it warms.
+  atmosphere: [hushed, studious, discreet]
+  city: berlin
+  tags: [function:library, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: seestrasse-ubahn
+  name: Seestraße U-Bahn station
+  type: u-bahn-station
+  district: reinickendorf
+  public: true
+  description: >-
+    The northern terminus of its line, a plain station where the city thins
+    toward the allotments and the airfield; the last trains of the night empty
+    out here into a quiet street under the flight path.
+  atmosphere: [underground, peripheral, quiet]
+  city: berlin
+  tags: [function:transit, function:transit-hub, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [berlin-railway-guide]
+
+# =========================================================================
+# ADDITIONAL LOCATIONS (task 9.3)
+#
+# These widen the authored Location pool well beyond the per-seed
+# instantiation bound (`instantiation.locations` [20, 28]) so that different
+# seeds draw different subsets and the Coverage Report's Variety Metric stays
+# below target. They add no new Location Type and no new Required Query; each
+# is a public meeting spot, newspaper outlet, dead-drop site or private room
+# that deepens an existing District's texture. The four-sector structure and
+# the U/S-Bahn hubs above are untouched. Every proper name on a business is
+# fictional; the streets and squares are real topography, cited.
+#
+# With these, the pool is 43 Locations across the eight Districts (at least
+# three per District), so a seed drawing twenty to twenty-eight of them leaves
+# a varying remainder behind.
+
+# =========================================================================
+# MITTE (Soviet sector)
+# =========================================================================
+
+- id: hackescher-markt-stalls
+  name: The Hackescher Markt stalls
+  aliases:
+    - { text: the Hackescher market, distinctive: false }
+  type: core/market
+  district: mitte
+  public: true
+  description: >-
+    A knot of market stalls under the railway arches by the old square, barrows
+    of root vegetables and bundled kindling pushed between the pillars; the
+    crowd thickens where a van unloads, and a parcel can pass hand to hand in
+    the press without a head turning.
+  atmosphere: [crowded, everyday, concealing, soviet-held]
+  city: berlin
+  tags: [function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [berlin-street-directory]
+
+- id: unter-den-linden-cafe
+  name: Café Opernhof
+  aliases:
+    - { text: the Opernhof, distinctive: true }
+  type: core/kaffeehaus
+  district: mitte
+  public: true
+  description: >-
+    A broad coffee house facing the avenue, its windows curtained in net
+    against the street; waiters in long aprons carry trays between the pillars,
+    the samovar hisses at the counter, and the talk drops a tone whenever the
+    door admits a stranger.
+  atmosphere: [genteel, hushed, watched, soviet-held]
+  city: berlin
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+# =========================================================================
+# PRENZLAUER BERG (Soviet sector)
+# =========================================================================
+
+- id: kastanienallee-tram
+  name: The Kastanienallee tram halt
+  type: core/tram-stop
+  district: prenzlauer-berg
+  public: true
+  description: >-
+    A tram halt on the cobbled avenue where two lines cross, the standard with
+    its route-plate bent by a long-ago collision; passengers bunch under the
+    bare chestnuts at the hour, and a man may step down, cross behind the car
+    and board another going the opposite way.
+  atmosphere: [street-corner, transient, open-air, soviet-held]
+  city: berlin
+  tags: [function:meeting-spot, access:public]
+  basis: real-inspired
+
+- id: schonhauser-tavern
+  name: Gaststätte Zur Linde
+  aliases:
+    - { text: the Zur Linde, distinctive: true }
+  type: core/hotel-bar
+  district: prenzlauer-berg
+  public: true
+  description: >-
+    A corner tavern of dark panelling and a zinc counter, the regulars nursing
+    their beer at scarred tables and a card game going in the back; the landlord
+    keeps a private room off the yard that he lets by the hour and asks no name
+    of whoever takes it.
+  atmosphere: [smoky, working-class, loose-tongued, soviet-held]
+  city: berlin
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+# =========================================================================
+# KREUZBERG (American sector)
+# =========================================================================
+
+- id: oranienplatz-kino
+  name: Lichtspiele am Oranienplatz
+  aliases:
+    - { text: the Oranienplatz picture house, distinctive: true }
+  type: core/cinema
+  district: kreuzberg
+  public: true
+  description: >-
+    A neighbourhood picture house with a tin canopy and a hand-lettered bill,
+    the stalls raked steeply under a flickering beam; the matinée crowd is thin
+    enough that a chosen seat stays empty beside you until the one you are
+    waiting for slides into it in the dark.
+  atmosphere: [dark, anonymous, meeting-ground, american-held]
+  city: berlin
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: kreuzberg-tram
+  name: The Wiener Straße tram stop
+  type: core/tram-stop
+  district: kreuzberg
+  public: true
+  description: >-
+    A tram stop hard by the elevated line, the standard bolted to a soot-black
+    pillar and the schedule behind cracked glass; the cars grind round the curve
+    every few minutes and the queue forms and scatters, a crowd that remembers
+    no one in it.
+  atmosphere: [street-corner, transient, crowded, american-held]
+  city: berlin
+  tags: [function:meeting-spot, access:public]
+  basis: real-inspired
+
+# =========================================================================
+# SCHÖNEBERG (American sector)
+# =========================================================================
+
+- id: nollendorf-kino
+  name: Palast-Theater am Nollendorfplatz
+  aliases:
+    - { text: the Nollendorf palace, distinctive: true }
+  type: core/cinema
+  district: schoneberg
+  public: true
+  description: >-
+    A grand old picture palace gone a little shabby, a gilt ceiling and a
+    curtain that no longer quite closes; the newsreel drones its headlines to a
+    half-empty house, and the circle is dark enough that a folded paper left on
+    a seat will be there at the interval for whoever knows to look.
+  atmosphere: [dark, faded, meeting-ground, american-held]
+  city: berlin
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: schoneberg-trafik
+  name: The Hauptstraße tobacco booth
+  type: core/tobacconist-kiosk
+  district: schoneberg
+  public: true
+  description: >-
+    A tobacconist's hatch set into the corner of an apartment block, cigarette
+    cards and lottery slips fanned under the glass; the proprietor keeps a shelf
+    of foreign papers for the regulars and a drawer below the till that opens
+    only for the ones he knows.
+  atmosphere: [cramped, everyday, discreet, american-held]
+  city: berlin
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+# =========================================================================
+# TIERGARTEN (British sector)
+# =========================================================================
+
+- id: tiergarten-cafe
+  name: Café am Landwehrkanal
+  aliases:
+    - { text: the canal café, distinctive: false }
+  type: core/kaffeehaus
+  district: tiergarten
+  public: true
+  description: >-
+    A quiet café on the embankment where the park comes down to the water, a few
+    tables under a striped awning and the barges sliding past below; the waiter
+    is slow and incurious, and a conversation held over a long afternoon coffee
+    draws no more notice than the ducks on the canal.
+  atmosphere: [genteel, unhurried, open-air, british-held]
+  city: berlin
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: tiergarten-hotel-bar
+  name: The bar at the Hotel Esplanade-Nord
+  aliases:
+    - { text: the Esplanade-Nord bar, distinctive: true }
+  type: core/hotel-bar
+  district: tiergarten
+  public: true
+  description: >-
+    A hushed hotel bar off the embassy row, deep chairs and a decanter trolley,
+    a barman who mixes in silence; attachés and visiting correspondents take the
+    corner tables, and the heavy curtains and the piano cover a low word as well
+    as any safehouse in the sector.
+  atmosphere: [genteel, discreet, cover-friendly, british-held]
+  city: berlin
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+# =========================================================================
+# CHARLOTTENBURG (British sector)
+# =========================================================================
+
+- id: charlottenburg-market
+  name: The Wilmersdorfer Straße market
+  type: core/market
+  district: charlottenburg
+  public: true
+  description: >-
+    A covered market hall on the shopping street, tiled aisles loud with the
+    cry of the fishmongers and the ring of the butchers' tills; the throng is
+    thickest at the flower stalls by the door, where a basket changes hands and
+    no one counts the parcels that go into it.
+  atmosphere: [crowded, bustling, concealing, british-held]
+  city: berlin
+  tags: [function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+  sources: [berlin-street-directory]
+
+- id: steinplatz-kino
+  name: Studio-Kino am Steinplatz
+  aliases:
+    - { text: the Steinplatz studio, distinctive: true }
+  type: core/cinema
+  district: charlottenburg
+  public: true
+  description: >-
+    A small art house off the square showing foreign pictures to a studious
+    crowd, the programme changed weekly and pinned by the box office; the seats
+    are hard and the house half-full, and the back row keeps its own quiet
+    traffic through the second feature.
+  atmosphere: [dark, bookish, meeting-ground, british-held]
+  city: berlin
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+# =========================================================================
+# WEDDING (French sector)
+# =========================================================================
+
+- id: wedding-tram
+  name: The Seestraße tram terminus
+  type: core/tram-stop
+  district: wedding
+  public: true
+  description: >-
+    A tram terminus where the line gives out at the edge of the works, a loop of
+    rail and a shelter of corrugated iron; the crews change here and the last
+    cars lie idle on the loop at night, their windows dark, a place a man can
+    wait without being asked his business.
+  atmosphere: [street-corner, peripheral, hard-up, french-held]
+  city: berlin
+  tags: [function:meeting-spot, access:public]
+  basis: real-inspired
+
+- id: wedding-safehouse
+  name: The Utrechter Straße room
+  type: core/safehouse
+  district: wedding
+  public: false
+  description: >-
+    A single room over a shuttered dairy, reached by a stair that smells of coal
+    and cats; a bed, a washstand and a window giving on a blind courtyard, the
+    rent paid a quarter ahead to a caretaker who neither knows nor wishes to
+    know who turns the key.
+  atmosphere: [private, secure, spare, french-held]
+  city: berlin
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# REINICKENDORF (French sector)
+# =========================================================================
+
+- id: reinickendorf-market
+  name: The Residenzstraße market
+  type: core/market
+  district: reinickendorf
+  public: true
+  description: >-
+    A street market strung along the pavement of the northern quarter, trestle
+    tables of allotment produce and mended tools, a brazier of roasting
+    chestnuts at the corner; the sellers call across the carts and a stranger
+    passing through is one more face among the morning's shoppers.
+  atmosphere: [everyday, open-air, peripheral, french-held]
+  city: berlin
+  tags: [function:meeting-spot, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: reinickendorf-safehouse
+  name: The allotment hut on the Scharnweberstraße
+  aliases:
+    - { text: the garden hut, distinctive: false }
+  type: core/safehouse
+  district: reinickendorf
+  public: false
+  description: >-
+    A timber hut among the allotment gardens on the city's rim, a stove, a cot
+    and a shelf of seed tins, the plot screened by a hedge gone wild; the
+    aircraft come in low over the roofs on the approach to the field, and under
+    their drone a meeting here is as private as the open ground allows.
+  atmosphere: [private, concealed, semi-rural, french-held]
+  city: berlin
+  tags: [function:safehouse, access:private]
+  basis: fictional

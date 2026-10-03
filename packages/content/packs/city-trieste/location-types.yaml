@@ -1,0 +1,533 @@
+# location-types.yaml — the Location Types the Trieste generator stamps
+# (content-expansion task 9.9).
+#
+# City-Scoped slice Location Types (LocationTypeSchema, packages/content/src/lib
+# /kinds.ts): ordinary slice Location Types that live in the City Pack, so they
+# are owned by this city. Each fixes whether its Locations are public, the
+# actions it allows, its weekly hours and crowd curve, how weather bends the
+# crowd, the base risk of being there, whether it can hold a dead drop, the name
+# patterns the generator stamps anonymous instances from (drawing on
+# streets.yaml pools via `{pick:<pool>}`), and the description and atmosphere
+# pools.
+#
+# A Location Type's `tags` are the Effective Tags its Locations inherit (a
+# Location's Effective Tags are its own Tags together with its type's Tags), so
+# the function/venue/access Tags here are what carries Tag Conformance for the
+# city (Req 4.3–4.5). Every function the core Required Queries name is covered
+# by at least one type below.
+#
+# Period: the Free Territory of Trieste, 1947–1954. Everything is of its time —
+# trams, steam railways, telegraph, coal smoke, newspapers, coffee and the
+# Adriatic shipping trade. No anachronism. Action ids follow the slice Action
+# union (travel is the arrival action, allowed everywhere; confront and
+# turn-agent ride inside a talk scene).
+#
+# Phases, in order: early-morning, morning, midday, afternoon, evening, night,
+# late-night, dead-of-night.
+
+# --- 1. Caffè (Viennese-style coffee house) --------------------------------
+# Bare id `kaffeehaus` so the slice's core Plot Templates, which key their
+# café traces on the Location-Type id `kaffeehaus`, bind to the city's cafés
+# (the generator groups public Locations by their bare Location-Type id).
+- id: kaffeehaus
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: midday, level: 0.7 }
+    - { weekday: monday, phase: afternoon, level: 0.75 }
+    - { weekday: saturday, phase: afternoon, level: 0.9 }
+    - { weekday: sunday, phase: afternoon, level: 0.8 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+    - { weather: bora, crowdMultiplier: 1.3 }
+    - { weather: clear, crowdMultiplier: 0.9 }
+  baseRisk: 0.15
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:cafe-names}'
+  descriptionPool:
+    - A high room of marble tables and bentwood chairs, the brass machine hissing and the day's papers on their wooden wands.
+    - Mirrored walls and a smell of roasted coffee; a waiter in a white jacket brings water on a little tray and leaves you to your paper.
+    - Shipping men and clerks hold the window tables where the light comes off the water; the talk runs in three languages at once.
+    - A quiet corner where a man can sit over one small black coffee for a whole afternoon and no one will move him on.
+    - Old men play cards under a yellowed ceiling while the trams clang past the steamed-up glass.
+  atmosphereTags: [smoky, genteel, unhurried, public]
+  tags: [venue:cafe, function:cafe, function:meeting-spot, access:public]
+
+# --- 2. Edicola / tabacchi (newsstand-tobacconist kiosk) -------------------
+- id: edicola
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.4 }
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: evening, level: 0.35 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.8 }
+    - { weather: bora, crowdMultiplier: 0.7 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:kiosk-names}'
+  descriptionPool:
+    - A green-painted kiosk at the corner, its racks fanned with the morning papers in four languages and the tobacco kept dry behind glass.
+    - Lottery slips, postcards of the castle and the gulf, and a proprietor who knows every regular by their brand and their paper.
+    - A narrow booth that smells of newsprint and Virginia tobacco, its shutter half down against the bora.
+    - The foreign editions come in on the morning train and are pegged on a wire; a queue forms and melts before you have your change.
+  atmosphereTags: [cramped, everyday, watchful, public]
+  tags: [function:kiosk, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- 3. Reading hall / civic library ---------------------------------------
+- id: biblioteca
+  public: true
+  allowedActions: [travel, talk, confront, turn-agent, surveil, follow, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.3 }
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: saturday, phase: midday, level: 0.6 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.2 }
+    - { weather: bora, crowdMultiplier: 1.25 }
+  baseRisk: 0.1
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:library-names}'
+  descriptionPool:
+    - A hushed reading hall of long tables and green-shaded lamps, the air dry with old paper and the sea light held off by tall shutters.
+    - Card catalogues wall the entrance; readers turn pages under a ceiling darkened by decades of lamp smoke.
+    - Chained periodicals in a dozen languages stand in ranks; a clerk stamps requests behind a brass grille.
+    - Pensioners and students share the long tables in silence, each walled off behind a rampart of borrowed books.
+  atmosphereTags: [hushed, studious, discreet, public]
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+
+# --- 4. Antiquarian bookshop -----------------------------------------------
+- id: libreria-antiquaria
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, service-drop, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: morning, closePhase: evening }
+    - { weekday: thursday, openPhase: morning, closePhase: evening }
+    - { weekday: friday, openPhase: morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.3 }
+    - { weekday: saturday, phase: morning, level: 0.45 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.15 }
+  baseRisk: 0.15
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:bookshop-names}'
+  descriptionPool:
+    - Shelves lean overhead on every side; a bell on the door and dust turning in the window light.
+    - Stacks of unsorted volumes crowd the aisle to a single lane back to the proprietor's desk under a shaded lamp.
+    - Leather spines and foxed paper, maps and old sailing directions; a book cipher could hide a dozen keys here.
+    - The window has not changed in a decade — a globe, a run of yellowed almanacs, and a Levant chart no one buys.
+  atmosphereTags: [dusty, quiet, bookish, discreet, public]
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+
+# --- 5. Hotel bar ----------------------------------------------------------
+- id: hotel-bar
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: tuesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: wednesday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: thursday, openPhase: afternoon, closePhase: late-night }
+    - { weekday: friday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: afternoon, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: evening, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: evening, level: 0.5 }
+    - { weekday: friday, phase: night, level: 0.9 }
+    - { weekday: saturday, phase: night, level: 0.9 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.1 }
+  baseRisk: 0.3
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:bar-names} at {pick:hotel-names}'
+  descriptionPool:
+    - A low-lit bar of polished walnut and brass, a view of the lit-up square through the long windows and a piano turning over something slow.
+    - Correspondents, ship's agents and liaison officers hold the stools; the barman pours and forgets with equal skill.
+    - Cut glass and cigarette haze; every third conversation drops to a murmur as you pass, and resumes behind you.
+    - Deep leather chairs around low tables, a page in buttons at the door, and the talk in four languages and none of it quite the truth.
+  atmosphereTags: [cosmopolitan, smoky, loose-tongued, watched, public]
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+
+# --- 6. Giardino pubblico (public garden / seafront walk) ------------------
+# Bare id `park` so the core Plot Templates' park traces bind to the city's
+# public garden and seafront walk.
+- id: park
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.3 }
+    - { weekday: monday, phase: afternoon, level: 0.5 }
+    - { weekday: sunday, phase: afternoon, level: 0.9 }
+    - { weekday: monday, phase: night, level: 0.1 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.4 }
+    - { weather: bora, crowdMultiplier: 0.2 }
+    - { weather: clear, crowdMultiplier: 1.3 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:garden-names}'
+  descriptionPool:
+    - Gravel paths run between clipped limes and busts of forgotten worthies; benches face the gulf and the light comes hard off the water.
+    - A bandstand stands empty under a flat sky; a pram, a dog, and a man who may or may not be reading his paper.
+    - The seafront promenade runs straight along the water, loud with the evening walk and the gulls, exposed on every side.
+    - A chestnut seller tends his brazier at the gate; the smoke drifts across a row of empty deck chairs.
+  atmosphereTags: [open-air, exposed, meeting-ground, public]
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- 7. Molo / wharf (the Molo Audace and the passenger quays) -------------
+# Bare id `danube-port` so the core Plot Templates' port traces bind to the
+# city's mole and passenger quays (the id is the slice's generic port Type).
+- id: danube-port
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: afternoon, level: 0.6 }
+    - { weekday: sunday, phase: afternoon, level: 0.8 }
+    - { weekday: monday, phase: night, level: 0.2 }
+  weatherModifiers:
+    - { weather: bora, crowdMultiplier: 0.3 }
+    - { weather: fog, crowdMultiplier: 0.7 }
+    - { weather: clear, crowdMultiplier: 1.2 }
+  baseRisk: 0.3
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:wharf-names}'
+  descriptionPool:
+    - A stone mole running straight out into the harbour, the gulf opening on either hand and the city stepped up behind; a place to walk and be seen to walk.
+    - Mooring rings and bollards along the quay, a lighthouse column at the head, and the passenger steamers warped in beam-on to the stone.
+    - Fishermen mend nets along the edge while the Istria boats land their catch; the water slaps the steps and the gulls wheel over the fish.
+    - The last of the evening promenade thins out along the mole; a man at the far end has the whole length of it in view.
+  atmosphereTags: [open-air, exposed, maritime, public]
+  tags: [function:port, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- 8. Free-port warehouse ------------------------------------------------
+- id: magazzino
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, surveil, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: evening }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: evening }
+    - { weekday: thursday, openPhase: early-morning, closePhase: evening }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: morning, closePhase: midday }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.4 }
+    - { weekday: monday, phase: afternoon, level: 0.3 }
+    - { weekday: monday, phase: night, level: 0.05 }
+  weatherModifiers:
+    - { weather: bora, crowdMultiplier: 0.8 }
+  baseRisk: 0.5
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:warehouse-names}'
+  descriptionPool:
+    - A cold free-port shed stacked to the rafters with bonded crates and sacking, a single bulb swinging over the loading door.
+    - Pallets and tarpaulins throw long shadows; somewhere a watchman's wireless plays dance music low.
+    - Coffee, hides and oil drums under the broken skylights; the echo of your own footsteps runs the length of the concrete.
+    - Stencilled cases bound for a dozen ports crowd the bay, their consignee names half painted out.
+  atmosphereTags: [industrial, deserted, risky, concealing]
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+
+# --- 9. Safehouse (rented flat) --------------------------------------------
+- id: appartamento
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.05 }
+    - { weekday: monday, phase: night, level: 0.05 }
+  weatherModifiers: []
+  baseRisk: 0.1
+  allowsDeadDrops: false
+  namePatterns:
+    - Appartamento in {pick:residential}
+    - Camera in {pick:oldtown}
+  descriptionPool:
+    - 'A rented flat kept deliberately dull: a table, two chairs, a bed, and the shutters always half closed against the glare.'
+    - Thin walls and a gas ring; the kind of address a landlady forgets the moment the rent is paid in cash.
+    - A back room up four flights, its one window giving onto a courtyard no one overlooks.
+    - A single lamp, a kettle, a wireless kept low; nothing in the room would survive a second glance as evidence.
+  atmosphereTags: [private, secure, spare, concealed]
+  tags: [function:safehouse, access:private]
+
+# --- 10. Consulate / mission (legation setting) ----------------------------
+# Bare id `embassy` so the core Plot Templates' diplomatic-setting traces bind
+# to the city's consulates and missions.
+- id: embassy
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, cable, wait]
+  openingHours:
+    - { weekday: monday, openPhase: morning, closePhase: afternoon }
+    - { weekday: tuesday, openPhase: morning, closePhase: afternoon }
+    - { weekday: wednesday, openPhase: morning, closePhase: afternoon }
+    - { weekday: thursday, openPhase: morning, closePhase: afternoon }
+    - { weekday: friday, openPhase: morning, closePhase: afternoon }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.5 }
+    - { weekday: monday, phase: midday, level: 0.6 }
+    - { weekday: monday, phase: afternoon, level: 0.4 }
+  weatherModifiers: []
+  baseRisk: 0.25
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:mission-names}'
+  descriptionPool:
+    - A guarded doorway under a flag, a visitors' book, and corridors of frosted glass and typewriter clatter.
+    - Clerks carry files between offices; a porter checks your papers twice before the inner door is unlocked.
+    - High rooms smelling of floor wax and sealing wax, telephones ringing behind closed doors and a staff car idling in the court.
+    - A waiting room of hard chairs and old magazines where petitioners sit for hours under a clerk's indifferent eye.
+  atmosphereTags: [official, guarded, bureaucratic, cover-friendly]
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+
+# --- 11. Stazione Centrale (the main railway terminus) ---------------------
+- id: stazione
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, intercept, wait]
+  openingHours:
+    - { weekday: monday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: dead-of-night, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: dead-of-night, closePhase: dead-of-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.7 }
+    - { weekday: monday, phase: morning, level: 0.8 }
+    - { weekday: monday, phase: evening, level: 0.85 }
+    - { weekday: monday, phase: late-night, level: 0.3 }
+    - { weekday: friday, phase: evening, level: 0.95 }
+  weatherModifiers:
+    - { weather: bora, crowdMultiplier: 1.1 }
+    - { weather: rain, crowdMultiplier: 1.1 }
+  baseRisk: 0.35
+  allowsDeadDrops: true
+  namePatterns:
+    - Stazione Centrale
+    - Stazione Campo Marzio
+  descriptionPool:
+    - A vaulted hall under a sooty glass roof; a departures board clatters and steam drifts along the platforms toward Venice and the north.
+    - Porters wheel trunks past the ticket windows while a loudspeaker calls the Venice and Vienna expresses in two languages.
+    - Benches of waiting travellers, a left-luggage office, and a kiosk where you can watch the whole concourse at once.
+    - Soldiers of the occupation pass under the arrivals board, kitbags on their shoulders, going opposite ways; the left-luggage lockers run a long cold corridor.
+  atmosphereTags: [crowded, transient, anonymous, public, watched]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- 12. The Opicina tramway (rack-and-cable tram up the Karst) ------------
+# Bare id `tram-stop` so the core Plot Templates' tram traces bind to the
+# city's Opicina tramway.
+- id: tram-stop
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: early-morning, level: 0.6 }
+    - { weekday: monday, phase: morning, level: 0.75 }
+    - { weekday: monday, phase: evening, level: 0.7 }
+    - { weekday: sunday, phase: afternoon, level: 0.8 }
+  weatherModifiers:
+    - { weather: bora, crowdMultiplier: 0.6 }
+    - { weather: clear, crowdMultiplier: 1.2 }
+  baseRisk: 0.2
+  allowsDeadDrops: false
+  namePatterns:
+    - Tranvia di Opicina
+    - the Opicina tram at {pick:tram-stops}
+  descriptionPool:
+    - A single green tramcar waiting at the lower terminus, its cable gear ready for the steep pull up the escarpment to the plateau.
+    - The car grinds up the incline on its cable, the gulf dropping away below; at the top the Karst villages and the thin upland air.
+    - A knot of commuters and marketing women crowd the platform at the terminus; the conductor leans out and the bell sounds twice.
+    - The tram climbs between garden walls and limestone outcrops, the whole city and harbour spread out behind through the rear glass.
+  atmosphereTags: [transient, climbing, scenic, public]
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+
+# --- 13. Osteria / buffet (Triestine wine-and-food tavern) -----------------
+- id: osteria
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: midday, closePhase: late-night }
+    - { weekday: tuesday, openPhase: midday, closePhase: late-night }
+    - { weekday: wednesday, openPhase: midday, closePhase: late-night }
+    - { weekday: thursday, openPhase: midday, closePhase: late-night }
+    - { weekday: friday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: midday, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: midday, level: 0.6 }
+    - { weekday: monday, phase: evening, level: 0.6 }
+    - { weekday: friday, phase: night, level: 0.85 }
+    - { weekday: saturday, phase: night, level: 0.9 }
+  weatherModifiers:
+    - { weather: bora, crowdMultiplier: 1.2 }
+    - { weather: rain, crowdMultiplier: 1.1 }
+  baseRisk: 0.2
+  allowsDeadDrops: false
+  namePatterns:
+    - '{pick:osteria-names}'
+  descriptionPool:
+    - A low vaulted room off a side lane, trestle benches and a chalked board of the day's wine, loud with dockers and railwaymen.
+    - Carafes of dark Istrian wine and plates of boiled pork and sauerkraut come and go; the talk is loud and the faces blur pleasantly.
+    - A back room behind the bar where cards are played and a quiet word in the din goes unremarked.
+    - The buffet by the market, standing room only at noon, a slab of ham on the counter and the trams clanging past the open door.
+  atmosphereTags: [convivial, loud, loose-tongued, crowded, public]
+  tags: [venue:tavern, function:hotel-bar, function:meeting-spot, access:public]
+
+# --- 14. Cinema ------------------------------------------------------------
+- id: cinema
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, arrange-meeting, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: midday, closePhase: late-night }
+    - { weekday: tuesday, openPhase: midday, closePhase: late-night }
+    - { weekday: wednesday, openPhase: midday, closePhase: late-night }
+    - { weekday: thursday, openPhase: midday, closePhase: late-night }
+    - { weekday: friday, openPhase: midday, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: morning, closePhase: dead-of-night }
+    - { weekday: sunday, openPhase: morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: afternoon, level: 0.3 }
+    - { weekday: friday, phase: evening, level: 0.8 }
+    - { weekday: saturday, phase: afternoon, level: 0.8 }
+    - { weekday: sunday, phase: afternoon, level: 0.85 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 1.3 }
+    - { weather: bora, crowdMultiplier: 1.25 }
+    - { weather: clear, crowdMultiplier: 0.85 }
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:cinema-names}'
+  descriptionPool:
+    - A tiled foyer with a glass box office, lobby cards under lights, and the muffled roar of the feature within.
+    - Plush seats in rows sloping to a screen; the projector beam cuts the smoke and the newsreel drones its headlines in two languages.
+    - A gilt proscenium, a velvet curtain, and an usherette with a torch patrolling the dark aisle for the latecomers.
+    - A weekday matinee half empty, where two strangers can sit a seat apart in the dark and never be remarked on.
+  atmosphereTags: [dark, anonymous, meeting-ground, crowded, public]
+  tags: [function:cinema, function:meeting-spot, function:dead-drop-site, access:public]
+
+# --- 15. Mercato (covered produce market) ----------------------------------
+- id: mercato
+  public: true
+  allowedActions: [travel, talk, approach, confront, turn-agent, surveil, follow, service-drop, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: thursday, openPhase: early-morning, closePhase: afternoon }
+    - { weekday: friday, openPhase: early-morning, closePhase: evening }
+    - { weekday: saturday, openPhase: early-morning, closePhase: evening }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.9 }
+    - { weekday: monday, phase: midday, level: 0.7 }
+    - { weekday: saturday, phase: morning, level: 0.95 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.6 }
+    - { weather: bora, crowdMultiplier: 0.5 }
+    - { weather: clear, crowdMultiplier: 1.2 }
+  baseRisk: 0.25
+  allowsDeadDrops: true
+  namePatterns:
+    - '{pick:market-names}'
+  descriptionPool:
+    - Rows of canvas-awned stalls under a hubbub of haggling; the gutters run with ice-melt and fish water and cabbage leaves.
+    - Barrows of Istrian vegetables and winter apples, a fish slab bright with the morning catch, and a flower stall against the grey.
+    - The crowd packs the lanes between the trestles; a careful man could pass a parcel and never break stride.
+    - The covered hall beyond the open stalls, its glass roof dripping, loud with the clatter of the trade and the weighing scales.
+  atmosphereTags: [crowded, bustling, everyday, concealing, public]
+  tags: [venue:market, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+
+# --- 16. The Station (the player's own headquarters) -----------------------
+- id: ufficio-stazione
+  public: false
+  allowedActions: [travel, talk, confront, turn-agent, arrange-meeting, read, intercept, cable, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: dead-of-night }
+    - { weekday: saturday, openPhase: morning, closePhase: night }
+    - { weekday: sunday, openPhase: morning, closePhase: night }
+  crowdCurve:
+    - { weekday: monday, phase: morning, level: 0.4 }
+    - { weekday: monday, phase: afternoon, level: 0.4 }
+    - { weekday: monday, phase: night, level: 0.15 }
+  weatherModifiers: []
+  baseRisk: 0.05
+  allowsDeadDrops: false
+  namePatterns:
+    - the Station
+  descriptionPool:
+    - 'A floor of locked offices behind an unmarked door above the square: steel cabinets, a cipher room, and a teleprinter chattering.'
+    - Blackout curtains, a safe, and the smell of carbon paper; the duty officer logs every entry by hand.
+    - Maps of the two zones on the wall, a bank of card indexes, and a wireless set humming in the corner room.
+    - A kettle on the gas ring, a wall of pigeonholes, and a window painted over so no one across the street can read the room.
+  atmosphereTags: [secure, official, home-ground, concealed]
+  tags: [venue:station-office, function:station, access:private]

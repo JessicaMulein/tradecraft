@@ -1,0 +1,80 @@
+# personas/british.yaml — British occupation persona library.
+#
+# Legation and control-commission staff in the British Sector, plus the odd
+# correspondent. Names are mid-century British given/family names in fictional
+# combinations; none names a real person of the period. Name pools are split by
+# culture AND gender (Requirement 1.7).
+
+id: british
+namePools:
+  - culture: british
+    gender: male
+    given:
+      - Nigel
+      - Geoffrey
+      - Reginald
+      - Cedric
+      - Hugh
+      - Alistair
+      - Clive
+      - Basil
+      - Rupert
+      - Desmond
+      - Leonard
+      - Neville
+    family:
+      - Pemberton
+      - Fairbanks
+      - Whitcombe
+      - Allardyce
+      - Hargreaves
+      - Thorne
+      - Marchmont
+      - Carlisle
+      - Fenwick
+      - Loxley
+      - Ashworth
+      - Branscombe
+  - culture: british
+    gender: female
+    given:
+      - Margaret
+      - Rosemary
+      - Daphne
+      - Pamela
+      - Celia
+      - Vivien
+      - Joan
+      - Audrey
+      - Marjorie
+      - Sylvia
+    family:
+      - Pemberton
+      - Fairbanks
+      - Whitcombe
+      - Allardyce
+      - Hargreaves
+      - Thorne
+      - Marchmont
+      - Carlisle
+      - Fenwick
+      - Loxley
+      - Ashworth
+      - Branscombe
+voiceTraits:
+  - clipped understatement, never says the whole thing
+  - deflects with dry humour when cornered
+  - correct and a little cold with strangers
+  - treats enthusiasm as faintly vulgar
+  - weighs each word as though it costs them
+mannerisms:
+  - polishes spectacles to buy time
+  - raises one eyebrow instead of answering
+  - folds the newspaper to a precise quarter
+  - lets a silence run until the other party fills it
+backgrounds:
+  - Posted to Vienna from a desk in the control commission.
+  - Keeps rooms in the British Sector and a club membership back in London.
+  - Served through the war and speaks of none of it.
+  - Correspondent for a London paper, filing more than admitted to.
+  - Counts the months until a posting somewhere warmer.

@@ -1,0 +1,91 @@
+# Rumour distortion templates for the `core` pack.
+#
+# A Rumour template takes one of the vocabulary predicates (predicates.yaml) and
+# the distortions that turn a true — or wholly invented — fact into the garbled
+# belief a Background NPC passes along (Requirements 29.2, 31.7). The player's
+# job is to notice that a rumour has drifted: the wrong person named, the day
+# slid, a target conjured from nothing.
+#
+# Each entry validates against RumourTemplateSchema in
+# packages/content/src/lib/kinds.ts. `predicate` is one of the existing
+# UPPER_SNAKE_CASE predicate ids; `distortions` is a non-empty list drawn from
+# swap-subject | shift-day | invent-target; `shiftDays` only matters where a
+# shift-day distortion applies and bounds how far the day can slide.
+#
+# Content guardrail (Requirement 29.3): rumours name no real people and depict
+# no real atrocities — they are café gossip about who met whom and where.
+
+# A meeting rumour with the wrong person at its centre: café talk puts the
+# wrong face at the table.
+- id: rumour-swapped-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject]
+
+# A sighting whose day has drifted a little in the retelling.
+- id: rumour-drifted-sighting
+  predicate: LOCATED_AT
+  distortions: [shift-day]
+  shiftDays: 2
+
+# "Someone said he works for them" — the wrong employer, pinned on the wrong
+# person, as gossip hardens into assumption.
+- id: rumour-mistaken-employer
+  predicate: WORKS_FOR
+  distortions: [swap-subject]
+
+# A travel rumour that both names the wrong traveller and slides the day.
+- id: rumour-garbled-journey
+  predicate: TRAVELS_TO
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3
+
+# An invented plot: the street insists someone is "planning something", a
+# target conjured where there is none.
+- id: rumour-invented-plot
+  predicate: PLANS
+  distortions: [invent-target]
+
+# A supply rumour with an imagined recipient — who is said to be slipping goods
+# to whom, with the recipient made up entirely.
+- id: rumour-phantom-supply
+  predicate: SUPPLIES
+  distortions: [invent-target]
+
+# A membership rumour pinned on the wrong person: the classic "I heard he's one
+# of them."
+- id: rumour-mistaken-member
+  predicate: MEMBER_OF
+  distortions: [swap-subject]
+
+# A fully garbled target rumour: wrong accuser, invented victim, day slipped —
+# the kind of third-hand story that falls apart on checking.
+- id: rumour-tangled-target
+  predicate: TARGETS
+  distortions: [swap-subject, invent-target, shift-day]
+  shiftDays: 4
+
+# A reporting rumour pinned on the wrong person: café talk puts the wrong face
+# at the end of a chain of command.
+- id: rumour-mistaken-handler
+  predicate: REPORTS_TO
+  distortions: [swap-subject]
+
+# A channel rumour whose day has drifted — "I heard the wireless was on
+# Tuesday, or was it Thursday?"
+- id: rumour-drifted-signal
+  predicate: USES_CHANNEL
+  distortions: [shift-day]
+  shiftDays: 2
+
+# A knowing rumour with an invented acquaintance: the street insists someone is
+# "in with" a person who was never there.
+- id: rumour-phantom-acquaintance
+  predicate: KNOWS
+  distortions: [invent-target]
+
+# A fully garbled meeting rumour: wrong person, wrong day — the third-hand story
+# of a rendezvous that falls apart on checking.
+- id: rumour-tangled-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3

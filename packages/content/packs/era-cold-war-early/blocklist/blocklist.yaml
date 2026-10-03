@@ -1,0 +1,358 @@
+# blocklist.yaml — the Real-Person Blocklist for the early Cold War, 1945–1965.
+#
+# Validates against BlocklistEntrySchema (packages/content/src/kinds/era.ts):
+#   { name, familyOnly?: boolean, note }
+#
+# This is the Real-Person Blocklist: notable real individuals of the period
+# whose names NO generated NPC name, authored character, cover identity, service
+# name or document text may use. The linter's CE-REALPERSON rule (task 5.3)
+# rejects any content that matches an entry, and the generator's `nameNpc`
+# redraws a drawn name that is blocklisted (task 3.4). The point of this list is
+# EXCLUSION: these real people appear here so that the game's fiction never
+# accidentally puts words in a real statesman's, officer's or author's mouth, or
+# names a fictional agent after one. All people and organisations named in the
+# shipped packs are fictional; this list is how that invariant is enforced.
+#
+# `familyOnly: true` marks an entry whose family name alone is distinctive
+# enough that the surname by itself must be rejected (for example a head of
+# government whose surname is unmistakable). An entry without `familyOnly` is
+# matched on the full name; a common given name on its own is not blocked, so
+# ordinary period first names remain available to the namer.
+#
+# The list covers the heads of state and government, foreign ministers, senior
+# military and intelligence figures, and the most prominent scientists, writers
+# and public figures a 1945–1965 European document might brush against. It is a
+# review aid, not an exhaustive census; a reviewer adds any further real name a
+# draft happens to collide with.
+
+# =========================================================================
+# HEADS OF STATE & GOVERNMENT — the major powers
+# =========================================================================
+
+- name: Harry Truman
+  familyOnly: true
+  note: 'US President 1945–1953. Exclude the surname; period head of government.'
+
+- name: Dwight Eisenhower
+  familyOnly: true
+  note: 'US President 1953–1961 and wartime Supreme Commander. Exclude the surname.'
+
+- name: John F. Kennedy
+  familyOnly: true
+  note: 'US President 1961–1963. Exclude; distinctive surname.'
+
+- name: Lyndon Johnson
+  familyOnly: true
+  note: 'US President from 1963. Exclude the surname.'
+
+- name: Winston Churchill
+  familyOnly: true
+  note: 'UK Prime Minister 1940–1945 and 1951–1955. Exclude the surname.'
+
+- name: Clement Attlee
+  familyOnly: true
+  note: 'UK Prime Minister 1945–1951. Exclude the surname.'
+
+- name: Anthony Eden
+  familyOnly: true
+  note: 'UK Prime Minister 1955–1957 and wartime Foreign Secretary. Exclude.'
+
+- name: Harold Macmillan
+  familyOnly: true
+  note: 'UK Prime Minister 1957–1963. Exclude the surname.'
+
+- name: Alec Douglas-Home
+  familyOnly: true
+  note: 'UK Prime Minister 1963–1964. Exclude the surname.'
+
+- name: Charles de Gaulle
+  familyOnly: true
+  note: 'The wartime Free French leader and President from 1959. Exclude the surname.'
+
+- name: Georges Bidault
+  note: 'French Prime Minister and Foreign Minister of the period. Exclude.'
+
+- name: Robert Schuman
+  familyOnly: true
+  note: 'French statesman, architect of early European integration. Exclude.'
+
+- name: Konrad Adenauer
+  familyOnly: true
+  note: 'West German Chancellor 1949–1963. Exclude the surname.'
+
+- name: Ludwig Erhard
+  familyOnly: true
+  note: 'West German economics minister and Chancellor from 1963. Exclude.'
+
+- name: Walter Ulbricht
+  familyOnly: true
+  note: 'East German leader of the period. Exclude the surname.'
+
+- name: Wilhelm Pieck
+  note: 'East German President 1949–1960. Exclude the full name.'
+
+- name: Josef Stalin
+  familyOnly: true
+  note: 'Soviet leader to 1953. Exclude the surname and its variant spellings.'
+
+- name: Nikita Khrushchev
+  familyOnly: true
+  note: 'Soviet leader of the later period. Exclude the surname.'
+
+- name: Georgy Malenkov
+  familyOnly: true
+  note: 'Soviet premier in the mid-1950s. Exclude the surname.'
+
+- name: Nikolai Bulganin
+  familyOnly: true
+  note: 'Soviet premier of the mid-1950s. Exclude the surname.'
+
+- name: Leonid Brezhnev
+  familyOnly: true
+  note: 'Rising Soviet figure of the period. Exclude the surname.'
+
+- name: Karl Renner
+  note: 'Austrian Chancellor and President 1945–1950. Exclude the full name.'
+
+- name: Leopold Figl
+  note: 'Austrian Chancellor 1945–1953. Exclude the full name.'
+
+- name: Julius Raab
+  note: 'Austrian Chancellor 1953–1961. Exclude the full name.'
+
+- name: Theodor Körner
+  note: 'Austrian President and former Vienna mayor. Exclude the full name.'
+
+- name: Alcide De Gasperi
+  familyOnly: true
+  note: 'Italian Prime Minister of the postwar years. Exclude the surname.'
+
+- name: Luigi Einaudi
+  note: 'Italian President 1948–1955. Exclude the full name.'
+
+- name: Giovanni Gronchi
+  note: 'Italian President 1955–1962. Exclude the full name.'
+
+- name: António de Oliveira Salazar
+  familyOnly: true
+  note: 'The long-serving Portuguese premier of the period. Exclude the surname.'
+
+- name: Francisco Franco
+  familyOnly: true
+  note: 'Spanish head of state of the period. Exclude the surname.'
+
+- name: İsmet İnönü
+  note: 'Turkish President and later Prime Minister. Exclude the full name.'
+
+- name: Celâl Bayar
+  note: 'Turkish President 1950–1960. Exclude the full name.'
+
+- name: Adnan Menderes
+  familyOnly: true
+  note: 'Turkish Prime Minister 1950–1960. Exclude the surname.'
+
+- name: Josip Broz Tito
+  familyOnly: true
+  note: 'The Yugoslav head of state of the period. Exclude the adopted surname.'
+
+- name: Edvard Beneš
+  familyOnly: true
+  note: 'Czechoslovak President to 1948. Exclude the surname.'
+
+- name: Klement Gottwald
+  familyOnly: true
+  note: 'Czechoslovak communist leader and President. Exclude the surname.'
+
+- name: Bolesław Bierut
+  note: 'Polish head of state of the period. Exclude the full name.'
+
+- name: Władysław Gomułka
+  familyOnly: true
+  note: 'Polish communist leader. Exclude the surname.'
+
+- name: Mátyás Rákosi
+  familyOnly: true
+  note: 'Hungarian communist leader. Exclude the surname.'
+
+- name: Imre Nagy
+  note: 'Hungarian Prime Minister of the 1956 uprising. Exclude the full name.'
+
+- name: János Kádár
+  familyOnly: true
+  note: 'Hungarian leader from 1956. Exclude the surname.'
+
+# =========================================================================
+# FOREIGN MINISTERS & SENIOR DIPLOMATS
+# =========================================================================
+
+- name: George Marshall
+  familyOnly: true
+  note: 'US Secretary of State and general. Exclude the surname.'
+
+- name: Dean Acheson
+  familyOnly: true
+  note: 'US Secretary of State 1949–1953. Exclude the surname.'
+
+- name: John Foster Dulles
+  familyOnly: true
+  note: 'US Secretary of State 1953–1959, of the American spymaster brothers. Exclude the surname.'
+
+- name: Dean Rusk
+  note: 'US Secretary of State from 1961. Exclude the full name.'
+
+- name: Ernest Bevin
+  familyOnly: true
+  note: 'UK Foreign Secretary 1945–1951. Exclude the surname.'
+
+- name: Vyacheslav Molotov
+  familyOnly: true
+  note: 'Soviet Foreign Minister of the period. Exclude the surname.'
+
+- name: Andrei Gromyko
+  familyOnly: true
+  note: 'Soviet diplomat and Foreign Minister. Exclude the surname.'
+
+- name: Andrei Vyshinsky
+  familyOnly: true
+  note: 'Soviet Foreign Minister and prosecutor. Exclude the surname.'
+
+- name: Dag Hammarskjöld
+  familyOnly: true
+  note: 'UN Secretary-General 1953–1961. Exclude the surname.'
+
+- name: Trygve Lie
+  note: 'First UN Secretary-General. Exclude the full name.'
+
+# =========================================================================
+# MILITARY & INTELLIGENCE FIGURES
+# =========================================================================
+
+- name: Georgy Zhukov
+  familyOnly: true
+  note: 'Soviet marshal and occupation commander. Exclude the surname.'
+
+- name: Lucius Clay
+  note: 'US military governor in occupied Germany. Exclude the full name.'
+
+- name: Bernard Montgomery
+  familyOnly: true
+  note: 'British field marshal and occupation commander. Exclude the surname.'
+
+- name: Mark Clark
+  note: 'US general and occupation commander in Austria. Exclude the full name.'
+
+- name: Lavrentiy Beria
+  familyOnly: true
+  note: 'Soviet security chief to 1953. Exclude the surname.'
+
+- name: Allen Dulles
+  familyOnly: true
+  note: 'US intelligence director of the period. Exclude the surname.'
+
+- name: Reinhard Gehlen
+  familyOnly: true
+  note: 'West German intelligence chief. Exclude the surname.'
+
+- name: Markus Wolf
+  note: 'East German foreign-intelligence chief. Exclude the full name.'
+
+- name: Kim Philby
+  familyOnly: true
+  note: 'British officer exposed as a Soviet agent. Exclude the surname.'
+
+- name: Guy Burgess
+  note: 'British diplomat and Soviet agent. Exclude the full name.'
+
+- name: Donald Maclean
+  note: 'British diplomat and Soviet agent. Exclude the full name.'
+
+- name: Rudolf Abel
+  note: 'Soviet illegal officer arrested in the US. Exclude the full name.'
+
+# =========================================================================
+# MAYORS & CITY FIGURES (slice cities)
+# =========================================================================
+
+- name: Ernst Reuter
+  note: 'Mayor of West Berlin during the blockade. Exclude the full name.'
+
+- name: Willy Brandt
+  note: 'Governing Mayor of West Berlin from 1957. Exclude the full name.'
+
+- name: Otto Suhr
+  note: 'Governing Mayor of West Berlin in the mid-1950s. Exclude the full name.'
+
+- name: Franz Jonas
+  note: 'Mayor of Vienna and later Austrian President. Exclude the full name.'
+
+- name: Fatin Rüştü Zorlu
+  note: 'Turkish foreign minister of the period. Exclude the full name.'
+
+# =========================================================================
+# SCIENTISTS, THINKERS & PUBLIC FIGURES
+# =========================================================================
+
+- name: Albert Einstein
+  familyOnly: true
+  note: 'Physicist, alive to 1955. Exclude the surname.'
+
+- name: Robert Oppenheimer
+  familyOnly: true
+  note: 'American physicist of the period. Exclude the surname.'
+
+- name: Niels Bohr
+  note: 'Danish physicist. Exclude the full name.'
+
+- name: Werner Heisenberg
+  familyOnly: true
+  note: 'German physicist. Exclude the surname.'
+
+- name: Jonas Salk
+  note: 'Developer of a mid-1950s medical breakthrough. Exclude the full name.'
+
+- name: Francis Crick
+  note: 'Co-author of a 1953 molecular-biology discovery. Exclude the full name.'
+
+- name: James Watson
+  note: 'Co-author of a 1953 molecular-biology discovery. Exclude the full name.'
+
+- name: Wernher von Braun
+  familyOnly: true
+  note: 'The German rocket engineer of the period. Exclude the surname.'
+
+- name: Jean-Paul Sartre
+  familyOnly: true
+  note: 'French philosopher and writer of the period. Exclude the surname.'
+
+- name: Albert Camus
+  familyOnly: true
+  note: 'French writer, Nobel laureate 1957. Exclude the surname.'
+
+- name: Thomas Mann
+  note: 'German novelist, alive to 1955. Exclude the full name.'
+
+- name: Bertolt Brecht
+  familyOnly: true
+  note: 'German playwright in East Berlin, alive to 1956. Exclude the surname.'
+
+- name: Boris Pasternak
+  familyOnly: true
+  note: 'Soviet writer, Nobel laureate 1958. Exclude the surname.'
+
+- name: Dmitri Shostakovich
+  familyOnly: true
+  note: 'Soviet composer of the period. Exclude the surname.'
+
+- name: Pablo Picasso
+  familyOnly: true
+  note: 'Artist of the period. Exclude the surname.'
+
+- name: Graham Greene
+  note: 'British novelist of the period. Exclude the full name.'
+
+- name: Nâzım Hikmet
+  note: 'Turkish poet of the period. Exclude the full name.'
+
+- name: Fernando Pessoa
+  familyOnly: true
+  note: 'Portuguese poet (died 1935; works prominent in the period). Exclude.'

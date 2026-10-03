@@ -1,0 +1,367 @@
+# culture-groups/sephardic.yaml — the Sephardic (Ladino-speaking) group.
+#
+# A CultureGroup (CultureGroupSchema) for the Judeo-Spanish (Ladino-speaking)
+# Sephardic community of the eastern Mediterranean — Istanbul, Salonica and the
+# wider Levant. Names are given in Latin transliteration for the slice renderer
+# and Specifics Guard. Sephardic surnames are not gender-inflected, so family
+# names are plain strings and the Naming Rule is the generic {given} {family}.
+# Quantity (Req 11.4): at least 100 given and 100 family names, at least 300
+# distinct total. All names are generic, common names of the community in
+# fictional use; none names a real individual.
+- id: sephardic
+  name: Sephardic (Ladino-speaking)
+  languages:
+    - lad
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Rika
+      - Sara
+      - Rachel
+      - Esther
+      - Buena
+      - Luna
+      - Reina
+      - Mazal
+      - Gracia
+      - Dona
+      - Clara
+      - Oro
+      - Palomba
+      - Simha
+      - Vida
+      - Streya
+      - Behora
+      - Djoya
+      - Fortuna
+      - Kaden
+      - Merkada
+      - Perla
+      - Rozina
+      - Sol
+      - Tamar
+      - Vitoria
+      - Yafa
+      - Zimbul
+      - Alegra
+      - Bulisa
+      - Dudu
+      - Ermoza
+      - Flor
+      - Gentil
+      - Hanula
+      - Imrohi
+      - Jamila
+      - Kiara
+      - Lea
+      - Miriam
+      - Ninfa
+      - Orovida
+      - Preciada
+      - Rubisa
+      - Senora
+      - Tia
+      - Ventura
+      - Yuda
+      - Zafira
+      - Benvenida
+      - Caden
+      - Djentil
+      - Estrella
+      - Floreta
+      - Grasya
+      - Hermoza
+      - Ida
+      - Mazaltov
+      - Nisim
+      - Oroza
+    m:
+      - Avram
+      - Yitzhak
+      - Yaakov
+      - Moshe
+      - David
+      - Shelomo
+      - Nissim
+      - Haim
+      - Eliyahu
+      - Rafael
+      - Yosef
+      - Shmuel
+      - Behor
+      - Menahem
+      - Mordehai
+      - Nessim
+      - Yuda
+      - Bohor
+      - Chelebi
+      - Daniel
+      - Eliezer
+      - Gavriel
+      - Hanania
+      - Isak
+      - Jako
+      - Kemal
+      - Leon
+      - Mushon
+      - Nahman
+      - Ovadia
+      - Pinhas
+      - Refael
+      - Salamon
+      - Tovia
+      - Uziel
+      - Vidal
+      - Yehuda
+      - Zaki
+      - Aron
+      - Baruh
+      - Chico
+      - Davico
+      - Eli
+      - Felipe
+      - Gabay
+      - Hizkiya
+      - Isak-Bey
+      - Jak
+      - Koen
+      - Levi
+      - Mair
+      - Nahum
+      - Ovadya
+      - Perets
+      - Robi
+      - Sabetay
+      - Tzadik
+      - Vitali
+      - Yomtov
+      - Zadok
+  family:
+    - Cohen
+    - Levi
+    - Benveniste
+    - Franco
+    - Nahmias
+    - Eskenazi
+    - Alhadeff
+    - Behar
+    - Carasso
+    - Danon
+    - Eskinazi
+    - Farhi
+    - Gabbai
+    - Hazan
+    - Israel
+    - Juda
+    - Kalderon
+    - Levy
+    - Mizrahi
+    - Nahum
+    - Ovadia
+    - Perahya
+    - Rousso
+    - Sarfati
+    - Tarica
+    - Uziel
+    - Varon
+    - Yeshurun
+    - Zonana
+    - Abravanel
+    - Barzilai
+    - Castro
+    - Dassa
+    - Elnecave
+    - Fresco
+    - Galante
+    - Habib
+    - Ibrahimi
+    - Jerusalmi
+    - Kamhi
+    - Lombroso
+    - Modiano
+    - Navarro
+    - Ojalvo
+    - Pardo
+    - Querido
+    - Romano
+    - Saban
+    - Taranto
+    - Ventura
+    - Yahni
+    - Zadik
+    - Albala
+    - Bejerano
+    - Camondo
+    - Delmedigo
+    - Errera
+    - Fintz
+    - Gategno
+    - Hassid
+    - Isaac
+    - Jahon
+    - Kapon
+    - Leon
+    - Molho
+    - Niego
+    - Onesti
+    - Pinto
+    - Russo
+    - Saltiel
+    - Tiano
+    - Usuel
+    - Varsano
+    - Yoel
+    - Zaccai
+    - Amon
+    - Bivas
+    - Covo
+    - Djivre
+    - Eshkenazi
+    - Finzi
+    - Gaon
+    - Hemsi
+    - Ischia
+    - Judah
+    - Koenca
+    - Lousada
+    - Matalon
+    - Negrin
+    - Ortega
+    - Policar
+    - Revah
+    - Sidis
+    - Tagger
+    - Ussishkin
+    - Valero
+    - Yacoel
+    - Zafrani
+    - Adato
+    - Beraha
+    - Calderon
+    - Danon-Levi
+    - Eskenazy
+    - Franses
+    - Gabbay-Russo
+    - Habif
+    - Israel-Cohen
+    - Juda-Behar
+    - Kaneti
+    - Levi-Haim
+    - Mitrani
+    - Nahmias-Franco
+    - Ovadiah
+    - Pardo-Roditi
+    - Querido-Russo
+    - Rodrik
+    - Saporta
+    - Treves
+    - Uziely
+    - Varsano-Levi
+    - Yahya
+    - Zacuto
+    - Abuaf
+    - Baruch
+    - Chikurel
+    - Dassa-Cohen
+    - Elkana
+    - Fereres
+    - Geron
+    - Haleva
+    - Ischakov
+    - Jesua
+    - Kalvo
+    - Lerea
+    - Malki
+    - Nissim-Levi
+    - Onnen
+    - Pinhas-Levi
+    - Russo-Pardo
+    - Sides
+    - Tarablus
+    - Ventura-Franco
+    - Yoli
+    - Zonana-Behar
+    - Alalouf
+    - Benforado
+    - Covo-Levi
+    - Dentes
+    - Eshkenazy
+    - Finci
+    - Gategno-Russo
+    - Hazan-Behar
+    - Israelian
+    - Jahon-Levi
+    - Kapuano
+    - Lousada-Cohen
+    - Matarasso
+    - Negrin-Levi
+    - Ovadya-Franco
+    - Perahia-Levi
+    - Rousso-Behar
+    - Sadik
+    - Tazartes
+    - Uziel-Franco
+    - Vidal-Cohen
+    - Yacar
+    - Zafrani-Levi
+    - Alfandari
+    - Besso
+    - Camhi
+    - Delmedico
+    - Eskinazy-Behar
+    - Fresco-Levi
+    - Gormezano
+    - Hassan
+    - Israel-Franco
+    - Juda-Russo
+    - Koenca-Levi
+    - Lousada-Behar
+    - Matalon-Cohen
+  voiceTraits:
+    - old-world courteous, laced with Ladino proverbs
+    - weighs words as carefully as coin
+    - treads lightly around anything the state might hear
+    - warms to a shared language or a shared town
+    - softens hard news with a blessing
+  mannerisms:
+    - blesses the house before raising business
+    - counts stock twice out of long habit
+    - drops a Ladino refrain to close a bargain
+    - keeps the shop ledger in a locked drawer
+    - touches the doorpost on the way out
+  backgrounds:
+    - text: Keeps a textile shop in the market and trades across three borders by letter.
+      tags: []
+    - text: Clerks for a trading house and keeps the correspondence in Ladino and French.
+      tags: []
+    - text: Deals in haberdashery and knows which suppliers take payment in gold.
+      tags: []
+    - text: Teaches at the community school and tends its old prayer books.
+      tags: []
+    - text: Keeps the accounts for a tobacco exporter and the family's older debts.
+      tags: []
+    - text: Mends watches in a stall by the gate and hears the quarter's business.
+      tags: []
+    - text: Settled in the city after the war scattered the old community.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Imports thread and buttons and settles accounts in whatever currency holds.
+      tags: []
+    - text: Runs a small lending counter the merchants trust and the police watch.
+      tags: []
+    - text: Interprets at the exchange and carries news between the merchant houses.
+      tags: []
+    - text: Keeps a stall of silks and remnants that supplies the quarter's tailors.
+      tags: []
+    - text: Trades in coffee and spices and settles with partners in three ports.
+      tags: []
+    - text: Runs a printing house that sets Ladino, French and the local script.
+      tags: []
+    - text: Keeps a pawnshop the hard-up gentry visit by the side door.
+      tags: []
+    - text: Deals in cloth of gold and knows which brides' families still pay in coin.
+      tags: []
+    - text: Clerks for a grain merchant and reads the sailings before the broker does.
+      tags: []

@@ -1,0 +1,69 @@
+# newspapers/newspapers.yaml — the fictional Istanbul mastheads (task 9.6).
+#
+# Each validates against NewspaperSchema (packages/content/src/kinds/city.ts):
+#   { id, city, masthead, language, stance, register, days, price, soldAt,
+#     years? }.
+#
+# `soldAt` is a Tag Query over Location Effective Tags — where the edition is
+# got. The vendor Tags the Istanbul Location Types carry are
+# `function:newspaper-outlet` (the kiosk, the station) and the public meeting
+# places where a paper is read; a query of `[function:newspaper-outlet]` binds
+# at the gazete-bayii kiosk and the gar terminus, so every masthead resolves.
+# `price` is in the city's currency subunit convention (kuruş); a 1950s Istanbul
+# daily cost a few kuruş. `days` are the weekdays the paper prints.
+#
+# ALL MASTHEADS ARE FICTIONAL. No real Istanbul newspaper of the period (and no
+# real editor, proprietor or columnist) is named. The city had a genuinely
+# polyglot press — Turkish dailies, a French-language paper for Pera and the
+# consulates, Greek and Armenian community sheets — and these invented titles
+# stand in for that spread without impersonating any real publication.
+
+# --- 1. The general Turkish daily -------------------------------------------
+- id: bogazici-postasi
+  city: istanbul
+  masthead: Boğaziçi Postası
+  language: Turkish
+  stance: independent, cautiously pro-government
+  register: a broad popular daily of city news, shipping and the courts
+  days: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+  price: 10
+  soldAt: [function:newspaper-outlet]
+
+# --- 2. The French-language Pera paper --------------------------------------
+# The paper of the consulates, the grand hotels and the Levantine business
+# houses — read along the Grande Rue and in every Pera hotel bar.
+- id: le-courrier-du-levant
+  city: istanbul
+  masthead: Le Courrier du Levant
+  language: French
+  stance: liberal, cosmopolitan, studiously neutral
+  register: a French-language daily of diplomacy, commerce and society for Pera
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 15
+  soldAt: [function:newspaper-outlet]
+
+# --- 3. The commercial & shipping sheet -------------------------------------
+# The money-changers' and shipping agents' paper of Galata: rates, manifests,
+# arrivals and sailings, read on the quays and in the bazaar hans.
+- id: galata-ticaret-gazetesi
+  city: istanbul
+  masthead: Galata Ticaret Gazetesi
+  language: Turkish
+  stance: mercantile, non-political
+  register: a commercial sheet of exchange rates, cargoes and sailings
+  days: [monday, tuesday, wednesday, thursday, friday]
+  price: 8
+  soldAt: [function:newspaper-outlet]
+
+# --- 4. The evening picture-and-gossip paper --------------------------------
+# A lively evening sheet of serials, cinema notices and café gossip, hawked at
+# the ferry piers to the homebound crowd.
+- id: aksam-yildizi
+  city: istanbul
+  masthead: Akşam Yıldızı
+  language: Turkish
+  stance: populist, sensational within limits
+  register: an evening paper of serials, sport, cinema and city gossip
+  days: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+  price: 10
+  soldAt: [function:newspaper-outlet]

@@ -1,0 +1,52 @@
+# The lib-archetypes Library Pack manifest (content-expansion task 8.3).
+#
+# A Library Pack supplies the shared archetype roster the World Generator stamps
+# Principal and Background NPCs from (Req 6.2, 11.5). Archetypes are not
+# City-Scoped: any City Pack a scenario loads draws on this roster, and each
+# archetype's Tag Query schedule binds against whichever city is instantiated.
+#
+# This pack ships two groups:
+#
+#   * At least 40 civilian archetypes drawn from the background life of an
+#     early-Cold-War European city — dockworker, tram conductor, café waiter,
+#     émigré bookseller, wire-service stringer, hotel concierge, ministry clerk,
+#     black-market trader, student, night porter and the rest. These flesh out
+#     the crowd the slice `core` pack only sketched (its ten civilians), so a
+#     generated city reads as lived-in rather than a thin cast.
+#
+#   * Period variants of the slice role archetypes (cell, hostile-officer,
+#     station-staff and contact). The slice `core` pack ships one occupied-
+#     Vienna cut of each role; these variants give the generator alternate
+#     professional covers and schedules for the same roles, so two cities (or
+#     two games in one city) do not reuse the same handful of operatives.
+#
+# Every archetype validates against the slice ArchetypeSchema (packages/content/
+# src/lib/kinds.ts), as changed by task 1.6: each carries `tags` (at least one
+# vocabulary Tag), MICE ranges, `wariness`, `personaPools`, `descriptorPools`, a
+# `schedule` of `{ weekday, phase, at: TagQuery }` slots and a `fallback` Tag
+# Query. The schedules bind through the core `function:*` Tag Vocabulary rather
+# than naming Location Types directly (design, "Library content").
+#
+# Tags are drawn from the core Tag Vocabulary (packs/core/tags.yaml). Civilians
+# carry `role:civilian`; the role variants carry the matching `role:*` Tag. The
+# `trade:`/`social:`/`skill:`/`access-to:` facets exist in the vocabulary but
+# ship no Tags in the core pack, so no archetype names one — doing so would fail
+# the loader's Tag check.
+#
+# personaPools and descriptorPools are cross-references the loader resolves by
+# namespacing a bare name to the owning pack. This pack owns no persona or
+# descriptor pools, so every ref names the slice `core` pack's pools explicitly
+# (`core/austrian`, `core/street-clothes`, …); a bare `austrian` would resolve
+# to the non-existent `lib-archetypes/austrian`. The pack therefore loads with
+# `core` (which ships the persona libraries and descriptor pools) and needs no
+# other dependency.
+#
+# It declares `role: library` and `contentSchema: 2`, and requires only `core`.
+id: lib-archetypes
+version: 1.0.0
+contentSchema: 2
+role: library
+requires:
+  - id: core
+    range: '^1.0.0'
+overrides: []

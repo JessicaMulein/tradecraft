@@ -1,0 +1,323 @@
+# documents/articles.yaml — Istanbul newspaper article Document templates
+# (content-expansion task 9.6).
+#
+# Each validates against DocumentTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, kind, titlePattern, sections:[{id, body}], slots:[contentId] }.
+# These are the Istanbul-voiced article templates the newspaper composer stamps
+# concrete articles from; they are also the base templates the city Template
+# Variants (template-variants/) localise, so each carries a clear slot set a
+# variant must match exactly.
+#
+# Grammar: `titlePattern` and every section `body` are template strings. A bare
+# `{slot}` substitutes a binding; `{?slot}…{/slot}` renders only when the slot
+# is bound. Only declared slots are used — no `{pick:...}` pools — so each
+# template validates in isolation and its slot set is the union of the title
+# and section slots.
+#
+# Period: Istanbul 1950–1965, a neutral crossroads. Officials are named by
+# office, never by a real person; all mastheads, firms and people in the copy
+# are fictional. No anachronism — ferries, trams (to 1961 on the European
+# shore), the telegraph, coal smoke and the wagon-lit, not a word later.
+
+# =========================================================================
+# CITY NEWS — the general daily
+# =========================================================================
+
+- id: article-city-news
+  kind: newspaper
+  titlePattern: '{masthead} — {weekday}, {date}'
+  slots: [masthead, weekday, date, district, subject, detail, office]
+  sections:
+    - id: lead
+      body: >-
+        {masthead}, {weekday}, {date}. From the {district} our correspondent
+        reports that {subject} drew notice this week. {detail} The matter rests,
+        for now, with the {office}.
+    - id: around-the-city
+      body: >-
+        Elsewhere the ferries kept their timetable across the strait, the
+        bazaars opened at the usual hour, and the weather off the Bosphorus held
+        fair enough for the shipping.
+
+- id: article-court-record
+  kind: newspaper
+  titlePattern: '{masthead}: Court Record, {date}'
+  slots: [masthead, date, district, offence, party, place, office, outcome]
+  sections:
+    - id: heading
+      body: >-
+        From the court record of the {district}, as given to this paper by the
+        {office}, for {date}.
+    - id: incident
+      body: >-
+        A charge of {offence} was heard, arising near {place}. The party
+        concerned, described only as {party}, was examined. {outcome}
+
+# =========================================================================
+# SHIPPING & COMMERCE — the Galata sheet
+# =========================================================================
+
+- id: article-shipping-arrivals
+  kind: newspaper
+  titlePattern: '{masthead} — Shipping, {date}'
+  slots: [masthead, date, vessel, flag, cargo, berth, agent]
+  sections:
+    - id: arrivals
+      body: >-
+        {masthead}, {date}. Reported arrived: the {vessel}, under the {flag},
+        with {cargo}, now lying at {berth}. Consignees are referred to the
+        agent, {agent}.
+    - id: standing-note
+      body: >-
+        Manifests are cleared at the customs shed on the quay; masters are
+        reminded that papers are inspected before cargo is worked.
+
+- id: article-exchange-rates
+  kind: newspaper
+  titlePattern: '{masthead} — Exchange & Trade, {date}'
+  slots: [masthead, date, commodity, trend, detail]
+  sections:
+    - id: market
+      body: >-
+        {masthead}, {date}. On the Galata market {commodity} was {trend}.
+        {detail}
+    - id: note
+      body: >-
+        Rates are those posted at the money-changers' lanes under the tower at
+        the close of business.
+
+# =========================================================================
+# FERRY & TRANSIT — notices for travellers
+# =========================================================================
+
+- id: article-ferry-notice
+  kind: newspaper
+  titlePattern: '{masthead} — Ferry Notice, {date}'
+  slots: [masthead, date, line, change, effective, office]
+  sections:
+    - id: notice
+      body: >-
+        {masthead}, {date}. The {line} ferry service will {change} from
+        {effective}. Passengers should consult the board at the iskele. By
+        notice of the {office}.
+
+- id: article-rail-notice
+  kind: newspaper
+  titlePattern: '{masthead} — Railway Notice, {date}'
+  slots: [masthead, date, service, detail, office]
+  sections:
+    - id: notice
+      body: >-
+        {masthead}, {date}. The {service} is advised as follows: {detail}
+        Travellers holding through tickets should apply at the terminus. By
+        notice of the {office}.
+
+# =========================================================================
+# CONSULAR & DIPLOMATIC — the Pera French paper
+# =========================================================================
+
+- id: article-consular-circular
+  kind: newspaper
+  titlePattern: '{masthead} — Consular Circular, {date}'
+  slots: [masthead, date, mission, subject, detail]
+  sections:
+    - id: circular
+      body: >-
+        {masthead}, {date}. The {mission} gives notice regarding {subject}.
+        {detail} Enquiries are received at the chancery during office hours.
+
+- id: article-society-pera
+  kind: newspaper
+  titlePattern: '{masthead} — Pera Society, {date}'
+  slots: [masthead, date, venue, occasion, note]
+  sections:
+    - id: column
+      body: >-
+        {masthead}, {date}. At {venue} there was {occasion}. {note} The season
+        along the Grande Rue continues at its accustomed pace.
+
+# =========================================================================
+# BAZAAR & QUARTER — colour from the old city
+# =========================================================================
+
+- id: article-bazaar-notice
+  kind: newspaper
+  titlePattern: '{masthead} — From the Bazaar, {date}'
+  slots: [masthead, date, trade, subject, detail, office]
+  sections:
+    - id: notice
+      body: >-
+        {masthead}, {date}. Among the {trade} of the covered market the talk is
+        of {subject}. {detail} The guild's affairs are overseen by the {office}.
+
+- id: article-quarter-report
+  kind: newspaper
+  titlePattern: '{masthead} — {district} Report, {date}'
+  slots: [masthead, date, district, subject, detail]
+  sections:
+    - id: report
+      body: >-
+        {masthead}, {date}. In the {district} the week's chief matter was
+        {subject}. {detail}
+
+# =========================================================================
+# WEATHER, ALMANAC & MISCELLANY
+# =========================================================================
+
+- id: article-weather
+  kind: newspaper
+  titlePattern: '{masthead} — Weather over the Strait, {date}'
+  slots: [masthead, date, outlook, detail]
+  sections:
+    - id: outlook
+      body: >-
+        {masthead}, {date}. The outlook over the Bosphorus: {outlook}. {detail}
+        Shipping and the ferries should take notice.
+
+- id: article-almanac-note
+  kind: newspaper
+  titlePattern: '{masthead} — Almanac, {date}'
+  slots: [masthead, date, entry, detail]
+  sections:
+    - id: almanac
+      body: >-
+        {masthead}, {date}. From the almanac for the day: {entry}. {detail}
+
+- id: article-lost-and-found
+  kind: newspaper
+  titlePattern: '{masthead} — Lost & Found, {date}'
+  slots: [masthead, date, item, place, office]
+  sections:
+    - id: notice
+      body: >-
+        {masthead}, {date}. Found and held pending claim: {item}, left at
+        {place}. Owners may apply, with proof, to the {office}.
+
+- id: article-cinema-notice
+  kind: newspaper
+  titlePattern: '{masthead} — Cinemas & Entertainments, {date}'
+  slots: [masthead, date, house, programme, note]
+  sections:
+    - id: billing
+      body: >-
+        {masthead}, {date}. At {house} the week's programme is {programme}.
+        {note}
+
+- id: article-public-notice
+  kind: newspaper
+  titlePattern: '{masthead} — Public Notice, {date}'
+  slots: [masthead, date, office, subject, effective, detail]
+  sections:
+    - id: order
+      body: >-
+        {masthead}, {date}. By notice of the {office}, the following takes
+        effect from {effective}: {subject}. {detail}
+
+- id: article-emigre-column
+  kind: newspaper
+  titlePattern: '{masthead} — Arrivals & Travellers, {date}'
+  slots: [masthead, date, traveller, route, note]
+  sections:
+    - id: column
+      body: >-
+        {masthead}, {date}. Among this week's travellers: {traveller}, bound by
+        {route}. {note}
+
+- id: article-weather-warning
+  kind: newspaper
+  titlePattern: '{masthead} — Storm Warning, {date}'
+  slots: [masthead, date, warning, office]
+  sections:
+    - id: warning
+      body: >-
+        {masthead}, {date}. A warning is given to small craft and the ferries:
+        {warning}. By the {office}.
+
+- id: article-charity-notice
+  kind: newspaper
+  titlePattern: '{masthead} — Appeals & Charities, {date}'
+  slots: [masthead, date, appeal, detail, office]
+  sections:
+    - id: appeal
+      body: >-
+        {masthead}, {date}. An appeal is made in aid of {appeal}. {detail}
+        Subscriptions are received by the {office}.
+
+- id: article-sport
+  kind: newspaper
+  titlePattern: '{masthead} — Sport, {date}'
+  slots: [masthead, date, fixture, result, note]
+  sections:
+    - id: report
+      body: >-
+        {masthead}, {date}. {fixture}: {result}. {note}
+
+- id: article-correction
+  kind: newspaper
+  titlePattern: '{masthead} — Corrections, {date}'
+  slots: [masthead, date, correction]
+  sections:
+    - id: note
+      body: >-
+        {masthead}, {date}. We correct a report of our last edition:
+        {correction} We regret the error.
+
+# =========================================================================
+# DOSSIER / CABLE / SEIZED — Istanbul-voiced field documents
+# =========================================================================
+
+- id: dossier-istanbul-person
+  kind: dossier
+  titlePattern: 'STATION FILE — {subject}, Istanbul (ref. {file-ref})'
+  slots: [subject, file-ref, alias, quarter, last-seen, association, assessment]
+  sections:
+    - id: header
+      body: >-
+        Istanbul Station file {file-ref}, concerning {subject}. The entries
+        below are apparent information gathered on the ground, not findings of
+        fact, and are to be read as leads for the handler.
+    - id: identity
+      body: >-
+        The subject moves as {subject}.{?alias} The quays also know the name
+        {alias}.{/alias} He keeps to the {quarter}, by the accounts on file.
+    - id: movements
+      body: >-
+        He was last marked at {last-seen}.{?association} A watcher put him beside
+        {association} on that occasion.{/association}
+    - id: assessment
+      body: >-
+        The Station's reading: {assessment} Nothing here is to be acted on until
+        a second source has crossed it.
+
+- id: cable-istanbul-field
+  kind: cable
+  titlePattern: 'CABLE {cable-ref} ISTANBUL'
+  slots: [cable-ref, date, from-cover, subject, observation, request]
+  sections:
+    - id: preamble
+      body: >-
+        FROM {from-cover} AT ISTANBUL STATION STOP ADDRESSED HEAD OFFICE STOP
+        FILED {date} STOP OUR REFERENCE {cable-ref} STOP
+    - id: report
+      body: >-
+        MATTER {subject} STOP {observation} STOP
+    - id: request
+      body: >-
+        {?request}WE SEEK {request} STOP{/request} HOLD FOR YOUR WORD STOP CLOSE
+        STOP
+
+- id: seized-istanbul-note
+  kind: seized
+  titlePattern: 'SEIZED AT ISTANBUL — taken {date}, {place}'
+  slots: [date, place, recovered-by, description, contents, subject]
+  sections:
+    - id: chain
+      body: >-
+        Taken up on {date} at {place} by {recovered-by}, and entered on the
+        seized register to await the examiners.
+    - id: description
+      body: >-
+        What it is: {description}. On its face it touches {subject}.
+    - id: contents
+      body: >-
+        Such of it as can be read, set down word for word: {contents}

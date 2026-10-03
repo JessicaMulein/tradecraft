@@ -1,0 +1,64 @@
+# ciphers.yaml — the early Cold War cipher conventions (content-expansion 7.2).
+#
+# Validates against CipherConventionsSchema (packages/content/src/kinds/era.ts):
+#   { ownerWeights, headers: string[], padFormat, numbersFormat }
+#
+# The Cipher Engine's `makeIntercept` reads these in place of its built-in
+# defaults (task 3.7, Req 5.6): it draws a cipher kind for each intercept from
+# the weights of the intercept's owner kind, renders a header from `headers`,
+# and lays out one-time-pad and numbers-broadcast groups to `padFormat` and
+# `numbersFormat`. A tradecraft error such as a "fixed header" picks from the
+# `headers` list.
+#
+# ownerWeights must name all five owner kinds (hostile, diplomatic, commercial,
+# criminal, station); each weights a subset of the slice cipher kinds
+# (caesar / vigenere / columnar / book / otp). Weights are relative draw
+# frequencies, not probabilities, so they need not sum to one.
+#
+# Period reading: in 1945–1965 a professional service runs disciplined one-time
+# pads and book ciphers; a diplomatic mission mixes pads with older polyalphabetic
+# traffic; commercial and criminal traffic leans on simpler hand ciphers; and
+# the player's own Station runs pads and the occasional book cipher.
+- ownerWeights:
+    hostile:
+      otp: 6
+      book: 3
+      columnar: 1
+    diplomatic:
+      otp: 4
+      vigenere: 3
+      columnar: 2
+      book: 1
+    commercial:
+      columnar: 4
+      vigenere: 3
+      caesar: 2
+    criminal:
+      caesar: 5
+      columnar: 2
+      vigenere: 1
+    station:
+      otp: 5
+      book: 3
+      columnar: 2
+  # Intercept header templates. The slots are filled by the Cipher Engine from
+  # the intercept's metadata; a header with no slots (a station call-sign line)
+  # also serves as a drawn "fixed header" for a tradecraft-error intercept.
+  headers:
+    - 'NR {groupNo} {dateGroup} GR {groupCount}'
+    - 'DE {callsign} QTC {groupCount} {dateGroup}'
+    - 'ZNR {priority} {dateGroup} FM {origin} TO {dest}'
+    - 'MSG {serial} {dateGroup} {groupCount} GRPS'
+    - 'CQ CQ DE {callsign} {callsign} K'
+    - 'PRIORITY {dateGroup} REF {serial}'
+  # One-time-pad layout: the slice fixes the group size at five letters; the
+  # period broadcast lays five groups to a line.
+  padFormat:
+    groupSize: 5
+    groupsPerLine: 5
+  # Numbers-station broadcast: a spoken call-up, the number of five-figure
+  # groups the message carries, and how many times the whole message repeats.
+  numbersFormat:
+    callup: 'Achtung. Gruppen folgen.'
+    groups: 50
+    repeat: 2

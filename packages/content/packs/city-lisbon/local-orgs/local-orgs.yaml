@@ -1,0 +1,103 @@
+# local-orgs.yaml — the fictional local organisations of neutral Lisbon
+# (content-expansion task 9.8).
+#
+# Each entry is a LocalOrg (LocalOrgSchema, packages/content/src/kinds/city.ts):
+#   { id, city, name, aliases, kind, tags, members: TagQuery[], years? }
+# `city` references the Lisbon City Definition by its bare id (namespaced to
+# city-lisbon/lisbon by the loader). The generator adds these to WorldState as
+# non-player organisations — employers and Rumour subjects.
+#
+# `tags` draws from the core `org:*` facet (the kind of institution) and the
+# `access-to:*` facet (the access an organisation's people carry). `members` is
+# a list of Tag Queries describing the archetypes an organisation's members are
+# drawn from; the populated archetype facet is `role:*`, so the member queries
+# bind against the archetype roster by role.
+#
+# EVERYTHING IS FICTIONAL. No real Lisbon ministry, bank, union, paper, line or
+# business of the period is named. Officials are referred to by office, never by
+# a personal name. Period: 1945–1965 neutral Lisbon.
+
+# A municipal office of the city administration: residence permits, the foreign-
+# lodger registry, ration books in the lean years — the counter the whole city
+# passes through and the clerks who see everyone's papers.
+- id: camara-registry
+  city: lisbon
+  name: The Municipal Registry Office
+  aliases:
+    - { text: the municipal registry, distinctive: true }
+    - { text: the registry office, distinctive: false }
+    - { text: the permits office, distinctive: false }
+  kind: municipal government office
+  tags: [org:government]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1945, to: 1965 }
+
+# The capital's political police — the host-nation security apparatus that
+# watches the émigré crowd, the port and the foreign missions. The organisation
+# an agent most wants to stay clear of; its people run from clerks to watchers.
+- id: public-order-police
+  city: lisbon
+  name: The State Directorate for Public Order
+  aliases:
+    - { text: the Public Order police, distinctive: true }
+    - { text: the political police, distinctive: false }
+    - { text: the watchers, distinctive: false }
+  kind: political police and security body
+  tags: [org:security, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1945, to: 1965 }
+
+# A navigation and trading house: the Atlantic and river traffic, the booking
+# offices and the bonded sheds. A plausible employer and a natural cover, and a
+# source of talk about what and who moves through the port.
+- id: tagus-navigation-company
+  city: lisbon
+  name: Companhia de Navegação do Tejo e Atlântico
+  aliases:
+    - { text: the Tagus Navigation Company, distinctive: true }
+    - { text: the navigation company, distinctive: false }
+  kind: shipping and trading firm
+  tags: [org:commercial, access-to:transit]
+  members: [[role:civilian], [role:contact], [role:cell]]
+  years: { from: 1945, to: 1965 }
+
+# The tramwaymen's and ferrymen's association: conductors, drivers, pontoon
+# hands and the lift gatemen who know every timetable and every regular face.
+- id: tramway-workers-guild
+  city: lisbon
+  name: Associação dos Trabalhadores dos Carros Eléctricos
+  aliases:
+    - { text: the tramway workers' guild, distinctive: true }
+    - { text: the tramway guild, distinctive: false }
+  kind: transport workers' association
+  tags: [org:labour, access-to:transit]
+  members: [[role:civilian]]
+  years: { from: 1945, to: 1965 }
+
+# A relief and resettlement committee for the stateless: the visa queues, the
+# clerks who process them and the volunteers who know who has just come off the
+# boat and who is still trying to get out.
+- id: atlantic-relief-committee
+  city: lisbon
+  name: Comité de Auxílio aos Refugiados do Atlântico
+  aliases:
+    - { text: the Atlantic Relief Committee, distinctive: true }
+    - { text: the relief committee, distinctive: false }
+  kind: relief and welfare committee
+  tags: [org:cultural, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1945, to: 1965 }
+
+# A loose contraband ring working the quays and the customs sheds: coffee,
+# penicillin, hard currency and papers. A source of rumour and a danger; its
+# people run from stevedores to the men who place the goods.
+- id: quayside-ring
+  city: lisbon
+  name: The Quayside Ring
+  aliases:
+    - { text: the Quayside Ring, distinctive: true }
+    - { text: the Ring, distinctive: false }
+  kind: black-market ring
+  tags: [org:criminal, access-to:black-market]
+  members: [[role:cell], [role:civilian]]
+  years: { from: 1945, to: 1965 }

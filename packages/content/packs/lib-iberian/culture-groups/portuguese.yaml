@@ -1,0 +1,371 @@
+# culture-groups/portuguese.yaml — the Portuguese group.
+#
+# A CultureGroup (CultureGroupSchema). Portuguese names carry two surnames
+# (traditionally the mother's family name then the father's), so the Naming Rule
+# turns on `parts.family2: true` and the display pattern renders
+# {given} {family} {family2}; the generator draws the second surname from the
+# same family pool (engine `nameNpc`). Portuguese surnames are invariant in
+# form, so family names are plain strings (not gendered pairs). Quantity
+# (Req 11.4): at least 100 given and 100 family names, at least 300 distinct
+# total. All names are generic, common Portuguese names of the period in
+# fictional use; none names a real individual.
+- id: portuguese
+  name: Portuguese
+  languages:
+    - pt
+  naming:
+    display: '{given} {family} {family2}'
+    formal: '{honorific} {family}'
+    parts:
+      family2: true
+  given:
+    f:
+      - Maria
+      - Ana
+      - Joana
+      - Isabel
+      - Teresa
+      - Rosa
+      - Fernanda
+      - Conceição
+      - Amália
+      - Lurdes
+      - Guilhermina
+      - Ermelinda
+      - Deolinda
+      - Idalina
+      - Celeste
+      - Beatriz
+      - Clara
+      - Dulce
+      - Emília
+      - Felismina
+      - Georgina
+      - Henriqueta
+      - Inês
+      - Joaquina
+      - Leonor
+      - Margarida
+      - Natália
+      - Olívia
+      - Palmira
+      - Quitéria
+      - Rufina
+      - Sílvia
+      - Umbelina
+      - Virgínia
+      - Zulmira
+      - Albertina
+      - Benedita
+      - Casimira
+      - Domingas
+      - Eugénia
+      - Firmina
+      - Gracinda
+      - Hortênsia
+      - Irene
+      - Júlia
+      - Laurinda
+      - Mafalda
+      - Natividade
+      - Ondina
+      - Perpétua
+      - Rita
+      - Serafina
+      - Timótea
+      - Valentina
+      - Adelina
+      - Branca
+      - Custódia
+      - Delfina
+      - Eulália
+      - Florinda
+    m:
+      - José
+      - Manuel
+      - António
+      - João
+      - Joaquim
+      - Francisco
+      - Carlos
+      - Fernando
+      - Augusto
+      - Henrique
+      - Armando
+      - Alberto
+      - Álvaro
+      - Bento
+      - Casimiro
+      - Diogo
+      - Eduardo
+      - Fausto
+      - Gonçalo
+      - Horácio
+      - Inácio
+      - Jaime
+      - Lourenço
+      - Mário
+      - Nuno
+      - Octávio
+      - Policarpo
+      - Quintino
+      - Rogério
+      - Sebastião
+      - Teotónio
+      - Urbano
+      - Vasco
+      - Xavier
+      - Zacarias
+      - Abílio
+      - Belmiro
+      - Cândido
+      - Domingos
+      - Evaristo
+      - Firmino
+      - Germano
+      - Hélio
+      - Isidro
+      - Jacinto
+      - Leopoldo
+      - Marcelino
+      - Norberto
+      - Olímpio
+      - Plácido
+      - Raimundo
+      - Serafim
+      - Teodoro
+      - Valentim
+      - Adelino
+      - Baltasar
+      - Clemente
+      - Dinis
+      - Emídio
+      - Fortunato
+  family:
+    - Silva
+    - Santos
+    - Ferreira
+    - Pereira
+    - Oliveira
+    - Costa
+    - Rodrigues
+    - Martins
+    - Jesus
+    - Sousa
+    - Fernandes
+    - Gonçalves
+    - Gomes
+    - Lopes
+    - Marques
+    - Alves
+    - Almeida
+    - Ribeiro
+    - Pinto
+    - Carvalho
+    - Teixeira
+    - Moreira
+    - Correia
+    - Mendes
+    - Nunes
+    - Soares
+    - Vieira
+    - Monteiro
+    - Cardoso
+    - Rocha
+    - Neves
+    - Coelho
+    - Cruz
+    - Cunha
+    - Pires
+    - Ramos
+    - Reis
+    - Simões
+    - Antunes
+    - Matos
+    - Fonseca
+    - Machado
+    - Araújo
+    - Barbosa
+    - Tavares
+    - Pimentel
+    - Figueiredo
+    - Baptista
+    - Freitas
+    - Henriques
+    - Miranda
+    - Esteves
+    - Leite
+    - Castro
+    - Faria
+    - Barros
+    - Macedo
+    - Lourenço
+    - Guerreiro
+    - Amaral
+    - Branco
+    - Carneiro
+    - Dias
+    - Domingues
+    - Duarte
+    - Franco
+    - Garcia
+    - Lima
+    - Maia
+    - Nogueira
+    - Pacheco
+    - Queirós
+    - Rosa
+    - Salgado
+    - Torres
+    - Valente
+    - Xavier
+    - Abreu
+    - Bastos
+    - Caetano
+    - Dantas
+    - Espírito
+    - Falcão
+    - Guimarães
+    - Horta
+    - Infante
+    - Jorge
+    - Lemos
+    - Morais
+    - Nascimento
+    - Osório
+    - Pinheiro
+    - Quental
+    - Resende
+    - Seabra
+    - Trindade
+    - Vasconcelos
+    - Azevedo
+    - Botelho
+    - Camelo
+    - Dinis
+    - Albuquerque
+    - Bettencourt
+    - Carvalhal
+    - Drummond
+    - Escobar
+    - Figueira
+    - Gaspar
+    - Henriques-Lima
+    - Ilharco
+    - Jacome
+    - Lemos-Faria
+    - Magalhães
+    - Noronha
+    - Ornelas
+    - Pontes
+    - Quaresma
+    - Rebelo
+    - Sampaio
+    - Travassos
+    - Varela
+    - Zuzarte
+    - Aragão
+    - Beja
+    - Cordeiro
+    - Delgado-Sousa
+    - Espinho
+    - Freire
+    - Gusmão
+    - Holbeche
+    - Isidoro
+    - Juromenha
+    - Lamego
+    - Mascarenhas
+    - Negrão
+    - Olivença
+    - Portela
+    - Quintela
+    - Rebelo-Pinto
+    - Saldanha
+    - Teles
+    - Valadares
+    - Zagalo
+    - Alcântara
+    - Barreto
+    - Castanheira
+    - Delfim
+    - Escudeiro
+    - Falcão-Lima
+    - Granjo
+    - Horta-Costa
+    - Infante-Silva
+    - Jardim
+    - Loureiro
+    - Melo
+    - Nazareth
+    - Oliva
+    - Prazeres
+    - Querido-Lima
+    - Raposo
+    - Sequeira
+    - Tomás
+    - Vale
+    - Zarco
+    - Almada
+    - Bragança
+    - Cerveira
+    - Dornelas
+    - Estrela
+    - Furtado
+    - Guedes
+    - Henriques-Rosa
+    - Ivens
+    - Junqueira
+    - Lobato
+    - Mesquita
+    - Novais
+    - Paiva
+    - Quintanilha
+    - Rebocho
+  voiceTraits:
+    - courteous and reserved, slow to show the hand
+    - carries a melancholy under the politeness
+    - speaks of the regime only in the mildest terms
+    - warms over a shared table and strong coffee
+    - closes a hard subject with a quiet fatalism
+  mannerisms:
+    - stirs the coffee long after the sugar is gone
+    - defers to age and title without being asked
+    - lowers the voice when a uniform is near
+    - keeps the hat in hand indoors out of old habit
+    - sees a guest to the stairs and no further
+  backgrounds:
+    - text: Clerks at the port authority and knows which ships leave the manifests short.
+      tags: []
+    - text: Keeps a pensão near the river where refugees wait for a passage out.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Works for a shipping agent and reads the sailings before the papers print them.
+      tags: []
+    - text: Teaches at a lycée and measures each word against who might be listening.
+      tags: []
+    - text: Keeps the accounts for a wine exporter and the exporter's quiet partners.
+      tags: []
+    - text: Drives a hired car for the legations and recalls every street and passenger.
+      tags: []
+    - text: Came from the Alentejo for work and never lost the country reserve.
+      tags: []
+    - text: Tends the desk at a hotel the right people pass through on their way elsewhere.
+      tags: []
+    - text: Repairs wireless sets and asks no questions about the odd request.
+      tags: []
+    - text: Sorts cables at a telegraph office and notices which addresses recur.
+      tags: []
+    - text: Buys and sells travel papers in a back office the police tolerate.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Keeps a fado house in the old quarter where consuls take their late nights.
+      tags: []
+    - text: Clerks for a diamond buyer and never sees the stones that pass through.
+      tags: []
+    - text: Runs the ticket desk at the airport and knows who flies out and when.
+      tags: []
+    - text: Keeps a bookshop near the university that stocks the titles the censor missed.
+      tags: []
+    - text: Manages a currency bureau on the avenue and reads the market in whispers.
+      tags: []

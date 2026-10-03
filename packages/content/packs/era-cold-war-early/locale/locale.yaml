@@ -1,0 +1,55 @@
+# locale.yaml — the era-wide Locale fallback (content-expansion task 7.2).
+#
+# Validates against LocaleSchema (packages/content/src/kinds/locale.ts):
+#   { scope, date, currency, honorifics, address, terms, allowNames }
+#
+# This is the era default a City Pack's own Locale overrides field by field
+# (design, city-then-era fallback chain). It fixes neutral, English-output
+# formatting a city with no Locale of its own falls back to: a plain long and
+# short date, a generic money pattern (the amount and symbol come from the
+# City Definition's currency), English honorifics, and a street-number-first
+# address. A City Pack supplies the local register (Schilling, "Frau"/"Herr",
+# tram terms) over the top of these.
+#
+# `scope.era` names this pack's Era record (`cold-war-early`); the loader reads
+# the one era-scoped Locale as the era fallback.
+#
+# Output is English in local order: `months` runs January→December and
+# `weekdays` runs the seven weekday names Sunday→Saturday, the order the date
+# formatter names a date's weekday with.
+- scope:
+    era: cold-war-early
+  date:
+    long: '{weekday}, {day} {month} {year}'
+    short: '{day}/{month}/{year}'
+    months:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    weekdays:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+  currency:
+    pattern: '{amount} {symbol}'
+  honorifics:
+    f: [Mrs, Miss, Madam]
+    m: [Mr, Sir]
+  address: '{number} {street}, {district}'
+  # Local Terms and allowNames are a city concern; the era default ships none,
+  # leaving the help glossary and Specifics Guard allowlist to the City Pack.
+  terms: []
+  allowNames: []

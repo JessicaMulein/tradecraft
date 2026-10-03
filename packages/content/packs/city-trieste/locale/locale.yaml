@@ -1,0 +1,98 @@
+# locale/locale.yaml — the Trieste city Locale (content-expansion task 9.10).
+#
+# Validates against LocaleSchema (packages/content/src/kinds/locale.ts):
+#   { scope, date, currency, honorifics, address, terms, allowNames }
+#
+# This is the city override the era Locale (era-cold-war-early) falls back to,
+# field by field (design, city-then-era fallback chain). `scope.city` names the
+# Trieste City Definition by its bare id (namespaced city-trieste/trieste). It
+# fixes the local register the money/date/honorific/address formatters render
+# through, the Local Terms that join the help glossary, and the names the
+# Specifics Guard allows.
+#
+# Date: the Italian month and weekday names, in local order — months
+# January→December, weekdays Sunday→Saturday — so the date formatter names a
+# date in the city's own voice.
+#
+# Currency: the lira, written symbol-then-amount in the period style ("₤12");
+# the amount and symbol come from the City Definition's currency, the Locale
+# only fixes the layout.
+#
+# Honorifics: the Italian "Signora"/"Signorina" and "Signore" of the period.
+#
+# Local Terms: everyday Triestine and Italian words a player meets in the city's
+# text, each with a plain definition for the help glossary. allowNames adds the
+# same common nouns to the Specifics Guard allowlist so a bare mention of a
+# caffè or an osteria is not read as a specific named entity. None equals a
+# distinctive entity alias (CE-ALLOWLIST). All terms are period-plain and
+# original.
+
+- scope:
+    city: trieste
+  date:
+    long: '{weekday} {day} {month} {year}'
+    short: '{day}/{month}/{year}'
+    months:
+      - gennaio
+      - febbraio
+      - marzo
+      - aprile
+      - maggio
+      - giugno
+      - luglio
+      - agosto
+      - settembre
+      - ottobre
+      - novembre
+      - dicembre
+    weekdays:
+      - domenica
+      - lunedì
+      - martedì
+      - mercoledì
+      - giovedì
+      - venerdì
+      - sabato
+  currency:
+    pattern: '{symbol}{amount}'
+  honorifics:
+    f: [Signora, Signorina]
+    m: [Signore]
+  address: '{street} {number}, {district}'
+  terms:
+    - term: caffè
+      definition: A coffee house, from the grand marble halls of the centre to the plainest corner bar.
+    - term: edicola
+      definition: A street kiosk selling newspapers, cigarettes, lottery slips and tram tickets.
+    - term: osteria
+      definition: A plain wine-and-food tavern of trestle benches and the day's chalked wine.
+    - term: molo
+      definition: A stone mole or jetty running out into the harbour, used for the evening promenade.
+    - term: rive
+      definition: The waterfront quays and streets along the harbour's edge.
+    - term: portico
+      definition: An arcaded walkway along a street front, under which the cafés and shops keep their tables.
+    - term: tranvia
+      definition: A tramway; the Opicina line climbs the Karst escarpment on a cable section.
+    - term: centesimo
+      definition: The subunit of the lira; one hundred centesimi to the lira, little used by this period.
+    - term: magazzino
+      definition: A bonded free-port warehouse, where goods are landed and stored in bond, clear of customs.
+    - term: bora
+      definition: The hard, cold north-easterly wind that falls on the city and gulf from the Karst.
+    - term: zona
+      definition: One of the two administrative zones into which the Free Territory is divided.
+    - term: valico
+      definition: A control point on the zone line between Zone A and Zone B, where papers are checked.
+  allowNames:
+    - caffè
+    - edicola
+    - osteria
+    - molo
+    - rive
+    - portico
+    - tranvia
+    - centesimo
+    - bora
+    - zona
+    - valico

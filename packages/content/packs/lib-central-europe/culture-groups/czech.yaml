@@ -1,0 +1,354 @@
+# culture-groups/czech.yaml — the Czech group.
+#
+# A CultureGroup (CultureGroupSchema). Czech surnames inflect by gender, so
+# family names are gendered pairs { m, f } (Novák / Nováková) — the generator
+# picks the form matching the drawn NPC's gender (design, FamilyName). Quantity
+# (Req 11.4): at least 100 given and 100 family names, at least 300 distinct
+# total. All names are generic, common Czech names of the period in fictional
+# use; none names a real individual.
+- id: czech
+  name: Czech
+  languages:
+    - cs
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Marie
+      - Anna
+      - Božena
+      - Jiřina
+      - Vlasta
+      - Ludmila
+      - Zdeňka
+      - Věra
+      - Marta
+      - Jarmila
+      - Milada
+      - Blažena
+      - Růžena
+      - Libuše
+      - Hana
+      - Eva
+      - Olga
+      - Dagmar
+      - Jana
+      - Helena
+      - Alena
+      - Drahomíra
+      - Emilie
+      - Františka
+      - Gabriela
+      - Hedvika
+      - Ivana
+      - Jindřiška
+      - Kateřina
+      - Lenka
+      - Magdalena
+      - Naděžda
+      - Otilie
+      - Pavla
+      - Radka
+      - Soňa
+      - Tereza
+      - Veronika
+      - Zuzana
+      - Žofie
+      - Antonie
+      - Barbora
+      - Cecilie
+      - Dana
+      - Eliška
+      - Irena
+      - Julie
+      - Kamila
+      - Lýdie
+      - Markéta
+      - Nina
+      - Olivie
+      - Petra
+      - Renata
+      - Simona
+      - Vendula
+      - Alžběta
+      - Dobromila
+      - Květa
+      - Michaela
+    m:
+      - Josef
+      - Jan
+      - Václav
+      - František
+      - Jaroslav
+      - Karel
+      - Antonín
+      - Miroslav
+      - Bohumil
+      - Vladimír
+      - Zdeněk
+      - Rudolf
+      - Oldřich
+      - Stanislav
+      - Jiří
+      - Ladislav
+      - Alois
+      - Bohuslav
+      - Čeněk
+      - Dalibor
+      - Emil
+      - Ferdinand
+      - Gustav
+      - Hynek
+      - Ivan
+      - Jakub
+      - Kamil
+      - Lubomír
+      - Marek
+      - Norbert
+      - Otakar
+      - Pavel
+      - Radomír
+      - Svatopluk
+      - Tomáš
+      - Vilém
+      - Zbyněk
+      - Adam
+      - Bedřich
+      - Ctibor
+      - Dominik
+      - Evžen
+      - Filip
+      - Hubert
+      - Ignác
+      - Jindřich
+      - Kryštof
+      - Lukáš
+      - Matěj
+      - Ondřej
+      - Prokop
+      - Radek
+      - Šimon
+      - Teodor
+      - Vojtěch
+      - Zikmund
+      - Alexandr
+      - Bohdan
+      - Dušan
+      - Ervín
+  family:
+    - { m: Novák, f: Nováková }
+    - { m: Svoboda, f: Svobodová }
+    - { m: Novotný, f: Novotná }
+    - { m: Dvořák, f: Dvořáková }
+    - { m: Černý, f: Černá }
+    - { m: Procházka, f: Procházková }
+    - { m: Kučera, f: Kučerová }
+    - { m: Veselý, f: Veselá }
+    - { m: Horák, f: Horáková }
+    - { m: Němec, f: Němcová }
+    - { m: Marek, f: Marková }
+    - { m: Pokorný, f: Pokorná }
+    - { m: Pospíšil, f: Pospíšilová }
+    - { m: Hájek, f: Hájková }
+    - { m: Král, f: Králová }
+    - { m: Jelínek, f: Jelínková }
+    - { m: Růžička, f: Růžičková }
+    - { m: Beneš, f: Benešová }
+    - { m: Fiala, f: Fialová }
+    - { m: Sedláček, f: Sedláčková }
+    - { m: Doležal, f: Doležalová }
+    - { m: Zeman, f: Zemanová }
+    - { m: Kolář, f: Kolářová }
+    - { m: Navrátil, f: Navrátilová }
+    - { m: Čermák, f: Čermáková }
+    - { m: Urban, f: Urbanová }
+    - { m: Vaněk, f: Vaňková }
+    - { m: Blažek, f: Blažková }
+    - { m: Kříž, f: Křížová }
+    - { m: Kovář, f: Kovářová }
+    - { m: Krejčí, f: Krejčová }
+    - { m: Říha, f: Říhová }
+    - { m: Šimek, f: Šimková }
+    - { m: Pešek, f: Pešková }
+    - { m: Vlček, f: Vlčková }
+    - { m: Bartoš, f: Bartošová }
+    - { m: Mareš, f: Marešová }
+    - { m: Holub, f: Holubová }
+    - { m: Soukup, f: Soukupová }
+    - { m: Mach, f: Machová }
+    - { m: Štěpánek, f: Štěpánková }
+    - { m: Kadlec, f: Kadlecová }
+    - { m: Dušek, f: Dušková }
+    - { m: Beran, f: Beranová }
+    - { m: Vávra, f: Vávrová }
+    - { m: Sýkora, f: Sýkorová }
+    - { m: Tichý, f: Tichá }
+    - { m: Hruška, f: Hrušková }
+    - { m: Malý, f: Malá }
+    - { m: Konečný, f: Konečná }
+    - { m: Zelený, f: Zelená }
+    - { m: Barták, f: Bartáková }
+    - { m: Burian, f: Burianová }
+    - { m: Čížek, f: Čížková }
+    - { m: Dvořáček, f: Dvořáčková }
+    - { m: Fořt, f: Fořtová }
+    - { m: Gregor, f: Gregorová }
+    - { m: Havel, f: Havlová }
+    - { m: Janota, f: Janotová }
+    - { m: Jirásek, f: Jirásková }
+    - { m: Kalina, f: Kalinová }
+    - { m: Kohout, f: Kohoutová }
+    - { m: Kratochvíl, f: Kratochvílová }
+    - { m: Linhart, f: Linhartová }
+    - { m: Macháček, f: Macháčková }
+    - { m: Michálek, f: Michálková }
+    - { m: Moravec, f: Moravcová }
+    - { m: Nový, f: Nová }
+    - { m: Opletal, f: Opletalová }
+    - { m: Pánek, f: Pánková }
+    - { m: Pařízek, f: Pařízková }
+    - { m: Patočka, f: Patočková }
+    - { m: Pekař, f: Pekařová }
+    - { m: Petrík, f: Petríková }
+    - { m: Polák, f: Poláková }
+    - { m: Rejsek, f: Rejsková }
+    - { m: Richter, f: Richterová }
+    - { m: Sládek, f: Sládková }
+    - { m: Smrček, f: Smrčková }
+    - { m: Suchý, f: Suchá }
+    - { m: Šafařík, f: Šafaříková }
+    - { m: Šindelář, f: Šindelářová }
+    - { m: Štika, f: Štiková }
+    - { m: Toman, f: Tomanová }
+    - { m: Trávníček, f: Trávníčková }
+    - { m: Uhlíř, f: Uhlířová }
+    - { m: Vacek, f: Vacková }
+    - { m: Valenta, f: Valentová }
+    - { m: Vašek, f: Vašková }
+    - { m: Vobořil, f: Vobořilová }
+    - { m: Vondráček, f: Vondráčková }
+    - { m: Vorlíček, f: Vorlíčková }
+    - { m: Zábranský, f: Zábranská }
+    - { m: Záruba, f: Zárubová }
+    - { m: Zídek, f: Zídková }
+    - { m: Žák, f: Žáková }
+    - { m: Bezděk, f: Bezděková }
+    - { m: Brabec, f: Brabcová }
+    - { m: Cvrček, f: Cvrčková }
+    - { m: Daněk, f: Daňková }
+    - { m: Eliáš, f: Eliášová }
+    - { m: Fencl, f: Fenclová }
+    - { m: Franěk, f: Fraňková }
+    - { m: Hamřík, f: Hamříková }
+    - { m: Hanuš, f: Hanušová }
+    - { m: Hladík, f: Hladíková }
+    - { m: Hlaváček, f: Hlaváčková }
+    - { m: Houška, f: Houšková }
+    - { m: Hynek, f: Hynková }
+    - { m: Jandák, f: Jandáková }
+    - { m: Ježek, f: Ježková }
+    - { m: Kafka, f: Kafková }
+    - { m: Klíma, f: Klímová }
+    - { m: Kodet, f: Kodetová }
+    - { m: Křivánek, f: Křivánková }
+    - { m: Kubát, f: Kubátová }
+    - { m: Lacina, f: Lacinová }
+    - { m: Mádl, f: Mádlová }
+    - { m: Melichar, f: Melicharová }
+    - { m: Nejedlý, f: Nejedlá }
+    - { m: Peřina, f: Peřinová }
+    - { m: Rozsypal, f: Rozsypalová }
+    - { m: Řehák, f: Řeháková }
+    - { m: Sobotka, f: Sobotková }
+    - { m: Špaček, f: Špačková }
+    - { m: Tomášek, f: Tomášková }
+    - { m: Vrba, f: Vrbová }
+    - { m: Zajíc, f: Zajícová }
+    - { m: Zavřel, f: Zavřelová }
+    - { m: Adámek, f: Adámková }
+    - { m: Beneda, f: Benedová }
+    - { m: Boháč, f: Boháčová }
+    - { m: Brázda, f: Brázdová }
+    - { m: Čapek, f: Čapková }
+    - { m: Doubek, f: Doubková }
+    - { m: Drábek, f: Drábková }
+    - { m: Dvorský, f: Dvorská }
+    - { m: Fajkus, f: Fajkusová }
+    - { m: Formánek, f: Formánková }
+    - { m: Grygar, f: Grygarová }
+    - { m: Hájíček, f: Hájíčková }
+    - { m: Hampl, f: Hamplová }
+    - { m: Hendrych, f: Hendrychová }
+    - { m: Hrabal, f: Hrabalová }
+    - { m: Chalupa, f: Chalupová }
+    - { m: Jirsa, f: Jirsová }
+    - { m: Kahoun, f: Kahounová }
+    - { m: Kavan, f: Kavanová }
+    - { m: Knotek, f: Knotková }
+    - { m: Komárek, f: Komárková }
+    - { m: Kopecký, f: Kopecká }
+    - { m: Kožušník, f: Kožušníková }
+    - { m: Kubín, f: Kubínová }
+    - { m: Langer, f: Langerová }
+    - { m: Lukeš, f: Lukešová }
+    - { m: Mastný, f: Mastná }
+    - { m: Mlčoch, f: Mlčochová }
+    - { m: Mrázek, f: Mrázková }
+    - { m: Nekvasil, f: Nekvasilová }
+    - { m: Novosad, f: Novosadová }
+    - { m: Otava, f: Otavová }
+    - { m: Pecháček, f: Pecháčková }
+    - { m: Píša, f: Píšová }
+    - { m: Plíšek, f: Plíšková }
+    - { m: Prášil, f: Prášilová }
+    - { m: Rezek, f: Rezková }
+    - { m: Rybář, f: Rybářová }
+    - { m: Sedlák, f: Sedláková }
+    - { m: Skalický, f: Skalická }
+    - { m: Slavík, f: Slavíková }
+    - { m: Smejkal, f: Smejkalová }
+    - { m: Staněk, f: Staňková }
+    - { m: Studený, f: Studená }
+    - { m: Šafránek, f: Šafránková }
+    - { m: Šebek, f: Šebková }
+    - { m: Štursa, f: Štursová }
+    - { m: Tesař, f: Tesařová }
+    - { m: Ulrych, f: Ulrychová }
+    - { m: Vágner, f: Vágnerová }
+    - { m: Veverka, f: Veverková }
+    - { m: Vlasák, f: Vlasáková }
+    - { m: Zahradník, f: Zahradníková }
+    - { m: Zemánek, f: Zemánková }
+    - { m: Rozmajzl, f: Rozmajzlová }
+  voiceTraits:
+    - wry and understated, deflecting with a joke
+    - careful with strangers, warmer once the ice breaks
+    - fond of a proverb for every occasion
+    - speaks of authority with studied neutrality
+    - switches to German or Russian only when it buys safety
+  mannerisms:
+    - taps the table twice before making a point
+    - keeps a half-finished beer as a reason to linger
+    - lowers the eyes when a uniform passes
+    - rolls a cigarette with slow deliberation
+    - answers obliquely until trust is earned
+  backgrounds:
+    - text: Grew up in a flat off the old square and watched the regimes come and go.
+      tags: []
+    - text: Worked the railway yards and learned which freight moved after dark.
+      tags: []
+    - text: Kept a small workshop going by never asking what the parts were for.
+      tags: []
+    - text: Lost a brother to the border and speaks of him only to the trusted.
+      tags: []
+      years: { from: 1948, to: 1965 }
+    - text: Teaches at a gymnasium and measures every word against who might report it.
+      tags: []
+      years: { from: 1948, to: 1965 }
+    - text: Tends a wine cellar in the old town and remembers every regular's usual.
+      tags: []
+    - text: Came to the city from a Moravian village and never lost the country caution.
+      tags: []
+    - text: Sorts post at the central office and notices which letters never arrive.
+      tags: []

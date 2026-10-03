@@ -1,0 +1,89 @@
+# streets.yaml — Vienna street-name pools (content-expansion task 9.1).
+#
+# One or more StreetsPool records, each a named list of street names the
+# generator draws addresses from and Location Type `namePatterns` reference via
+# `{pick:<pool>}`. Pooled by texture so a Location sits on a plausible street
+# for its District. The names are authentic Viennese thoroughfares of the
+# period; using a street name is not an endorsement of any business on it, and
+# every place and person in play is fictional. The pools together list well
+# over sixty streets (CE-QUANTITY, Req 11.2).
+
+- id: grand
+  names:
+    - Ringstraße
+    - Opernring
+    - Kärntner Ring
+    - Schottenring
+    - Stubenring
+    - Parkring
+    - Kärntner Straße
+    - Graben
+    - Kohlmarkt
+    - Herrengasse
+    - Wollzeile
+    - Rotenturmstraße
+
+- id: commercial
+  names:
+    - Mariahilfer Straße
+    - Taborstraße
+    - Praterstraße
+    - Favoritenstraße
+    - Wiedner Hauptstraße
+    - Landstraßer Hauptstraße
+    - Neubaugasse
+    - Josefstädter Straße
+    - Alser Straße
+    - Währinger Straße
+    - Nußdorfer Straße
+    - Reinprechtsdorfer Straße
+    - Thaliastraße
+    - Ottakringer Straße
+
+- id: residential
+  names:
+    - Berggasse
+    - Porzellangasse
+    - Zirkusgasse
+    - Große Sperlgasse
+    - Blumauergasse
+    - Grünentorgasse
+    - Servitengasse
+    - Liechtensteinstraße
+    - Hahngasse
+    - Pramergasse
+    - Marc-Aurel-Straße
+    - Sterngasse
+    - Fleischmarkt
+    - Postgasse
+    - Schönlaterngasse
+
+- id: waterfront
+  names:
+    - Handelskai
+    - Obere Donaustraße
+    - Untere Donaustraße
+    - Treustraße
+    - Adalbert-Stifter-Straße
+    - Höchstädtplatz
+    - Engerthstraße
+    - Wehlistraße
+    - Vorgartenstraße
+    - Lände
+
+- id: quiet
+  names:
+    - Annagasse
+    - Weihburggasse
+    - Dorotheergasse
+    - Himmelpfortgasse
+    - Bäckerstraße
+    - Singerstraße
+    - Blutgasse
+    - Grünangergasse
+    - Ballgasse
+    - Rauhensteingasse
+    - Franziskanerplatz
+    - Seilerstätte
+    - Johannesgasse
+    - Spiegelgasse

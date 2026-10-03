@@ -1,0 +1,81 @@
+# Cue Map: which track plays when. The Director reads only what the player can
+# see (see packages/web/src/shared/cue/types.ts). Rules are checked in order and
+# the first match wins. Edit freely; the server validates this file at start.
+version: 1
+
+cues:
+  title:        { kind: music, file: Title }
+  opening:      { kind: music, file: Opening }
+  exploration:  { kind: music, file: City }
+  soviet:       { kind: music, file: Soviet-Sector }
+  cafe:         { kind: music, file: Café, duck: true }
+  interrogation: { kind: music, file: Interrogation }
+  checkpoint:   { kind: music, file: Checkpoint }
+  workbench:    { kind: music, file: Cipher Workbench }
+  numbers:      { kind: music, file: Numbers Station }
+  pursuit:      { kind: music, file: Pursuit }
+  success:      { kind: music, file: Success, loop: none }
+  burned:       { kind: music, file: Burned, loop: none }
+  # The plot-completes failure uses the opening section of Burned (take 1), faded out.
+  burned-plot:  { kind: music, from: burned, take: 1, slice: { section: first }, loop: none, fadeOut: 3 }
+
+rules:
+  - name: game over, success
+    when: { all: [{ screen: gameover }, { gameOver: success }] }
+    music: success
+    transition: { type: crossfade, seconds: 2 }
+  - name: game over, burned
+    when: { all: [{ screen: gameover }, { gameOver: burned }] }
+    music: burned
+    transition: { type: crossfade, seconds: 2 }
+  - name: game over, plot completes
+    when: { all: [{ screen: gameover }, { gameOver: plot-completes }] }
+    music: burned-plot
+    transition: { type: crossfade, seconds: 2 }
+  - name: title
+    when: { screen: title }
+    music: title
+  - name: opening
+    when: { screen: opening }
+    music: opening
+  - name: numbers station intercept
+    when: { screen: intercept }
+    music: numbers
+    transition: { type: cut }
+  - name: cipher workbench
+    when: { screen: workbench }
+    music: workbench
+  - name: checkpoint
+    # Your own travel took you into a different sector (the sector tag changed).
+    when: { factKinds: { has: sector-crossed } }
+    music: checkpoint
+    holdSeconds: 25
+    transition: { type: crossfade, seconds: 1.5 }
+  - name: pursuit
+    # You are tailing someone. Plays for a while, then falls through to the area track.
+    when: { lastActionKind: follow }
+    music: pursuit
+    holdSeconds: 90
+    transition: { type: cut }
+  - name: interrogation
+    # High-stakes conversation: confronting someone with a claim, pitching a turn, an arrest.
+    when: { lastActionKind: { in: [confront, turn-agent, arrest] } }
+    music: interrogation
+  - name: cafe
+    when: { all: [{ screen: talk }, { locationTags: { has: 'type:kaffeehaus' } }] }
+    music: cafe
+    duck: true
+  - name: hotel bar
+    when: { all: [{ screen: talk }, { locationTags: { has: 'type:hotel-bar' } }] }
+    music: cafe
+    duck: true
+  - name: soviet sector
+    when: { locationTags: { has: 'sector:soviet' } }
+    music: soviet
+    transition: { type: crossfade, seconds: 2.5, boundary: phrase }
+  - name: exploration
+    when: { screen: city }
+    music: exploration
+  - name: after a talk, back to exploration
+    when: { screen: talk }
+    music: exploration

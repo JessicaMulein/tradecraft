@@ -1,0 +1,1409 @@
+# anachronisms.yaml — the Anachronism Entry list for the early Cold War, 1945–1965.
+#
+# Validates against AnachronismEntrySchema (packages/content/src/kinds/era.ts):
+#   { term, pattern, earliest: number, city?: CityId, note }
+#
+# Each entry names a term that would be anachronistic in a 1945–1965 document.
+# `earliest` is the first year the term is period-correct — the linter's
+# CE-ANACH rule (task 5.4) flags any text that uses the term before that year
+# for the Game Year. `pattern` is the surface the text matcher scans; it is a
+# case-insensitive word/phrase fragment (the linter tokenises with diacritic
+# and case folding and skips template slots, so plain lower-case forms suffice).
+# `note` records why the term is out of period, for the reviewer.
+#
+# Most entries carry an `earliest` later than 1965: the term simply does not
+# belong in a game whose Period Window ends in 1965, so any use is an
+# anachronism. A handful name things that entered common use *within* the window
+# (the transistor radio, the long-playing record, the hovercraft) with the year
+# they did, so a 1946 document is flagged but a 1960 one is not.
+#
+# City-scoped entries carry a `city` id. These are terms that only became
+# anachronistic in a particular city — most importantly the Berlin border
+# apparatus of 1961 and after (the Wall, Checkpoint Charlie, the death strip),
+# which is period-correct for a Berlin scenario set in 1962 but an anachronism
+# for one set in 1959. The Berlin city id is `city-berlin/berlin` (task 9.3).
+#
+# EVERY NAME IS FICTIONAL where a brand would be implied; generic nouns are used
+# for the technology itself. No real trademark is asserted.
+
+# =========================================================================
+# COMPUTING, DIGITAL & INFORMATION TECHNOLOGY
+# =========================================================================
+
+- term: internet
+  pattern: internet
+  earliest: 1983
+  note: >-
+    The internet as a public network post-dates the period by two decades. No
+    1945–1965 document refers to it.
+
+- term: the net
+  pattern: the net
+  earliest: 1990
+  note: >-
+    "The net" as shorthand for the internet is a 1990s coinage. Out of period.
+
+- term: world wide web
+  pattern: world wide web
+  earliest: 1991
+  note: 'The Web was proposed in 1989 and public from 1991. Out of period.'
+
+- term: website
+  pattern: website
+  earliest: 1992
+  note: 'Websites post-date the period. Use "notice" or "bulletin".'
+
+- term: web page
+  pattern: web page
+  earliest: 1992
+  note: 'A web page is a 1990s artefact. Out of period.'
+
+- term: email
+  pattern: email
+  earliest: 1972
+  note: 'Electronic mail is a 1970s technology. Use "cable", "letter" or "wire".'
+
+- term: e-mail
+  pattern: e-mail
+  earliest: 1972
+  note: 'The hyphenated spelling is equally anachronistic. Out of period.'
+
+- term: online
+  pattern: online
+  earliest: 1980
+  note: '"Online" in the networked sense is a later coinage. Out of period.'
+
+- term: offline
+  pattern: offline
+  earliest: 1980
+  note: '"Offline" in the computing sense is out of period.'
+
+- term: download
+  pattern: download
+  earliest: 1975
+  note: 'A computing-era term. No 1945–1965 document uses it.'
+
+- term: upload
+  pattern: upload
+  earliest: 1975
+  note: 'A computing-era term. Out of period.'
+
+- term: software
+  pattern: software
+  earliest: 1958
+  note: >-
+    "Software" was coined around 1958 and stayed inside computing laboratories;
+    it has no place in a civilian 1945–1965 document.
+
+- term: hardware (computing)
+  pattern: computer hardware
+  earliest: 1960
+  note: 'Computing "hardware" is out of period for a civilian document.'
+
+- term: personal computer
+  pattern: personal computer
+  earliest: 1975
+  note: 'The personal computer is a mid-1970s artefact. Out of period.'
+
+- term: laptop
+  pattern: laptop
+  earliest: 1982
+  note: 'Portable computers post-date the period by decades.'
+
+- term: microchip
+  pattern: microchip
+  earliest: 1961
+  note: >-
+    The integrated circuit was a 1958–1961 laboratory development; "microchip"
+    as a word is later and out of period for civilian text.
+
+- term: microprocessor
+  pattern: microprocessor
+  earliest: 1971
+  note: 'The microprocessor is a 1971 invention. Out of period.'
+
+- term: database
+  pattern: database
+  earliest: 1962
+  note: '"Database" is a later computing term. Use "registry" or "file index".'
+
+- term: digital
+  pattern: digital
+  earliest: 1960
+  note: >-
+    "Digital" in the electronic sense was confined to laboratories; a civilian
+    1945–1965 document would not use it. Prefer "numerical" if a dial is meant.
+
+- term: byte
+  pattern: byte
+  earliest: 1964
+  note: 'The byte is a 1950s coinage confined to computing. Out of period.'
+
+- term: megabyte
+  pattern: megabyte
+  earliest: 1970
+  note: 'Out of period.'
+
+- term: pixel
+  pattern: pixel
+  earliest: 1965
+  note: '"Pixel" is a later coinage. Out of period.'
+
+- term: scanner
+  pattern: scanner
+  earliest: 1975
+  note: 'The document scanner is a later device. Out of period.'
+
+- term: hard drive
+  pattern: hard drive
+  earliest: 1956
+  note: 'Disk storage was a 1956 laboratory device; the term is out of period.'
+
+- term: floppy disk
+  pattern: floppy disk
+  earliest: 1971
+  note: 'The floppy disk is a 1970s artefact. Out of period.'
+
+# =========================================================================
+# COMMUNICATIONS & TELEPHONY
+# =========================================================================
+
+- term: mobile phone
+  pattern: mobile phone
+  earliest: 1983
+  note: 'The hand-portable telephone post-dates the period. Use "telephone".'
+
+- term: cell phone
+  pattern: cell phone
+  earliest: 1983
+  note: 'A cellular telephone is a 1980s device. Out of period.'
+
+- term: cellphone
+  pattern: cellphone
+  earliest: 1983
+  note: 'Out of period.'
+
+- term: smartphone
+  pattern: smartphone
+  earliest: 2007
+  note: 'Decades out of period.'
+
+- term: text message
+  pattern: text message
+  earliest: 1992
+  note: 'SMS post-dates the period. Use "cable", "note" or "wire".'
+
+- term: SMS
+  pattern: sms
+  earliest: 1992
+  note: 'Out of period.'
+
+- term: fax
+  pattern: fax
+  earliest: 1966
+  note: >-
+    Facsimile existed earlier for press wire photos, but the office fax and the
+    word "fax" are later. Use "wire photo" if an image transmission is meant.
+
+- term: pager
+  pattern: pager
+  earliest: 1962
+  note: >-
+    The civilian pager appeared in the early 1960s but not in occupied Europe;
+    treat it as out of period for the slice cities before 1965.
+
+- term: answering machine
+  pattern: answering machine
+  earliest: 1960
+  note: 'The domestic answering machine is later than the period for Europe.'
+
+- term: voicemail
+  pattern: voicemail
+  earliest: 1980
+  note: 'Out of period.'
+
+- term: speakerphone
+  pattern: speakerphone
+  earliest: 1954
+  note: 'A later office device; treat as out of period for civilian text.'
+
+- term: push-button telephone
+  pattern: push-button telephone
+  earliest: 1963
+  note: >-
+    Touch-dialling is a mid-1960s North American innovation absent from the
+    slice cities. A period telephone has a rotary dial.
+
+- term: touch-tone
+  pattern: touch-tone
+  earliest: 1963
+  note: 'Out of period for the slice cities.'
+
+- term: satellite phone
+  pattern: satellite phone
+  earliest: 1979
+  note: 'Out of period.'
+
+- term: videophone
+  pattern: videophone
+  earliest: 1964
+  note: 'A later demonstration device, out of period for civilian use.'
+
+- term: conference call
+  pattern: conference call
+  earliest: 1964
+  note: 'The term and the facility are out of period.'
+
+# =========================================================================
+# AVIATION & SPACE
+# =========================================================================
+
+- term: jumbo jet
+  pattern: jumbo jet
+  earliest: 1969
+  note: 'The wide-body airliner is a 1969 aircraft. Out of period.'
+
+- term: jet airliner
+  pattern: jet airliner
+  earliest: 1952
+  note: >-
+    Jet passenger service began in 1952 and reached European routes later; a
+    1949 document naming a jet airliner is an anachronism.
+
+- term: supersonic airliner
+  pattern: supersonic airliner
+  earliest: 1969
+  note: 'Supersonic passenger flight is a 1969 development. Out of period.'
+
+- term: spacecraft
+  pattern: spacecraft
+  earliest: 1957
+  note: >-
+    Spaceflight began in 1957; a document before that naming a spacecraft is an
+    anachronism, and civilian use of the word in Europe is later still.
+
+- term: satellite (orbital)
+  pattern: artificial satellite
+  earliest: 1957
+  note: 'The first artificial satellite is 1957. Before that it is an anachronism.'
+
+- term: astronaut
+  pattern: astronaut
+  earliest: 1961
+  note: 'Crewed spaceflight is a 1961 event. Out of period before then.'
+
+- term: cosmonaut
+  pattern: cosmonaut
+  earliest: 1961
+  note: 'A 1961 coinage. Out of period before then.'
+
+- term: moon landing
+  pattern: moon landing
+  earliest: 1969
+  note: 'The lunar landing is 1969. Decades out of period.'
+
+- term: space station
+  pattern: space station
+  earliest: 1971
+  note: 'Out of period.'
+
+- term: black box (flight recorder)
+  pattern: flight recorder
+  earliest: 1958
+  note: 'The flight recorder is a late-1950s device, out of period before 1958.'
+
+# =========================================================================
+# MEDIA, SOUND & SCREEN
+# =========================================================================
+
+- term: colour television
+  pattern: colour television
+  earliest: 1967
+  note: >-
+    Colour broadcasting reached Europe in 1967; a period television set and
+    broadcast are black and white.
+
+- term: color television
+  pattern: color television
+  earliest: 1967
+  note: 'Out of period for Europe, and the spelling is American.'
+
+- term: cassette tape
+  pattern: cassette tape
+  earliest: 1963
+  note: >-
+    The compact cassette was unveiled in 1963 and not common in Europe until
+    later; before 1963 a recorder uses open reels.
+
+- term: compact cassette
+  pattern: compact cassette
+  earliest: 1963
+  note: 'Out of period before 1963.'
+
+- term: VCR
+  pattern: vcr
+  earliest: 1971
+  note: 'The domestic video recorder is a 1970s device. Out of period.'
+
+- term: videotape
+  pattern: videotape
+  earliest: 1956
+  note: >-
+    Broadcast videotape appeared in 1956 inside studios; civilian use of the
+    term is later. Treat as out of period before 1956.
+
+- term: VHS
+  pattern: vhs
+  earliest: 1976
+  note: 'Out of period.'
+
+- term: compact disc
+  pattern: compact disc
+  earliest: 1982
+  note: 'Out of period.'
+
+- term: CD
+  pattern: compact disc player
+  earliest: 1982
+  note: 'Out of period.'
+
+- term: stereo (recording)
+  pattern: stereophonic
+  earliest: 1958
+  note: >-
+    Stereo discs reached the market in 1958; a 1950 recording is monophonic, so
+    "stereophonic" before 1958 is an anachronism.
+
+- term: long-playing record
+  pattern: long-playing record
+  earliest: 1948
+  note: >-
+    The 33⅓ LP was introduced in 1948. A 1946 document naming an LP is an
+    anachronism; after 1948 it is period-correct.
+
+- term: transistor radio
+  pattern: transistor radio
+  earliest: 1954
+  note: >-
+    The pocket transistor radio appeared in 1954. A 1949 document naming one is
+    an anachronism; after 1954 it is period-correct.
+
+- term: FM radio
+  pattern: fm radio
+  earliest: 1945
+  note: >-
+    FM broadcasting existed from the mid-1940s but was rare in occupied Europe;
+    treat early-occupation references with care (period-correct from 1945).
+
+- term: television remote control
+  pattern: remote control
+  earliest: 1956
+  note: 'The wireless television remote is a 1956 novelty, out of period before.'
+
+- term: Walkman
+  pattern: walkman
+  earliest: 1979
+  note: 'Out of period.'
+
+- term: multiplex cinema
+  pattern: multiplex
+  earliest: 1963
+  note: 'The multi-screen cinema is a later idea. Out of period.'
+
+# =========================================================================
+# EVERYDAY GOODS, HOUSEHOLD & PACKAGING
+# =========================================================================
+
+- term: ballpoint pen
+  pattern: ballpoint pen
+  earliest: 1945
+  note: >-
+    The ballpoint reached European shops from 1945; an earlier document names a
+    fountain pen. Period-correct from 1945 (also called a biro).
+
+- term: felt-tip pen
+  pattern: felt-tip pen
+  earliest: 1962
+  note: 'The felt-tip marker is a 1962 product. Out of period before then.'
+
+- term: photocopier
+  pattern: photocopier
+  earliest: 1959
+  note: >-
+    The plain-paper office copier is a 1959 machine and reached Europe later.
+    Before then, use a carbon copy or a stencil duplicator.
+
+- term: Xerox
+  pattern: xerox
+  earliest: 1959
+  note: 'The verb and the machine are late and a trademark. Use "copy".'
+
+- term: ballpoint biro
+  pattern: biro
+  earliest: 1945
+  note: 'Period-correct from 1945; flagged only for earlier documents.'
+
+- term: cling film
+  pattern: cling film
+  earliest: 1953
+  note: 'Household plastic wrap is a 1950s product; out of period before 1953.'
+
+- term: aluminium foil
+  pattern: kitchen foil
+  earliest: 1947
+  note: 'Household foil spread from 1947; out of period before then.'
+
+- term: non-stick pan
+  pattern: non-stick pan
+  earliest: 1961
+  note: 'The non-stick coated pan is a 1961 product. Out of period before then.'
+
+- term: microwave oven
+  pattern: microwave oven
+  earliest: 1967
+  note: 'The domestic microwave oven post-dates the period. Out of period.'
+
+- term: tumble dryer
+  pattern: tumble dryer
+  earliest: 1958
+  note: 'The domestic tumble dryer is late for European homes. Out of period.'
+
+- term: dishwasher (domestic)
+  pattern: dishwasher
+  earliest: 1960
+  note: 'The domestic dishwasher is rare and late in Europe. Out of period.'
+
+- term: aerosol can
+  pattern: aerosol can
+  earliest: 1949
+  note: 'The consumer aerosol spread from 1949; out of period before then.'
+
+- term: zip-lock bag
+  pattern: zip-lock bag
+  earliest: 1968
+  note: 'Out of period.'
+
+- term: bubble wrap
+  pattern: bubble wrap
+  earliest: 1960
+  note: 'Protective bubble wrap is a 1960 product. Out of period before then.'
+
+- term: supermarket trolley
+  pattern: supermarket trolley
+  earliest: 1947
+  note: >-
+    The shopping trolley spread with American self-service stores; rare in
+    occupied Europe before the late 1940s.
+
+- term: self-service supermarket
+  pattern: supermarket
+  earliest: 1948
+  note: >-
+    The self-service supermarket reached Europe slowly from the late 1940s; an
+    early-occupation document names a grocer or market stall.
+
+- term: credit card
+  pattern: credit card
+  earliest: 1950
+  note: >-
+    The charge card appeared in 1950 in America and was unknown in occupied
+    Europe; treat it as out of period for the slice cities.
+
+- term: barcode
+  pattern: barcode
+  earliest: 1974
+  note: 'The retail barcode is a 1970s technology. Out of period.'
+
+# =========================================================================
+# MATERIALS, PLASTICS & TEXTILES
+# =========================================================================
+
+- term: tights (nylon)
+  pattern: tights
+  earliest: 1959
+  note: 'One-piece nylon tights are a 1959 product; before then, stockings.'
+
+- term: velcro
+  pattern: velcro
+  earliest: 1958
+  note: 'The hook-and-loop fastener is a 1950s invention, late and a trademark.'
+
+- term: polystyrene foam
+  pattern: polystyrene foam
+  earliest: 1954
+  note: 'Expanded foam packaging is a 1950s product. Out of period before 1954.'
+
+- term: polythene bag
+  pattern: polythene bag
+  earliest: 1952
+  note: 'The polythene carrier spread from the early 1950s. Out of period before.'
+
+- term: Formica
+  pattern: formica worktop
+  earliest: 1947
+  note: 'Laminate worktops spread from the late 1940s; a trademark besides.'
+
+- term: Teflon
+  pattern: teflon
+  earliest: 1961
+  note: 'A later coating and a trademark. Use "non-stick".'
+
+# =========================================================================
+# MEDICINE, HEALTH & SCIENCE
+# =========================================================================
+
+- term: polio vaccine
+  pattern: polio vaccine
+  earliest: 1955
+  note: 'The polio vaccine was licensed in 1955. Out of period before then.'
+
+- term: contraceptive pill
+  pattern: contraceptive pill
+  earliest: 1960
+  note: 'The oral contraceptive was approved in 1960. Out of period before then.'
+
+- term: the pill
+  pattern: the pill
+  earliest: 1960
+  note: 'Out of period before 1960.'
+
+- term: DNA
+  pattern: dna
+  earliest: 1953
+  note: >-
+    The structure of DNA was published in 1953 and the term stayed in science;
+    a civilian document before 1953 is anachronistic.
+
+- term: laser
+  pattern: laser
+  earliest: 1960
+  note: 'The laser is a 1960 invention. Out of period before then.'
+
+- term: CAT scan
+  pattern: cat scan
+  earliest: 1972
+  note: 'Computed tomography is a 1970s technology. Out of period.'
+
+- term: ultrasound scan
+  pattern: ultrasound scan
+  earliest: 1958
+  note: 'Diagnostic ultrasound is a late-1950s technique. Out of period before.'
+
+- term: pacemaker (implanted)
+  pattern: implanted pacemaker
+  earliest: 1958
+  note: 'The implantable pacemaker is a 1958 device. Out of period before then.'
+
+- term: open-heart surgery
+  pattern: open-heart surgery
+  earliest: 1953
+  note: 'Open-heart surgery with bypass dates to 1953. Out of period before.'
+
+- term: antidepressant
+  pattern: antidepressant
+  earliest: 1957
+  note: 'The first antidepressants date to 1957. Out of period before then.'
+
+- term: tranquilliser
+  pattern: tranquilliser
+  earliest: 1955
+  note: 'The minor tranquilliser is a 1955 drug. Out of period before then.'
+
+- term: statin
+  pattern: statin
+  earliest: 1987
+  note: 'Out of period.'
+
+- term: antibiotic (broad use)
+  pattern: broad-spectrum antibiotic
+  earliest: 1948
+  note: >-
+    Penicillin was available; broad-spectrum antibiotics spread from 1948. A
+    1945 document naming them generally is slightly early.
+
+# =========================================================================
+# POLITICS, GEOPOLITICS & ORGANISATIONS
+# =========================================================================
+
+- term: Vietnam War
+  pattern: vietnam war
+  earliest: 1965
+  note: >-
+    The American ground war in Vietnam is a 1965-and-later event; before then a
+    European document would not name it.
+
+- term: Cuban Missile Crisis
+  pattern: cuban missile crisis
+  earliest: 1962
+  note: 'The crisis is an October 1962 event. Out of period before then.'
+
+- term: Prague Spring
+  pattern: prague spring
+  earliest: 1968
+  note: 'The Prague Spring is 1968. Out of period.'
+
+- term: détente
+  pattern: detente
+  earliest: 1969
+  note: >-
+    "Détente" as the name of the policy belongs to the late 1960s and 1970s.
+    Out of period for the first postwar decade.
+
+- term: Common Market
+  pattern: common market
+  earliest: 1958
+  note: 'The European Economic Community began in 1958. Out of period before.'
+
+- term: European Union
+  pattern: european union
+  earliest: 1993
+  note: 'Decades out of period.'
+
+- term: eurozone
+  pattern: eurozone
+  earliest: 1999
+  note: 'Out of period.'
+
+- term: Warsaw Pact
+  pattern: warsaw pact
+  earliest: 1955
+  note: 'The pact was signed in 1955. Out of period before then.'
+
+- term: superpower (term)
+  pattern: superpower
+  earliest: 1947
+  note: >-
+    "Superpower" entered political usage in 1944–1947; an early-occupation
+    document using it loosely is borderline, flagged before 1947.
+
+- term: Third World
+  pattern: third world
+  earliest: 1952
+  note: 'The term "Third World" was coined in 1952. Out of period before then.'
+
+- term: decolonisation (term)
+  pattern: decolonisation
+  earliest: 1952
+  note: 'The abstract noun is a 1950s coinage. Out of period before then.'
+
+- term: non-aligned movement
+  pattern: non-aligned movement
+  earliest: 1961
+  note: 'The movement was founded in 1961. Out of period before then.'
+
+- term: glasnost
+  pattern: glasnost
+  earliest: 1986
+  note: 'Out of period.'
+
+- term: perestroika
+  pattern: perestroika
+  earliest: 1986
+  note: 'Out of period.'
+
+# =========================================================================
+# CURRENCY, FINANCE & ECONOMY
+# =========================================================================
+
+- term: euro
+  pattern: euro
+  earliest: 1999
+  note: >-
+    The euro currency post-dates the period. The slice cities use schilling,
+    mark, lira, escudo and the like.
+
+- term: cash machine
+  pattern: cash machine
+  earliest: 1967
+  note: 'The automated teller is a 1967 device. Out of period before then.'
+
+- term: ATM
+  pattern: atm
+  earliest: 1967
+  note: 'Out of period.'
+
+- term: direct debit
+  pattern: direct debit
+  earliest: 1964
+  note: 'The direct-debit scheme is a mid-1960s banking facility. Out of period.'
+
+- term: travellers cheque (plastic era)
+  pattern: debit card
+  earliest: 1966
+  note: 'The debit card is a later instrument. Out of period.'
+
+- term: offshore account (term)
+  pattern: offshore account
+  earliest: 1970
+  note: 'The term in its modern finance sense is later. Out of period.'
+
+- term: inflation-indexed
+  pattern: inflation-indexed
+  earliest: 1970
+  note: 'The indexed bond is a later instrument. Out of period.'
+
+# =========================================================================
+# LANGUAGE, SLANG & CULTURE
+# =========================================================================
+
+- term: teenager (as marketing term)
+  pattern: teenager
+  earliest: 1945
+  note: >-
+    "Teenager" spread in American usage from the mid-1940s and reached Europe
+    later; an early-occupation document using it is borderline.
+
+- term: cool (slang)
+  pattern: that is cool
+  earliest: 1950
+  note: >-
+    The approving slang "cool" is American jazz slang of the late 1940s/1950s,
+    out of place in European officialese; flag loose use before 1950.
+
+- term: OK (as "okay")
+  pattern: okay
+  earliest: 1945
+  note: >-
+    "Okay" is period-plausible in American speech but out of place in European
+    officialese of the period; a style matter more than a hard anachronism.
+
+- term: hippie
+  pattern: hippie
+  earliest: 1965
+  note: 'The counter-culture term is 1965-and-later. Out of period.'
+
+- term: rock and roll
+  pattern: rock and roll
+  earliest: 1954
+  note: 'The genre name spread from 1954. Out of period before then.'
+
+- term: pop music
+  pattern: pop music
+  earliest: 1955
+  note: '"Pop music" as a category is a mid-1950s term. Out of period before.'
+
+- term: supermodel
+  pattern: supermodel
+  earliest: 1980
+  note: 'Out of period.'
+
+- term: celebrity culture
+  pattern: celebrity culture
+  earliest: 1990
+  note: 'Out of period.'
+
+- term: workaholic
+  pattern: workaholic
+  earliest: 1968
+  note: 'A 1968 coinage. Out of period.'
+
+- term: brainwashing
+  pattern: brainwashing
+  earliest: 1950
+  note: >-
+    "Brainwashing" was coined around 1950 from the Korean war; before 1950 it is
+    an anachronism.
+
+- term: paparazzi
+  pattern: paparazzi
+  earliest: 1960
+  note: 'The term dates from 1960. Out of period before then.'
+
+- term: jet set
+  pattern: jet set
+  earliest: 1951
+  note: 'The phrase spread with jet travel. Out of period before then.'
+
+# =========================================================================
+# INTELLIGENCE, SECURITY & MILITARY TERMS
+# =========================================================================
+
+- term: spy satellite
+  pattern: spy satellite
+  earliest: 1960
+  note: 'Reconnaissance satellites date from 1960. Out of period before then.'
+
+- term: mutually assured destruction
+  pattern: mutually assured destruction
+  earliest: 1962
+  note: 'The doctrine and its name are early-1960s. Out of period before then.'
+
+- term: ICBM
+  pattern: icbm
+  earliest: 1957
+  note: 'The intercontinental ballistic missile is a 1957 weapon. Out of period before.'
+
+- term: hydrogen bomb
+  pattern: hydrogen bomb
+  earliest: 1952
+  note: 'The thermonuclear weapon was tested in 1952. Out of period before then.'
+
+- term: nuclear deterrent (term)
+  pattern: nuclear deterrent
+  earliest: 1952
+  note: 'The policy term spread from the early 1950s. Out of period before then.'
+
+- term: body armour (kevlar)
+  pattern: kevlar
+  earliest: 1971
+  note: 'The para-aramid fibre is a 1971 material. Out of period.'
+
+- term: night-vision goggles
+  pattern: night-vision goggles
+  earliest: 1965
+  note: >-
+    Passive image-intensifier goggles are a mid-1960s and later device. Out of
+    period for a civilian or station document.
+
+- term: assault rifle (term)
+  pattern: assault rifle
+  earliest: 1945
+  note: >-
+    The translated term entered English late; a European document of the period
+    names the specific weapon type, not this later category word.
+
+- term: drone (aircraft)
+  pattern: drone aircraft
+  earliest: 1960
+  note: 'The reconnaissance drone is a 1960s device. Out of period before then.'
+
+- term: GPS
+  pattern: gps
+  earliest: 1978
+  note: 'Satellite positioning post-dates the period. Out of period.'
+
+- term: wiretap recorder (transistor)
+  pattern: transistorised bug
+  earliest: 1960
+  note: >-
+    Miniature transistorised listening devices spread from around 1960; before
+    then, a concealed microphone is valve-driven and bulky.
+
+# =========================================================================
+# TRANSPORT & INFRASTRUCTURE
+# =========================================================================
+
+- term: hovercraft
+  pattern: hovercraft
+  earliest: 1959
+  note: >-
+    The hovercraft first crossed the Channel in 1959. A 1950 document naming one
+    is an anachronism; after 1959 it is period-correct.
+
+- term: motorway network
+  pattern: motorway
+  earliest: 1945
+  note: >-
+    Autobahns existed; the generic "motorway" network spread later. Period use
+    varies by city — flag loose anachronistic reference.
+
+- term: container ship
+  pattern: container ship
+  earliest: 1956
+  note: 'Containerised shipping began in 1956. Out of period before then.'
+
+- term: diesel-electric (common)
+  pattern: diesel-electric railcar
+  earliest: 1945
+  note: >-
+    Diesel traction spread unevenly; many slice-city lines are steam or electric
+    tram. Period-correct from 1945, flagged for pre-war-set text only.
+
+- term: bullet train
+  pattern: bullet train
+  earliest: 1964
+  note: 'High-speed rail is a 1964 development. Out of period before then.'
+
+- term: seatbelt (compulsory)
+  pattern: compulsory seatbelt
+  earliest: 1968
+  note: 'Compulsory seatbelts are a later regulation. Out of period.'
+
+- term: parking meter (Europe)
+  pattern: parking meter
+  earliest: 1958
+  note: 'The parking meter reached European streets from 1958. Out of period before.'
+
+- term: traffic warden
+  pattern: traffic warden
+  earliest: 1960
+  note: 'The civilian traffic warden is a 1960 institution. Out of period before.'
+
+- term: zebra crossing
+  pattern: zebra crossing
+  earliest: 1951
+  note: 'The striped crossing dates from 1951. Out of period before then.'
+
+# =========================================================================
+# PHOTOGRAPHY & OPTICS
+# =========================================================================
+
+- term: instant camera
+  pattern: instant camera
+  earliest: 1948
+  note: >-
+    The instant-print camera appeared in 1948 and reached Europe later; a 1946
+    document naming one is an anachronism.
+
+- term: zoom lens (common)
+  pattern: zoom lens
+  earliest: 1959
+  note: 'The practical photographic zoom spread from 1959. Out of period before.'
+
+- term: single-lens reflex (35mm, common)
+  pattern: slr camera
+  earliest: 1949
+  note: 'The 35mm SLR spread from 1949. Out of period before then.'
+
+- term: colour slide film (common)
+  pattern: colour slide film
+  earliest: 1945
+  note: 'Reversal colour film existed; period-correct from 1945.'
+
+- term: digital camera
+  pattern: digital camera
+  earliest: 1990
+  note: 'Out of period.'
+
+- term: autofocus
+  pattern: autofocus
+  earliest: 1977
+  note: 'Out of period.'
+
+# =========================================================================
+# BERLIN — city-scoped border apparatus (period-correct only from 1961)
+# =========================================================================
+#
+# These terms name the Berlin Wall and its border machinery, raised in August
+# 1961. For a Berlin scenario set before 1961 they are anachronisms; for one set
+# in 1962 and after they are period-correct. They are scoped to the Berlin city
+# id so the anachronism rule applies them only to Berlin content. The sector
+# border before 1961 was an open, policed line, not a wall.
+
+- term: the Berlin Wall
+  pattern: berlin wall
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The Wall was raised in August 1961. A Berlin document set before 1961 names
+    the open sector boundary, not a wall.
+
+- term: the Wall (Berlin)
+  pattern: the wall
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    "The Wall" as the sector barrier is period-correct in Berlin only from 1961.
+    Before then the sector line was crossed freely on foot and by U-Bahn.
+
+- term: Checkpoint Charlie
+  pattern: checkpoint charlie
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The named Allied crossing point dates from the August 1961 border closure.
+    Out of period for a Berlin scenario set before 1961.
+
+- term: death strip
+  pattern: death strip
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The cleared, mined border zone belongs to the Wall era from 1961. An
+    anachronism for earlier Berlin content.
+
+- term: border fortifications (Berlin inner)
+  pattern: border fortifications
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The fortified inner-city border is a post-1961 feature. Before then the
+    sector boundary was marked by signs and patrols.
+
+- term: anti-fascist protection rampart
+  pattern: protection rampart
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The official eastern name for the Wall dates from 1961. Out of period for
+    earlier Berlin content.
+
+- term: no man's land (Berlin wall)
+  pattern: no man's land strip
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The cleared strip between the two walls is a post-1961 feature of Berlin.
+    An anachronism for earlier Berlin content.
+
+- term: watchtower line (Berlin)
+  pattern: border watchtower
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The line of border watchtowers belongs to the Wall era from 1961. Out of
+    period for earlier Berlin content.
+
+- term: Wall crossing permit
+  pattern: wall crossing permit
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    Formal crossing permits for the walled border date from 1961. Before then
+    movement between sectors was largely unrestricted.
+
+- term: sealed sector border (Berlin)
+  pattern: sealed sector border
+  earliest: 1961
+  city: city-berlin/berlin
+  note: >-
+    The sector border was sealed in August 1961. A Berlin document set before
+    then describes an open, if policed, boundary.
+
+# =========================================================================
+# COMPUTING, FURTHER TERMS & OFFICE AUTOMATION
+# =========================================================================
+
+- term: word processor
+  pattern: word processor
+  earliest: 1972
+  note: 'The word processor is a 1970s machine. Use "typist" or "typing pool".'
+
+- term: spreadsheet
+  pattern: spreadsheet
+  earliest: 1979
+  note: 'The electronic spreadsheet is a 1979 program. Out of period.'
+
+- term: printout
+  pattern: computer printout
+  earliest: 1960
+  note: 'The computer printout is out of period for a civilian document.'
+
+- term: keyboard (computer)
+  pattern: computer keyboard
+  earliest: 1964
+  note: 'A computer keyboard is out of period. A period office has a typewriter.'
+
+- term: terminal (video)
+  pattern: video terminal
+  earliest: 1965
+  note: 'The video display terminal is a later office device. Out of period.'
+
+- term: punch-card machine (civilian)
+  pattern: punch-card accounting
+  earliest: 1945
+  note: >-
+    Punch-card tabulators existed in large offices; period-correct from 1945,
+    flagged only for pre-war-set text.
+
+- term: artificial intelligence
+  pattern: artificial intelligence
+  earliest: 1956
+  note: >-
+    The term was coined in 1956 and stayed inside research; a civilian document
+    before 1956 is anachronistic, and even after it would be out of place.
+
+- term: robot (industrial)
+  pattern: industrial robot
+  earliest: 1961
+  note: 'The industrial robot arm is a 1961 device. Out of period before then.'
+
+- term: automation (buzzword)
+  pattern: automation
+  earliest: 1947
+  note: >-
+    "Automation" entered usage from 1947; an early-occupation document using it
+    freely is borderline, flagged before 1947.
+
+# =========================================================================
+# FOOD, DRINK & RETAIL
+# =========================================================================
+
+- term: fast food
+  pattern: fast food
+  earliest: 1951
+  note: 'The term "fast food" is a 1950s American coinage. Out of period before.'
+
+- term: instant coffee (common)
+  pattern: instant coffee
+  earliest: 1945
+  note: >-
+    Instant coffee spread during and after the war; period-correct from 1945,
+    flagged only for earlier-set text.
+
+- term: frozen food (retail)
+  pattern: frozen food
+  earliest: 1946
+  note: >-
+    Retail frozen food spread from the late 1940s and reached occupied Europe
+    slowly; flag loose reference in early-occupation documents.
+
+- term: TV dinner
+  pattern: tv dinner
+  earliest: 1953
+  note: 'The pre-packaged TV dinner is a 1953 American product. Out of period.'
+
+- term: fizzy drink can (ring-pull)
+  pattern: ring-pull can
+  earliest: 1963
+  note: 'The ring-pull drinks can is a 1963 product. Out of period before then.'
+
+- term: tea bag (common)
+  pattern: tea bag
+  earliest: 1953
+  note: >-
+    The tea bag spread in European use from the 1950s; a 1946 document naming
+    one is early.
+
+- term: diet drink
+  pattern: diet drink
+  earliest: 1958
+  note: 'The sugar-free soft drink is a 1958 product. Out of period before then.'
+
+- term: self-service launderette
+  pattern: launderette
+  earliest: 1949
+  note: >-
+    The coin-operated launderette spread from the late 1940s; flag loose
+    reference before 1949.
+
+# =========================================================================
+# POLITICS & EVENTS, FURTHER
+# =========================================================================
+
+- term: Berlin airlift aftermath (named)
+  pattern: airlift anniversary
+  earliest: 1949
+  note: >-
+    The airlift ran 1948–1949; a document naming its anniversary is period-
+    correct only from 1949.
+
+- term: Hungarian uprising
+  pattern: hungarian uprising
+  earliest: 1956
+  note: 'The uprising is an October 1956 event. Out of period before then.'
+
+- term: Suez crisis
+  pattern: suez crisis
+  earliest: 1956
+  note: 'The Suez crisis is 1956. Out of period before then.'
+
+- term: Berlin ultimatum
+  pattern: berlin ultimatum
+  earliest: 1958
+  note: 'The 1958 ultimatum. Out of period before then.'
+
+- term: U-2 incident
+  pattern: u-2 incident
+  earliest: 1960
+  note: 'The reconnaissance-aircraft incident is a 1960 event. Out of period before.'
+
+- term: Bay of Pigs
+  pattern: bay of pigs
+  earliest: 1961
+  note: 'The 1961 landing. Out of period before then.'
+
+- term: test-ban treaty
+  pattern: test-ban treaty
+  earliest: 1963
+  note: 'The partial test-ban treaty is 1963. Out of period before then.'
+
+- term: thaw (political)
+  pattern: the thaw
+  earliest: 1954
+  note: >-
+    The political "thaw" is a mid-1950s term; a document before 1954 using it is
+    an anachronism.
+
+- term: iron curtain (phrase)
+  pattern: iron curtain
+  earliest: 1946
+  note: >-
+    The phrase was popularised in a March 1946 speech; before 1946 it is an
+    anachronism in a political document.
+
+- term: cold war (phrase)
+  pattern: cold war
+  earliest: 1947
+  note: >-
+    "Cold war" entered common usage in 1947; a document before then using it as
+    the name of the era is an anachronism.
+
+- term: domino theory
+  pattern: domino theory
+  earliest: 1954
+  note: 'The doctrine and name are 1954. Out of period before then.'
+
+# =========================================================================
+# SCIENCE, ENERGY & ENVIRONMENT
+# =========================================================================
+
+- term: nuclear power station
+  pattern: nuclear power station
+  earliest: 1954
+  note: 'Civil nuclear power dates from 1954. Out of period before then.'
+
+- term: solar panel
+  pattern: solar panel
+  earliest: 1958
+  note: 'The photovoltaic panel is a late-1950s device. Out of period before.'
+
+- term: greenhouse effect (public)
+  pattern: greenhouse effect
+  earliest: 1957
+  note: >-
+    The term stayed in science; a civilian document before the late 1950s using
+    it is anachronistic, and even after it is out of place.
+
+- term: carbon dating
+  pattern: carbon dating
+  earliest: 1949
+  note: 'Radiocarbon dating dates from 1949. Out of period before then.'
+
+- term: fallout (nuclear, public)
+  pattern: nuclear fallout
+  earliest: 1951
+  note: >-
+    "Fallout" entered public usage with 1950s testing; a document before 1951
+    using it is an anachronism.
+
+- term: fallout shelter
+  pattern: fallout shelter
+  earliest: 1951
+  note: 'The civilian fallout shelter is a 1950s feature. Out of period before.'
+
+- term: silicon (semiconductor)
+  pattern: silicon transistor
+  earliest: 1954
+  note: 'The silicon transistor dates from 1954. Out of period before then.'
+
+- term: maser
+  pattern: maser
+  earliest: 1954
+  note: 'The maser is a 1954 device. Out of period before then.'
+
+# =========================================================================
+# FASHION, DESIGN & LEISURE
+# =========================================================================
+
+- term: miniskirt
+  pattern: miniskirt
+  earliest: 1964
+  note: 'The miniskirt is a 1964 fashion. Out of period before then.'
+
+- term: stiletto heel
+  pattern: stiletto heel
+  earliest: 1953
+  note: 'The stiletto heel is a 1953 fashion. Out of period before then.'
+
+- term: bikini
+  pattern: bikini
+  earliest: 1946
+  note: >-
+    The bikini was unveiled in 1946; a document before 1946 naming one is an
+    anachronism.
+
+- term: drip-dry shirt
+  pattern: drip-dry shirt
+  earliest: 1952
+  note: 'The synthetic drip-dry shirt is a 1952 product. Out of period before.'
+
+- term: hula hoop
+  pattern: hula hoop
+  earliest: 1958
+  note: 'The hula hoop craze is 1958. Out of period before then.'
+
+- term: skateboard
+  pattern: skateboard
+  earliest: 1958
+  note: 'The skateboard is a late-1950s American toy. Out of period before.'
+
+- term: scuba (aqualung, common)
+  pattern: scuba
+  earliest: 1946
+  note: >-
+    The open-circuit aqualung spread from 1946; the acronym "scuba" is later
+    still. Out of period before 1946.
+
+- term: colour magazine supplement
+  pattern: colour supplement
+  earliest: 1962
+  note: 'The newspaper colour supplement is a 1962 innovation. Out of period before.'
+
+# =========================================================================
+# MISCELLANEOUS LATER TERMS
+# =========================================================================
+
+- term: biodegradable
+  pattern: biodegradable
+  earliest: 1960
+  note: '"Biodegradable" is a later coinage. Out of period before 1960.'
+
+- term: ecology (popular)
+  pattern: ecology movement
+  earliest: 1962
+  note: 'The popular environmental sense is a 1960s development. Out of period.'
+
+- term: zip code / postcode
+  pattern: postcode
+  earliest: 1959
+  note: 'Alphanumeric postcodes spread from 1959. Out of period before then.'
+
+- term: barcode scanner
+  pattern: barcode scanner
+  earliest: 1974
+  note: 'Out of period.'
+
+- term: photolitho offset (small office)
+  pattern: office offset press
+  earliest: 1950
+  note: >-
+    Small-office offset spread from 1950; a 1946 document naming one is early.
+    Period-correct from 1950.
+
+- term: ring binder (common)
+  pattern: ring binder
+  earliest: 1945
+  note: 'Period-correct from 1945; flagged only for earlier-set text.'
+
+- term: whiteboard
+  pattern: whiteboard
+  earliest: 1965
+  note: 'The dry-wipe whiteboard is a mid-1960s and later item. Out of period.'
+
+- term: overhead projector (common)
+  pattern: overhead projector
+  earliest: 1960
+  note: >-
+    The overhead projector spread in offices and schools from around 1960. Out
+    of period before then.
+
+- term: pocket calculator
+  pattern: pocket calculator
+  earliest: 1970
+  note: 'The electronic pocket calculator is a 1970 device. Out of period.'
+
+- term: digital watch
+  pattern: digital watch
+  earliest: 1972
+  note: 'The digital watch is a 1972 device. Out of period.'
+
+- term: quartz watch
+  pattern: quartz watch
+  earliest: 1969
+  note: 'The quartz wristwatch is a 1969 device. Out of period.'
+
+- term: aerosol deodorant
+  pattern: aerosol deodorant
+  earliest: 1965
+  note: 'The spray deodorant is a mid-1960s product. Out of period before 1965.'
+
+- term: disposable nappy
+  pattern: disposable nappy
+  earliest: 1961
+  note: 'The disposable nappy is a 1961 product. Out of period before then.'
+
+- term: ballpen refill (common)
+  pattern: ballpen refill
+  earliest: 1950
+  note: 'The replaceable ballpoint refill spread from 1950. Out of period before.'

@@ -1,0 +1,35 @@
+# services.yaml — the city-local-security Service Definition for Vienna
+# (content-expansion task 9.2).
+#
+# Validates against ServiceDefinitionSchema (packages/content/src/kinds/
+# service.ts):
+#   { id, name, aliases, kind, country, doctrineBase, years?, tags? }
+#
+# This is the ONE City-Scoped service a City Pack defines: the occupation city's
+# own police and security apparatus (`kind: local-security`). The shared Era-Pack
+# services (the own, hostile and liaison services) stay in the Era Pack and are
+# referenced from city.yaml by id; this file adds only the local-security
+# service, and its id is added to city.yaml's `services` list (task 9.2).
+#
+# FICTIONAL. The service is invented; the country is Austria, the real
+# occupied nation an Era Pack may name. In the four-power city this apparatus
+# answers to the Austrian authorities under inter-allied oversight: cautious,
+# security-conscious, with little appetite for the deception games the foreign
+# services play. `tags` is omitted (no facet in the vocabulary applies to
+# `service`).
+
+- id: city-security-directorate
+  name: The Vienna Public Safety Directorate
+  aliases:
+    - { text: the Directorate of Public Safety, distinctive: true }
+    - { text: the Safety Directorate, distinctive: false }
+    - { text: the city authorities, distinctive: false }
+  kind: local-security
+  country: Austria
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.7
+    deceptionAppetite: 0.2
+  years:
+    from: 1945
+    to: 1955

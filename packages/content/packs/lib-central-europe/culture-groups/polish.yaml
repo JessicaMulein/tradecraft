@@ -1,0 +1,356 @@
+# culture-groups/polish.yaml — the Polish group.
+#
+# A CultureGroup (CultureGroupSchema). Polish adjectival surnames inflect by
+# gender (-ski / -ska, -cki / -cka, -dzki / -dzka), so those are gendered pairs
+# { m, f }; non-adjectival surnames (Nowak, Kowalczyk) are invariant plain
+# strings. The generator picks the form matching the drawn NPC's gender.
+# Quantity (Req 11.4): at least 100 given and 100 family names, at least 300
+# distinct total. All names are generic, common Polish names of the period in
+# fictional use; none names a real individual.
+- id: polish
+  name: Polish
+  languages:
+    - pl
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Maria
+      - Krystyna
+      - Barbara
+      - Janina
+      - Zofia
+      - Helena
+      - Jadwiga
+      - Danuta
+      - Halina
+      - Irena
+      - Teresa
+      - Stanisława
+      - Wanda
+      - Czesława
+      - Genowefa
+      - Władysława
+      - Marianna
+      - Józefa
+      - Alicja
+      - Bogumiła
+      - Celina
+      - Dorota
+      - Elżbieta
+      - Felicja
+      - Grażyna
+      - Henryka
+      - Iwona
+      - Jolanta
+      - Kazimiera
+      - Lucyna
+      - Małgorzata
+      - Natalia
+      - Olga
+      - Patrycja
+      - Renata
+      - Sabina
+      - Urszula
+      - Wiesława
+      - Zuzanna
+      - Agnieszka
+      - Beata
+      - Cecylia
+      - Donata
+      - Ewa
+      - Franciszka
+      - Gabriela
+      - Hanna
+      - Izabela
+      - Joanna
+      - Katarzyna
+      - Leokadia
+      - Michalina
+      - Nina
+      - Otylia
+      - Paulina
+      - Regina
+      - Stefania
+      - Walentyna
+      - Zdzisława
+      - Aniela
+    m:
+      - Jan
+      - Stanisław
+      - Józef
+      - Władysław
+      - Kazimierz
+      - Tadeusz
+      - Zygmunt
+      - Henryk
+      - Czesław
+      - Mieczysław
+      - Bronisław
+      - Edward
+      - Franciszek
+      - Zbigniew
+      - Ryszard
+      - Marian
+      - Antoni
+      - Bolesław
+      - Adam
+      - Andrzej
+      - Bogdan
+      - Dariusz
+      - Eugeniusz
+      - Feliks
+      - Grzegorz
+      - Ignacy
+      - Jacek
+      - Krzysztof
+      - Leszek
+      - Marek
+      - Norbert
+      - Olaf
+      - Paweł
+      - Roman
+      - Sławomir
+      - Tomasz
+      - Wacław
+      - Zenon
+      - Alojzy
+      - Bartłomiej
+      - Cyprian
+      - Damian
+      - Emil
+      - Gustaw
+      - Hieronim
+      - Izydor
+      - Jerzy
+      - Konrad
+      - Leon
+      - Maciej
+      - Narcyz
+      - Oskar
+      - Przemysław
+      - Rafał
+      - Seweryn
+      - Teofil
+      - Wiktor
+      - Zdzisław
+      - Alfons
+      - Benedykt
+  family:
+    - Nowak
+    - { m: Kowalski, f: Kowalska }
+    - { m: Wiśniewski, f: Wiśniewska }
+    - Wójcik
+    - Kowalczyk
+    - { m: Kamiński, f: Kamińska }
+    - { m: Lewandowski, f: Lewandowska }
+    - { m: Zieliński, f: Zielińska }
+    - { m: Szymański, f: Szymańska }
+    - { m: Woźniak, f: Woźniak }
+    - { m: Dąbrowski, f: Dąbrowska }
+    - { m: Kozłowski, f: Kozłowska }
+    - { m: Jankowski, f: Jankowska }
+    - { m: Mazur, f: Mazur }
+    - { m: Wojciechowski, f: Wojciechowska }
+    - { m: Kwiatkowski, f: Kwiatkowska }
+    - { m: Krawczyk, f: Krawczyk }
+    - { m: Kaczmarek, f: Kaczmarek }
+    - { m: Piotrowski, f: Piotrowska }
+    - { m: Grabowski, f: Grabowska }
+    - { m: Zając, f: Zając }
+    - { m: Pawłowski, f: Pawłowska }
+    - { m: Michalski, f: Michalska }
+    - { m: Król, f: Król }
+    - { m: Wieczorek, f: Wieczorek }
+    - { m: Jabłoński, f: Jabłońska }
+    - { m: Wróbel, f: Wróbel }
+    - { m: Nowakowski, f: Nowakowska }
+    - { m: Majewski, f: Majewska }
+    - { m: Olszewski, f: Olszewska }
+    - { m: Stępień, f: Stępień }
+    - { m: Jaworski, f: Jaworska }
+    - { m: Malinowski, f: Malinowska }
+    - { m: Adamczyk, f: Adamczyk }
+    - { m: Dudek, f: Dudek }
+    - { m: Nowicki, f: Nowicka }
+    - { m: Pawlak, f: Pawlak }
+    - { m: Górski, f: Górska }
+    - { m: Witkowski, f: Witkowska }
+    - { m: Walczak, f: Walczak }
+    - { m: Sikora, f: Sikora }
+    - { m: Baran, f: Baran }
+    - { m: Rutkowski, f: Rutkowska }
+    - { m: Michalak, f: Michalak }
+    - { m: Szewczyk, f: Szewczyk }
+    - { m: Ostrowski, f: Ostrowska }
+    - { m: Tomaszewski, f: Tomaszewska }
+    - { m: Pietrzak, f: Pietrzak }
+    - { m: Marciniak, f: Marciniak }
+    - { m: Wróblewski, f: Wróblewska }
+    - { m: Zalewski, f: Zalewska }
+    - { m: Jakubowski, f: Jakubowska }
+    - { m: Jasiński, f: Jasińska }
+    - { m: Zawadzki, f: Zawadzka }
+    - { m: Sadowski, f: Sadowska }
+    - { m: Bąk, f: Bąk }
+    - { m: Chmielewski, f: Chmielewska }
+    - { m: Włodarczyk, f: Włodarczyk }
+    - { m: Borkowski, f: Borkowska }
+    - { m: Czarnecki, f: Czarnecka }
+    - { m: Sawicki, f: Sawicka }
+    - { m: Sokołowski, f: Sokołowska }
+    - { m: Urbański, f: Urbańska }
+    - { m: Kubiak, f: Kubiak }
+    - { m: Maciejewski, f: Maciejewska }
+    - { m: Szczepański, f: Szczepańska }
+    - { m: Kucharski, f: Kucharska }
+    - { m: Wilk, f: Wilk }
+    - { m: Kalinowski, f: Kalinowska }
+    - { m: Lis, f: Lis }
+    - { m: Mazurek, f: Mazurek }
+    - { m: Wysocki, f: Wysocka }
+    - { m: Adamski, f: Adamska }
+    - { m: Kaźmierczak, f: Kaźmierczak }
+    - { m: Wasilewski, f: Wasilewska }
+    - { m: Sobczak, f: Sobczak }
+    - { m: Czerwiński, f: Czerwińska }
+    - { m: Andrzejewski, f: Andrzejewska }
+    - { m: Cieślak, f: Cieślak }
+    - { m: Głowacki, f: Głowacka }
+    - { m: Zakrzewski, f: Zakrzewska }
+    - { m: Kołodziej, f: Kołodziej }
+    - { m: Sikorski, f: Sikorska }
+    - { m: Krajewski, f: Krajewska }
+    - { m: Gajewski, f: Gajewska }
+    - { m: Szulc, f: Szulc }
+    - { m: Baranowski, f: Baranowska }
+    - { m: Laskowski, f: Laskowska }
+    - { m: Brzeziński, f: Brzezińska }
+    - { m: Makowski, f: Makowska }
+    - { m: Ziółkowski, f: Ziółkowska }
+    - { m: Przybylski, f: Przybylska }
+    - { m: Domański, f: Domańska }
+    - { m: Borowski, f: Borowska }
+    - { m: Błaszczyk, f: Błaszczyk }
+    - { m: Chojnacki, f: Chojnacka }
+    - { m: Ciesielski, f: Ciesielska }
+    - { m: Mróz, f: Mróz }
+    - { m: Szczepaniak, f: Szczepaniak }
+    - { m: Wawrzyniak, f: Wawrzyniak }
+    - { m: Jarosz, f: Jarosz }
+    - { m: Konieczny, f: Konieczna }
+    - { m: Mikołajczyk, f: Mikołajczyk }
+    - { m: Białek, f: Białek }
+    - { m: Barański, f: Barańska }
+    - { m: Gajda, f: Gajda }
+    - { m: Sieradzki, f: Sieradzka }
+    - { m: Kowalewski, f: Kowalewska }
+    - { m: Tworek, f: Tworek }
+    - { m: Rogowski, f: Rogowska }
+    - { m: Orłowski, f: Orłowska }
+    - { m: Lipiński, f: Lipińska }
+    - { m: Mucha, f: Mucha }
+    - { m: Czajkowski, f: Czajkowska }
+    - { m: Grzegorczyk, f: Grzegorczyk }
+    - { m: Augustyniak, f: Augustyniak }
+    - { m: Lewicki, f: Lewicka }
+    - { m: Sobczyński, f: Sobczyńska }
+    - { m: Modzelewski, f: Modzelewska }
+    - { m: Osiński, f: Osińska }
+    - { m: Niewiadomski, f: Niewiadomska }
+    - { m: Pawlik, f: Pawlik }
+    - { m: Milewski, f: Milewska }
+    - { m: Gołębiewski, f: Gołębiewska }
+    - { m: Wrona, f: Wrona }
+    - { m: Markowski, f: Markowska }
+    - { m: Marek, f: Marek }
+    - { m: Kozak, f: Kozak }
+    - { m: Antczak, f: Antczak }
+    - { m: Bieniek, f: Bieniek }
+    - { m: Bober, f: Bober }
+    - { m: Chmiel, f: Chmiel }
+    - { m: Dębski, f: Dębska }
+    - { m: Drozd, f: Drozd }
+    - { m: Fabiański, f: Fabiańska }
+    - { m: Flis, f: Flis }
+    - { m: Gawron, f: Gawron }
+    - { m: Grabarczyk, f: Grabarczyk }
+    - { m: Habas, f: Habas }
+    - { m: Iwański, f: Iwańska }
+    - { m: Jamróz, f: Jamróz }
+    - { m: Juszczak, f: Juszczak }
+    - { m: Kaczor, f: Kaczor }
+    - { m: Kania, f: Kania }
+    - { m: Kędzierski, f: Kędzierska }
+    - { m: Kołacz, f: Kołacz }
+    - { m: Kot, f: Kot }
+    - { m: Kozioł, f: Kozioł }
+    - { m: Krupa, f: Krupa }
+    - { m: Kubacki, f: Kubacka }
+    - { m: Łuczak, f: Łuczak }
+    - { m: Maj, f: Maj }
+    - { m: Matuszewski, f: Matuszewska }
+    - { m: Mazurkiewicz, f: Mazurkiewicz }
+    - { m: Milczarek, f: Milczarek }
+    - { m: Mroczek, f: Mroczek }
+    - { m: Nawrocki, f: Nawrocka }
+    - { m: Niedziela, f: Niedziela }
+    - { m: Olejnik, f: Olejnik }
+    - { m: Pietras, f: Pietras }
+    - { m: Pietruszka, f: Pietruszka }
+    - { m: Piórek, f: Piórek }
+    - { m: Płonka, f: Płonka }
+    - { m: Pszczółka, f: Pszczółka }
+    - { m: Ratajczak, f: Ratajczak }
+    - { m: Rybak, f: Rybak }
+    - { m: Sawa, f: Sawa }
+    - { m: Serafin, f: Serafin }
+    - { m: Sieczka, f: Sieczka }
+    - { m: Skowron, f: Skowron }
+    - { m: Słomka, f: Słomka }
+    - { m: Sowa, f: Sowa }
+    - { m: Stasiak, f: Stasiak }
+    - { m: Szuba, f: Szuba }
+    - { m: Śliwiński, f: Śliwińska }
+    - { m: Tkaczyk, f: Tkaczyk }
+    - { m: Tomala, f: Tomala }
+    - { m: Urbaniak, f: Urbaniak }
+    - { m: Walkowiak, f: Walkowiak }
+    - { m: Wieczorkowski, f: Wieczorkowska }
+    - { m: Wojtas, f: Wojtas }
+    - { m: Zięba, f: Zięba }
+    - { m: Żurek, f: Żurek }
+    - { m: Dziedzic, f: Dziedzic }
+  voiceTraits:
+    - courteous and ceremonious, with old-world manners
+    - guarded about the authorities, open among friends
+    - fond of a long aside and a longer memory
+    - speaks of faith and country in the same breath
+    - stubborn pride worn lightly until it matters
+  mannerisms:
+    - kisses a lady's hand in greeting out of old habit
+    - crosses himself passing a church
+    - keeps the voice down at any mention of the east
+    - offers tea before any conversation of weight
+    - taps a cigarette twice on the case before lighting
+  backgrounds:
+    - text: Came west after the war and rebuilt a trade from nothing in a borrowed shop.
+      tags: []
+      years: { from: 1945, to: 1955 }
+    - text: Keeps a tailor's near the market and remembers every customer's measurements.
+      tags: []
+    - text: Served in the wartime resistance and speaks of those years only to the trusted.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Works the river docks and knows which barges carry more than their manifests.
+      tags: []
+    - text: Lost the family estate in the east and carries the deeds that are now worthless.
+      tags: []
+      years: { from: 1945, to: 1965 }
+    - text: Sings in a church choir and hears confessions second-hand through the sacristan.
+      tags: []
+    - text: Runs a bookbinder's and mends more than books for those who ask quietly.
+      tags: []
+    - text: Clerked for a shipping agent before the war and still keeps the old ledgers.
+      tags: []

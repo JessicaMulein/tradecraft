@@ -1,0 +1,40 @@
+# services/services.yaml — Istanbul's City-Scoped local-security service
+# (content-expansion task 9.6).
+#
+# Validates against ServiceDefinitionSchema (packages/content/src/kinds/
+# service.ts): { id, name, aliases, kind, country, doctrineBase, years?, tags? }.
+#
+# A City Pack's own police/security apparatus is a City-Scoped `local-security`
+# service (design, "Service Definitions"): the local force a foreign network
+# most has to fear on the ground. Istanbul's is the city security directorate —
+# the plain-clothes section that watches the hotels, the piers and the émigré
+# cafés of Pera. It is listed in `city.yaml` `services` alongside the shared Era
+# services the city references.
+#
+# FICTIONAL. The name, aliases and section are invented; no real Turkish police
+# or security body of the period is named. The country is the real neutral
+# nation (Turkey), which the setting may name; the *service* is made up.
+#
+# `doctrineBase` fixes the slice Hostile Service doctrine dimensions this local
+# force leans to: cautious of provocation on neutral soil (moderate risk
+# tolerance), watchful of foreigners (high security consciousness), and more
+# inclined to quietly watch and expel than to stage an elaborate double game
+# (low deception appetite). `tags` is omitted: no facet in the core Tag
+# Vocabulary applies to `service`, and the field is optional.
+
+- id: local-emniyet-directorate
+  name: The City Directorate of Public Order
+  aliases:
+    - { text: the Directorate of Public Order, distinctive: true }
+    - { text: the city directorate, distinctive: false }
+    - { text: the public-order men, distinctive: false }
+    - { text: the Beyoğlu section, distinctive: false }
+  kind: local-security
+  country: Turkey
+  doctrineBase:
+    riskTolerance: 0.45
+    securityConsciousness: 0.7
+    deceptionAppetite: 0.3
+  years:
+    from: 1950
+    to: 1965

@@ -1,0 +1,29 @@
+== City: Vienna ==
+setting: city-vienna/vienna (year 1952)
+districts: 8
+locations: 21
+routes: 12
+
+== Districts ==
+- Alsergrund [alsergrund] — sector american
+- Brigittenau [brigittenau] — sector soviet
+- Favoriten [favoriten] — sector soviet
+- Innere Stadt [innere-stadt] — sector four-power
+- Landstraße [landstrasse] — sector british
+- Leopoldstadt [leopoldstadt] — sector soviet
+- Mariahilf [mariahilf] — sector french
+- Wieden [wieden] — sector soviet
+
+== Routes ==
+- Alsergrund <-> Brigittenau (cost 1)
+- Favoriten <-> Brigittenau (cost 1)
+- Innere Stadt <-> Alsergrund (cost 1)
+- Innere Stadt <-> Landstraße (cost 1)
+- Innere Stadt <-> Leopoldstadt (cost 1)
+- Innere Stadt <-> Mariahilf (cost 1)
+- Innere Stadt <-> Wieden (cost 1)
+- Landstraße <-> Wieden (cost 1)
+- Leopoldstadt <-> Brigittenau (cost 1)
+- Mariahilf <-> Alsergrund (cost 1)
+- Wieden <-> Favoriten (cost 1)
+- Wieden <-> Mariahilf (cost 1)

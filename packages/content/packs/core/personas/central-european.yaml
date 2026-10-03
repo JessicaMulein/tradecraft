@@ -1,0 +1,134 @@
+# personas/central-european.yaml — Central European émigré persona library.
+#
+# The displaced-persons Vienna of the 1950s: Hungarians, Czechs, Slovaks, Poles
+# and others washed west by the war and the new borders. Names are authentic to
+# those cultures but combined fictionally; no entry names a real person. Name
+# pools are split by culture AND gender (Requirement 1.7); family names are
+# repeated across a culture's two pools in a single fictional form.
+
+id: central-european
+namePools:
+  - culture: hungarian
+    gender: male
+    given:
+      - László
+      - Zoltán
+      - Gábor
+      - István
+      - Sándor
+      - Béla
+      - Ferenc
+      - Imre
+    family:
+      - Nagy
+      - Kovács
+      - Horváth
+      - Takács
+      - Fodor
+      - Barta
+      - Révész
+      - Szalai
+  - culture: hungarian
+    gender: female
+    given:
+      - Katalin
+      - Erzsébet
+      - Ilona
+      - Margit
+      - Zsuzsanna
+      - Éva
+    family:
+      - Nagy
+      - Kovács
+      - Horváth
+      - Takács
+      - Fodor
+      - Barta
+      - Révész
+      - Szalai
+  - culture: czech
+    gender: male
+    given:
+      - Jan
+      - Václav
+      - Jaroslav
+      - Miloš
+      - Tomáš
+      - Zdeněk
+      - Josef
+      - Antonín
+    family:
+      - Novák
+      - Dvořák
+      - Horák
+      - Beneš
+      - Kučera
+      - Procházka
+      - Marek
+      - Sedláček
+  - culture: czech
+    gender: female
+    given:
+      - Vlasta
+      - Marie
+      - Jarmila
+      - Božena
+      - Ludmila
+      - Věra
+    family:
+      - Nováková
+      - Dvořáková
+      - Horáková
+      - Benešová
+      - Kučerová
+      - Procházková
+      - Marková
+      - Sedláčková
+  - culture: polish
+    gender: male
+    given:
+      - Tadeusz
+      - Henryk
+      - Stanisław
+      - Kazimierz
+      - Jerzy
+      - Bronisław
+    family:
+      - Kowalczyk
+      - Lewandowski
+      - Zieliński
+      - Wójcik
+      - Kamiński
+      - Jabłoński
+  - culture: polish
+    gender: female
+    given:
+      - Wanda
+      - Halina
+      - Zofia
+      - Jadwiga
+      - Irena
+    family:
+      - Kowalczyk
+      - Lewandowska
+      - Zielińska
+      - Wójcik
+      - Kamińska
+      - Jabłońska
+voiceTraits:
+  - careful German spoken with a soft foreign cadence
+  - guards every detail of where they came from
+  - warms quickly once trust is offered
+  - bitter wit about borders and papers
+  - switches languages mid-sentence when pressed
+mannerisms:
+  - keeps identity papers close and checks for them often
+  - counts money twice before putting it away
+  - glances to the door at any raised voice
+  - carries everything of value on their person
+backgrounds:
+  - Crossed the new frontier on foot the winter the borders closed.
+  - Waits in a displaced-persons hostel for a visa that never comes.
+  - Left a profession behind and takes whatever work the sectors allow.
+  - Still has family on the far side and will not say where.
+  - Trades small goods between the sectors to make the rent.

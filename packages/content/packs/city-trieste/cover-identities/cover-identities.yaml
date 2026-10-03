@@ -1,0 +1,99 @@
+# cover-identities/cover-identities.yaml — the local Cover Identities for the
+# Free Territory of Trieste (content-expansion task 9.10).
+#
+# Each entry is a CoverIdentity (CoverIdentitySchema, packages/content/src/lib/
+# kinds.ts): { id, title, employerOrg, fitLocationTypes, suspicionModifiers,
+# tags }. `fitLocationTypes` names the Location Types where the cover sits
+# plausibly: a Trieste City-Scoped type by its bare id (resolved to
+# city-trieste/<id>) or a core type as `core/<id>`. `tags` draws from the core
+# `cover:*` facet (required — a Cover Identity must carry at least one Tag).
+# `suspicionModifiers.atFit` is negative (the cover lowers suspicion where it
+# belongs) and `elsewhere` positive.
+#
+# These are Trieste-specific covers to set beside the core roster, each tied to
+# a local employer and the city's own places — the great cafés and arcades, the
+# free-port warehouses and quays, the Molo Audace, the Opicina tram, the
+# consular villas and the shipping offices. EVERY title and employer is
+# period-plausible for the 1947–1954 free territory and wholly fictional.
+
+# A clerk of the civic registry: a plausible reason to be in the administration
+# offices, the reading halls and the cafés where the city's paperwork and
+# permits are discussed.
+- id: registry-clerk
+  title: Registry Clerk
+  employerOrg: The Civic Registry Office
+  tags: [cover:official]
+  fitLocationTypes: [embassy, biblioteca, kaffeehaus, stazione]
+  suspicionModifiers:
+    atFit: -0.14
+    elsewhere: 0.2
+
+# A correspondent for the maritime and commercial bulletin: at home among the
+# hotel bars, the cafés, the quays and the shipping offices where the port's
+# talk and the sailings are.
+- id: shipping-correspondent
+  title: Shipping Correspondent
+  employerOrg: La Gazzetta Marittima e Commerciale
+  tags: [cover:press]
+  fitLocationTypes: [kaffeehaus, hotel-bar, danube-port, osteria]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.16
+
+# A tariff and bonded-goods inspector for the free port: a reason to be on every
+# quay and in every bonded shed, checking manifests, consignments and the
+# warehouse books.
+- id: free-port-inspector
+  title: Free-Port Tariff Inspector
+  employerOrg: The Allied Military Government, Zone A
+  tags: [cover:official]
+  fitLocationTypes: [danube-port, magazzino, mercato, stazione]
+  suspicionModifiers:
+    atFit: -0.13
+    elsewhere: 0.19
+
+# A forwarding agent working the free-port sheds: belongs on the quays and in
+# the bonded warehouses, in the depots and at the goods market.
+- id: forwarding-agent
+  title: Forwarding Agent
+  employerOrg: The Adriatic Navigation & Forwarding Company
+  tags: [cover:commercial]
+  fitLocationTypes: [magazzino, danube-port, mercato, hotel-bar]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.22
+
+# A relief visitor for the displaced-persons committee: a reason to be at the
+# station, the market, the reading halls and the seafront gardens where the
+# camp and resettlement queues form.
+- id: relief-visitor
+  title: Relief Visitor
+  employerOrg: The Committee for Displaced Persons
+  tags: [cover:official]
+  fitLocationTypes: [stazione, mercato, biblioteca, park]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.18
+
+# An antiquarian's runner who values and collects books: at home in the
+# bookshops, the reading halls and the cafés, and a natural servicer of drops
+# among the almanacs, charts and sailing directions a book cipher lives in.
+- id: antiquarian-runner
+  title: Antiquarian's Runner
+  employerOrg: Libreria Antiquaria San Giusto
+  tags: [cover:cultural]
+  fitLocationTypes: [libreria-antiquaria, biblioteca, kaffeehaus, edicola]
+  suspicionModifiers:
+    atFit: -0.2
+    elsewhere: 0.24
+
+# A liaison interpreter attached to the consular missions: moves between the
+# consular villas, the grand hotels and the cafés of the great square.
+- id: liaison-interpreter
+  title: Liaison Interpreter
+  employerOrg: The Allied Liaison Mission
+  tags: [cover:official]
+  fitLocationTypes: [embassy, hotel-bar, kaffeehaus, biblioteca]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.23

@@ -1,0 +1,17 @@
+# The core Content Pack manifest.
+#
+# This is the base pack every scenario loads (config/scenario.yaml selects
+# `load: [core]`). It declares no dependencies and overrides nothing, so it is
+# the root of the dependency order the loader resolves.
+#
+# content-expansion task 7.1 moves the core pack to `contentSchema: 2` with the
+# explicit `role: core`, now that it ships the Tag Vocabulary (`tags.yaml`) and
+# every Location Type, archetype and Cover Identity carries vocabulary Tags
+# (Req 1.7, 4.1, 4.2, 4.3). The Core City's content (`city.yaml`) is unchanged;
+# only its PRNG stream moves (task 3.2).
+id: core
+version: 1.0.0
+contentSchema: 2
+role: core
+requires: []
+overrides: []

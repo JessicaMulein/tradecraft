@@ -1,0 +1,154 @@
+# districts.yaml — the Districts of the Free Territory of Trieste, 1947–1954
+# (content-expansion task 9.9).
+#
+# Each District is one node in the city's Route graph (DistrictSchema). It
+# carries aliases, a prose description, atmosphere words, Tags and the `sector`
+# that holds it. In the Free Territory the sector is the administrative zone:
+# Zone A (the city and a coastal strip, under an Allied military government) and
+# Zone B (the Istrian hinterland, under a Yugoslav military government). The
+# `sector.power` names the zone and the governing authority by title; its
+# `years` run the length of the regime (1947–1954).
+#
+# Tags are drawn from the core Tag Vocabulary: a `sector:*` Tag marks the zone
+# (sector:allied for Zone A, sector:yugoslav for Zone B) and a `setting:*` Tag
+# marks the social texture of the quarter. Every District carries at least one
+# Tag (Req 4.3).
+#
+# All quarters are real parts of Trieste and its hinterland; the texture is
+# period fact. Every business, office and person placed in them (see
+# locations.yaml) is fictional.
+
+# =========================================================================
+# ZONE A — the city, under Allied military government
+# =========================================================================
+
+- id: borgo-teresiano
+  city: trieste
+  name: Borgo Teresiano
+  aliases:
+    - { text: the Teresian Quarter, distinctive: true }
+    - { text: the Borgo, distinctive: false }
+  description: >-
+    The grid of straight streets the Empress laid out behind the waterfront,
+    built around the Canal Grande where the coasting trade still ties up almost
+    in the centre of the city. Insurance houses, shipping agents and the big
+    cafés line the quays; the Serbian-Orthodox dome and the neo-classical
+    churches look down on the water.
+  atmosphere: [commercial, orderly, cosmopolitan, canal-side]
+  tags: [sector:allied, setting:commercial]
+  sector:
+    power: Zone A — Allied Military Government
+    years: { from: 1947, to: 1954 }
+
+- id: citta-vecchia
+  city: trieste
+  name: Città Vecchia
+  aliases:
+    - { text: the Old Town, distinctive: true }
+    - { text: the hill of San Giusto, distinctive: false }
+  description: >-
+    The old town climbing the hill to the castle and the cathedral of San
+    Giusto, a warren of stepped lanes, tenements and small trades above the
+    Roman theatre. Washing hangs across the alleys; a man who knows the courts
+    and the back stairs can be lost to a follower in a dozen steps.
+  atmosphere: [old, cramped, labyrinthine, poor]
+  tags: [sector:allied, setting:residential]
+  sector:
+    power: Zone A — Allied Military Government
+    years: { from: 1947, to: 1954 }
+
+- id: piazza-unita
+  city: trieste
+  name: Piazza dell'Unità
+  aliases:
+    - { text: the great square, distinctive: false }
+    - { text: Piazza Grande, distinctive: true }
+  description: >-
+    The civic heart of the city — the vast square open to the sea on its fourth
+    side, ringed by the municipio, the great shipping-company palaces and the
+    grand hotels, with the Molo Audace running out into the harbour from its
+    edge. The military government keeps its offices along here, and every
+    delegation and commission keeps a table at the cafés.
+  atmosphere: [grand, official, open-to-the-sea, watched]
+  tags: [sector:allied, setting:diplomatic]
+  sector:
+    power: Zone A — Allied Military Government
+    years: { from: 1947, to: 1954 }
+
+- id: porto-vecchio
+  city: trieste
+  name: Porto Vecchio
+  aliases:
+    - { text: the Old Port, distinctive: true }
+    - { text: the free-port warehouses, distinctive: false }
+    - { text: the Punto Franco, distinctive: false }
+  description: >-
+    The long line of free-port warehouses, sheds and railway sidings north of
+    the centre, where the Hamburg and Levant lines work their cargo and the
+    bonded stores run back from the quays. Cranes stand over the basins; lorries
+    and freight wagons move at all hours and a thing can change hands under cover
+    of the trade.
+  atmosphere: [industrial, exposed, busy, rough]
+  tags: [sector:allied, setting:industrial]
+  sector:
+    power: Zone A — Allied Military Government
+    years: { from: 1947, to: 1954 }
+
+- id: san-vito
+  city: trieste
+  name: San Vito e Campi Elisi
+  aliases:
+    - { text: San Vito, distinctive: true }
+    - { text: the eastern quarters, distinctive: false }
+  description: >-
+    The quieter residential quarters that spread east and south from the centre
+    — the villas of San Vito on the slope, the apartment blocks of the Campi
+    Elisi toward the sea, lodging houses, consular villas behind garden walls
+    and the long seafront where the city takes its evening walk.
+  atmosphere: [residential, genteel, quiet, swept]
+  tags: [sector:allied, setting:residential]
+  sector:
+    power: Zone A — Allied Military Government
+    years: { from: 1947, to: 1954 }
+
+- id: opicina-carso
+  city: trieste
+  name: Opicina e il Carso
+  aliases:
+    - { text: Opicina, distinctive: true }
+    - { text: the Karst edge, distinctive: false }
+    - { text: the plateau, distinctive: false }
+  description: >-
+    The limestone plateau above the city, reached by the rack-and-cable tramway
+    that climbs the escarpment from the centre to the village of Opicina. Up
+    here the Mitteleuropa and Slovene villages of the Karst look down on the
+    gulf; the air is thinner, the bora harder, and the zone line to the Yugoslav
+    hinterland runs close beyond the last houses.
+  atmosphere: [upland, windswept, border-close, mixed]
+  tags: [sector:allied, setting:residential]
+  sector:
+    power: Zone A — Allied Military Government
+    years: { from: 1947, to: 1954 }
+
+# =========================================================================
+# ZONE B — the Istrian hinterland, under Yugoslav military government
+# =========================================================================
+
+- id: istrian-hinterland
+  city: trieste
+  name: Il retroterra istriano
+  aliases:
+    - { text: Zone B, distinctive: true }
+    - { text: the Istrian hinterland, distinctive: false }
+    - { text: the far side of the line, distinctive: false }
+  description: >-
+    The country south and east of the city, under the Yugoslav military
+    government — the small Istrian ports and the market towns of the hinterland,
+    reached from the city only across the guarded zone line. Papers are checked
+    at the control points; a traveller is remembered, and a face that comes and
+    goes too often is noted on both sides.
+  atmosphere: [agrarian, watched, closed, remembered]
+  tags: [sector:yugoslav, setting:industrial]
+  sector:
+    power: Zone B — Yugoslav Military Government
+    years: { from: 1947, to: 1954 }

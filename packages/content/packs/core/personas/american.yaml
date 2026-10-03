@@ -1,0 +1,80 @@
+# personas/american.yaml — American occupation persona library.
+#
+# Occupation staff, mission personnel and wire-service men in the American
+# Sector. Names are ordinary mid-century American given/family names in
+# fictional combinations; none names a real person of the period. Name pools
+# are split by culture AND gender (Requirement 1.7).
+
+id: american
+namePools:
+  - culture: american
+    gender: male
+    given:
+      - Walter
+      - Raymond
+      - Howard
+      - Vincent
+      - Clifford
+      - Lester
+      - Chester
+      - Dale
+      - Marion
+      - Russell
+      - Franklin
+      - Harold
+    family:
+      - Caldwell
+      - Mercer
+      - Donnelly
+      - Whitfield
+      - Brennan
+      - Ackerman
+      - Lindqvist
+      - Pruitt
+      - Hollis
+      - Garrity
+      - Sanderson
+      - Vance
+  - culture: american
+    gender: female
+    given:
+      - Dorothy
+      - Shirley
+      - Gloria
+      - Harriet
+      - Lorraine
+      - Doris
+      - Evelyn
+      - Mildred
+      - Frances
+      - Beatrice
+    family:
+      - Caldwell
+      - Mercer
+      - Donnelly
+      - Whitfield
+      - Brennan
+      - Ackerman
+      - Lindqvist
+      - Pruitt
+      - Hollis
+      - Garrity
+      - Sanderson
+      - Vance
+voiceTraits:
+  - breezy and direct, impatient with ceremony
+  - talks money and schedules before anything else
+  - good-humoured, slow to take Vienna seriously
+  - name-drops the mission and the PX
+  - earnest about the new world they think they are building
+mannerisms:
+  - checks a wristwatch mid-conversation
+  - offers cigarettes from a fresh pack
+  - leans back and props an ankle on a knee
+  - laughs a beat too loud in a quiet room
+backgrounds:
+  - Came over with the occupation and stayed on when the orders changed.
+  - Files copy for a wire service and drinks at the press bar.
+  - Runs a desk at the trade mission and signs for everything in triplicate.
+  - Learned enough German to order dinner and no more.
+  - Keeps a flat in the American Sector and a car most Viennese would envy.

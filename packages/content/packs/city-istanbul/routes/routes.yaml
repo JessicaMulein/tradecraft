@@ -1,0 +1,46 @@
+# routes/routes.yaml — the Istanbul Route graph (content-expansion task 9.5).
+#
+# Each validates against CityRouteSchema (city.ts): { a, b, cost, tags?, years? }.
+# `a` and `b` are District ids; `cost` is 0 or 1 phases (travel within a
+# District is free and needs no Route). Istanbul's geography is defined by water:
+# the Golden Horn divides the old city from Galata and Pera, and the Bosphorus
+# divides the European shore from the Asian. The crossings are the Galata Bridge
+# over the Horn and the city-line ferries across both — so most inter-district
+# travel costs a phase.
+#
+# Route Tags come from the facets that apply to a Route (`access`, `sector`).
+# Istanbul has no sector regime, so no `sector` Tag. The ferry and bridge
+# crossings are open public crossings, tagged `access:public`; the transit-hub
+# character lives on the ferry-pier and bridgehead Locations, not on the Routes
+# (the `function:*` facet applies to Locations, not Routes). No Route carries a
+# checkpoint — there are no occupation checkpoints in this city.
+#
+# The graph is connected: from any District a traveller can reach any other,
+# directly or in two hops, which keeps every instantiated city solvable
+# (design, "instantiateCity" connectivity step).
+
+# --- European shore, overland (short walks / the funicular) ----------------
+# Beyoğlu (Pera) sits on the heights above Galata; the Tünel funicular and the
+# steep lanes join them. Galata, Sirkeci and Eminönü share the European
+# waterfront around the Horn mouth and the bridge.
+- { a: beyoglu, b: galata, cost: 1, tags: [access:public] }
+- { a: galata, b: sirkeci, cost: 1, tags: [access:public] }
+- { a: sirkeci, b: eminonu, cost: 0, tags: [access:public] }
+
+# --- Across the Golden Horn (the Galata Bridge) ----------------------------
+# The bridge carries foot, tram and cart traffic between Galata/Karaköy and the
+# old-city bridgehead at Eminönü.
+- { a: galata, b: eminonu, cost: 1, tags: [access:public] }
+
+# --- Across the Bosphorus (the city-line ferries) --------------------------
+# The vapur lines tie the European quays to the Asian shore at Kadıköy and
+# Üsküdar. These are the long water crossings.
+- { a: eminonu, b: kadikoy, cost: 1, tags: [access:public] }
+- { a: eminonu, b: uskudar, cost: 1, tags: [access:public] }
+- { a: sirkeci, b: uskudar, cost: 1, tags: [access:public] }
+- { a: galata, b: kadikoy, cost: 1, tags: [access:public] }
+
+# --- Asian shore, overland -------------------------------------------------
+# Kadıköy and Üsküdar are joined along the Asian shore road and by the local
+# ferries that work the near bank.
+- { a: kadikoy, b: uskudar, cost: 1, tags: [access:public] }

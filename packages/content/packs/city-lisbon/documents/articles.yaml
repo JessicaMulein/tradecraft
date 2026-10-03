@@ -1,0 +1,333 @@
+# articles.yaml — the Lisbon article (newspaper) Document templates (content-
+# expansion task 9.8).
+#
+# Each entry validates against DocumentTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, kind: newspaper, titlePattern, sections:[{id, body}],
+# slots:[contentId] }. These are the article templates the newspaper composer
+# stamps concrete editions from, and the base templates the Lisbon Template
+# Variants (template-variants/) localise: a variant's slot set must equal its
+# base's union of titlePattern and section-body slots exactly (loader task 2.2,
+# CE-VARIANT).
+#
+# Grammar. `titlePattern` and every section `body` are content template strings
+# (packages/content/src/lib/template.ts): a bare `{slot}` substitutes a binding;
+# `{?slot}…{/slot}` wraps text that renders only when the slot is bound. The
+# slot ids a template uses are declared in `slots`. Plain prose and declared
+# slots only — no `{pick:pool}` references — so each template validates in
+# isolation.
+#
+# Period. Lisbon 1945–1965, a neutral Atlantic capital. All mastheads,
+# publishers, officials and businesses are invented. Officials are named by
+# office — the harbour-master, the customs chief, the city governor's office,
+# the Public Order police — never by a real name. The copy reports plainly, in
+# the level third-person voice of the period press, with no anachronism past
+# 1965.
+
+# =========================================================================
+# CITY & GENERAL NEWS
+# =========================================================================
+
+- id: baixa-city-lead
+  kind: newspaper
+  titlePattern: '{masthead}, {date} — city edition'
+  slots: [masthead, date, headline, district, subject, detail, office]
+  sections:
+    - id: lead
+      body: >-
+        {headline}. Our correspondent writes from the {district} that {subject}
+        has drawn comment this week. {detail} The matter rests, for the present,
+        with the {office}.
+
+- id: baixa-around-the-town
+  kind: newspaper
+  titlePattern: '{masthead} — around the town'
+  slots: [masthead, note]
+  sections:
+    - id: round-up
+      body: >-
+        Around the town today: the trams kept their timetable on the hill
+        lines, the river boats ran to Cacilhas on the hour, and the markets
+        opened at the usual bell. {note}
+
+- id: baixa-weather-and-tides
+  kind: newspaper
+  titlePattern: '{masthead}: weather and tides for {date}'
+  slots: [masthead, date, outlook, high-water]
+  sections:
+    - id: forecast
+      body: >-
+        The outlook over the estuary for {date}: {outlook}. High water on the
+        bar is expected at {high-water}, with the usual caution advised to small
+        craft off the roadstead.
+
+# =========================================================================
+# PORT, SHIPPING & TRADE
+# =========================================================================
+
+- id: tejo-shipping-movements
+  kind: newspaper
+  titlePattern: '{masthead} — shipping movements'
+  slots: [masthead, vessel, flag, berth, cargo]
+  sections:
+    - id: arrivals
+      body: >-
+        The steamer {vessel}, under the {flag} flag, came up the river on the
+        morning tide and lies at {berth}. She is reported to be discharging
+        {cargo} before taking on passengers for the outward run.
+
+- id: tejo-market-notes
+  kind: newspaper
+  titlePattern: '{masthead}: market notes'
+  slots: [masthead, commodity, price, trend, source]
+  sections:
+    - id: quotation
+      body: >-
+        On the quayside market {commodity} stood at {price} the quintal,
+        {trend} on the week. The movement is laid, by {source}, to the state of
+        the Atlantic sailings rather than to any want of supply.
+
+- id: tejo-customs-notice
+  kind: newspaper
+  titlePattern: '{masthead} — customs and bonded goods, {date}'
+  slots: [masthead, date, office, ruling, effective]
+  sections:
+    - id: ruling
+      body: >-
+        The {office} gives notice that, from {effective}, {ruling}. Importers
+        and forwarding agents working the bonded warehouses are asked to lodge
+        their papers at the long counter before the goods are released.
+
+- id: porto-arrivals-bulletin
+  kind: newspaper
+  titlePattern: '{masthead}: arrivals and departures'
+  slots: [masthead, inbound, outbound, roadstead]
+  sections:
+    - id: list
+      body: >-
+        Inbound to the port overnight: {inbound}. Cleared outward on the ebb:
+        {outbound}. {roadstead} vessels wait in the roadstead for a berth, the
+        harbour-master's office reports.
+
+# =========================================================================
+# ÉMIGRÉ, TRAVEL & THE FOREIGN COLONY (English weekly)
+# =========================================================================
+
+- id: courier-passages
+  kind: newspaper
+  titlePattern: '{masthead} — passages and partings'
+  slots: [masthead, name-withheld, ship, destination, note]
+  sections:
+    - id: departures
+      body: >-
+        Among those taking passage this week, {name-withheld} sails for
+        {destination} aboard the {ship}. {note} The booking offices along the
+        avenue report every cabin spoken for into the new season.
+
+- id: courier-legation-diary
+  kind: newspaper
+  titlePattern: '{masthead}: the legation diary'
+  slots: [masthead, mission, occasion, venue, remark]
+  sections:
+    - id: diary
+      body: >-
+        The {mission} marked {occasion} with a reception at {venue} on
+        Thursday. {remark} The foreign colony turned out in strength, as it does
+        for every such evening in a season otherwise thin of them.
+
+- id: courier-arts-and-letters
+  kind: newspaper
+  titlePattern: '{masthead} — arts and letters'
+  slots: [masthead, performer, hall, programme]
+  sections:
+    - id: review
+      body: >-
+        At {hall} this week {performer} gave a programme of {programme} to a
+        full and attentive house. The acoustic of the old room flattered the
+        quieter passages and swallowed the louder, as it always has.
+
+# =========================================================================
+# CRIME BLOTTER & POLICE RECORD (evening sheet)
+# =========================================================================
+
+- id: tarde-police-record
+  kind: newspaper
+  titlePattern: '{masthead}: the city police blotter, {date}'
+  slots: [masthead, date, district, offence, place, outcome]
+  sections:
+    - id: incident
+      body: >-
+        From the police record of the {district} for {date}: a case of
+        {offence} was reported near {place}. The party concerned was questioned
+        and {outcome}.
+
+- id: tarde-waterfront-watch
+  kind: newspaper
+  titlePattern: '{masthead} — waterfront watch'
+  slots: [masthead, quay, incident, patrol]
+  sections:
+    - id: report
+      body: >-
+        Along {quay} the river police report {incident} during the night watch.
+        {patrol} The public is asked to keep clear of the mooring chains and to
+        report unattended parcels left on the pontoons.
+
+- id: tarde-lottery-and-notices
+  kind: newspaper
+  titlePattern: '{masthead}: lottery and small notices'
+  slots: [masthead, numbers, notice]
+  sections:
+    - id: draw
+      body: >-
+        The evening draw fell to the numbers {numbers}, chalked up on the
+        kiosk slate before the result reached the quieter streets. {notice}
+
+# =========================================================================
+# OFFICIAL NOTICES & THE PUBLIC ORDER POLICE (establishment daily)
+# =========================================================================
+
+- id: baixa-official-order
+  kind: newspaper
+  titlePattern: '{masthead} — orders of the governor, {date}'
+  slots: [masthead, date, office, order, district, effective]
+  sections:
+    - id: order
+      body: >-
+        By order of the {office}, the following takes effect on {effective}:
+        {order}. The direction applies within the {district} and at every
+        approach to it, and residents are asked to carry their papers.
+
+- id: baixa-registration-reminder
+  kind: newspaper
+  titlePattern: '{masthead}: a reminder on registration'
+  slots: [masthead, office, requirement, place]
+  sections:
+    - id: reminder
+      body: >-
+        The {office} reminds foreign residents and lodging-house keepers that
+        {requirement}. Returns are to be lodged at {place} during office hours,
+        and a lodger's particulars entered in the register on the day of
+        arrival.
+
+- id: baixa-lost-and-found
+  kind: newspaper
+  titlePattern: '{masthead} — lost and found'
+  slots: [masthead, items, office]
+  sections:
+    - id: list
+      body: >-
+        Handed in at the central office this week and unclaimed: {items}. The
+        owners may apply at the {office} with proof of identity, failing which
+        the goods pass to the usual quarterly sale.
+
+# =========================================================================
+# TRANSPORT, UTILITIES & THE STREET
+# =========================================================================
+
+- id: baixa-tram-service
+  kind: newspaper
+  titlePattern: '{masthead}: tram and lift service'
+  slots: [masthead, line, change, reason]
+  sections:
+    - id: notice
+      body: >-
+        The {line} will run to an altered timetable from Monday: {change}. The
+        undertaking lays the change to {reason} and asks passengers on the hill
+        routes to allow the longer interval between cars.
+
+- id: baixa-utilities-notice
+  kind: newspaper
+  titlePattern: '{masthead} — water and lighting'
+  slots: [masthead, quarter, interruption, hours]
+  sections:
+    - id: notice
+      body: >-
+        The supply to the {quarter} will be interrupted for {interruption}
+        between the hours of {hours}. Householders are advised to draw what they
+        need beforehand and to report any failure that outlasts the stated time.
+
+- id: tarde-sport-and-river
+  kind: newspaper
+  titlePattern: '{masthead}: sport on the river'
+  slots: [masthead, event, result, crowd]
+  sections:
+    - id: report
+      body: >-
+        {event} was rowed off the quays on Sunday in a fair wind and a slack
+        tide. {result} A good {crowd} lined the embankment and the terraces
+        above to watch the boats come down past the customs house.
+
+# =========================================================================
+# LETTERS, COMMENT & MISCELLANY
+# =========================================================================
+
+- id: baixa-letters-column
+  kind: newspaper
+  titlePattern: '{masthead} — letters to the paper'
+  slots: [masthead, subject, complaint, remedy]
+  sections:
+    - id: letter
+      body: >-
+        A correspondent writes to the paper on the matter of {subject}, holding
+        that {complaint}. The remedy proposed is {remedy}, a suggestion the
+        editor passes to the proper office without comment of his own.
+
+- id: tejo-advertisement-column
+  kind: newspaper
+  titlePattern: '{masthead}: trade and situations'
+  slots: [masthead, offer, terms, apply-to]
+  sections:
+    - id: advertisement
+      body: >-
+        Offered this week through these columns: {offer}, on {terms}. Those
+        interested are asked to apply to {apply-to}, in writing and in the first
+        instance, naming two references known in the city.
+
+- id: courier-notes-and-queries
+  kind: newspaper
+  titlePattern: '{masthead} — notes and queries'
+  slots: [masthead, query, answer]
+  sections:
+    - id: column
+      body: >-
+        A reader asks the paper: {query}. The best answer the office can give,
+        on the authority of the older hands in the foreign colony, is this:
+        {answer}
+
+# =========================================================================
+# FURTHER CITY COPY — to widen the variant base set
+# =========================================================================
+
+- id: tarde-fire-and-rescue
+  kind: newspaper
+  titlePattern: '{masthead}: the fire brigade'
+  slots: [masthead, place, cause, outcome]
+  sections:
+    - id: report
+      body: >-
+        The brigade was called to {place} in the early hours, where a blaze had
+        taken hold. The cause is put down to {cause}. {outcome} No further
+        alarm is expected, the station reports, and the street was reopened by
+        morning.
+
+- id: baixa-public-health
+  kind: newspaper
+  titlePattern: '{masthead} — public health notice'
+  slots: [masthead, office, advice, quarter]
+  sections:
+    - id: notice
+      body: >-
+        The {office} advises householders in the {quarter} that {advice}. The
+        measure is a precaution only, the office is at pains to add, and no
+        cause for alarm attends it in a season of ordinary good health.
+
+- id: courier-obituary-column
+  kind: newspaper
+  titlePattern: '{masthead}: in memoriam'
+  slots: [masthead, name-withheld, standing, service]
+  sections:
+    - id: notice
+      body: >-
+        The foreign colony records with regret the passing of {name-withheld},
+        long known in the city as {standing}. A service will be held, friends
+        are advised, at {service}, to which all who knew the deceased are made
+        welcome.

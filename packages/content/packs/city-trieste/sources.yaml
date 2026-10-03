@@ -1,0 +1,79 @@
+# sources.yaml — the Sources bibliography for Trieste (content-expansion task 9.9).
+#
+# Each Source (SourceSchema) is a bibliographic record a `real-landmark` or
+# `real-inspired` Location cites so its historical texture can be reviewed
+# (Req 3.1). The records below attest the real landmarks and quarters named in
+# locations.yaml — the Molo Audace, the Canal Grande and Ponterosso, Piazza
+# dell'Unità, the hill and cathedral of San Giusto, the Roman theatre, the free-
+# port warehouses, the Giardino Pubblico, the Opicina tramway, the Stazione
+# Centrale and the covered market. They are period and reference works on the
+# city and its port; the businesses and people placed at these landmarks are
+# fictional.
+- id: src-piazza-unita
+  title: Trieste e il suo porto — guida della città e del territorio
+  kind: guide
+  year: 1950
+  note: >-
+    A period city guide describing Piazza dell'Unità, the municipio and the
+    shipping-company palaces on the great square open to the sea.
+- id: src-molo-audace
+  title: Il Molo Audace e le rive di Trieste
+  kind: guide
+  note: >-
+    On the stone mole running out from the square into the harbour, long a place
+    of the evening promenade, and the passenger quays of the gulf.
+- id: src-canal-grande
+  title: Il Borgo Teresiano e il Canal Grande
+  kind: book
+  note: >-
+    On the Teresian grid behind the waterfront, the Canal Grande where the
+    coasting trade ties up, the Ponterosso bridge and the Serbian-Orthodox dome.
+- id: src-arcades
+  title: Caffè e portici di Trieste
+  kind: book
+  note: >-
+    On the grand coffee houses under the arcades of the city centre, a Habsburg
+    inheritance in the Adriatic port.
+- id: src-san-giusto
+  title: Il colle di San Giusto — castello e cattedrale
+  kind: guide
+  note: >-
+    On the hill of San Giusto crowned by the castle and the cathedral, and the
+    warren of stepped lanes and tenements of the old town below.
+- id: src-roman-theatre
+  title: Il teatro romano di Trieste
+  kind: archive
+  note: >-
+    On the Roman theatre at the foot of the hill of San Giusto, uncovered
+    between the wars.
+- id: src-porto-vecchio
+  title: I magazzini generali e le rive del Porto Vecchio
+  kind: book
+  year: 1948
+  note: >-
+    On the bonded warehouses, basins and railway sidings of the Porto Vecchio
+    north of the centre, and the Levant and northern shipping lines.
+- id: src-giardino
+  title: Il Giardino Pubblico di Trieste
+  kind: guide
+  note: >-
+    On the public garden of clipped limes and busts, between the centre and the
+    lower terminus of the Opicina tramway.
+- id: src-opicina-tram
+  title: La tranvia di Opicina — storia e orario
+  kind: guide
+  note: >-
+    On the rack-and-cable tramway climbing the Karst escarpment from the city to
+    the village of Opicina and its obelisk belvedere over the gulf.
+- id: src-stazione
+  title: La Stazione Centrale di Trieste e le linee del nord
+  kind: guide
+  note: >-
+    On the main railway terminus and the lines north to Venice, the Veneto and
+    the Alpine passes.
+- id: src-markets
+  title: Mercati e rive di Trieste
+  kind: book
+  note: >-
+    On the covered produce market and the fish market near the canal, and the
+    quays where the Istria boats land their catch.

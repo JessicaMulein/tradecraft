@@ -1,0 +1,473 @@
+/**
+ * `@tradecraft/content` — the Zod schemas and JSON Schema exports for every
+ * Content Pack kind. This package owns the shape of pack data and nothing else;
+ * it depends only on `zod` and `yaml` (enforced by dependency-cruiser).
+ */
+
+export {
+  AliasSchema,
+  AllegianceSchema,
+  ALLEGIANCES,
+  ContentIdSchema,
+  ContentRefSchema,
+  DayCountSchema,
+  IsoDateSchema,
+  MICE_LEVERS,
+  MiceLeverSchema,
+  PHASES,
+  PhaseSchema,
+  ProbabilitySchema,
+  RangeSchema,
+  SemverRangeSchema,
+  SemverSchema,
+  TagIdSchema,
+  TagQuerySchema,
+  TemplatePoolSchema,
+  TemplateStringSchema,
+  WEEKDAYS,
+  WeekdaySchema,
+  YearRangeSchema,
+  type Alias,
+  type YearRange,
+} from './lib/common.js';
+
+export {
+  CONTENT_SCHEMA_GENERATION,
+  CONTENT_SCHEMA_MAX,
+  ContentErrorSchema,
+  ContentManifestSchema,
+  ManifestEntrySchema,
+  PACK_ROLES,
+  PackManifestSchema,
+  PackRequirementSchema,
+  PackRoleSchema,
+  effectivePackRole,
+  type ContentError,
+  type ContentManifest,
+  type ManifestEntry,
+  type PackManifest,
+  type PackRequirement,
+  type PackRole,
+} from './lib/pack.js';
+
+export {
+  ContentFileEnvelopeSchema,
+  ProvenanceSchema,
+  isContentFileEnvelope,
+  normalizeContentFile,
+  type ContentFileEnvelope,
+  type NormalizedContentFile,
+  type NormalizeResult,
+  type Provenance,
+} from './lib/content-file.js';
+
+export {
+  EVALUATOR_KINDS,
+  EvaluatorKindSchema,
+  FieldCodeSchema,
+  HOSTILE_MARKS,
+  HostileMarkSchema,
+  IMPLICATION_ROLES,
+  ImplicationRoleSchema,
+  ImplicationSchema,
+  PLACE_RULES,
+  PlaceRuleSchema,
+  PREDICATE_ENTITY_KINDS,
+  PREDICATE_LITERAL_KINDS,
+  PredicateDefinitionSchema,
+  PredicateEntityKindSchema,
+  PredicateFileSchema,
+  PredicateLiteralKindSchema,
+  PredicateObjectSchema,
+  PredicateRenderSchema,
+  WINDOW_RULES,
+  WindowRuleSchema,
+  type EvaluatorKind,
+  type Implication,
+  type PredicateDefinition,
+  type PredicateObject,
+  type PredicateRender,
+} from './lib/predicate.js';
+
+export {
+  compilePredicateRegistry,
+  type CompiledPredicate,
+  type CompileResult,
+  type EntityBinding,
+  type PredicateCompileError,
+  type PredicateRegistry,
+  type RenderBindings,
+  type RenderPerspective,
+} from './lib/predicate-registry.js';
+
+export {
+  ArrestRulesSchema,
+  CIPHER_KINDS,
+  CipherKindSchema,
+  DetectionBaseSchema,
+  DifficultyFileSchema,
+  DifficultyPresetSchema,
+  DoctrineRangesSchema,
+  NoiseCountsSchema,
+  NoiseTrafficRatioSchema,
+  PlotShapeSchema,
+  type DifficultyPreset,
+} from './lib/difficulty.js';
+
+export {
+  HINT_TRIGGERS,
+  HintFileSchema,
+  HintSchema,
+  HintTriggerSchema,
+  type Hint,
+  type HintTrigger,
+} from './lib/hint.js';
+
+export {
+  GlossaryFileSchema,
+  GlossaryTermSchema,
+  type GlossaryTerm,
+} from './lib/glossary.js';
+
+export {
+  ARCHETYPE_ROLES,
+  ArchetypeRoleSchema,
+  ArchetypeSchema,
+  CoverIdentitySchema,
+  CrowdCurveEntrySchema,
+  DOCUMENT_KINDS,
+  DocumentKindSchema,
+  DocumentSectionSchema,
+  DocumentTemplateSchema,
+  LocationTypeSchema,
+  MiceRangesSchema,
+  NamePoolSchema,
+  OpeningHoursSchema,
+  PersonaLibrarySchema,
+  PlotStageSchema,
+  PlotTemplateSchema,
+  RUMOUR_DISTORTIONS,
+  RoleSlotSchema,
+  RumourDistortionSchema,
+  RumourTemplateSchema,
+  PredicateIdSchema,
+  ScheduleSlotSchema,
+  SideThreadTemplateSchema,
+  TRACE_CHANNEL_KINDS,
+  TRACE_KINDS,
+  TraceChannelKindSchema,
+  TraceKindSchema,
+  TracePlaceSchema,
+  TraceTemplateSchema,
+  WeatherModifierSchema,
+  type Archetype,
+  type CoverIdentity,
+  type DocumentTemplate,
+  type LocationType,
+  type PersonaLibrary,
+  type PlotTemplate,
+  type RumourTemplate,
+  type SideThreadTemplate,
+  type TraceTemplate,
+} from './lib/kinds.js';
+
+export {
+  CONTENT_KIND_NAMES,
+  contentKindJsonSchema,
+  contentKindJsonSchemas,
+  contentKindSchemas,
+  type ContentKindName,
+  type JsonSchema,
+} from './lib/json-schema.js';
+
+export {
+  type ContentRegistry,
+  type ContentSet,
+  type LoadResult,
+} from './lib/content-set.js';
+
+export {
+  buildContentSetAdditions,
+  type CityBundle,
+  type CityId,
+  type ContentSetAdditions,
+  type CultureGroupId,
+  type EraBundle,
+  type PackForBuild,
+} from './lib/content-set-build.js';
+
+export {
+  DRAFT_AREA_SEGMENT,
+  checkProvenance,
+  isUnderDraftArea,
+  type PackForProvenance,
+} from './lib/provenance-gate.js';
+
+export { loadContent } from './lib/loader.js';
+
+export {
+  compileTemplateVariants,
+  documentBaseTemplate,
+  emptyTemplateVariantIndex,
+  resolveTemplate,
+  type BaseTemplate,
+  type CompiledTemplate,
+  type CompiledVariant,
+  type CompiledVariantScope,
+  type HasTemplateVariants,
+  type RawVariant,
+  type TemplateVariantIndex,
+  type VariantCompileError,
+  type VariantCompileResult,
+} from './lib/template-variant.js';
+
+export {
+  SLICE_KIND_REGISTRATIONS,
+  type ContentKindRegistration,
+  type DocKind,
+  type FieldDeclarations,
+  type JsonPath,
+  type LoadOptions,
+  type RefFieldDeclaration,
+  type TemplateFieldDeclaration,
+  type TemplateStyle,
+} from './lib/registry.js';
+
+export {
+  CONTENT_EXPANSION_KIND_REGISTRATIONS,
+  CONTENT_EXPANSION_OWNER,
+  defineKindStub,
+  STUB_SCHEMA,
+} from './kinds/index.js';
+
+export {
+  LOCALE_KINDS,
+  LocaleCurrencySchema,
+  LocaleDateSchema,
+  LocaleHonorificsSchema,
+  LocaleScopeSchema,
+  LocaleSchema,
+  LocalTermSchema,
+  TemplateVariantSchema,
+  localeKind,
+  templateVariantKind,
+  type Locale,
+  type LocaleCurrency,
+  type LocaleDate,
+  type LocaleHonorifics,
+  type LocaleScope,
+  type LocalTerm,
+  type TemplateVariant,
+} from './kinds/locale.js';
+
+export {
+  DESCRIPTOR_SLOTS,
+  DescriptorFragmentSchema,
+  DescriptorSlotSchema,
+  CultureGroupSchema,
+  FamilyNameSchema,
+  LIBRARY_KINDS,
+  NamingRuleSchema,
+  PersonaBackgroundSchema,
+  cultureGroupKind,
+  descriptorFragmentKind,
+  type CultureGroup,
+  type DescriptorFragment,
+  type FamilyName,
+  type NamingRule,
+  type PersonaBackground,
+} from './kinds/library.js';
+
+export {
+  addDays,
+  dateFromEpoch,
+  daysFromEpoch,
+  daysInMonth,
+  formatAddress,
+  formatDate,
+  formatHonorific,
+  formatMoney,
+  isLeapYear,
+  LocaleFormatError,
+  parseIsoDate,
+  toIsoDate,
+  weekdayIndex,
+  type AddressParts,
+  type CalendarDate,
+  type Currency,
+  type GameTime,
+} from './locale/index.js';
+
+export {
+  FacetIdSchema,
+  FacetSchema,
+  RequiredQuerySchema,
+  TagSchema,
+  TagVocabularySchema,
+  tagVocabularyKind,
+  type Facet,
+  type RequiredQuery,
+  type Tag,
+  type TagQuery,
+  type TagVocabulary,
+} from './kinds/tag-vocabulary.js';
+
+export {
+  CITY_KINDS,
+  CityDefinitionSchema,
+  CityLanguageSchema,
+  CityLocationSchema,
+  CityRouteSchema,
+  CultureWeightSchema,
+  CurrencySchema,
+  DistrictSchema,
+  DistrictSectorSchema,
+  InstantiationBoundsSchema,
+  LOCATION_BASES,
+  LocalOrgSchema,
+  LocationBasisSchema,
+  MonthlyTablesSchema,
+  MonthlyWeatherSchema,
+  NewspaperSchema,
+  SOURCE_KINDS,
+  SourceKindSchema,
+  SourceSchema,
+  StreetsPoolSchema,
+  WeatherTablesSchema,
+  cityKind,
+  districtKind,
+  localOrgKind,
+  locationKind,
+  newspaperKind,
+  routeKind,
+  sourcesKind,
+  streetsKind,
+  weatherKind,
+  type CityDefinition,
+  type CityLocation,
+  type CityRoute,
+  type District,
+  type LocalOrg,
+  type Newspaper,
+  type Source,
+  type StreetsPool,
+  type WeatherTables,
+} from './kinds/city.js';
+
+export {
+  DoctrineBaseSchema,
+  SERVICE_KINDS,
+  ServiceDefinitionSchema,
+  ServiceKindSchema,
+  serviceKind,
+  type DoctrineBase,
+  type ServiceDefinition,
+  type ServiceKind,
+} from './kinds/service.js';
+
+export {
+  CIPHER_OWNERS,
+  CipherConventionsSchema,
+  CipherOwnerSchema,
+  CipherWeightsSchema,
+  NumbersFormatSchema,
+  PadFormatSchema,
+  type CipherConventions,
+} from './kinds/era.js';
+
+export {
+  CITY_FILE,
+  CityDataSchema,
+  CityDistrictSchema,
+  CitySectorSchema,
+  CityWeatherSchema,
+  WeatherConditionSchema,
+  WeatherSeasonSchema,
+  loadCityData,
+  parseCityData,
+  type CityData,
+  type CityDataResult,
+  type CityDistrict,
+  type CitySector,
+  type CityWeather,
+  type WeatherCondition,
+  type WeatherSeason,
+} from './lib/city-data.js';
+
+export {
+  DESCRIPTOR_FILE,
+  DESCRIPTOR_FITS,
+  PERSONA_GENDERS,
+  DescriptorDataSchema,
+  DescriptorEntrySchema,
+  DescriptorFitsSchema,
+  DescriptorPoolSchema,
+  DescriptorSharedSchema,
+  descriptorPoolIds,
+  fittingPhrases,
+  loadDescriptorData,
+  normalizeEntries,
+  parseDescriptorData,
+  type DescriptorData,
+  type DescriptorDataResult,
+  type DescriptorEntry,
+  type DescriptorFits,
+  type DescriptorPool,
+  type DescriptorShared,
+  type NormalizedEntry,
+  type PersonaGender,
+} from './lib/descriptor-data.js';
+
+export {
+  AlmanacCorpusSchema,
+  AnthologyCorpusSchema,
+  AnthologyPassageSchema,
+  PUBLIC_TEXT_FILES,
+  TimetableCorpusSchema,
+  loadPublicText,
+  loadPublicTexts,
+  parsePublicText,
+  type AlmanacCorpus,
+  type AnthologyCorpus,
+  type AnthologyPassage,
+  type PublicText,
+  type PublicTextError,
+  type PublicTextResult,
+  type PublicTextsResult,
+  type TimetableCorpus,
+} from './lib/public-texts-data.js';
+
+export {
+  compareVersions,
+  parseRange,
+  parseVersion,
+  satisfies,
+  type SemVer,
+  type SemVerRange,
+} from './lib/semver.js';
+
+export { canonicalJson, hashPack } from './lib/hash.js';
+
+export {
+  compileTemplate,
+  parseTemplate,
+  render,
+  RESERVED_SLOTS,
+  templateSlots,
+  TemplateParseError,
+  TemplateRenderError,
+  TemplateValidationError,
+  validateTemplate,
+  type Namer,
+  type OptionalNode,
+  type PickNode,
+  type RenderOptions,
+  type SlotNode,
+  type TemplateAst,
+  type TemplateBindings,
+  type TemplateDeclarations,
+  type TemplateNode,
+  type TemplatePools,
+  type TemplateRng,
+  type TextNode,
+} from './lib/template.js';

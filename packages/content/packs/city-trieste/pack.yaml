@@ -1,0 +1,53 @@
+# The city-trieste City Pack manifest (content-expansion task 9.9).
+#
+# A City Pack supplies one playable city: its `city.yaml` definition, the
+# Districts, Locations, Routes, city Location Types, street-name pools, monthly
+# weather and the Sources bibliography (the geography half, task 9.9), and its
+# newspapers, local organisations, the City-Scoped local-security Service, local
+# Cover Identities, the Locale, the article Document templates, the Rumour
+# templates and the Template Variants (the institutions half, task 9.10), with a
+# `lint.yaml` of Pack-Linter Suppressions.
+#
+# City: the Free Territory of Trieste, 1947–1954. Established under the 1947
+# peace settlement, the Territory was split into two administrations that never
+# became the intended independent state: Zone A — the city of Trieste and a
+# narrow coastal strip to the north — under an Allied military government, and
+# Zone B — the Istrian hinterland to the south — under a Yugoslav military
+# government. A guarded zone line ran between them, crossed at control points
+# where papers were checked. The arrangement ended in 1954, when the city passed
+# to Italian civil administration and Zone B to Yugoslavia.
+#
+# The city carries a Mediterranean (Adriatic) climate, the lira as its everyday
+# currency, and a cosmopolitan population — Italian and Slovene, with the old
+# Habsburg port's Austrian-German, Greek, Armenian and Sephardic communities and
+# a floating population of displaced persons and émigrés passing through the
+# camps and the shipping lines.
+#
+# EVERYTHING AUTHORED HERE IS FICTIONAL except the real landmarks cited in
+# `sources.yaml` (the Molo Audace, the Canal Grande, Piazza Unità, the Opicina
+# tramway, the Stazione Centrale and so on), which are named as period texture.
+# Every café, hotel, firm, newspaper, office and person is invented. The zone
+# regime and the control points are period fact, rendered as setting.
+#
+# It declares `role: city` and `contentSchema: 2`, requires exactly one Era Pack
+# (`era-cold-war-early`, whose 1945–1965 window contains the city's 1947–1954
+# period), the core pack (its Tag Vocabulary and slice kinds), and the Library
+# Packs the Culture Weights draw their names from.
+id: city-trieste
+version: 1.0.0
+contentSchema: 2
+role: city
+requires:
+  - id: core
+    range: '^1.0.0'
+  - id: era-cold-war-early
+    range: '^1.0.0'
+  - id: lib-central-europe
+    range: '^1.0.0'
+  - id: lib-eastern-mediterranean
+    range: '^1.0.0'
+  - id: lib-western
+    range: '^1.0.0'
+  - id: lib-russian
+    range: '^1.0.0'
+overrides: []

@@ -1,0 +1,91 @@
+# cover-identities.yaml — the Lisbon local Cover Identities (content-expansion
+# task 9.8).
+#
+# Each entry validates against CoverIdentitySchema (packages/content/src/lib/
+# kinds.ts): a title, the employer organisation, the `tags` (a `cover:*` facet
+# Tag), the Location Types where the cover fits plausibly (bare ids resolved to
+# this City Pack's Location Types), and the Cover Suspicion modifiers it carries
+# at a fitting place (`atFit`, negative) versus elsewhere (`elsewhere`,
+# positive).
+#
+# The fit Location Types are the Lisbon types from this pack's
+# location-types.yaml: cafe, tabacaria, biblioteca, alfarrabista, hotel-bar,
+# pensao, miradouro, elevador, electrico-stop, cais-fluvial, doca, armazem,
+# legacao, aerodromo, estacao.
+#
+# Every title and employer is fictional and period-plausible for a neutral
+# Atlantic capital of 1945–1965: the trade, press, relief and shipping covers a
+# foreign agent could carry in a city crowded with émigrés, correspondents and
+# passing traffic. No real body of the period is named.
+
+- id: shipping-line-clerk
+  title: Passenger Agent
+  employerOrg: Companhia de Navegação do Tejo e Atlântico
+  tags: [cover:commercial]
+  fitLocationTypes: [doca, cais-fluvial, estacao, hotel-bar]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.2
+
+- id: relief-committee-officer
+  title: Resettlement Officer
+  employerOrg: Comité de Auxílio aos Refugiados do Atlântico
+  tags: [cover:official]
+  fitLocationTypes: [legacao, pensao, hotel-bar, estacao, cais-fluvial]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.18
+
+- id: wire-service-stringer
+  title: Wire-Service Stringer
+  employerOrg: Atlantic Wire & Cable Service
+  tags: [cover:press]
+  fitLocationTypes: [hotel-bar, cafe, miradouro, aerodromo, electrico-stop]
+  suspicionModifiers:
+    atFit: -0.1
+    elsewhere: 0.15
+
+- id: cork-and-wine-buyer
+  title: Export Buyer
+  employerOrg: Casa Comercial do Atlântico
+  tags: [cover:commercial]
+  fitLocationTypes: [armazem, doca, cafe, hotel-bar]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.2
+
+- id: antiquarian-dealer
+  title: Antiquarian Dealer
+  employerOrg: Alfarrábio Lusitano, Livreiros
+  tags: [cover:cultural]
+  fitLocationTypes: [alfarrabista, biblioteca, cafe]
+  suspicionModifiers:
+    atFit: -0.2
+    elsewhere: 0.25
+
+- id: cultural-attache
+  title: Cultural Attaché
+  employerOrg: Allied Cultural Mission
+  tags: [cover:cultural]
+  fitLocationTypes: [legacao, biblioteca, hotel-bar, cafe]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.22
+
+- id: airways-ticket-agent
+  title: Airways Ticket Agent
+  employerOrg: Iberian Atlantic Airways Agency
+  tags: [cover:commercial]
+  fitLocationTypes: [aerodromo, hotel-bar, legacao, estacao]
+  suspicionModifiers:
+    atFit: -0.13
+    elsewhere: 0.2
+
+- id: insurance-surveyor
+  title: Marine Insurance Surveyor
+  employerOrg: Lisbon & Overseas Assurance
+  tags: [cover:commercial]
+  fitLocationTypes: [doca, armazem, cais-fluvial, cafe, hotel-bar]
+  suspicionModifiers:
+    atFit: -0.1
+    elsewhere: 0.15

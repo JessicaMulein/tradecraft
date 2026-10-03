@@ -1,0 +1,28 @@
+== City: Trieste ==
+setting: city-trieste/trieste (year 1948)
+districts: 7
+locations: 28
+routes: 12
+
+== Districts ==
+- Borgo Teresiano [borgo-teresiano] — sector Zone A — Allied Military Government
+- Città Vecchia [citta-vecchia] — sector Zone A — Allied Military Government
+- Il retroterra istriano [istrian-hinterland] — sector Zone B — Yugoslav Military Government
+- Opicina e il Carso [opicina-carso] — sector Zone A — Allied Military Government
+- Piazza dell'Unità [piazza-unita] — sector Zone A — Allied Military Government
+- Porto Vecchio [porto-vecchio] — sector Zone A — Allied Military Government
+- San Vito e Campi Elisi [san-vito] — sector Zone A — Allied Military Government
+
+== Routes ==
+- Borgo Teresiano <-> Città Vecchia (cost 0)
+- Borgo Teresiano <-> Opicina e il Carso (cost 1)
+- Borgo Teresiano <-> Piazza dell'Unità (cost 0)
+- Borgo Teresiano <-> Porto Vecchio (cost 1)
+- Città Vecchia <-> Opicina e il Carso (cost 1)
+- Città Vecchia <-> San Vito e Campi Elisi (cost 1)
+- Opicina e il Carso <-> Il retroterra istriano (cost 1)
+- Piazza dell'Unità <-> Città Vecchia (cost 0)
+- Piazza dell'Unità <-> Porto Vecchio (cost 1)
+- Piazza dell'Unità <-> San Vito e Campi Elisi (cost 1)
+- Porto Vecchio <-> Il retroterra istriano (cost 1)
+- San Vito e Campi Elisi <-> Porto Vecchio (cost 1)

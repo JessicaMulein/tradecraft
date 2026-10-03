@@ -1,0 +1,367 @@
+# culture-groups/armenian.yaml — the Armenian group.
+#
+# A CultureGroup (CultureGroupSchema) for the Armenian community of the eastern
+# Mediterranean. Names are given in Latin transliteration for the slice renderer
+# and Specifics Guard. Armenian surnames are not gender-inflected (the familiar
+# -ian / -yan patronymic suffix is invariant), so family names are plain strings
+# and the Naming Rule is the generic {given} {family}. Quantity (Req 11.4): at
+# least 100 given and 100 family names, at least 300 distinct total. All names
+# are generic, common Armenian names of the period in fictional use; none names
+# a real individual.
+- id: armenian
+  name: Armenian
+  languages:
+    - hy
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Araxie
+      - Takouhi
+      - Siranoush
+      - Vartouhi
+      - Zabel
+      - Satenik
+      - Anahid
+      - Hripsime
+      - Nvard
+      - Arpine
+      - Mariam
+      - Yeranouhi
+      - Shoghik
+      - Lousine
+      - Astghik
+      - Baydzar
+      - Dzovinar
+      - Gayane
+      - Haykanoush
+      - Iskouhi
+      - Knarik
+      - Lemyel
+      - Markarid
+      - Nazeli
+      - Osanna
+      - Perouz
+      - Repega
+      - Sona
+      - Takuhi
+      - Varsenik
+      - Yester
+      - Zaruhi
+      - Aghavni
+      - Berjouhi
+      - Diruhi
+      - Eghsa
+      - Flora
+      - Guzel
+      - Hera
+      - Iskouhie
+      - Juliet
+      - Keghani
+      - Loussig
+      - Mannig
+      - Noyemzar
+      - Ovsanna
+      - Payladzou
+      - Rozmari
+      - Serpouhi
+      - Tamar
+      - Verjin
+      - Yepraksia
+      - Zepyur
+      - Antaram
+      - Berjanoush
+      - Dirouhi
+      - Eranouhi
+      - Garine
+      - Houri
+      - Izabel
+    m:
+      - Hagop
+      - Krikor
+      - Nshan
+      - Garabed
+      - Dikran
+      - Sarkis
+      - Vahan
+      - Mihran
+      - Bedros
+      - Haroutioun
+      - Kevork
+      - Levon
+      - Minas
+      - Nazareth
+      - Onnig
+      - Setrak
+      - Toros
+      - Vahram
+      - Yervant
+      - Zareh
+      - Aram
+      - Bagrat
+      - Dadour
+      - Edvin
+      - Ferhad
+      - Gaidzag
+      - Hovsep
+      - Isahag
+      - Khachig
+      - Mardiros
+      - Nerses
+      - Ohannes
+      - Parsegh
+      - Rupen
+      - Simon
+      - Takvor
+      - Vartan
+      - Yeghia
+      - Zaven
+      - Antranig
+      - Boghos
+      - Derenik
+      - Eznik
+      - Gostan
+      - Hamazasp
+      - Khoren
+      - Manoug
+      - Nubar
+      - Oskan
+      - Puzant
+      - Serovpe
+      - Tavit
+      - Vosgan
+      - Yetvart
+      - Araxel
+      - Barkev
+      - Dzeron
+      - Gevorg
+      - Hmayak
+      - Khosrov
+  family:
+    - Agopian
+    - Bedrosian
+    - Krikorian
+    - Hagopian
+    - Sarkisian
+    - Dikranian
+    - Vahanian
+    - Garabedian
+    - Nazarian
+    - Minassian
+    - Kazanjian
+    - Terzian
+    - Boyajian
+    - Simonian
+    - Mardirosian
+    - Avedisian
+    - Bogosian
+    - Chakmakjian
+    - Demirjian
+    - Elmassian
+    - Fermanian
+    - Gulbenkian
+    - Hovsepian
+    - Injejikian
+    - Jamgochian
+    - Keshishian
+    - Levonian
+    - Manoogian
+    - Najarian
+    - Odabashian
+    - Papazian
+    - Rostomian
+    - Setian
+    - Tavitian
+    - Vartanian
+    - Yeremian
+    - Zakarian
+    - Arslanian
+    - Baghdasarian
+    - Chilingirian
+    - Donoyan
+    - Essayan
+    - Froundjian
+    - Guzelian
+    - Hekimian
+    - Iskenderian
+    - Jebejian
+    - Karnikian
+    - Lusararian
+    - Melkonian
+    - Norashkharian
+    - Ohanian
+    - Palandjian
+    - Rupenian
+    - Sahagian
+    - Takvorian
+    - Utidjian
+    - Vosganian
+    - Yezegelian
+    - Zildjian
+    - Apcarian
+    - Barsamian
+    - Chaparian
+    - Darbinian
+    - Ekmekjian
+    - Ferahian
+    - Ghazarian
+    - Hairabedian
+    - Ipekjian
+    - Jerejian
+    - Kurkjian
+    - Lazian
+    - Manjikian
+    - Nalbandian
+    - Oskanian
+    - Panosian
+    - Reshtouni
+    - Sanossian
+    - Tutundjian
+    - Varjabedian
+    - Yaghlian
+    - Zarougian
+    - Altounian
+    - Basmajian
+    - Dadourian
+    - Erzurumian
+    - Festekjian
+    - Gorjian
+    - Hadidian
+    - Ispirian
+    - Juskalian
+    - Khederlarian
+    - Loristan
+    - Mihranian
+    - Noubarian
+    - Ouzounian
+    - Peshdikian
+    - Sivaslian
+    - Tomassian
+    - Vanigian
+    - Abcarian
+    - Boghossian
+    - Chavoushian
+    - Derderian
+    - Ekizian
+    - Fenerjian
+    - Gazarian
+    - Haroutunian
+    - Isbendjian
+    - Jamkojian
+    - Kalemkerian
+    - Luledjian
+    - Mangasarian
+    - Nersoyan
+    - Ohandjanian
+    - Pambakian
+    - Rashidian
+    - Shahinian
+    - Tcholakian
+    - Uljian
+    - Varanian
+    - Yacoubian
+    - Zourabian
+    - Antonian
+    - Berberian
+    - Chakerian
+    - Donikian
+    - Enfiedjian
+    - Garabetian
+    - Hamalian
+    - Istanbulian
+    - Jrbashian
+    - Kazandjian
+    - Leylegian
+    - Mekhitarian
+    - Nalchajian
+    - Oknayan
+    - Partamian
+    - Rshtuni
+    - Sdepanian
+    - Terjimanian
+    - Urfalian
+    - Vartabedian
+    - Yeghiazarian
+    - Zarian
+    - Avakian
+    - Balian
+    - Chilinguirian
+    - Dadaian
+    - Erzinjian
+    - Garoian
+    - Hovnanian
+    - Injian
+    - Jivanian
+    - Keljik
+    - Loussararian
+    - Mouradian
+    - Noradunghian
+    - Oskian
+    - Pashalian
+    - Reshdouni
+    - Sarafian
+    - Topalian
+    - Uzunian
+    - Vosguian
+    - Yeretsian
+    - Zildjikian
+    - Aghajanian
+    - Boyadjian
+    - Chituni
+    - Darakdjian
+    - Essefian
+    - Guluzian
+    - Hagobian
+    - Ipradjian
+    - Jernazian
+    - Kavoukjian
+    - Markarian
+    - Shamlian
+    - Tossounian
+  voiceTraits:
+    - warm and formal at once, honouring old courtesies
+    - speaks of the past carefully and the present more so
+    - threads commerce and family into every account
+    - gauges a stranger with patient, deliberate questions
+    - keeps grief private and generosity public
+  mannerisms:
+    - presses a second helping on any guest
+    - folds hands and inclines the head in greeting
+    - keeps a photograph of the old country on the counter
+    - taps the table once to seal an agreement
+    - sees a visitor to the street every time
+  backgrounds:
+    - text: Keeps a jeweller's bench in the arcade and works for the whole quarter.
+      tags: []
+    - text: Runs a photographic studio and knows which faces prefer not to be filed.
+      tags: []
+    - text: Imports watch parts and precision tools through a tangle of agents.
+      tags: []
+    - text: Clerks at a trading house and keeps the correspondence in three scripts.
+      tags: []
+    - text: Teaches at the community school and tends its small, careful library.
+      tags: []
+    - text: Mends and sells carpets and reads a buyer before a word is spoken.
+      tags: []
+    - text: Keeps a pharmacy on the avenue and the confidences that come with it.
+      tags: []
+    - text: Settled from the provinces after the hard years and speaks little of them.
+      tags: []
+      years: { from: 1945, to: 1960 }
+    - text: Tunes pianos for the hotels and hears what the salons say over the keys.
+      tags: []
+    - text: Keeps the books for a tobacco merchant and the merchant's quiet partners.
+      tags: []
+    - text: Runs a shoe shop in the arcade and resoles for half the civil service.
+      tags: []
+    - text: Deals in gold and small gems and keeps no ledger a stranger could read.
+      tags: []
+    - text: Prints and binds for the community and quietly for anyone who pays.
+      tags: []
+    - text: Keeps a dental surgery the consulates send their staff to.
+      tags: []
+    - text: Trades spices and dried fruit and crosses frontiers on an old merchant's papers.
+      tags: []
+    - text: Tends the parish accounts and the names in its registers besides.
+      tags: []

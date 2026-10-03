@@ -1,0 +1,277 @@
+# descriptors.yaml — the Descriptor library for 1950s occupied Vienna.
+#
+# The world generator dresses an NPC by drawing from the descriptor pools its
+# archetype names (archetypes carry `descriptorPools: [...]`). Each pool is a
+# bundle of period-correct phrases grouped by the kind of person who wears them.
+# Pool ids are stable so the archetypes reference them by id; the pack loader
+# now parses this file against DescriptorDataSchema and refuses any archetype
+# that names a pool this file does not define (Requirement 31.2).
+#
+# Every entry carries a `fits` tag — `any`, `female` or `male` — so the
+# generator draws only entries that suit a persona's gender (Requirement 1.7).
+# A bare string reads as `fits: any`; a `{ text, fits }` object pins a gender.
+# `build`, `hair` and `face` notes read as `any`; grooming splits by gender
+# (a pencil moustache is `male`, a marcel wave `female`); garments and
+# accessories carry whichever tag suits the garment.
+#
+# Everything here is 1950s clothing and grooming — no later fashions, no
+# synthetics named by brand, no anachronisms.
+
+version: 1
+
+# Shared, allegiance-neutral building blocks the pools can mix in. Build, hair
+# and face are gender-neutral; grooming is tagged because facial hair reads male.
+shared:
+  build:
+    - lean and stooped
+    - broad through the shoulders
+    - slight and quick
+    - heavyset and deliberate
+    - average height, forgettable
+    - tall and spare
+    - round-shouldered and soft-spoken
+  hair:
+    - hair oiled and combed flat
+    - grey at the temples
+    - close-cropped under a hat
+    - thinning, swept back
+    - dark and neatly parted
+    - { text: hair pinned up under a hat, fits: female }
+    - { text: a careful marcel wave, fits: female }
+    - { text: greying hair worn in a tight bun, fits: female }
+  grooming:
+    - clean-shaven
+    - { text: a clipped moustache, fits: male }
+    - { text: a day's grey stubble, fits: male }
+    - { text: a pencil moustache, fits: male }
+    - { text: a neat spade beard, fits: male }
+    - { text: pale powder and a dark lipstick, fits: female }
+    - { text: a trace of rosewater scent, fits: female }
+    - { text: no powder, a scrubbed plainness, fits: female }
+  face:
+    - a careful, closed expression
+    - tired eyes behind wire spectacles
+    - a ruddy, open face
+    - a long jaw and watchful eyes
+    - a quick, measuring glance
+
+# --- Clothing pools --------------------------------------------------------
+pools:
+  # Everyday Viennese street dress, respectable but worn.
+  street-clothes:
+    label: everyday Viennese street dress
+    garments:
+      - { text: a dark double-breasted suit gone shiny at the elbows, fits: male }
+      - { text: a belted gabardine raincoat, fits: any }
+      - { text: a worsted jacket with leather buttons, fits: male }
+      - { text: a loden coat the colour of moss, fits: any }
+      - { text: a knitted waistcoat under a tweed jacket, fits: male }
+      - { text: a plain dirndl-blouse and dark skirt, fits: female }
+      - { text: a woollen two-piece costume with a modest hem, fits: female }
+      - { text: a belted housecoat and sensible shoes, fits: female }
+      - { text: a plain blouse and a cardigan buttoned high, fits: female }
+    accessories:
+      - a soft grey felt hat
+      - a narrow-brimmed trilby
+      - a string shopping bag
+      - a furled umbrella
+      - { text: a headscarf knotted under the chin, fits: female }
+      - { text: a small cloth hat with a felt flower, fits: female }
+
+  # Heavy winter dress for the Vienna cold.
+  winter-coat:
+    label: heavy winter dress
+    garments:
+      - { text: a long dark overcoat with a velvet collar, fits: any }
+      - { text: a sheepskin-lined coat buttoned to the throat, fits: any }
+      - { text: a loden cape beaded with sleet, fits: any }
+      - { text: a fur-collared coat and galoshes, fits: any }
+      - { text: a woman's astrakhan coat, nipped at the waist, fits: female }
+    accessories:
+      - a woollen muffler wound twice
+      - fur-lined gloves
+      - { text: a Persian-lamb hat, fits: any }
+      - a knitted scarf and leather gloves
+
+  # Working dress — labourers, stevedores, tradesmen (archetype id: worker-clothes).
+  worker-clothes:
+    label: labourer's working dress
+    garments:
+      - { text: blue overalls stiff with grime, fits: any }
+      - { text: a collarless shirt and braces, fits: male }
+      - { text: a quilted jacket patched at the cuff, fits: any }
+      - { text: heavy corduroy trousers and hobnailed boots, fits: male }
+      - { text: a leather apron over a flannel shirt, fits: any }
+      - { text: a work smock over a plain skirt, fits: female }
+      - { text: a headscarf and a wrapround apron, fits: female }
+    accessories:
+      - { text: a flat cloth cap, fits: male }
+      - { text: a cigarette behind one ear, fits: any }
+      - a canvas tool roll
+      - a battered enamel billy-can
+
+  # Service dress — waiters, porters, conductors, kiosk-keepers.
+  # Kept as an alias target for the generic service look.
+  service-uniform:
+    label: service uniform
+    garments:
+      - { text: a waiter's black tailcoat and long white apron, fits: any }
+      - { text: a porter's braided cap and brass-buttoned tunic, fits: any }
+      - { text: a tram conductor's dark serge uniform, fits: any }
+      - { text: a doorman's frogged greatcoat, fits: any }
+    accessories:
+      - a leather change-satchel
+      - a ticket-punch on a lanyard
+      - white cotton gloves
+      - a numbered brass badge
+
+  # A café waiter's dress (archetype id: waiter-dress).
+  waiter-dress:
+    label: café waiter's dress
+    garments:
+      - { text: a black tailcoat and a long white apron, fits: any }
+      - { text: a short white serving jacket and black trousers, fits: male }
+      - { text: a black waistcoat over a pressed white shirt, fits: any }
+      - { text: a dark pinafore over a white blouse, fits: female }
+    accessories:
+      - a folded napkin over one forearm
+      - a leather change-purse at the hip
+      - a tray held flat at the shoulder
+      - a bow tie gone slightly limp
+
+  # Uniformed service work — conductors, porters, ushers (archetype id:
+  # uniform-work-dress).
+  uniform-work-dress:
+    label: uniformed service dress
+    garments:
+      - { text: a brass-buttoned tunic and peaked cap, fits: any }
+      - { text: a dark serge uniform with piped cuffs, fits: any }
+      - { text: an usher's short braided jacket, fits: any }
+      - { text: a conductor's belted coat and leggings, fits: male }
+      - { text: a trim uniform jacket and a knee-length skirt, fits: female }
+    accessories:
+      - a numbered cap badge
+      - a ticket-punch on a lanyard
+      - a torch clipped to the belt
+      - white cotton gloves
+
+  # Professional / official dress — clerks, officials, attachés.
+  professional-dress:
+    label: professional dress
+    garments:
+      - { text: a well-cut charcoal suit and stiff collar, fits: male }
+      - { text: a pin-striped three-piece and watch-chain, fits: male }
+      - { text: a dark coat and striped civil-service trousers, fits: male }
+      - { text: a tailored flannel suit, Anglo-American cut, fits: any }
+      - { text: a severe tailored costume and court shoes, fits: female }
+    accessories:
+      - a leather document case
+      - horn-rimmed spectacles
+      - { text: a homburg hat, fits: male }
+      - a fountain pen clipped to the breast pocket
+
+  # Office / clerical dress (archetype id: office-dress).
+  office-dress:
+    label: office clerical dress
+    garments:
+      - { text: a plain grey suit and a knitted tie, fits: male }
+      - { text: a sports jacket with sleeve-protectors at the cuff, fits: male }
+      - { text: a cardigan over a shirt and a plain tie, fits: male }
+      - { text: a dark skirt and a crisp white blouse, fits: female }
+      - { text: a buttoned twinset and a pleated skirt, fits: female }
+      - { text: a plain belted day dress, fits: female }
+    accessories:
+      - a bundle of folders under one arm
+      - a pencil tucked behind the ear
+      - horn-rimmed spectacles
+      - a wristwatch on a worn strap
+
+  # Respectable bourgeois dress — the professional and café-society set
+  # (archetype id: bourgeois-dress).
+  bourgeois-dress:
+    label: respectable bourgeois dress
+    garments:
+      - { text: a well-cut charcoal suit and a silk tie, fits: male }
+      - { text: a double-breasted overcoat over a pressed suit, fits: male }
+      - { text: a pin-striped three-piece and a watch-chain, fits: male }
+      - { text: a soft tweed jacket and flannel trousers, fits: male }
+      - { text: a tailored costume with a nipped waist, fits: female }
+      - { text: a dark wool dress and a short string of pearls, fits: female }
+      - { text: a swagger coat over a day dress, fits: female }
+    accessories:
+      - { text: a homburg hat, fits: male }
+      - { text: a silk pocket square, fits: male }
+      - { text: a crocodile handbag, fits: female }
+      - { text: a small veiled hat, fits: female }
+      - kid gloves
+      - a slim gold cigarette case
+
+  # Smarter women's dress — the café and hotel-bar set.
+  smart-womens-dress:
+    label: smart women's dress
+    garments:
+      - { text: a New Look suit with a nipped waist and full skirt, fits: female }
+      - { text: a tailored costume and seamed stockings, fits: female }
+      - { text: a dark cocktail dress and short gloves, fits: female }
+      - { text: a swagger coat over a day dress, fits: female }
+    accessories:
+      - { text: a small veiled hat, fits: female }
+      - { text: a crocodile handbag, fits: female }
+      - { text: a double string of pearls, fits: female }
+      - { text: a fox stole across the shoulders, fits: female }
+
+  # Correspondents and the press-bar crowd.
+  correspondent-dress:
+    label: foreign correspondent's dress
+    garments:
+      - { text: a rumpled trench coat with the belt tied, not buckled, fits: any }
+      - { text: a tweed sports jacket and open collar, fits: male }
+      - { text: a crumpled linen suit, foreign-cut, fits: male }
+      - { text: a belted mackintosh over slacks and a blouse, fits: female }
+    accessories:
+      - { text: a press card tucked in the hatband, fits: any }
+      - a camera on a worn strap
+      - a notebook and stub of pencil
+      - a cigarette never quite out
+
+  # Shabby / displaced — refugees, black-marketeers at the margins.
+  shabby-dress:
+    label: shabby or displaced dress
+    garments:
+      - { text: an army-surplus greatcoat with the insignia unpicked, fits: any }
+      - { text: a jacket two sizes too large, cinched with string, fits: any }
+      - { text: a darned pullover and patched trousers, fits: any }
+      - { text: a woman's coat remade from a blanket, fits: female }
+    accessories:
+      - boots mended with wire
+      - a bundle wrapped in oilcloth
+      - a cap pulled low
+      - fingerless woollen gloves
+
+  # Military / occupation personnel in civilian-adjacent dress.
+  occupation-dress:
+    label: occupation-forces dress
+    garments:
+      - { text: a pressed service tunic without insignia of rank, fits: any }
+      - { text: a greatcoat over polished boots, fits: any }
+      - { text: a trench coat worn military-fashion, collar up, fits: any }
+    accessories:
+      - a peaked cap carried under the arm
+      - a swagger stick
+      - a leather map-case
+      - mirror-polished shoes
+
+  # An officer's bearing and dress (archetype id: officer-bearing). Overlays a
+  # military carriage onto whatever else the archetype draws.
+  officer-bearing:
+    label: officer's bearing
+    garments:
+      - { text: a dark suit worn with parade-ground stiffness, fits: any }
+      - { text: a trench coat belted and buttoned to the throat, fits: any }
+      - { text: a severe double-breasted overcoat, fits: any }
+      - { text: a well-pressed tunic without visible insignia, fits: any }
+    accessories:
+      - a bearing that never quite leaves attention
+      - leather gloves drawn on finger by finger
+      - mirror-polished shoes
+      - a signet ring worn on the right hand

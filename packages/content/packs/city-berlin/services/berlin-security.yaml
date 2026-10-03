@@ -1,0 +1,42 @@
+# services/berlin-security.yaml - the city-local-security Service Definition for
+# Berlin (content-expansion task 9.4).
+#
+# Validates against ServiceDefinitionSchema (packages/content/src/kinds/
+# service.ts):
+#   { id, name, aliases, kind, country, doctrineBase, years?, tags? }
+#
+# This is the ONE City-Scoped service a City Pack defines: the divided city's
+# own western-sector police and public-order apparatus (`kind: local-security`).
+# The shared Era-Pack services (the player's own service, the hostile foreign,
+# security and satellite services, and the allied liaison services) stay in the
+# Era Pack and are referenced from city.yaml by id; this file adds only the
+# local-security service, and its id is added to city.yaml's `services` list.
+#
+# FICTIONAL. The service is invented. The country is Germany, the real occupied
+# nation an Era Pack may name; in the western sectors this apparatus answers to
+# the German authorities of the city under inter-allied oversight. Its temper is
+# that of a hard-pressed city police in a frontier town: cautious, very
+# security-conscious under the eyes of four occupiers, and with little taste for
+# the deception games the foreign services run across the sector line. The
+# eastern sector's own apparatus is covered by the Era Pack's hostile services,
+# not here.
+#
+# The sector regime holds across the whole window, so `years` spans 1948-1961.
+# `tags` is omitted (no facet in the core Tag Vocabulary applies to `service`).
+
+- id: city-public-order-office
+  name: The Berlin Office of Public Order
+  aliases:
+    - { text: the Office of Public Order, distinctive: true }
+    - { text: the Order Office, distinctive: false }
+    - { text: the sector police, distinctive: false }
+    - { text: the city authorities, distinctive: false }
+  kind: local-security
+  country: Germany
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.75
+    deceptionAppetite: 0.2
+  years:
+    from: 1948
+    to: 1961

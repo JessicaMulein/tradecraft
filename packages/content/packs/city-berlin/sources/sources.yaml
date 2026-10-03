@@ -1,0 +1,66 @@
+# sources/sources.yaml - the Berlin Sources bibliography (task 9.3).
+#
+# Each validates against SourceSchema (packages/content/src/kinds/city.ts):
+#   { id, title, author?, year?, kind, note? }.
+#
+# A City Location with `basis: real-landmark` cites one or more of these so its
+# historical texture can be reviewed (Req 3.1). The entries below attest the
+# real topography the Berlin Locations draw on - the railway, the streets, the
+# park, the canal, the airlift field, the sector geography - so a reviewer can
+# check the period detail. Titles are generic bibliographic descriptions of the
+# kinds of public reference a period city pack is built from (a city plan, a
+# railway guide, a street directory, a statistical yearbook); no fictional
+# in-world document and no real person's name is cited as a source.
+#
+# The places these sources attest are real; every character, business and
+# organisation that appears in the game remains fictional.
+
+- id: berlin-city-plan
+  title: Plan of Berlin and its occupation sectors, c. 1950
+  kind: map
+  note: >-
+    A four-sector city plan showing the boundary lines, the main avenues and the
+    railway network, used to place districts and routes in their real sectors.
+
+- id: berlin-railway-guide
+  title: Guide to the Berlin U-Bahn and S-Bahn, early 1950s
+  kind: guide
+  note: >-
+    A railway guide to the underground and city-railway lines and their
+    stations, including the lines that crossed the sector boundary; the source
+    for the transit-hub Locations and station names.
+
+- id: berlin-street-directory
+  title: Berlin street and address directory of the period
+  kind: guide
+  note: >-
+    A street-and-trade directory, the source for the street name pools and for
+    the plausible siting of shops, cafés and lodgings by quarter.
+
+- id: berlin-statistical-yearbook
+  title: Statistical yearbook of the city of Berlin, early postwar years
+  kind: archive
+  note: >-
+    Period population, housing and transport figures used to judge the texture
+    and density of the districts.
+
+- id: berlin-airlift-record
+  title: Record of the Berlin airlift and the blockade winter, 1948-1949
+  kind: book
+  note: >-
+    An account of the blockade and the airlift, the source for the Reinickendorf
+    airfield texture and the opening months of the city's period.
+
+- id: berlin-waterways-guide
+  title: Guide to the Spree and the Berlin canals, mid-century
+  kind: guide
+  note: >-
+    A waterways and freight guide to the Spree and the Landwehr Canal, the
+    source for the wharf Locations and the barge traffic.
+
+- id: berlin-parks-and-gardens
+  title: The parks and gardens of Berlin, postwar survey
+  kind: book
+  note: >-
+    A survey of the city's parks, the source for the Tiergarten texture in the
+    years when the park was thinned for fuel and slowly replanted.

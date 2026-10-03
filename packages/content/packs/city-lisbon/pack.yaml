@@ -1,0 +1,49 @@
+# The city-lisbon City Pack manifest (content-expansion task 9.7 / 9.8).
+#
+# A City Pack supplies one playable city: its `city.yaml` City Definition, its
+# Districts, Locations, Routes, city-specific Location Types, street name pools,
+# monthly weather tables and the Sources bibliography (the geography half, task
+# 9.7), together with its newspapers, local organisations, Cover Identities,
+# Locale, Template Variants and local-security Service Definition (the voice
+# half, task 9.8). Every City-Scoped record here is owned by this pack and may
+# not be referenced from another city (loader task 2.1).
+#
+# City: Lisbon, 1945–1965 — the wartime-neutral spy capital of the Atlantic,
+# carrying its crowd of consulates, émigré hotels, wire-service stringers and
+# refugees forward into the first fifteen years of the Cold War. The occupation
+# regimes of Vienna, Berlin and Trieste have no counterpart here: neutral
+# Portugal was never divided, so this city's Districts carry no `sector`.
+#
+# It declares `role: city` and `contentSchema: 2`. A City Pack requires exactly
+# one Era Pack (the loader enforces this, task 2.1); this pack takes
+# `era-cold-war-early`, whose 1945–1965 window the city's own 1945–1965 period
+# sits inside. It requires the core pack (the Tag Vocabulary, slice Location
+# Types and predicates) and the Library Packs whose Culture Groups the city's
+# Culture Weights draw on: `lib-iberian` for the Portuguese and Spanish
+# majority, and `lib-western`, `lib-central-europe`, `lib-russian` and
+# `lib-eastern-mediterranean` for the British, American, French, German,
+# Russian and Sephardic émigré communities that passed through neutral Lisbon.
+#
+# Every organisation and person named in this pack is fictional. The real
+# landmarks the Locations are drawn from are attested in `sources.yaml`; the
+# prose is original period writing with no anachronism past 1965.
+id: city-lisbon
+version: 1.0.0
+contentSchema: 2
+role: city
+requires:
+  - id: core
+    range: '^1.0.0'
+  - id: era-cold-war-early
+    range: '^1.0.0'
+  - id: lib-iberian
+    range: '^1.0.0'
+  - id: lib-western
+    range: '^1.0.0'
+  - id: lib-central-europe
+    range: '^1.0.0'
+  - id: lib-russian
+    range: '^1.0.0'
+  - id: lib-eastern-mediterranean
+    range: '^1.0.0'
+overrides: []

@@ -1,0 +1,368 @@
+# culture-groups/german-berlin.yaml — the Berlin German group.
+#
+# A CultureGroup (CultureGroupSchema). German surnames are not gender-inflected,
+# so family names are plain strings. Quantity (Req 11.4): at least 100 given and
+# 100 family names, at least 300 distinct total. All names are generic, common
+# German names of the period in fictional use; none names a real individual.
+- id: german-berlin
+  name: German (Berlin)
+  languages:
+    - de
+  naming:
+    display: '{given} {family}'
+    formal: '{honorific} {family}'
+  given:
+    f:
+      - Erna
+      - Frieda
+      - Hildegard
+      - Charlotte
+      - Ilse
+      - Ursula
+      - Gisela
+      - Hannelore
+      - Waltraud
+      - Renate
+      - Christa
+      - Brigitte
+      - Ingeborg
+      - Elfriede
+      - Lieselotte
+      - Gertrud
+      - Margarete
+      - Helga
+      - Edeltraud
+      - Erika
+      - Herta
+      - Käthe
+      - Marianne
+      - Ruth
+      - Sabine
+      - Doris
+      - Monika
+      - Karin
+      - Jutta
+      - Rosemarie
+      - Anneliese
+      - Bärbel
+      - Cornelia
+      - Dagmar
+      - Evelyn
+      - Gudrun
+      - Heidrun
+      - Irmtraud
+      - Jana
+      - Kerstin
+      - Liane
+      - Marlene
+      - Nelly
+      - Ottilie
+      - Petra
+      - Regine
+      - Sieglinde
+      - Traudel
+      - Ute
+      - Veronika
+      - Wiebke
+      - Agathe
+      - Berta
+      - Dorothea
+      - Elke
+      - Franziska
+      - Grete
+      - Hedwig
+      - Johanna
+      - Katrin
+    m:
+      - Werner
+      - Günter
+      - Horst
+      - Dieter
+      - Klaus
+      - Manfred
+      - Helmut
+      - Wolfgang
+      - Hans
+      - Jürgen
+      - Rolf
+      - Siegfried
+      - Gerhard
+      - Herbert
+      - Reinhard
+      - Walter
+      - Erich
+      - Fritz
+      - Kurt
+      - Heinz
+      - Lothar
+      - Norbert
+      - Otto
+      - Paul
+      - Rudolf
+      - Siegmund
+      - Theodor
+      - Ulrich
+      - Volker
+      - Wilhelm
+      - Albrecht
+      - Bernd
+      - Christian
+      - Detlef
+      - Egon
+      - Frank
+      - Georg
+      - Harald
+      - Ingo
+      - Joachim
+      - Konrad
+      - Ludwig
+      - Matthias
+      - Peter
+      - Rainer
+      - Stefan
+      - Thomas
+      - Uwe
+      - Volkmar
+      - Willi
+      - Arnold
+      - Bruno
+      - Claus
+      - Ernst
+      - Friedhelm
+      - Gottfried
+      - Hartmut
+      - Ingolf
+      - Johannes
+      - Karl-Heinz
+  family:
+    - Müller
+    - Schmidt
+    - Schneider
+    - Fischer
+    - Weber
+    - Meyer
+    - Wagner
+    - Becker
+    - Schulz
+    - Hoffmann
+    - Schäfer
+    - Koch
+    - Bauer
+    - Richter
+    - Klein
+    - Wolf
+    - Schröder
+    - Neumann
+    - Schwarz
+    - Zimmermann
+    - Braun
+    - Krüger
+    - Hofmann
+    - Hartmann
+    - Lange
+    - Schmitt
+    - Werner
+    - Krause
+    - Lehmann
+    - Köhler
+    - Herrmann
+    - König
+    - Walter
+    - Mayer
+    - Huber
+    - Kaiser
+    - Fuchs
+    - Peters
+    - Lang
+    - Scholz
+    - Möller
+    - Weiß
+    - Jung
+    - Hahn
+    - Schubert
+    - Vogel
+    - Friedrich
+    - Keller
+    - Günther
+    - Frank
+    - Berger
+    - Winkler
+    - Roth
+    - Beck
+    - Lorenz
+    - Baumann
+    - Franke
+    - Albrecht
+    - Schuster
+    - Simon
+    - Ludwig
+    - Böhm
+    - Winter
+    - Kraus
+    - Martin
+    - Schumacher
+    - Krämer
+    - Vogt
+    - Stein
+    - Jäger
+    - Otto
+    - Sommer
+    - Groß
+    - Seidel
+    - Heinrich
+    - Brandt
+    - Haas
+    - Schreiber
+    - Graf
+    - Dietrich
+    - Ziegler
+    - Kuhn
+    - Seidler
+    - Pohl
+    - Engel
+    - Horn
+    - Busch
+    - Bergmann
+    - Thomas
+    - Voigt
+    - Sauer
+    - Arnold
+    - Wolff
+    - Pfeiffer
+    - Barth
+    - Reuter
+    - Grün
+    - Thiele
+    - Jahn
+    - Kühne
+    - Nowak
+    - Westphal
+    - Döring
+    - Bruns
+    - Petersen
+    - Kurz
+    - Jansen
+    - Hübner
+    - Franz
+    - Beyer
+    - Wenzel
+    - Haase
+    - Petzold
+    - Noack
+    - Weise
+    - Krebs
+    - Freitag
+    - Rose
+    - Fiedler
+    - Wunderlich
+    - Reinhardt
+    - Ehlers
+    - Steinbach
+    - Rothmann
+    - Lindner
+    - Kühnel
+    - Mahler
+    - Oswald
+    - Pabst
+    - Quandt
+    - Rabe
+    - Starke
+    - Teichmann
+    - Uhlig
+    - Vollmer
+    - Wehner
+    - Zahn
+    - Böttcher
+    - Dittrich
+    - Eggert
+    - Fenske
+    - Giese
+    - Hensel
+    - Jost
+    - Kleiber
+    - Löffler
+    - Mertens
+    - Nitschke
+    - Osterloh
+    - Prager
+    - Radtke
+    - Scheffler
+    - Trautmann
+    - Ullrich
+    - Vetter
+    - Warnke
+    - Zöllner
+    - Behrens
+    - Claussen
+    - Dreyer
+    - Ewald
+    - Falk
+    - Gerber
+    - Hampel
+    - Jacobi
+    - Kallweit
+    - Lemke
+    - Marquardt
+    - Niemann
+    - Oelkers
+    - Panknin
+    - Reimann
+    - Schulte
+    - Timm
+    - Urban
+    - Vorberg
+    - Wessel
+    - Zander
+    - Appel
+    - Buchholz
+    - Clausnitzer
+    - Draheim
+    - Ehrlich
+    - Fröhlich
+    - Giesebrecht
+    - Hellwig
+    - Jaschke
+    - Kettner
+    - Liebsch
+    - Muschick
+    - Nollau
+    - Perlbach
+    - Quednau
+    - Raschke
+    - Scharnweber
+    - Tetzlaff
+    - Wiegand
+  voiceTraits:
+    - clipped and direct, little patience for ceremony
+    - a sharp Berlin wit, quick with a sardonic aside
+    - speaks of the sectors the way others speak of weather
+    - weighs every sentence for who might be listening
+    - matter-of-fact about shortage and rubble alike
+    - drops into dialect when the guard comes down
+  mannerisms:
+    - checks the window before answering a question
+    - counts out coins twice before paying
+    - keeps a cigarette unlit between the fingers
+    - names streets by their old pre-war names
+    - glances at a watch that no longer keeps time
+  backgrounds:
+    - text: Cleared rubble in the first years and never quite left the habit of looking down for salvage.
+      tags: []
+      years: { from: 1948, to: 1955 }
+    - text: Keeps a flat in one sector and a job in another, and crosses the line each morning.
+      tags: []
+      years: { from: 1948, to: 1961 }
+    - text: Grew up between the ruins of Mitte and learned which cellars stayed dry.
+      tags: []
+    - text: Runs a kiosk near an S-Bahn station and hears half the district's gossip by noon.
+      tags: []
+    - text: Lost touch with family on the far side of the city and stopped writing to be safe.
+      tags: []
+      years: { from: 1952, to: 1961 }
+    - text: Worked the black market when the Reichsmark was worthless and never trusts paper money since.
+      tags: []
+      years: { from: 1948, to: 1952 }
+    - text: Drives a delivery van and knows every checkpoint queue by its guards.
+      tags: []
+    - text: Plays accordion in a cellar bar and keeps the takings in three different pockets.
+      tags: []

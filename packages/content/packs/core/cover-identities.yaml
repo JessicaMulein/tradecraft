@@ -1,0 +1,74 @@
+# cover-identities.yaml — the Cover Identities the player can be issued.
+#
+# Each entry is validated against CoverIdentitySchema (packages/content/src/lib
+# /kinds.ts): a title, the employer organisation, the Location Types where the
+# cover fits plausibly (bare ids resolved to this pack's Location Types), and
+# the Cover Suspicion modifiers it carries at a fitting place versus elsewhere.
+#
+# `atFit` is negative — the cover lowers suspicion where it belongs. `elsewhere`
+# is positive — being somewhere the cover has no business raises it. All titles
+# and organisations are period-plausible for 1950s occupied Vienna and wholly
+# fictional; none names a real body of the period.
+
+- id: trade-attache
+  title: Trade Attaché
+  employerOrg: Allied Trade Mission
+  tags: [cover:official]
+  fitLocationTypes: [embassy, hotel-bar, kaffeehaus, station-hq]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.2
+
+- id: wire-service-correspondent
+  title: Wire-Service Correspondent
+  employerOrg: Transcontinental Press Agency
+  tags: [cover:press]
+  fitLocationTypes: [hotel-bar, kaffeehaus, railway-station, library, park]
+  suspicionModifiers:
+    atFit: -0.1
+    elsewhere: 0.15
+
+- id: relief-commission-officer
+  title: Relief Commission Officer
+  employerOrg: Commission for Displaced Persons
+  tags: [cover:official]
+  fitLocationTypes: [railway-station, embassy, library, park, tram-stop]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.18
+
+- id: antiquarian-book-dealer
+  title: Antiquarian Book Dealer
+  employerOrg: Lindner & Company, Antiquarians
+  tags: [cover:cultural]
+  fitLocationTypes: [bookshop, library, kaffeehaus]
+  suspicionModifiers:
+    atFit: -0.2
+    elsewhere: 0.25
+
+- id: import-export-agent
+  title: Import-Export Agent
+  employerOrg: Donau Handelskontor
+  tags: [cover:commercial]
+  fitLocationTypes: [warehouse, danube-port, hotel-bar, kaffeehaus]
+  suspicionModifiers:
+    atFit: -0.15
+    elsewhere: 0.2
+
+- id: insurance-adjuster
+  title: Insurance Adjuster
+  employerOrg: Erste Donau Versicherung
+  tags: [cover:commercial]
+  fitLocationTypes: [warehouse, danube-port, railway-station, kaffeehaus, tram-stop]
+  suspicionModifiers:
+    atFit: -0.1
+    elsewhere: 0.15
+
+- id: cultural-exchange-lecturer
+  title: Cultural Exchange Lecturer
+  employerOrg: Four-Power Liaison Office
+  tags: [cover:cultural]
+  fitLocationTypes: [library, embassy, kaffeehaus, bookshop]
+  suspicionModifiers:
+    atFit: -0.12
+    elsewhere: 0.22

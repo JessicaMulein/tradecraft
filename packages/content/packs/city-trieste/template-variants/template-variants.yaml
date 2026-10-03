@@ -1,0 +1,289 @@
+# template-variants/template-variants.yaml — the Trieste Template Variants
+# (content-expansion task 9.10).
+#
+# Each entry validates against TemplateVariantSchema (packages/content/src/
+# kinds/locale.ts): { id, base, scope, template }. A variant replaces a base
+# template for one city; `scope: { city: trieste }` scopes it to this pack's
+# City Definition (namespaced city-trieste/trieste). At load the variant's
+# template is compiled and its slot set compared with its base's union of
+# titlePattern and section-body slots — they must be EXACTLY equal, or the
+# loader refuses the pack (task 2.2, CE-VARIANT). Resolution is city, then era,
+# then base (Req 8.2).
+#
+# Two families of base:
+#   1. The Trieste article Document templates in this pack's documents/ (base
+#      `city-trieste/<id>`) — localised here into the free-port city's house
+#      voice.
+#   2. The shared core Document templates (base `core/<id>`) — the newspaper,
+#      dossier, cable and seized-material bases — re-voiced for Trieste: the
+#      lira, the zone line and its control points, the free-port quays, the
+#      Opicina tram, officials named by office (the zone commissioner, the
+#      questore, the harbour master, the Office of Civil Security).
+#
+# Every slot the base binds is bound here and no other; the prose between the
+# slots is Trieste's. All people and bodies named are fictional; no anachronism
+# past 1954.
+
+# =========================================================================
+# 1. VARIANTS OVER THE TRIESTE ARTICLE BASES
+# =========================================================================
+
+- id: v-mattino-city-lead
+  base: city-trieste/mattino-city-lead
+  scope: { city: trieste }
+  template: >-
+    {masthead}, {date} — city edition. {headline}. From the {district} our man
+    sends word that {subject} is the talk of the week. {detail} For now the
+    business sits with the {office}, and there it is likely to stay.
+
+- id: v-mattino-around-the-city
+  base: city-trieste/mattino-around-the-city
+  scope: { city: trieste }
+  template: >-
+    {masthead} — around the city. The city trams kept their time, the markets
+    opened early, and the first steamers warped in along the rive under a
+    clearing sky. {note}
+
+- id: v-mattino-weather-and-gulf
+  base: city-trieste/mattino-weather-and-gulf
+  scope: { city: trieste }
+  template: >-
+    {masthead}: weather and the gulf for {date}. Over the city and the gulf,
+    {outlook}. {sea-note} The coasting craft keep to the daylight hours when the
+    bora is up off the Karst.
+
+- id: v-shipping-movements
+  base: city-trieste/shipping-movements
+  scope: { city: trieste }
+  template: >-
+    {masthead} — shipping movements, {date}. Arrivals and sailings held through
+    the day along the quays. {vessel-note} Bonded goods in the free-port sheds
+    stand as entered by the {office}. {cargo-note}
+
+- id: v-harbour-notice
+  base: city-trieste/harbour-notice
+  scope: { city: trieste }
+  template: >-
+    {masthead}: notice to the quays. The {office} gives notice to the shipping
+    agents and the quay foremen that {requirement}. {berth-note} Manifests are
+    to be lodged before the goods are landed, as the free-port rules require.
+
+- id: v-sera-police-record
+  base: city-trieste/sera-police-record
+  scope: { city: trieste }
+  template: >-
+    {masthead}: police record for {date}. In the {district}, a matter of
+    {offence} was logged near {place}. The person concerned was taken in,
+    questioned, and {outcome}.
+
+- id: v-sera-miscellany
+  base: city-trieste/sera-miscellany
+  scope: { city: trieste }
+  template: >-
+    {masthead} — evening miscellany. The talk of the evening turns on {subject},
+    seen at {place}. {detail} A barrel-organ man worked the arcades off the
+    great square until the bora sent him in.
+
+- id: v-sera-sport
+  base: city-trieste/sera-sport
+  scope: { city: trieste }
+  template: >-
+    {masthead}: sport in the city. {event} went off on Sunday under a brisk gulf
+    wind. {result} A {crowd} held the terraces, glad of an afternoon by the
+    water.
+
+- id: v-glas-community
+  base: city-trieste/glas-community
+  scope: { city: trieste }
+  template: >-
+    {masthead} — the week in the villages, {date}. In the {district} the week's
+    business turned on {subject}, as the {office} would have it. {detail} The
+    parishes of the plateau kept their own quiet counsel, as ever.
+
+- id: v-glas-land-and-market
+  base: city-trieste/glas-land-and-market
+  scope: { city: trieste }
+  template: >-
+    {masthead}: land and market. The upland market brought down {produce} to the
+    city stalls this week. {price-note} The {office} is asked again to ease the
+    passage of the growers across the line.
+
+- id: v-bollettino-order
+  base: city-trieste/bollettino-order
+  scope: { city: trieste }
+  template: >-
+    {masthead} — official notices, {date}. By order of the {office}, in force
+    from {effective}: {order}. It holds within the {district} and at every
+    control point into it; residents are reminded to carry their papers.
+
+- id: v-bollettino-currency
+  base: city-trieste/bollettino-currency
+  scope: { city: trieste }
+  template: >-
+    {masthead}: currency and customs. The {office} gives notice that, from
+    {effective}, {ruling}. {exchange-note} Movement of currency and bonded goods
+    across the zone line outside the licensed points remains an offence.
+
+- id: v-bollettino-registration
+  base: city-trieste/bollettino-registration
+  scope: { city: trieste }
+  template: >-
+    {masthead} — a reminder on registration. The {office} reminds lodgers and
+    the keepers of lodging houses that {requirement}. Returns go to {place} in
+    office hours, each new guest entered on the day of arrival.
+
+- id: v-bollettino-lost-and-found
+  base: city-trieste/bollettino-lost-and-found
+  scope: { city: trieste }
+  template: >-
+    {masthead}: lost and found. Given in and still unclaimed this week: {items}.
+    Owners may call at the {office} with proof of who they are during office
+    hours.
+
+- id: v-tram-service-notice
+  base: city-trieste/tram-service-notice
+  scope: { city: trieste }
+  template: >-
+    {masthead}: tram and funicular service. The {line} runs to a new timetable
+    from Monday: {change}. The undertaking lays it to {reason} and asks
+    passengers to allow the longer wait between cars on the hill section.
+
+- id: v-zone-line-regulation
+  base: city-trieste/zone-line-regulation
+  scope: { city: trieste }
+  template: >-
+    {masthead} — at the zone line. The {office} notifies travellers that at the
+    control points on the zone line {requirement}. {crossing-note} Papers must
+    be shown on request to any patrol on either side of the line.
+
+- id: v-utilities-notice
+  base: city-trieste/utilities-notice
+  scope: { city: trieste }
+  template: >-
+    {masthead}: water and lighting. The supply to the {quarter} is to be cut for
+    {interruption}, between {hours}. Draw what you need beforehand and report any
+    failure that runs past the stated time.
+
+- id: v-gazzetta-exchange
+  base: city-trieste/gazzetta-exchange
+  scope: { city: trieste }
+  template: >-
+    {masthead}: exchange and freight rates. The free-port exchange moved little
+    on the day. {rate-note} Freight on {commodity} is quoted {trend}, the agents
+    of the Borgo report, with the northern lines steady.
+
+- id: v-gazzetta-trade-notes
+  base: city-trieste/gazzetta-trade-notes
+  scope: { city: trieste }
+  template: >-
+    {masthead} — notes of the trade. Among the trading houses this week:
+    {firm-note} The talk on the quays is of {subject}. {detail}
+
+- id: v-feuilleton-essay
+  base: city-trieste/feuilleton-essay
+  scope: { city: trieste }
+  template: >-
+    {masthead}: the week in the free port. The city's talk this week is of
+    {subject}. From {place} our contributor sends a reflection on a town that
+    lives between two zones and three tongues. {reflection}
+
+- id: v-arts-and-stage
+  base: city-trieste/arts-and-stage
+  scope: { city: trieste }
+  template: >-
+    {masthead} — concerts and the stage. {performer} gave a programme of
+    {programme} at {hall} to a full and civil house, glad of an evening out of
+    the bora.
+
+- id: v-situations-and-lodgings
+  base: city-trieste/situations-and-lodgings
+  scope: { city: trieste }
+  template: >-
+    {masthead} — situations and lodgings. Offered through these columns this
+    week: {offer}, on {terms}. Apply to {apply-to}, in writing and first of all,
+    naming two references known about the city.
+
+- id: v-inquiries-after-persons
+  base: city-trieste/inquiries-after-persons
+  scope: { city: trieste }
+  template: >-
+    {masthead} — inquiries after persons. The following inquiry is published at
+    the request of the {office}: {inquiry-detail} Any person with word is asked
+    to write to the office, in confidence.
+
+- id: v-public-health-notice
+  base: city-trieste/public-health-notice
+  scope: { city: trieste }
+  template: >-
+    {masthead}: public health notice. The {office} tells householders of the
+    {quarter} that {advice}. The step is a precaution and nothing more, the
+    office adds, in a season of ordinary good health.
+
+# =========================================================================
+# 2. VARIANTS OVER THE SHARED CORE DOCUMENT BASES
+# =========================================================================
+
+# --- newspaper bases ---
+- id: v-core-newspaper-city
+  base: core/newspaper-wiener-tagblatt-city
+  scope: { city: trieste }
+  template: >-
+    {masthead} — {weekday}, {date}. {edition} edition; twenty centesimi at the
+    edicole. {headline}. From the {district} it is reported that {subject} drew
+    notice this week. {detail} The matter rests with the {official-office}.{?notice}
+    A word to readers: {notice}{/notice}
+
+- id: v-core-newspaper-blotter
+  base: core/newspaper-wiener-tagblatt-blotter
+  scope: { city: trieste }
+  template: >-
+    {masthead}: police record for {date}. From the record of the {district}, as
+    given to this paper by the {official-office}: a case of {offence} was
+    reported near {place}. The person concerned, described only as {subject},
+    was questioned at the questura, {outcome}.
+
+- id: v-core-newspaper-notices
+  base: core/newspaper-amtsblatt-notices
+  scope: { city: trieste }
+  template: >-
+    {masthead} — official notices, {date}. By order of the {official-office}, in
+    force from {effective-date}: {subject}. It applies within the {district} and
+    at its control points. {detail}
+
+# --- dossier base ---
+- id: v-core-dossier-person
+  base: core/dossier-hq-person
+  scope: { city: trieste }
+  template: >-
+    Station file {file-ref}. Subject: {subject}. Apparent information only,
+    graded {source-grade}; nothing herein is established.{?alias} Also reported
+    as {alias}.{/alias} Apparent allegiance on file: {allegiance-apparent}. Last
+    placed at {last-seen-place} about {last-seen-date}.{?association} In the
+    company of {association}.{/association} Station reading: {assessment}
+
+# --- cable bases ---
+- id: v-core-cable-directive
+  base: core/cable-hq-directive
+  scope: { city: trieste }
+  template: >-
+    CABLE {cable-ref} {priority} STOP TO {to-station} STOP {date} STOP RE
+    {subject} STOP {instruction} STOP ACKNOWLEDGE SOONEST STOP{?deadline}
+    DEADLINE {deadline} STOP{/deadline}{?budget-line} FUNDS {budget-line}
+    STOP{/budget-line} ENDS STOP
+
+- id: v-core-cable-field
+  base: core/cable-field-report
+  scope: { city: trieste }
+  template: >-
+    CABLE {cable-ref} FIELD STOP FROM {from-cover} STOP TO HEADQUARTERS STOP
+    {date} STOP RE {subject} STOP {observation} STOP{?request} REQUEST {request}
+    STOP{/request} AWAIT INSTRUCTION STOP ENDS STOP
+
+# --- seized base ---
+- id: v-core-seized-note
+  base: core/seized-handwritten-note
+  scope: { city: trieste }
+  template: >-
+    Item recovered {date} at {place} by {recovered-by}; logged as seized pending
+    examination. Condition: {condition}. Description: {description}; the item
+    appears to concern {subject}. Legible contents, as found: {contents}

@@ -1,0 +1,160 @@
+# services.yaml — the shared Service Definitions for the early Cold War era.
+#
+# Validates against ServiceDefinitionSchema (packages/content/src/kinds/
+# service.ts):
+#   { id, name, aliases: {text,distinctive}[], kind, country, doctrineBase,
+#     years?, tags? }
+#
+# These are the services shared across the era's cities: the player's own
+# service (`own`), the hostile services (`hostile`) and the allied liaison
+# services (`liaison`). A City Pack references them by id through
+# `CityDefinition.services`; a city's own police/security apparatus is a
+# City-Scoped `local-security` service defined in that City Pack (task 9), not
+# here. One service keeps one id across every city, region and campaign, so the
+# multi-city and campaign-career specs key their own records off these ids.
+#
+# EVERY NAME IS FICTIONAL. No real intelligence or security service and no real
+# country's agency is named. The countries are the real neutral/bloc nations of
+# the period, which an Era Pack may name; the *services* attached to them are
+# invented.
+#
+# `doctrineBase` fixes none, some or all of the three slice Hostile Service
+# doctrine dimensions, each in [0, 1], and leaves the rest to the preset's
+# ranges at draw time:
+#   riskTolerance          — tolerance for abort pressure / leader suspicion
+#   securityConsciousness  — how hard the service hunts the player's network
+#   deceptionAppetite      — taste for running deception over making arrests
+#
+# `tags` is omitted: no facet in the core Tag Vocabulary applies to `service`
+# yet, and the field is optional.
+
+# =========================================================================
+# OWN — the player's own service
+# =========================================================================
+
+- id: own-service
+  name: The Directorate of Overseas Liaison
+  aliases:
+    - { text: the Directorate, distinctive: true }
+    - { text: the Service, distinctive: false }
+    - { text: Head Office, distinctive: false }
+    - { text: the Centre, distinctive: false }
+  kind: own
+  country: United Kingdom
+  doctrineBase: {}
+  years:
+    from: 1945
+    to: 1965
+
+# =========================================================================
+# HOSTILE — the opposing services
+# =========================================================================
+
+# The principal opposing foreign-intelligence service: patient, deception-minded,
+# security-conscious, willing to run a double rather than make an early arrest.
+- id: hostile-foreign-directorate
+  name: The Eastern Combine for State Enquiry
+  aliases:
+    - { text: the Combine, distinctive: true }
+    - { text: the Enquiry, distinctive: false }
+    - { text: the opposition, distinctive: false }
+  kind: hostile
+  country: Soviet Union
+  doctrineBase:
+    riskTolerance: 0.35
+    securityConsciousness: 0.8
+    deceptionAppetite: 0.7
+  years:
+    from: 1945
+    to: 1965
+
+# The opposing counter-intelligence / internal-security arm: aggressive,
+# arrest-first, less patient with deception games.
+- id: hostile-security-apparat
+  name: The Office for Public Vigilance
+  aliases:
+    - { text: the Office, distinctive: false }
+    - { text: Vigilance, distinctive: true }
+    - { text: the apparat, distinctive: false }
+  kind: hostile
+  country: German Democratic Republic
+  doctrineBase:
+    riskTolerance: 0.5
+    securityConsciousness: 0.75
+    deceptionAppetite: 0.3
+  years:
+    from: 1949
+    to: 1965
+
+# A smaller satellite service that runs émigré networks: higher risk tolerance,
+# moderate security, some appetite for provocation.
+- id: hostile-satellite-bureau
+  name: The Danubian Bureau of Protection
+  aliases:
+    - { text: the Bureau, distinctive: false }
+    - { text: the Danubian Bureau, distinctive: true }
+  kind: hostile
+  country: Hungary
+  doctrineBase:
+    riskTolerance: 0.6
+    securityConsciousness: 0.55
+    deceptionAppetite: 0.45
+  years:
+    from: 1948
+    to: 1965
+
+# =========================================================================
+# LIAISON — allied services the Station cooperates with
+# =========================================================================
+
+# The principal allied liaison across the Atlantic: well-resourced, confident,
+# deception-friendly.
+- id: liaison-atlantic-agency
+  name: The Transatlantic Information Group
+  aliases:
+    - { text: the Group, distinctive: false }
+    - { text: the Transatlantic Group, distinctive: true }
+    - { text: our friends across the water, distinctive: false }
+  kind: liaison
+  country: United States
+  doctrineBase:
+    riskTolerance: 0.55
+    securityConsciousness: 0.6
+    deceptionAppetite: 0.65
+  years:
+    from: 1947
+    to: 1965
+
+# The host-nation allied service in the western-occupied zones: cautious,
+# security-minded, cooperative within limits.
+- id: liaison-federal-service
+  name: The Federal Reconnaissance Office
+  aliases:
+    - { text: the Federal Office, distinctive: true }
+    - { text: the hosts, distinctive: false }
+  kind: liaison
+  country: Federal Republic of Germany
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.65
+    deceptionAppetite: 0.4
+  years:
+    from: 1950
+    to: 1965
+
+# A neutral-country liaison the Station works with discreetly: very cautious,
+# protective of its neutrality, little appetite for provocation.
+- id: liaison-neutral-section
+  name: The Helvetic Protective Section
+  aliases:
+    - { text: the Section, distinctive: false }
+    - { text: the Helvetic Section, distinctive: true }
+  kind: liaison
+  country: Switzerland
+  doctrineBase:
+    riskTolerance: 0.3
+    securityConsciousness: 0.7
+    deceptionAppetite: 0.25
+  years:
+    from: 1945
+    to: 1965

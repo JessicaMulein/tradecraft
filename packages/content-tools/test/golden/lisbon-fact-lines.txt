@@ -1,0 +1,11 @@
+== Fact Lines ==
+- Heinrich Schober is carrying the operation materiel.
+- Fyodor Yudin uses the channel fyodor-yudin-2/signal.
+- Heinrich Schober uses the channel heinrich-schober-1/courier.
+- heavyset and deliberate, pale powder and a dark lipstick, a belted gabardine raincoat, a string shopping bag, a dark wool dress and a short string of pearls, a slim gold cigarette case MEETS_AT Heinrich Schober
+- Fyodor Yudin belongs to the ring.
+- Heinrich Schober belongs to the ring.
+- heavyset and deliberate, pale powder and a dark lipstick, a belted gabardine raincoat, a string shopping bag, a dark wool dress and a short string of pearls, a slim gold cigarette case belongs to the ring.
+- tall and spare, a neat spade beard, a soft tweed jacket and flannel trousers belongs to the ring.
+- Mikhail Kalugin belongs to the ring.
+- Lester Mercer belongs to the ring.

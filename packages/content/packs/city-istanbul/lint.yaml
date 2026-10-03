@@ -1,0 +1,14 @@
+# lint.yaml — the Istanbul City Pack's Pack Linter Suppressions
+# (content-expansion task 9.6).
+#
+# A City Pack may carry a `lint.yaml` listing `{ rule, path, justification }`
+# Suppressions that downgrade a matching finding for a *suppressible* rule to
+# informational (Req 13.5). A Suppression naming a non-suppressible rule
+# (CE-SCHEMA, CE-REF, CE-DUPID, CE-REALPERSON, CE-SENSITIVE, CE-PROVENANCE and
+# the slot/variant structural rules) is ignored and itself raises a CE-SCHEMA
+# error, so none is listed here.
+#
+# The Istanbul pack lints clean under the release profile with no suppressions,
+# so this list is empty. It is shipped so the pack declares its (empty)
+# Suppression set explicitly, matching the design's City Pack file layout.
+[]

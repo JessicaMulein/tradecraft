@@ -1,0 +1,99 @@
+# core-variants.yaml — Vienna variants of the core Document base templates
+# (content-expansion task 9.2).
+#
+# Each entry is a TemplateVariant (TemplateVariantSchema, packages/content/src/
+# kinds/locale.ts): { id, base, scope, template }. `scope.city` names the Vienna
+# City Definition by its bare id (namespaced city-vienna/vienna). `base` is the
+# namespaced id of a core Document template; the variant replaces it when a
+# document of that base is rendered in Vienna (resolution order: city, era,
+# base — design, Req 8.2).
+#
+# THE SLOT-SET CONTRACT (Req 8.3, CE-VARIANT): a variant's slot set must EQUAL
+# its base's — the union of the base's title pattern and every section body. The
+# templates below bind exactly the slots the core templates declare (see
+# packs/core/documents.yaml), in Vienna's local register. A missing or extra
+# slot is a load error, so each variant names every base slot once.
+#
+# Period voice: occupied Vienna, 1945–1955. Officials by office; no real names;
+# no anachronisms.
+
+# --- base: core/newspaper-wiener-tagblatt-city ------------------------------
+# slots: masthead, weekday, date, edition, headline, district, subject, detail,
+#        official-office, notice
+- id: v-core-newspaper-city
+  base: core/newspaper-wiener-tagblatt-city
+  scope: { city: vienna }
+  template: >-
+    {masthead} — {weekday}, {date}. {edition} edition. {headline}. From the
+    {district} our correspondent reports that {subject} drew notice. {detail}
+    The matter rests for now with the {official-office}.
+    {?notice}A notice to readers: {notice}{/notice}
+
+# --- base: core/newspaper-wiener-tagblatt-blotter ---------------------------
+# slots: masthead, date, district, offence, subject, place, official-office,
+#        outcome
+- id: v-core-newspaper-blotter
+  base: core/newspaper-wiener-tagblatt-blotter
+  scope: { city: vienna }
+  template: >-
+    {masthead}: the police record for {date}, from the {district}, as released
+    by the {official-office}. An incident of {offence} was reported near
+    {place}. The party, described only as {subject}, was questioned. {outcome}
+
+# --- base: core/newspaper-amtsblatt-notices ---------------------------------
+# slots: masthead, date, official-office, subject, district, effective-date,
+#        detail
+- id: v-core-newspaper-notices
+  base: core/newspaper-amtsblatt-notices
+  scope: { city: vienna }
+  template: >-
+    {masthead} — official notices, {date}. By order of the {official-office},
+    the following takes effect on {effective-date}: {subject}. It applies within
+    the {district} and at the crossings into it. {detail}
+
+# --- base: core/dossier-hq-person -------------------------------------------
+# slots: subject, file-ref, alias, allegiance-apparent, last-seen-place,
+#        last-seen-date, association, assessment, source-grade
+- id: v-core-dossier-person
+  base: core/dossier-hq-person
+  scope: { city: vienna }
+  template: >-
+    DOSSIER — {subject} (ref. {file-ref}). Apparent information held by the
+    Station; grade of source material: {source-grade}. Reported as {subject}.
+    {?alias}Also reported under the name {alias}.{/alias} Apparent allegiance on
+    file: {allegiance-apparent}. Last placed at {last-seen-place} on or about
+    {last-seen-date}.{?association} Reported in the company of {association}.
+    {/association} Station assessment: {assessment} Read as leads only.
+
+# --- base: core/cable-hq-directive ------------------------------------------
+# slots: cable-ref, priority, date, to-station, subject, instruction, deadline,
+#        budget-line
+- id: v-core-cable-directive
+  base: core/cable-hq-directive
+  scope: { city: vienna }
+  template: >-
+    FROM HEADQUARTERS STOP TO {to-station} STOP {date} STOP {priority} STOP REF
+    {cable-ref} STOP RE {subject} STOP {instruction} STOP
+    {?deadline}DEADLINE {deadline} STOP{/deadline}
+    {?budget-line}FUNDS {budget-line} STOP{/budget-line} ENDS STOP
+
+# --- base: core/cable-field-report ------------------------------------------
+# slots: cable-ref, date, from-cover, subject, observation, request
+- id: v-core-cable-field
+  base: core/cable-field-report
+  scope: { city: vienna }
+  template: >-
+    FROM {from-cover} STOP TO HEADQUARTERS STOP {date} STOP REF {cable-ref} STOP
+    RE {subject} STOP {observation} STOP
+    {?request}REQUEST {request} STOP{/request} AWAIT INSTRUCTION STOP ENDS STOP
+
+# --- base: core/seized-handwritten-note -------------------------------------
+# slots: date, place, recovered-by, description, contents, condition, subject
+- id: v-core-seized-note
+  base: core/seized-handwritten-note
+  scope: { city: vienna }
+  template: >-
+    SEIZED — item recovered {date} at {place} by {recovered-by}. Condition:
+    {condition}. Description: {description}. The item appears to concern
+    {subject}. Legible contents, transcribed as found: {contents} Transcription
+    may be incomplete.

@@ -1,0 +1,834 @@
+# locations/locations.yaml — the Istanbul City Locations (task 9.5).
+#
+# Each validates against CityLocationSchema (city.ts): the slice Location fields
+# (id, name, aliases?, type, district, public, description, atmosphere?) plus the
+# City-Scoped additions (city, tags, basis, years?, sources?, weight?). `type`
+# references an Istanbul Location Type by its bare id (the loader namespaces a
+# bare reference to this pack, and the setting step keys the city's Location
+# Types by their bare id when it merges a Location's Effective Tags, so a bare
+# `type` is what lets the city bind the Required Queries); `district` an Istanbul
+# District; `sources` entries in this pack's `sources/` bibliography. A
+# Location's Effective Tags are its own
+# `tags` plus its Location Type's Tags, and those together must let the city
+# bind every Required Query the Tag Vocabulary guarantees (design, "Tag
+# Conformance"; Req 4.5, 4.6).
+#
+# `basis` records how the place relates to the real city: `real-landmark` for a
+# named real place (which cites a Source), `real-inspired` for a fictional place
+# drawn from a real one, `fictional` for a wholly invented place. All real
+# landmarks are named for texture only; every business name, proprietor and
+# patron in play is fictional, and the prose is original.
+#
+# Thirty-two Locations spread across all six Districts, with margin over every
+# Required Query minimum so the city is feasible for any seed and any Start Date
+# in 1950–1965.
+
+# =========================================================================
+# BEYOĞLU (Pera) — the cosmopolitan heights
+# =========================================================================
+
+- id: cafe-markiz
+  name: Café Markiz
+  type: core/kaffeehaus
+  district: beyoglu
+  public: true
+  description: >-
+    A mirrored patisserie on the Grande Rue, its Art-Nouveau tile panels of the
+    four seasons behind the marble counter, where the Pera set take coffee and
+    pastries and read the foreign papers at the little round tables.
+  atmosphere: [refined and hushed, mirrored, worldly and polyglot]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+  weight: 2
+
+- id: hotel-bar-pera
+  name: the long bar at the Pera Palace
+  aliases:
+    - { text: the Orient Bar, distinctive: true }
+  type: core/hotel-bar
+  district: beyoglu
+  public: true
+  description: >-
+    The famous hotel above the Golden Horn built for the Orient-Express
+    traveller: a long bar of dark wood and brass where correspondents, attachés
+    and shipping men hold the stools and the talk runs in four languages, none
+    of it quite the truth.
+  city: istanbul
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-pera-palace]
+  weight: 2
+
+- id: cinema-emek
+  name: the Emek picture palace
+  type: sinema
+  district: beyoglu
+  public: true
+  description: >-
+    A gilt-and-plush cinema off the Grande Rue, its foyer hung with hand-painted
+    bills; the back rows of the dark circle are as private as any public place
+    in the city.
+  city: istanbul
+  tags: [function:cinema, function:meeting-spot, access:public]
+  basis: real-inspired
+
+- id: consulate-row
+  name: the British Consulate-General
+  aliases:
+    - { text: the consulate on the hill, distinctive: false }
+  type: core/embassy
+  district: beyoglu
+  public: false
+  description: >-
+    A great walled palazzo of a consulate in Pera, flag over the gate, kavass at
+    the door, its corridors of frosted glass busy with dragomans and liaison
+    clerks long after the embassy itself removed to Ankara.
+  city: istanbul
+  tags: [function:embassy, setting:diplomatic, function:meeting-spot, access:private]
+  basis: real-landmark
+  sources: [src-pera-consulates]
+
+- id: consulate-french
+  name: the Palais de France
+  type: core/embassy
+  district: beyoglu
+  public: false
+  description: >-
+    The French consulate in its garden off the Grande Rue, limes along the
+    drive and a staff car idling in the courtyard; a quarter where every second
+    gate carries a different flag.
+  city: istanbul
+  tags: [function:embassy, setting:diplomatic, access:private]
+  basis: real-landmark
+  sources: [src-pera-consulates]
+
+- id: meyhane-cicek
+  name: a meyhane in the Çiçek Pasajı
+  aliases:
+    - { text: the Flower Passage, distinctive: true }
+  type: meyhane
+  district: beyoglu
+  public: true
+  description: >-
+    A long arcade off the Grande Rue lined with tavern tables under an iron-and-
+    glass roof; trays of mezze, cloudy rakı and a lute player working the room,
+    the din loud enough to cover any word spoken across a table.
+  city: istanbul
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-cicek-pasaji]
+
+- id: kiosk-tunel
+  name: the newsstand at the Tünel head
+  type: gazete-bayii
+  district: beyoglu
+  public: true
+  description: >-
+    A green kiosk at the upper station of the little underground funicular,
+    papers in five scripts pegged against the wind, the vendor keeping the
+    foreign sheets under the counter for his regulars.
+  city: istanbul
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: safehouse-asmali
+  name: a flat on Asmalı Mescit
+  type: emin-ev
+  district: beyoglu
+  public: false
+  description: >-
+    A rented back room up three flights off a Pera side-lane, shutters half
+    closed on a courtyard no one overlooks, the stair creaking a free warning on
+    the fourth tread.
+  city: istanbul
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# GALATA / KARAKÖY — banks, shipping, the Horn mouth
+# =========================================================================
+
+- id: galata-tower-cafe
+  name: a kahvehane under the Galata Tower
+  type: core/kaffeehaus
+  district: galata
+  public: true
+  description: >-
+    A low tea house in the shadow of the old Genoese tower, backgammon boards on
+    every table and a radio murmuring the shipping news, the same faces holding
+    the same corners for years.
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+
+- id: galata-quay
+  name: the Karaköy customs quay
+  type: core/danube-port
+  district: galata
+  public: true
+  description: >-
+    The working quay at the mouth of the Golden Horn: cranes over the lighters,
+    a customs shed, caïques and tramp steamers, carts waiting with their lamps
+    lit and a tired official checking manifests at the gate.
+  city: istanbul
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-galata-quays]
+  weight: 2
+
+- id: galata-ferry
+  name: the Karaköy ferry pier
+  type: iskele
+  district: galata
+  public: true
+  description: >-
+    A timber pier under an iron canopy where the Bosphorus boats come and go all
+    day; the ramp clangs down, the crowd pours off and on at once, and a man can
+    step aboard at the whistle and leave a follower on the quay.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-sehir-hatlari]
+  weight: 2
+
+- id: galata-shipping-depot
+  name: a shipping agent's bonded store
+  type: depo
+  district: galata
+  public: false
+  description: >-
+    A cold stone bay in a merchant han behind the quays, stacked to the vaults
+    with crated goods bound for a dozen ports, a watchman's radio playing low
+    among the oil drums and packing straw.
+  city: istanbul
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+- id: galata-bookdealer
+  name: a book dealer off Perşembe Pazarı
+  type: sahaf
+  district: galata
+  public: true
+  description: >-
+    A cramped shop among the ships'-chandlers and ironmongers, foxed French
+    novels and travellers' guides stacked to the ceiling, the dealer buying and
+    selling letters as readily as books.
+  city: istanbul
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: galata-tram-stop
+  name: the tram stop at the bridgehead
+  type: core/tram-stop
+  district: galata
+  public: true
+  description: >-
+    A busy stop where the lines converge at the Galata end of the bridge, a knot
+    of commuters under a tin shelter with their newspapers up against the wind
+    off the water.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: real-inspired
+
+# =========================================================================
+# SİRKECİ — the railway shore, arrivals and departures
+# =========================================================================
+
+- id: sirkeci-station
+  name: Sirkeci Station
+  aliases:
+    - { text: the Orient-Express terminus, distinctive: true }
+  type: gar
+  district: sirkeci
+  public: true
+  description: >-
+    The terminus of the line from Europe: a vaulted hall under a sooty glass
+    roof, a departures board clattering, steam along the platforms, and
+    left-luggage lockers down a cold corridor where a planted case waits
+    unremarked for hours.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, function:newspaper-outlet, access:public]
+  basis: real-landmark
+  sources: [src-sirkeci]
+  weight: 2
+
+- id: sirkeci-post
+  name: the Sirkeci post and telegraph office
+  type: kutuphane
+  district: sirkeci
+  public: true
+  description: >-
+    The grand central post office near the station, its public reading room
+    hung with bound runs of newspapers and directories chained to their stands,
+    clerks stamping requests behind a wooden grille.
+  city: istanbul
+  tags: [function:library, function:public-text-source, function:dead-drop-site, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-buyuk-postane]
+
+- id: sirkeci-hotel-bar
+  name: the bar at a station hotel
+  type: core/hotel-bar
+  district: sirkeci
+  public: true
+  description: >-
+    A traveller's hotel across from the terminus, its bar catching the
+    wagon-lit passenger between trains over a cognac and a timetable, the barman
+    pouring and forgetting with equal skill.
+  city: istanbul
+  tags: [function:hotel-bar, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: sirkeci-kiosk
+  name: the newsstand on the station forecourt
+  type: gazete-bayii
+  district: sirkeci
+  public: true
+  description: >-
+    A booth the size of a wardrobe on the busy forecourt, the morning editions
+    hawked before they are dry off the ferry, cigarettes and lottery slips and
+    picture postcards of the mosques.
+  city: istanbul
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: sirkeci-tram
+  name: the Sirkeci tram terminus
+  type: core/tram-stop
+  district: sirkeci
+  public: true
+  description: >-
+    Where the shore line turns along the waterfront, rails curving between the
+    hotels and the quay, the overhead wire sparking blue at the junction as the
+    cars grind in and out.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: real-inspired
+
+# =========================================================================
+# EMİNÖNÜ — the bazaar quarter, the old-city bridgehead
+# =========================================================================
+
+- id: grand-bazaar
+  name: the Grand Bazaar
+  aliases:
+    - { text: the Kapalıçarşı, distinctive: true }
+    - { text: the covered market, distinctive: false }
+  type: carsi
+  district: eminonu
+  public: true
+  description: >-
+    A vast labyrinth of vaulted lanes under painted arches, thousands of stalls
+    of gold, carpets, copper and cloth, money-changers behind their grilles and
+    gates at every compass point — a place to vanish into or appear out of at
+    will.
+  city: istanbul
+  tags: [function:meeting-spot, function:transit-hub, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-kapalicarsi]
+  weight: 3
+
+- id: spice-bazaar
+  name: the Spice Bazaar
+  aliases:
+    - { text: the Mısır Çarşısı, distinctive: true }
+    - { text: the Egyptian Market, distinctive: false }
+  type: carsi
+  district: eminonu
+  public: true
+  description: >-
+    The L-shaped covered market by the new mosque at the bridgehead, sacks of
+    spice and coffee spilling colour and scent across the aisles, a boy
+    threading the crowd with a tray of tea.
+  city: istanbul
+  tags: [function:meeting-spot, function:transit-hub, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-misir-carsisi]
+  weight: 2
+
+- id: eminonu-ferry
+  name: the Eminönü ferry piers
+  type: iskele
+  district: eminonu
+  public: true
+  description: >-
+    The great rank of piers along the old-city waterfront, boats for every shore
+    nosing in under their iron canopies, passengers pressing four deep for the
+    whistle while gulls work the churn.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-sehir-hatlari]
+  weight: 2
+
+- id: eminonu-han-store
+  name: a bonded store in a wholesale han
+  type: depo
+  district: eminonu
+  public: false
+  description: >-
+    A courtyard han of the bazaar wholesale trades, its stone bays stacked with
+    bales and sacking, a freight hoist with a concertina gate and ledgers furred
+    with dust.
+  city: istanbul
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: real-inspired
+
+- id: eminonu-coffee
+  name: a coffee house behind the Spice Bazaar
+  type: core/kaffeehaus
+  district: eminonu
+  public: true
+  description: >-
+    A narrow room open to the lane behind the market, the boy swinging a brazier
+    of coals to the water-pipes, tea in tulip glasses passing hand to hand on
+    little saucers.
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: eminonu-quay
+  name: the Eminönü customs wharf
+  type: core/danube-port
+  district: eminonu
+  public: true
+  description: >-
+    The working wharf behind the ferry piers, lighters and caïques unloading,
+    coal dust blackening the setts, a derrick swinging crates ashore while the
+    customs men check papers by lantern light.
+  city: istanbul
+  tags: [function:port, function:transit-hub, function:materiel-store, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: eminonu-sahaf
+  name: the Sahaflar Çarşısı book market
+  aliases:
+    - { text: the booksellers' market, distinctive: false }
+  type: sahaf
+  district: eminonu
+  public: true
+  description: >-
+    The old booksellers' courtyard by the bazaar, shops leaning overhead on every
+    side, prayer books, old maps and yellowed almanacs where a book cipher could
+    hide a dozen keys.
+  city: istanbul
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-sahaflar]
+
+# =========================================================================
+# KADIKÖY — the prosperous Asian shore
+# =========================================================================
+
+- id: kadikoy-ferry
+  name: the Kadıköy ferry pier
+  type: iskele
+  district: kadikoy
+  public: true
+  description: >-
+    The pier where the boat from Eminönü ties up on the Asian shore, a turnstile
+    and a tea booth and the smell of coal smoke and brine, the market crowd
+    pouring up the ramp into the town.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-sehir-hatlari]
+
+- id: kadikoy-market
+  name: the Kadıköy market
+  type: carsi
+  district: kadikoy
+  public: true
+  description: >-
+    The open market streets behind the pier, fish and fruit and the cries of the
+    stallholders, a settled middle-class crowd doing its daily shopping a world
+    away from the clamour of the European quays.
+  city: istanbul
+  tags: [function:meeting-spot, function:transit-hub, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: kadikoy-cafe
+  name: a café on Bahariye Avenue
+  type: core/kaffeehaus
+  district: kadikoy
+  public: true
+  description: >-
+    A tea garden on the tree-lined avenue, chairs set out to the kerb under the
+    planes, where the talk is quiet and a word is lost in the general murmur.
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: real-inspired
+
+- id: kadikoy-cinema
+  name: the Süreyya cinema
+  type: sinema
+  district: kadikoy
+  public: true
+  description: >-
+    A grand stalls-and-circle picture house on the Asian shore, a newsreel
+    flickering before the feature, latecomers feeling down the aisle past the
+    usherette's torch.
+  city: istanbul
+  tags: [function:cinema, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-sureyya]
+
+- id: kadikoy-park
+  name: the shore promenade at Moda
+  type: park
+  district: kadikoy
+  public: true
+  description: >-
+    A promenade along the headland above the Marmara, gravel walks between the
+    planes, a tea kiosk at the gate and benches facing the water where a man with
+    a newspaper goes unremarked.
+  city: istanbul
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: kadikoy-safehouse
+  name: a flat off Yoğurtçu Park
+  type: emin-ev
+  district: kadikoy
+  public: false
+  description: >-
+    A quiet apartment room in a timber house up a side-street, charcoal brazier
+    and a wireless kept low, the kind of address a landlady forgets the moment
+    the rent is in her hand.
+  city: istanbul
+  tags: [function:safehouse, access:private]
+  basis: fictional
+
+# =========================================================================
+# ÜSKÜDAR — the old Asian shore town
+# =========================================================================
+
+- id: uskudar-ferry
+  name: the Üsküdar ferry pier
+  type: iskele
+  district: uskudar
+  public: true
+  description: >-
+    The pier below the waterfront mosque facing the old city across the strait,
+    the boats working the near bank all day, porters shouldering baskets up the
+    ramp among the shore-road traffic.
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-sehir-hatlari]
+
+- id: uskudar-cafe
+  name: a coffee house by the Üsküdar quay
+  type: core/kaffeehaus
+  district: uskudar
+  public: true
+  description: >-
+    A low room open to the shore road, mirrors foxed with age, worry-beads and
+    backgammon and a view of the ferries framed by a bead curtain in the doorway.
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: uskudar-cemetery-walk
+  name: the Karacaahmet cypress walks
+  type: park
+  district: uskudar
+  public: true
+  description: >-
+    The great old cemetery on the hill above the town, shaded walks between
+    cypresses and leaning headstones, still and quiet, where two people may walk
+    and not be overheard.
+  city: istanbul
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: real-landmark
+  sources: [src-karacaahmet]
+
+- id: uskudar-kiosk
+  name: the newsstand at the Üsküdar quay
+  type: gazete-bayii
+  district: uskudar
+  public: true
+  description: >-
+    A kiosk at the pier gate where the ferry crowds swirl past, papers pegged on
+    a wire, the vendor making change without looking up from his glass of tea.
+  city: istanbul
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: real-inspired
+
+- id: uskudar-store
+  name: a timber-merchant's yard store
+  type: depo
+  district: uskudar
+  public: false
+  description: >-
+    A sheet-iron store in a timber yard on the shore road, pallets and tarpaulins
+    throwing long shadows, chains and tackle hanging in the dark like something
+    waiting to be used.
+  city: istanbul
+  tags: [function:warehouse, function:materiel-store, function:dead-drop-site, access:private]
+  basis: fictional
+
+# =========================================================================
+# THE STATION — the player's own home ground (Pera courtyard)
+# =========================================================================
+
+- id: the-station
+  name: the Station
+  type: istasyon-merkezi
+  district: beyoglu
+  public: false
+  description: >-
+    A floor of locked offices behind an unmarked door off a Pera courtyard: steel
+    cabinets, a cipher room, a chattering teleprinter, and the Chief's office the
+    only one with a carpet and a view of the Horn.
+  city: istanbul
+  tags: [function:station, access:private]
+  basis: fictional
+
+# =========================================================================
+# ADDITIONAL PUBLIC PLACES — authored to widen the instantiation pool so no
+# two seeds draw the same geography (coverage Variety Metric). Every place
+# below is wholly fictional (`basis: fictional`): original name, description
+# and atmosphere, drawn from the ordinary street life of the quarter rather
+# than any one real address. Each reuses an existing Location Type so it still
+# binds the plot ids its type carries, and carries only location-level
+# vocabulary Tags (meeting-spot / newspaper-outlet / dead-drop / transit),
+# inheriting the rest from its type.
+# =========================================================================
+
+# --- Beyoğlu (Pera) --------------------------------------------------------
+
+- id: cafe-petits-champs
+  name: a patisserie off the Petits-Champs
+  type: core/kaffeehaus
+  district: beyoglu
+  public: true
+  description: >-
+    A narrow coffee room beside the municipal garden terraces, its windows
+    steamed against the Pera damp, where clerks from the consulate offices take
+    a mid-morning cup and the same corner table is held by habit.
+  atmosphere: [steamy, habitual, discreet, worldly]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: cayhane-balikpazari
+  name: a tea house behind the Fish Market
+  type: kahvehane
+  district: beyoglu
+  public: true
+  description: >-
+    A single lamplit room up a lane off the market stairs, worry-beads and
+    backgammon and the hiss of a samovar, open to the alley by a bead curtain so
+    a word spoken over the dice carries no further than the next table.
+  atmosphere: [smoky, unhurried, close, concealing]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: park-tepebasi
+  name: the Tepebaşı terrace garden
+  type: park
+  district: beyoglu
+  public: true
+  description: >-
+    A railed public garden on the brow above the Horn, gravel walks between
+    judas trees and a shuttered bandstand, benches facing the water where a man
+    may sit an hour with a newspaper and raise no question at all.
+  atmosphere: [open-air, exposed, breezy, meeting-ground]
+  city: istanbul
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Galata / Karaköy ------------------------------------------------------
+
+- id: galata-funicular-kiosk
+  name: the kiosk by the Tünel foot
+  type: gazete-bayii
+  district: galata
+  public: true
+  description: >-
+    A green booth wedged against the lower funicular station, papers in four
+    scripts pegged to a wire and lottery slips fanned under glass, the vendor
+    making change for the climbing crowd without once looking up.
+  atmosphere: [cramped, everyday, watchful, hurried]
+  city: istanbul
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: galata-bank-cafe
+  name: a coffee house in the bankers' lane
+  type: core/kaffeehaus
+  district: galata
+  public: true
+  description: >-
+    A tiled room among the money-changers below the tower, shipping men and
+    clerks of the agencies crowding the little tables at noon, the talk of
+    freights and exchange loud enough to swallow a quieter conversation whole.
+  atmosphere: [mercantile, crowded, loud, convivial]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: galata-quayside-garden
+  name: a quayside tea garden under the tower
+  type: park
+  district: galata
+  public: true
+  description: >-
+    A scrap of walled garden between the warehouses and the water, a few plane
+    trees and a tea kiosk, chairs set out to the kerb where porters rest between
+    loads and the ferries slide past below the railings.
+  atmosphere: [open-air, salt-air, worn, unremarked]
+  city: istanbul
+  tags: [function:park, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Sirkeci ---------------------------------------------------------------
+
+- id: sirkeci-arcade-cafe
+  name: a tea house in the station arcade
+  type: kahvehane
+  district: sirkeci
+  public: true
+  description: >-
+    A low room under the arches across from the terminus, trays of tea carried
+    out to travellers watching for their trains, the departures bell audible
+    through the door and every stranger taken for one more passenger passing.
+  atmosphere: [transient, smoky, watchful, waterfront]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: sirkeci-bookstall
+  name: a second-hand bookstall by the piers
+  type: sahaf
+  district: sirkeci
+  public: true
+  description: >-
+    A lean-to of shelves against the ferry-office wall, foxed timetables, old
+    guides and runs of yellowed almanacs, the dealer dozing over his ledger
+    while the harbour crowd flows past without a glance at his stock.
+  atmosphere: [dusty, quiet, bookish, discreet]
+  city: istanbul
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Eminönü ---------------------------------------------------------------
+
+- id: eminonu-bridge-kiosk
+  name: a newsstand at the bridgehead
+  type: gazete-bayii
+  district: eminonu
+  public: true
+  description: >-
+    A booth jammed into the press at the old-town end of the bridge, editions in
+    Turkish, Greek and French hawked before the ink is dry, the ferry crowd
+    swirling past four deep so a paper changes hands and no one is the wiser.
+  atmosphere: [cramped, thronged, hurried, watchful]
+  city: istanbul
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: eminonu-tram-corner
+  name: the tram corner by the new mosque
+  type: core/tram-stop
+  district: eminonu
+  public: true
+  description: >-
+    A junction where two lines cross below the mosque steps, a knot of commuters
+    under a tin shelter with their papers up against the wind off the Horn, the
+    overhead wire sparking blue as the cars grind in and clatter away.
+  atmosphere: [transient, crowded, exposed, everyday]
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: eminonu-han-cafe
+  name: a tea garden in a wholesale han
+  type: kahvehane
+  district: eminonu
+  public: true
+  description: >-
+    A courtyard of the bazaar trades with a few tables under a fig tree, porters
+    and brokers taking tea between consignments, the clerk of the han keeping
+    his own counsel about who meets whom over the little saucers.
+  atmosphere: [mercantile, shaded, unhurried, concealing]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Kadıköy ---------------------------------------------------------------
+
+- id: kadikoy-pier-kiosk
+  name: the newsstand at the Kadıköy pier gate
+  type: gazete-bayii
+  district: kadikoy
+  public: true
+  description: >-
+    A booth at the turnstile where the Eminönü boat lands, the morning editions
+    and the picture postcards fanned across the glass, the vendor's radio
+    murmuring the ferry times to the market crowd pouring up the ramp.
+  atmosphere: [cramped, everyday, salt-air, watchful]
+  city: istanbul
+  tags: [function:kiosk, function:newspaper-outlet, function:dead-drop-site, access:public]
+  basis: fictional
+
+- id: kadikoy-tea-garden
+  name: a tea garden off Bahariye
+  type: kahvehane
+  district: kadikoy
+  public: true
+  description: >-
+    A walled çay bahçesi behind the avenue, chairs under the planes and a boy
+    swinging a brazier between the tables, a settled afternoon crowd where a
+    quiet word is lost in the clink of glasses and the drone of talk.
+  atmosphere: [leafy, unhurried, settled, discreet]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: kadikoy-bookshop
+  name: a bookseller near the market
+  type: sahaf
+  district: kadikoy
+  public: true
+  description: >-
+    A narrow shop behind the fish stalls, French novels and old prayer books
+    stacked to the ceiling, a cat asleep on the ledger while the dealer names a
+    price over his glasses and buys letters as readily as he sells them.
+  atmosphere: [dusty, bookish, quiet, discreet]
+  city: istanbul
+  tags: [function:bookshop, function:public-text-source, function:dead-drop-site, access:public]
+  basis: fictional
+
+# --- Üsküdar ---------------------------------------------------------------
+
+- id: uskudar-shore-cafe
+  name: a shore-road coffee house at Üsküdar
+  type: core/kaffeehaus
+  district: uskudar
+  public: true
+  description: >-
+    A low room open to the shore road north of the pier, mirrors foxed with age
+    and a view of the ferries framed in the doorway, the devout and the idle
+    sharing the backgammon tables through the long quiet afternoons.
+  atmosphere: [quiet, conservative, worn, unremarked]
+  city: istanbul
+  tags: [function:cafe, function:meeting-spot, access:public]
+  basis: fictional
+
+- id: uskudar-tram-corner
+  name: the tram corner by the Üsküdar quay
+  type: core/tram-stop
+  district: uskudar
+  public: true
+  description: >-
+    A stop where the shore line turns up into the timber streets, a pasted
+    timetable peeling under glass and a thin crowd waiting with their shopping,
+    the cobbles shining wet and the rails humming before the car comes in sight.
+  atmosphere: [transient, exposed, provincial, everyday]
+  city: istanbul
+  tags: [function:transit, function:transit-hub, function:meeting-spot, access:public]
+  basis: fictional

@@ -1,0 +1,135 @@
+# locale/locale.yaml — the Istanbul city Locale (content-expansion task 9.6).
+#
+# Validates against LocaleSchema (packages/content/src/kinds/locale.ts):
+#   { scope, date, currency, honorifics, address, terms, allowNames }.
+#
+# This is the city override the city-then-era fallback chain prefers over the
+# era default (era-cold-war-early/locale). It supplies Istanbul's register: the
+# local honorifics (Bey / Hanım, with Efendi), the Turkish-order address
+# (street then building number), the lira money pattern, and the Local Terms
+# that join the help glossary and the names the Specifics Guard allows.
+#
+# `scope.city` names this City Definition (`istanbul`); the loader reads the one
+# city-scoped Locale as the city override. Output is English in local order:
+# the month and weekday name lists stay English (the era default), since the
+# date formatter renders English prose; the city layer changes honorifics,
+# address order and the money pattern, not the calendar names.
+
+- scope:
+    city: istanbul
+  date:
+    long: '{weekday}, {day} {month} {year}'
+    short: '{day}.{month}.{year}'
+    months:
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    weekdays:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+  currency:
+    # The lira of the period, written with the plain "L." prefix a 1950s price
+    # tag or ferry ticket carried; the amount and symbol come from the City
+    # Definition's currency, the Locale fixes only the layout.
+    pattern: '{symbol}{amount}'
+  honorifics:
+    # Period Istanbul honorifics. For men, "Bey" follows the given name
+    # ("Kemal Bey"); "Efendi" is the older, deferential form. For women, "Hanım"
+    # follows the given name ("Leyla Hanım"). The Naming Rule renders the
+    # formal form from these.
+    f: [Hanım, Hanımefendi]
+    m: [Bey, Efendi]
+  # Turkish address order: the street name, then the building number, then the
+  # quarter — "İstiklal Caddesi 42, Beyoğlu".
+  address: '{street} {number}, {district}'
+  terms:
+    - term: vapur
+      definition: >-
+        A city-line passenger ferry. The vapur crossings of the Bosphorus and
+        the Golden Horn are the city's main link between its European and Asian
+        shores and between the old town and Pera.
+    - term: iskele
+      definition: >-
+        A ferry pier or landing stage. Each shore quarter has its iskele, where
+        the vapur ties up and the crowd pours on and off.
+    - term: meyhane
+      definition: >-
+        A wine tavern serving rakı and mezze, usually down a back lane; a
+        lamplit, convivial place where talk runs freely late into the night.
+    - term: kahvehane
+      definition: >-
+        A coffee house (also çayhane, tea house): low stools, backgammon, a
+        samovar and a radio, where the same faces hold the same corner for hours.
+    - term: han
+      definition: >-
+        A merchant's courtyard building of workshops, offices and storerooms
+        around a central court; the wholesale trades of the old city work out of
+        the hans behind the bazaar.
+    - term: sahaf
+      definition: >-
+        A second-hand and antiquarian bookseller; the sahaf stalls cluster in a
+        courtyard of booksellers off the Grand Bazaar.
+    - term: dolmuş
+      definition: >-
+        A shared taxi or minibus that runs a fixed route and leaves when it is
+        full ("dolmuş" means "stuffed"); a cheap, anonymous way across town.
+    - term: Pera
+      definition: >-
+        The old name for Beyoğlu, the cosmopolitan quarter on the heights above
+        Galata — the Grande Rue, the grand hotels and the foreign consulates.
+    - term: Grande Rue
+      definition: >-
+        The Grande Rue de Péra (İstiklal Caddesi), the long shopping and café
+        street that is the spine of Beyoğlu and the heart of foreign Istanbul.
+    - term: simit
+      definition: >-
+        A ring of bread crusted with sesame, sold from a tray or barrow on every
+        corner and at every pier; the street food of the city.
+  allowNames:
+    # Istanbul place and quarter names the Specifics Guard should accept in
+    # generated prose (quarters, waterways, landmarks and the terms above). All
+    # are places or common nouns, not people.
+    - İstanbul
+    - Beyoğlu
+    - Galata
+    - Karaköy
+    - Sirkeci
+    - Eminönü
+    - Kadıköy
+    - Üsküdar
+    - Bosphorus
+    - Boğaziçi
+    - Golden Horn
+    - Haliç
+    - Grande Rue
+    - İstiklal
+    - Taksim
+    - Galatasaray
+    - Haydarpaşa
+    - vapur
+    - iskele
+    - meyhane
+    - kahvehane
+    - çayhane
+    - han
+    - dolmuş
+    - simit
+    - rakı
+    - sahaf
+    - Bey
+    - Hanım
+    - Efendi

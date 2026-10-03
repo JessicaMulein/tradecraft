@@ -1,0 +1,79 @@
+# personas/french.yaml — French occupation persona library.
+#
+# Mission and liaison staff in the French Sector. Names are mid-century French
+# given/family names in fictional combinations; none names a real person of
+# the period. Name pools are split by culture AND gender (Requirement 1.7).
+
+id: french
+namePools:
+  - culture: french
+    gender: male
+    given:
+      - Henri
+      - Marcel
+      - Lucien
+      - Gaston
+      - Émile
+      - Raoul
+      - Philippe
+      - André
+      - Georges
+      - Maurice
+      - Robert
+      - Claude
+    family:
+      - Lemaître
+      - Fontaine
+      - Beaumont
+      - Rousseau
+      - Charpentier
+      - Delacroix
+      - Vasseur
+      - Marchand
+      - Thibault
+      - Lefèvre
+      - Boucher
+      - Granville
+  - culture: french
+    gender: female
+    given:
+      - Simone
+      - Yvonne
+      - Colette
+      - Madeleine
+      - Hélène
+      - Jeanne
+      - Suzanne
+      - Odette
+      - Monique
+      - Denise
+    family:
+      - Lemaître
+      - Fontaine
+      - Beaumont
+      - Rousseau
+      - Charpentier
+      - Delacroix
+      - Vasseur
+      - Marchand
+      - Thibault
+      - Lefèvre
+      - Boucher
+      - Granville
+voiceTraits:
+  - formal and faintly ironic, fond of precision
+  - defends procedure and the proper channel
+  - charming to a point, then suddenly correct
+  - quotes the regulation and the exception to it
+  - takes offence quietly and remembers it
+mannerisms:
+  - gestures a point into the air with two fingers
+  - lets a cigarette burn down while making an argument
+  - straightens the cuffs before answering
+  - shrugs an entire sentence away
+backgrounds:
+  - Attached to the French mission since the first winter of the occupation.
+  - Keeps the sector's paperwork and knows where every file is buried.
+  - Came up through the liaison office and trusts it over all comers.
+  - Dines where the correspondents dine and listens more than they eat.
+  - Awaits a posting to Paris and makes sure everyone knows it.

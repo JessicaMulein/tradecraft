@@ -1,0 +1,128 @@
+# local-orgs/local-orgs.yaml — the fictional local organisations of the Free
+# Territory of Trieste (content-expansion task 9.10).
+#
+# Each entry is a LocalOrg (LocalOrgSchema, packages/content/src/kinds/city.ts):
+#   { id, city, name, aliases, kind, tags, members: TagQuery[], years? }
+# `city` references the Trieste City Definition by its bare id (namespaced to
+# city-trieste/trieste by the loader). The generator adds these to WorldState as
+# non-player organisations — employers and Rumour subjects (design,
+# "Organisations and documents").
+#
+# `tags` draws from the core `org:*` facet (the kind of institution) and the
+# `access-to:*` facet (the access its members carry); both facets apply to
+# `local-org` and ship Tags in the core vocabulary, so no new Tag is invented
+# here. `members` is a list of Tag Queries describing the archetypes an
+# organisation's members are drawn from; the only populated archetype facet is
+# `role:*`, so the member queries bind against the archetype roster by role.
+#
+# THE ZONE MILITARY-GOVERNMENT OFFICES BY TITLE. The task calls for the zone
+# military governments to appear by TITLE, not by any real body's or person's
+# name. Both are rendered here as offices: the Allied Military Government of
+# Zone A and the Yugoslav Military Government of Zone B. These are the real
+# administrations of the period, named by office exactly as the Style Guide's
+# offices-by-title rule requires; no commandant, officer or official is named.
+# Everything else — the newspaper has its own file — is wholly fictional: no
+# real Trieste bank, firm, union, mission or business of the period is named.
+# Period: 1947–1954.
+
+# =========================================================================
+# THE ZONE MILITARY-GOVERNMENT OFFICES (BY TITLE)
+# =========================================================================
+
+# Zone A's governing authority: the Allied military government of the occupied
+# city, named by office. Its civil-affairs offices issue the permits, the
+# registrations and the zone-line passes, and its clerks see every traveller's
+# papers.
+- id: allied-military-government
+  city: trieste
+  name: The Allied Military Government, Zone A
+  aliases:
+    - { text: the Allied Military Government, distinctive: true }
+    - { text: the military government, distinctive: false }
+    - { text: the zone administration, distinctive: false }
+    - { text: the civil-affairs office, distinctive: false }
+  kind: zone military-government administration
+  tags: [org:government, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1947, to: 1954 }
+
+# Zone B's governing authority: the Yugoslav military government of the Istrian
+# hinterland across the zone line, named by office. Its control points check the
+# papers of everyone who crosses, and its administration is remembered by every
+# traveller who comes and goes.
+- id: yugoslav-military-government
+  city: trieste
+  name: The Yugoslav Military Government, Zone B
+  aliases:
+    - { text: the Yugoslav Military Government, distinctive: true }
+    - { text: the Zone B administration, distinctive: false }
+    - { text: the hinterland administration, distinctive: false }
+  kind: zone military-government administration
+  tags: [org:government, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1947, to: 1954 }
+
+# =========================================================================
+# THE CITY'S OWN INSTITUTIONS (FICTIONAL)
+# =========================================================================
+
+# The city's civil registry under the military government: ration cards,
+# residence permits, the registry of persons and the displaced-persons rolls —
+# the counter every resident must visit and the clerks who see everyone's
+# papers.
+- id: municipal-registry
+  city: trieste
+  name: The Civic Registry Office
+  aliases:
+    - { text: the Registry Office, distinctive: true }
+    - { text: the registry, distinctive: false }
+    - { text: the permits office, distinctive: false }
+  kind: municipal government office
+  tags: [org:government]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1947, to: 1954 }
+
+# A free-port shipping and forwarding house of the Borgo Teresiano: the agents,
+# the bonded-warehouse clerks and the quay foremen who move the Levant and
+# northern cargo and know which crates change hands under cover of the trade.
+- id: adriatic-shipping-house
+  city: trieste
+  name: The Adriatic Navigation & Forwarding Company
+  aliases:
+    - { text: the Navigation Company, distinctive: true }
+    - { text: the forwarding house, distinctive: false }
+    - { text: the shipping agents, distinctive: false }
+  kind: shipping and forwarding firm
+  tags: [org:shipping, access-to:transit]
+  members: [[role:civilian], [role:contact], [role:cell]]
+  years: { from: 1947, to: 1954 }
+
+# A relief and resettlement committee of the camps and the shipping lines: the
+# depots, the welfare clerks and the volunteers who know who has just come over
+# the line and who is trying to get a passage out through the port.
+- id: displaced-persons-committee
+  city: trieste
+  name: The Committee for Displaced Persons
+  aliases:
+    - { text: the Relief Committee, distinctive: true }
+    - { text: the resettlement committee, distinctive: false }
+    - { text: the welfare office, distinctive: false }
+  kind: relief and resettlement committee
+  tags: [org:relief, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1947, to: 1954 }
+
+# A loose smuggling ring that worked the zone line and the quays: coffee,
+# cigarettes, the two administrations' papers, penicillin and ration coupons
+# carried across the control points and off the bonded sheds. A source of
+# rumour and a standing danger.
+- id: zone-line-ring
+  city: trieste
+  name: The Zone-Line Ring
+  aliases:
+    - { text: the Ring, distinctive: false }
+    - { text: the contrabbandieri, distinctive: true }
+  kind: black-market ring
+  tags: [org:criminal, access-to:black-market]
+  members: [[role:cell], [role:civilian]]
+  years: { from: 1947, to: 1954 }

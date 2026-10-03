@@ -1,0 +1,69 @@
+# weather/weather.yaml — the Istanbul monthly weather tables (task 9.5).
+#
+# Validates against WeatherTablesSchema (city.ts): a single record
+# { city, months } where `months` keys 1–12 each carry a weighted condition
+# table in the slice weather format ({ id, label, weight }). The daily PRNG
+# stream selects the month from the calendar date and draws one condition from
+# that month's table. The condition `id`s match the `weatherModifiers` the
+# Istanbul Location Types key off (`rain`, `cold`, `hot`, `fog`, `clear`).
+#
+# Istanbul has a Mediterranean climate tempered by the sea: mild damp winters
+# with rain and the Bosphorus fog, warm dry summers, and the lodos and poyraz
+# winds in the shoulder seasons. The labels are plain weather words a 1950s
+# Istanbullu would use — no anachronism.
+
+- city: istanbul
+  months:
+    '1':
+      - { id: rain, label: cold rain off the sea, weight: 4 }
+      - { id: cold, label: raw and grey, weight: 3 }
+      - { id: fog, label: Bosphorus fog, weight: 2 }
+      - { id: clear, label: cold and bright, weight: 2 }
+    '2':
+      - { id: rain, label: driving rain, weight: 4 }
+      - { id: cold, label: a cold lodos wind, weight: 3 }
+      - { id: fog, label: a fog on the straits, weight: 2 }
+      - { id: clear, label: washed and clear, weight: 2 }
+    '3':
+      - { id: rain, label: showers off the Marmara, weight: 3 }
+      - { id: clear, label: bright and freshening, weight: 4 }
+      - { id: cold, label: a chill north wind, weight: 2 }
+      - { id: fog, label: morning haze, weight: 1 }
+    '4':
+      - { id: clear, label: mild and clear, weight: 5 }
+      - { id: rain, label: a passing spring shower, weight: 3 }
+      - { id: fog, label: a soft morning mist, weight: 1 }
+    '5':
+      - { id: clear, label: warm and bright, weight: 6 }
+      - { id: rain, label: a brief shower, weight: 2 }
+      - { id: hot, label: close and still, weight: 1 }
+    '6':
+      - { id: clear, label: warm and dry, weight: 6 }
+      - { id: hot, label: hot and hazy, weight: 3 }
+      - { id: rain, label: a rare summer shower, weight: 1 }
+    '7':
+      - { id: hot, label: hot and dry, weight: 6 }
+      - { id: clear, label: bright with a sea breeze, weight: 4 }
+    '8':
+      - { id: hot, label: close and sultry, weight: 6 }
+      - { id: clear, label: hazy sunshine, weight: 3 }
+      - { id: fog, label: a sea mist at dawn, weight: 1 }
+    '9':
+      - { id: clear, label: warm and settled, weight: 5 }
+      - { id: hot, label: a last heat, weight: 2 }
+      - { id: rain, label: the first autumn rain, weight: 2 }
+    '10':
+      - { id: clear, label: mild and golden, weight: 4 }
+      - { id: rain, label: steady autumn rain, weight: 3 }
+      - { id: fog, label: a thickening fog, weight: 2 }
+      - { id: cold, label: a cooling poyraz wind, weight: 1 }
+    '11':
+      - { id: rain, label: cold rain, weight: 4 }
+      - { id: fog, label: river fog, weight: 3 }
+      - { id: cold, label: raw and grey, weight: 2 }
+      - { id: clear, label: a clear cold spell, weight: 1 }
+    '12':
+      - { id: rain, label: driving winter rain, weight: 4 }
+      - { id: cold, label: cold and blustery, weight: 3 }
+      - { id: fog, label: dense Bosphorus fog, weight: 2 }
+      - { id: clear, label: cold and bright, weight: 1 }

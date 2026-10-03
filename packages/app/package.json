@@ -1,0 +1,34 @@
+{
+  "name": "@tradecraft/app",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@tradecraft/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@tradecraft/content": "workspace:*",
+    "@tradecraft/dialogue": "workspace:*",
+    "@tradecraft/engine": "workspace:*",
+    "@tradecraft/llm": "workspace:*",
+    "@tradecraft/player-view": "workspace:*",
+    "@tradecraft/tui": "workspace:*",
+    "@tradecraft/web": "workspace:*",
+    "ink": "^5.2.1",
+    "react": "^18.3.1",
+    "tslib": "^2.3.0",
+    "yaml": "2.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31"
+  }
+}

@@ -1,0 +1,132 @@
+# districts.yaml — the Districts of Lisbon (task 9.7).
+#
+# Each is a District (packages/content/src/kinds/city.ts, DistrictSchema): a
+# named node in the city's Route graph, with aliases, a prose description,
+# atmosphere words and setting Tags. Neutral Portugal had no occupation regime,
+# so no District carries a `sector`.
+#
+# Eight Districts give the generator the ≥6 it needs with room to draw a varied
+# subset (city.yaml instantiation bounds districts: [6, 8]). They span the lower
+# town and its hills, the river front and the western approaches: the Baixa, the
+# Chiado, Alfama and Mouraria on the castle hill, Cais do Sodré by the water,
+# Estrela up the hill west, and Alcântara and Belém strung along the docks to
+# the Tagus mouth.
+#
+# All texture is of 1945–1965 and every place named in prose is a real quarter
+# of the city (attested in sources.yaml); the organisations and people who
+# appear in play are fictional.
+
+- id: baixa
+  city: lisbon
+  name: Baixa
+  aliases:
+    - { text: the Baixa, distinctive: true }
+    - { text: the lower town, distinctive: false }
+    - { text: the Pombaline grid, distinctive: false }
+  description: >-
+    The flat lower town rebuilt on a grid after the great earthquake: broad
+    straight streets of banks, shipping offices and shops under uniform
+    façades, running from the Rossio down to the river square. The commercial
+    heart of the city by day, half deserted once the shutters come down.
+  atmosphere: [commercial-heart, daytime-bustle, uniform-façades, grid-straight]
+  tags: [setting:commercial]
+
+- id: chiado
+  city: lisbon
+  name: Chiado
+  aliases:
+    - { text: the Chiado, distinctive: true }
+    - { text: the upper shopping streets, distinctive: false }
+  description: >-
+    The elegant quarter on the slope above the Baixa: the grand cafés, the
+    booksellers and print shops, the opera and the fashionable stores. Writers
+    and journalists keep their tables here; it is where the city goes to be
+    seen and to overhear.
+  atmosphere: [elegant-slope, literary-tables, fashionable-stores, overheard-talk]
+  tags: [setting:commercial]
+
+- id: alfama
+  city: lisbon
+  name: Alfama
+  aliases:
+    - { text: Alfama, distinctive: true }
+    - { text: the old Moorish quarter, distinctive: false }
+    - { text: under the castle, distinctive: false }
+  description: >-
+    The oldest quarter, a maze of stepped alleys and tiled housefronts climbing
+    the castle hill, washing strung between the walls and the smell of grilled
+    sardines in the lanes. A warren a man can vanish into and a stranger is
+    marked the moment he enters.
+  atmosphere: [medieval-maze, stepped-alleys, close-knit-quarter, stranger-marked]
+  tags: [setting:residential]
+
+- id: mouraria
+  city: lisbon
+  name: Mouraria
+  aliases:
+    - { text: Mouraria, distinctive: true }
+    - { text: the far side of the hill, distinctive: false }
+  description: >-
+    The crowded quarter on the north flank of the castle hill, poorer and more
+    tangled than Alfama: tenements, cheap lodging houses, taverns where the
+    fado is sung late, and the kind of streets the police patrol in pairs.
+  atmosphere: [poor-tenements, tangled-lanes, fado-by-night, patrolled-in-pairs]
+  tags: [setting:residential]
+
+- id: cais-do-sodre
+  city: lisbon
+  name: Cais do Sodré
+  aliases:
+    - { text: Cais do Sodré, distinctive: true }
+    - { text: the riverside, distinctive: false }
+    - { text: the sailors' quarter, distinctive: false }
+  description: >-
+    The riverside by the station and the ferry quay: the fish market, the
+    sailors' bars and dance halls, the quayside offices of the shipping lines.
+    Loud and open all night, where a foreign face among the crews and the
+    passengers passes without a second look.
+  atmosphere: [riverside-quarter, open-all-night, raffish-crews, passing-faces]
+  tags: [setting:industrial, setting:commercial]
+
+- id: estrela
+  city: lisbon
+  name: Estrela
+  aliases:
+    - { text: Estrela, distinctive: true }
+    - { text: the embassy hill, distinctive: false }
+    - { text: the legation quarter, distinctive: false }
+  description: >-
+    The quiet hill west of the centre: the great basilica and its gardens, the
+    walled villas and the legations with their flags and gravel drives. The
+    pavements are swept, the diplomatic traffic is heavy, and a watcher on a
+    garden bench is nothing out of the ordinary.
+  atmosphere: [quiet-hill, walled-villas, heavy-with-legations, swept-pavements]
+  tags: [setting:diplomatic, setting:residential]
+
+- id: alcantara
+  city: lisbon
+  name: Alcântara
+  aliases:
+    - { text: Alcântara, distinctive: true }
+    - { text: the dock road, distinctive: false }
+  description: >-
+    The working waterfront west of the centre, where the docks, the cork
+    warehouses and the goods yards crowd the river bank under the viaduct.
+    Lorries grind along the quay road at all hours and the night shift keeps
+    the taverns open till dawn.
+  atmosphere: [working-waterfront, under-the-viaduct, goods-yards, dawn-taverns]
+  tags: [setting:industrial]
+
+- id: belem
+  city: lisbon
+  name: Belém
+  aliases:
+    - { text: Belém, distinctive: true }
+    - { text: the river mouth, distinctive: false }
+  description: >-
+    The open riverside district at the mouth of the Tagus: the monastery and
+    the tower, the long quays and the ocean berths where the transatlantic
+    liners and the flying boats come and go. Grand monuments and working docks
+    side by side, with the sea wind off the estuary.
+  atmosphere: [river-mouth, grand-monuments, ocean-berths, estuary-wind]
+  tags: [setting:institutional]

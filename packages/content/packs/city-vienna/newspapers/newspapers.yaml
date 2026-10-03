@@ -1,0 +1,88 @@
+# newspapers.yaml — the fictional Viennese mastheads (content-expansion 9.2).
+#
+# Each entry is a Newspaper (NewspaperSchema, packages/content/src/kinds/
+# city.ts): { id, city, masthead, language, stance, register, days[weekday],
+# price, soldAt: TagQuery, years? }. `city` references the Vienna City
+# Definition by its bare id (the loader namespaces it city-vienna/vienna).
+#
+# `soldAt` is a Tag Query naming where a copy can be had — the generator binds
+# it against the city's Locations, whose Effective Tags carry the
+# `function:newspaper-outlet` slot (see the kaffeehaus, trafik, bahnhof and
+# haltestelle Location Types). `price` is in Groschen, the Schilling subunit.
+#
+# Period: occupied Vienna, 1945–1955. EVERY masthead is invented — no real
+# Viennese paper of the period is named. The stances and registers are the
+# ordinary spread of a four-power city's press: a sober paper of record, a
+# popular evening sheet, an official gazette, a party organ in the Soviet
+# sector, and a liberal weekly. Years are set so a paper that only appears once
+# the occupation administration settles (the official gazette, the party sheet)
+# carries a later start, which the Game-Year filter respects.
+
+# A sober morning paper of record: the city's established daily, read in the
+# grand cafés and the ministries, careful and non-partisan under four-power
+# censorship.
+- id: wiener-morgenbote
+  city: vienna
+  masthead: Wiener Morgenbote
+  language: German
+  stance: independent paper of record
+  register: sober, formal, cautious
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 30
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1955 }
+
+# The popular evening sheet: sold from the kiosks and the station bookstalls,
+# quick with the police blotter, the football and the tram news, light on
+# politics and heavy on the city's small dramas.
+- id: abendblatt-wien
+  city: vienna
+  masthead: Abendblatt für Wien
+  language: German
+  stance: popular, non-partisan
+  register: brisk, plain, anecdotal
+  days: [monday, tuesday, wednesday, thursday, friday, saturday]
+  price: 20
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1945, to: 1955 }
+
+# The official notices gazette: the municipal and inter-allied orders, permits
+# and public announcements, printed dry and read for what it is forced to
+# disclose. Appears once the joint administration is organised in 1946.
+- id: amtliche-nachrichten
+  city: vienna
+  masthead: Amtliche Nachrichten der Stadt
+  language: German
+  stance: official gazette
+  register: dry, bureaucratic, impersonal
+  days: [tuesday, friday]
+  price: 15
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1946, to: 1955 }
+
+# A party organ circulated in the Soviet sector: emphatic, didactic, long on
+# the reconstruction effort and the friendship of peoples. Appears from 1947.
+- id: volksstimme-der-donau
+  city: vienna
+  masthead: Volksstimme von der Donau
+  language: German
+  stance: pro-Soviet-sector party organ
+  register: emphatic, didactic, declamatory
+  days: [monday, wednesday, friday]
+  price: 20
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1947, to: 1955 }
+
+# A liberal weekly of comment and the arts: concerts, the theatre, the
+# anxieties of the educated middle class, printed on a Saturday for the week's
+# reflection. In English and German for the occupation readership.
+- id: donau-rundschau
+  city: vienna
+  masthead: Donau-Rundschau
+  language: German and English
+  stance: liberal weekly of comment and the arts
+  register: literate, discursive, reflective
+  days: [saturday]
+  price: 50
+  soldAt: [function:newspaper-outlet]
+  years: { from: 1946, to: 1955 }

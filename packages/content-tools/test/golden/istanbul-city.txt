@@ -1,0 +1,24 @@
+== City: Istanbul ==
+setting: city-istanbul/istanbul (year 1963)
+districts: 6
+locations: 28
+routes: 9
+
+== Districts ==
+- Beyoğlu [beyoglu] — sector 
+- Eminönü [eminonu] — sector 
+- Galata [galata] — sector 
+- Kadıköy [kadikoy] — sector 
+- Sirkeci [sirkeci] — sector 
+- Üsküdar [uskudar] — sector 
+
+== Routes ==
+- Beyoğlu <-> Galata (cost 1)
+- Eminönü <-> Kadıköy (cost 1)
+- Eminönü <-> Üsküdar (cost 1)
+- Galata <-> Eminönü (cost 1)
+- Galata <-> Kadıköy (cost 1)
+- Galata <-> Sirkeci (cost 1)
+- Kadıköy <-> Üsküdar (cost 1)
+- Sirkeci <-> Eminönü (cost 0)
+- Sirkeci <-> Üsküdar (cost 1)

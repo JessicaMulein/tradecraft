@@ -1,0 +1,106 @@
+# local-orgs/local-orgs.yaml — the fictional local organisations of Istanbul
+# (content-expansion task 9.6).
+#
+# Each validates against LocalOrgSchema (packages/content/src/kinds/city.ts):
+#   { id, city, name, aliases, kind, tags, members: TagQuery[], years? }
+# `city` references the Istanbul City Definition by its bare id (namespaced to
+# city-istanbul/istanbul by the loader). The generator adds these to WorldState
+# as non-player organisations — employers and Rumour subjects (design,
+# "Organisations and documents").
+#
+# `tags` draws from the core `org:*` facet (the kind of institution) and, where
+# it fits, the `access-to:*` facet (the access the organisation's people
+# carry). `members` is a list of Tag Queries naming the archetype roster an
+# organisation's members are drawn from; the populated archetype facet is
+# `role:*`, so member queries bind by role.
+#
+# EVERYTHING IS FICTIONAL. No real Istanbul ministry, bank, line, paper, union
+# or business of the period is named. Officials are referred to by office, never
+# by a personal name. Period: Istanbul 1950–1965.
+
+# A city administrative office: residence papers, trade licences, the registry
+# of persons — the counter every resident and every foreigner must visit, and
+# the clerks who see everyone's documents.
+- id: belediye-registry
+  city: istanbul
+  name: The City Registry & Licensing Office
+  aliases:
+    - { text: the registry office, distinctive: true }
+    - { text: the licensing office, distinctive: false }
+    - { text: the belediye counter, distinctive: false }
+  kind: municipal government office
+  tags: [org:government, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1950, to: 1965 }
+
+# A Galata merchant bank and exchange house: letters of credit, foreign
+# transfers and the money-changing that oils the shipping trade. A plausible
+# employer, a natural cover, and a place where talk of who is moving money
+# collects.
+- id: galata-merchant-bank
+  city: istanbul
+  name: The Bosphorus Merchant & Exchange Bank
+  aliases:
+    - { text: the Merchant Bank, distinctive: true }
+    - { text: the exchange house, distinctive: false }
+  kind: merchant bank and exchange house
+  tags: [org:bank, access-to:black-market]
+  members: [[role:civilian], [role:contact], [role:cell]]
+  years: { from: 1950, to: 1965 }
+
+# A Bosphorus shipping and ferry line: the vapur crossings, the coastal cargo
+# runs and the agents on the quays. Its people know every sailing, every
+# manifest and every face that comes and goes by water.
+- id: bosphorus-navigation
+  city: istanbul
+  name: The Bosphorus Navigation Company
+  aliases:
+    - { text: the Navigation Company, distinctive: true }
+    - { text: the ferry line, distinctive: false }
+  kind: shipping and ferry line
+  tags: [org:shipping, access-to:transit]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1950, to: 1965 }
+
+# The porters' and boatmen's association of the quays and the bazaar: the
+# hamals who shoulder every crate, the caïque men who work the Horn, and the
+# tally clerks who log the cargo. A broad roster of background faces.
+- id: hamal-brotherhood
+  city: istanbul
+  name: The Porters' & Boatmen's Brotherhood
+  aliases:
+    - { text: the Brotherhood, distinctive: true }
+    - { text: the hamals' guild, distinctive: false }
+  kind: porters' and boatmen's association
+  tags: [org:labour, access-to:transit]
+  members: [[role:civilian]]
+  years: { from: 1950, to: 1965 }
+
+# A Pera émigré relief and welfare society: the committee that meets the
+# refugees and transit travellers off the trains and the boats, finds them
+# lodging and papers, and knows who has just arrived and who is trying to move
+# on.
+- id: pera-relief-society
+  city: istanbul
+  name: The Pera Society for Émigré Relief
+  aliases:
+    - { text: the Relief Society, distinctive: true }
+    - { text: the émigré committee, distinctive: false }
+  kind: relief and welfare society
+  tags: [org:relief, access-to:officials]
+  members: [[role:civilian], [role:contact]]
+  years: { from: 1950, to: 1965 }
+
+# A loose smuggling and black-market ring working the quays, the bazaar hans and
+# the ferry crowds: contraband tobacco, foreign currency, scarce goods and
+# forged papers. A source of rumour and a danger.
+- id: quayside-ring
+  city: istanbul
+  name: The Golden Horn Ring
+  aliases:
+    - { text: the Horn Ring, distinctive: true }
+    - { text: the quayside men, distinctive: false }
+  kind: smuggling and black-market ring
+  tags: [org:criminal, access-to:black-market]
+  members: [[role:cell], [role:civilian]]
+  years: { from: 1950, to: 1965 }

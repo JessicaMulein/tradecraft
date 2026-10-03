@@ -1,0 +1,79 @@
+# rumours/rumours.yaml — Istanbul city Rumour templates (content-expansion
+# task 9.6).
+#
+# Each validates against RumourTemplateSchema (packages/content/src/lib/
+# kinds.ts): { id, predicate, distortions, shiftDays? }. A Rumour takes one of
+# the vocabulary predicates and the distortions that garble a true (or invented)
+# fact into café gossip a Background NPC passes along: the wrong person named,
+# the day slid, a target conjured from nothing. `predicate` is an existing
+# UPPER_SNAKE_CASE predicate id; `distortions` is drawn from swap-subject |
+# shift-day | invent-target; `shiftDays` bounds how far a day slides.
+#
+# These are the Istanbul flavouring of the core Rumour set: the same mechanics,
+# the gossip of the ferries, the Pera hotel bars and the bazaar hans. They name
+# no real people and depict no real events — only who met whom, and where.
+
+# A meeting rumour with the wrong face at the table — café talk from Pera.
+- id: rumour-ist-swapped-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject]
+
+# A quayside sighting whose day has drifted in the retelling.
+- id: rumour-ist-drifted-sighting
+  predicate: LOCATED_AT
+  distortions: [shift-day]
+  shiftDays: 2
+
+# "They say he's with one of the consulates" — the wrong employer, wrong man.
+- id: rumour-ist-mistaken-employer
+  predicate: WORKS_FOR
+  distortions: [swap-subject]
+
+# A ferry-crossing rumour that names the wrong traveller and slides the day.
+- id: rumour-ist-garbled-crossing
+  predicate: TRAVELS_TO
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3
+
+# A bazaar rumour of a scheme, with a target conjured where there is none.
+- id: rumour-ist-invented-scheme
+  predicate: PLANS
+  distortions: [invent-target]
+
+# A smuggling rumour with an imagined recipient down on the quays.
+- id: rumour-ist-phantom-consignment
+  predicate: SUPPLIES
+  distortions: [invent-target]
+
+# "I heard he's one of them" — a membership rumour pinned on the wrong person.
+- id: rumour-ist-mistaken-member
+  predicate: MEMBER_OF
+  distortions: [swap-subject]
+
+# A fully tangled target rumour: wrong accuser, invented victim, day slipped.
+- id: rumour-ist-tangled-target
+  predicate: TARGETS
+  distortions: [swap-subject, invent-target, shift-day]
+  shiftDays: 4
+
+# A reporting-chain rumour pinned on the wrong man in a Pera bar.
+- id: rumour-ist-mistaken-handler
+  predicate: REPORTS_TO
+  distortions: [swap-subject]
+
+# A wireless rumour whose night has drifted — "Tuesday, or was it Thursday?"
+- id: rumour-ist-drifted-signal
+  predicate: USES_CHANNEL
+  distortions: [shift-day]
+  shiftDays: 2
+
+# A knowing rumour with an invented acquaintance among the émigrés.
+- id: rumour-ist-phantom-acquaintance
+  predicate: KNOWS
+  distortions: [invent-target]
+
+# A fully garbled rendezvous: wrong face, wrong day, that falls apart on checking.
+- id: rumour-ist-tangled-meeting
+  predicate: MEETS_AT
+  distortions: [swap-subject, shift-day]
+  shiftDays: 3
