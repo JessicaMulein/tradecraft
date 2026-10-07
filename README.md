@@ -128,6 +128,8 @@ Content is data, versioned in packs (`pack.yaml` with `id`, `version`, `contentS
 
 Packs cannot add new mechanics (action kinds, channel kinds, cipher kinds). Those are code.
 
+A Plot or Side Thread stage's traces bind to Locations by **function tag** (a Tag Query like `[function:cafe]`), not by a specific Location Type id. A city satisfies a plot's observable events by tagging *some* public Location for each function the plot needs; the lint's CE-PLOTBIND rule fails a release build whose city cannot, rather than letting it fall over at generation. One upshot: the shipped cities still carry a few Location-Type ids kept from an earlier id-matched binding (e.g. a café typed `core/kaffeehaus`). These are harmless — tag-binding resolves them correctly — so they are left as-is; if you revisit those packs, you can rename them to local-flavor ids in the same pass (it needs a `GENERATOR_VERSION` bump and a golden re-record, so it is not worth doing on its own).
+
 ## Roadmap
 
 1. **slice-integration** (`.kiro/specs/slice-integration/`) — assembled the slice into a playable game: the day-boundary hooks in the Turn Pipeline, every action dispatched, `newGame`/saves/`validateFeed`, the Prompt Builder in live dialogue, the TUI App Shell and the Composition Root. Remaining: the final playtest (slice task 24).
