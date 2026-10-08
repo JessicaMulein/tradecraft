@@ -1,0 +1,37 @@
+{
+  "name": "@lmstudio/lms-isomorphic",
+  "version": "0.5.0",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "browser": "dist/cjs/browser.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "shx rm -rf ./dist ./tsconfig.tsbuildinfo"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/ws": "^8.5.10"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "browser": {
+        "types": "./dist/types/browser.d.ts",
+        "require": "./dist/cjs/browser.js",
+        "import": "./dist/esm/browser.js",
+        "default": "./dist/esm/browser.js"
+      },
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "gitHead": "f21fff9f316b39436860129bc3eef887c31c3cb7"
+}

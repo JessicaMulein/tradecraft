@@ -943,6 +943,7 @@ function buildStages(
  * content: choose template → bind role slots (in template order) → bind target
  * slots (in template order) → build the stage DAG (deadlines drawn in stage
  * order). Materiel ids are minted, not drawn, so they consume no entropy.
+ * A caller that already chose the template passes it and skips that draw.
  *
  * Throws when the content set defines no Plot template (via
  * {@link chooseTemplate}); every other content gap (a role slot with no
@@ -957,9 +958,27 @@ export function generatePlot(
   orgs: GeneratedOrgs,
   principals: GeneratedPrincipals,
   start: GameTime,
+  template?: PlotTemplate,
 ): GeneratedPlot {
-  const template = chooseTemplate(prng, content);
+  const chosen = template ?? chooseTemplate(prng, content);
+  return instantiateChosenPlot(prng, chosen, content, preset, city, orgs, principals, start);
+}
 
+/**
+ * Instantiate one already-chosen schema-1 template. {@link generatePlot} is
+ * this plus the template draw, so a normalised schema-1 template can be
+ * compared against the slice path on the same stream position.
+ */
+export function instantiateChosenPlot(
+  prng: Prng,
+  template: PlotTemplate,
+  content: ContentSet,
+  preset: { readonly plot: { readonly stageCount: number; readonly deadlineSlackDays: number } },
+  city: City,
+  orgs: GeneratedOrgs,
+  principals: GeneratedPrincipals,
+  start: GameTime,
+): GeneratedPlot {
   // The leader is the Cell leader NPC — the first Cell role (leader-first order
   // in principals.ts). The Cell is always fully generated, so this is present.
   const leader: NpcId = principals.cell[0];

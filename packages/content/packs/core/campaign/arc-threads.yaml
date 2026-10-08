@@ -1,0 +1,94 @@
+# Arc threads. Role slot ids must not name a cell. Clue propositions are
+# predicates from the core pack.
+- id: nemesis-shadow
+  roleSlots:
+    - id: rival
+      archetypes: [hostile-case-officer]
+  stages:
+    - id: seen
+      deadline: { min: 2, max: 6 }
+      onDisrupted: { delay: 1, reroute: 0, abort: 0 }
+      traces:
+        - kind: meeting
+          roles: [rival]
+          evidences: [MEETS_AT]
+          text: The rival is seen across a cafe.
+        - kind: transmission
+          channel: radio
+          evidences: [KNOWS]
+          text: A short radio call names the rival.
+  clues:
+    - id: nemesis-identified
+      prop: MEMBER_OF
+  slots:
+    - id: rival
+      binding: nemesis
+- id: nemesis-duel
+  roleSlots:
+    - id: rival
+      archetypes: [hostile-case-officer]
+  stages:
+    - id: faced
+      deadline: { min: 2, max: 6 }
+      onDisrupted: { delay: 1, reroute: 1, abort: 0 }
+      traces:
+        - kind: meeting
+          roles: [rival]
+          evidences: [MEETS_AT]
+          text: The rival asks for a meeting.
+        - kind: transmission
+          channel: radio
+          evidences: [KNOWS]
+          text: A radio call sets the meeting.
+  clues:
+    - id: nemesis-faced
+      prop: MEETS_AT
+  slots:
+    - id: rival
+      binding: nemesis
+- id: mole-rumour
+  roleSlots:
+    - id: visitor
+      archetypes: [station-clerk]
+  stages:
+    - id: seen
+      deadline: { min: 2, max: 8 }
+      onDisrupted: { delay: 1, reroute: 0, abort: 0 }
+      traces:
+        - kind: meeting
+          roles: [visitor]
+          evidences: [MEETS_AT]
+          text: A headquarters visitor meets someone the station does not name.
+        - kind: transmission
+          channel: radio
+          evidences: [KNOWS]
+          text: A cable header matches one officer's access.
+  clues:
+    - id: mole-access
+      prop: KNOWS
+  slots:
+    - id: visitor
+      binding: mole
+- id: mole-file
+  roleSlots:
+    - id: visitor
+      archetypes: [station-clerk]
+  stages:
+    - id: filed
+      deadline: { min: 2, max: 8 }
+      onDisrupted: { delay: 1, reroute: 0, abort: 0 }
+      traces:
+        - kind: meeting
+          roles: [visitor]
+          evidences: [MEETS_AT]
+          text: The visitor is seen with a file that should have stayed at headquarters.
+        - kind: transmission
+          channel: courier
+          evidences: [KNOWS]
+          text: A courier packet carries a name from the legend desk.
+  clues:
+    - id: mole-named
+      prop: KNOWS
+  slots:
+    - id: visitor
+      binding: mole

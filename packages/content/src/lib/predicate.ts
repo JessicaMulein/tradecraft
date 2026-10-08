@@ -18,7 +18,7 @@ import { ContentIdSchema, TemplateStringSchema } from './common.js';
  * (an Unidentified Subject) are the entity kinds; `org` lets `KNOWS` and
  * `SUSPECTS` take an organisation subject.
  */
-export const PREDICATE_ENTITY_KINDS = ['npc', 'unk', 'org'] as const;
+export const PREDICATE_ENTITY_KINDS = ['npc', 'unk', 'org', 'loc', 'item', 'evt'] as const;
 export const PredicateEntityKindSchema = z.enum(PREDICATE_ENTITY_KINDS);
 
 /** The literal (non-entity) object kinds a predicate may carry. */
@@ -69,6 +69,7 @@ export const EVALUATOR_KINDS = [
   'fact-match-symmetric',
   'alias',
   'membership-transitive',
+  'custody-chain',
 ] as const;
 export const EvaluatorKindSchema = z.enum(EVALUATOR_KINDS);
 export type EvaluatorKind = z.infer<typeof EvaluatorKindSchema>;
@@ -152,6 +153,23 @@ export const PredicateDefinitionSchema = z
       .string()
       .min(1, 'a predicate needs an extractor description'),
     implication: ImplicationSchema.optional(),
+    /**
+     * `functional` predicates have at most one object for a subject in any
+     * overlapping window. Absent means `multi` (plot-library Req 9.1).
+     */
+    cardinality: z.enum(['functional', 'multi']).optional(),
+    /**
+     * An optional third argument (the item a handover carries, for example).
+     * Renderers expose it as `{instrument}` (plot-library Req 11.4).
+     */
+    instrument: z
+      .object({
+        entity: z
+          .array(z.enum(['item', 'npc', 'unk', 'org']))
+          .min(1, 'an instrument must allow at least one entity kind'),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type PredicateDefinition = z.infer<typeof PredicateDefinitionSchema>;

@@ -13,3 +13,4 @@ export * from './lib/save-load/index.js';
 export * from './lib/endpoint-error/index.js';
 export * from './lib/feed/index.js';
 export * from './lib/shell/index.js';
+export * from './lib/campaign/index.js';

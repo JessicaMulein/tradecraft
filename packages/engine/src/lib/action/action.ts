@@ -48,6 +48,8 @@
 import type { LocId, NpcId, Phase, Proposition } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import type { Location } from '../city/city.js';
+import { effectiveLocation } from '../ambient/locations.js';
+import { ambientScene, incidentFactLines } from '../ambient/prompt.js';
 import { balance } from '../station/ledger.js';
 import { formatDate, type NamerContext } from '../docs/namer.js';
 import type { Namer } from '@tradecraft/content';
@@ -55,6 +57,7 @@ import type { Prng } from '../prng/prng.js';
 import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
 import { scheduledLocation } from '../city/npc.js';
 import type { ContentSet, LocationType } from '@tradecraft/content';
+import { attendDutyLocation, quoteAttendDuty, resolveAttendDuty } from '../ambient/cover.js';
 import { quoteTravel, resolveTravel } from './travel.js';
 import { quoteRead, resolveRead } from './read.js';
 import {
@@ -149,6 +152,8 @@ export function actionLocation(state: WorldState, a: Action): LocId | undefined 
     case 'arrest':
     case 'wait':
       return undefined;
+    case 'attend-duty':
+      return attendDutyLocation(state, a.duty);
   }
 }
 
@@ -200,16 +205,25 @@ export function locationGate(
   if (loc === undefined) {
     return `no such Location ${locId}`;
   }
+  const overlays = state.ambient?.overlays ?? [];
+  const effective = overlays.length === 0 ? undefined : effectiveLocation(loc, overlays, state.time);
+  const hours = effective?.location ?? loc;
+
+  if (effective !== undefined && effective.status !== 'open' && effective.status !== 'newly-opened') {
+    return `${loc.name} is ${effective.status}`;
+  }
 
   // Opening hours: a closed Location rejects every action against it.
-  if (!isOpenAt(loc, state.time.phase)) {
+  if (!isOpenAt(hours, state.time.phase)) {
     return `${loc.name} is closed in this phase`;
   }
 
   // Allowed actions: the Location Type declares which actions it permits. A
   // `travel` to a Location is always permitted (arriving is not a Location
-  // action the Type gates); the gate applies to actions *performed at* a place.
-  if (a.kind === 'travel') {
+  // action the Type gates). A cover duty is kept at whatever place the cover
+  // fits, and no Location Type lists `attend-duty`, so the duty quote is the
+  // gate: the player is there, in the slot.
+  if (a.kind === 'travel' || a.kind === 'attend-duty') {
     return undefined;
   }
   const type = locationTypeOf(content, loc);
@@ -389,12 +403,14 @@ export function sceneAt(state: WorldState, locId: LocId): SceneDescriptor {
   if (loc === undefined) {
     return { loc: locId, description: '', atmosphere: [], risk: 0, visible: [] };
   }
+  const ambient = ambientScene(state, locId);
   return {
     loc: locId,
     description: loc.description,
     atmosphere: [...loc.atmosphere],
     risk: loc.risk,
     visible: visibleNpcsAt(state, locId),
+    ...(ambient === undefined ? {} : { ambient }),
   };
 }
 
@@ -511,7 +527,7 @@ function quoteKind(state: WorldState, a: Action, ctx: ResolverContext): ActionQu
     case 'decrypt':
       return quoteDecrypt(state, a);
     case 'cable':
-      return quoteCable(state, a);
+      return quoteCable(state, a, ctx);
     case 'task':
       return quoteTask(state, a);
     case 'confront':
@@ -526,6 +542,8 @@ function quoteKind(state: WorldState, a: Action, ctx: ResolverContext): ActionQu
       return quoteArrest(state, a, ctx);
     case 'wait':
       return quoteWait(a);
+    case 'attend-duty':
+      return quoteAttendDuty(state, a.duty);
     default:
       // `a` is `never` here (compile-time exhaustiveness). Only a value outside
       // the union reaches this at run time, and it is refused, not thrown on.
@@ -572,7 +590,30 @@ export interface ResolveResult {
  * {@link ActionResult}, plus the End Condition an arrest or a materiel seizure
  * produced ({@link ResolveResult}).
  */
+function appendIncidentLines(outcome: ResolveResult): ResolveResult {
+  const lines = incidentFactLines(outcome.next, outcome.next.player.loc);
+  if (lines.length === 0) {
+    return outcome;
+  }
+  return {
+    ...outcome,
+    result: {
+      ...outcome.result,
+      factLines: [...outcome.result.factLines, ...lines],
+    },
+  };
+}
+
 export function resolve(
+  state: WorldState,
+  a: Action,
+  rng: Prng,
+  ctx: ResolverContext,
+): ResolveResult {
+  return appendIncidentLines(resolveBody(state, a, rng, ctx));
+}
+
+function resolveBody(
   state: WorldState,
   a: Action,
   rng: Prng,
@@ -671,6 +712,7 @@ export function resolve(
         rng,
         seizedTemplateOf(ctx.content),
         (rendered, obs) => renderFactLines(ctx.content, rendered, obs),
+        { ...(ctx.truth === undefined ? {} : { truth: ctx.truth }) },
       );
       return serviced.ended === undefined
         ? { next: serviced.next, result: serviced.result }
@@ -711,8 +753,11 @@ export function resolve(
       // due. `quoteCable` has already checked the player is at an open Station.
       // Draws nothing. Fact Line rendering is left to this layer (so
       // `./cable.ts` need not import this module and form a cycle).
-      return resolveCable(state, a, (rendered, obs) =>
-        renderFactLines(ctx.content, rendered, obs),
+      return resolveCable(
+        state,
+        a,
+        (rendered, obs) => renderFactLines(ctx.content, rendered, obs),
+        ctx,
       );
     case 'task':
       // Task (slice-integration Req 10.3–10.7): run `runAssetTask` once on
@@ -798,6 +843,20 @@ export function resolve(
       return arrested.ended === undefined
         ? { next: arrested.next, result: arrested.result }
         : { next: arrested.next, result: arrested.result, ended: arrested.ended };
+    }
+    case 'attend-duty': {
+      const attended = resolveAttendDuty(state, a.duty);
+      const observations = attended.lines.map((line) => ({ kind: 'message' as const, line }));
+      return {
+        next: attended.next,
+        result: {
+          observations,
+          factLines: attended.lines,
+          scene: sceneAt(attended.next, attended.next.player.loc),
+          events: [],
+          claimsAdded: [],
+        },
+      };
     }
     case 'wait': {
       // Wait (Req 25.5, 25.6): at a public, open Location it makes passive

@@ -1,0 +1,8 @@
+/**
+ * @deprecated Use LinterType instead. It will be removed in Nx v22.
+ */
+export declare enum Linter {
+    EsLint = "eslint",
+    None = "none"
+}
+export type { LinterType } from '@nx/js';

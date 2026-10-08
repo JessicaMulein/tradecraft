@@ -36,6 +36,7 @@
 
 import {
   asTruth,
+  type EntityId,
   type GameTime,
   type NpcId,
   type Proposition,
@@ -170,6 +171,11 @@ export class TruthDraft implements TruthAccess {
     return staged === undefined ? this.store.identityOf(unk) : asTruth(staged);
   }
 
+  /** Origins are fixed at instantiation, so the draft reads the store's. */
+  itemOrigin(item: EntityId): EntityId | undefined {
+    return this.store.itemOrigin(item);
+  }
+
   /** The store's Claim-truths, then the staged ones, each branded. A fresh copy. */
   claimTruths(): ReadonlyArray<Truth<ClaimTruthRecord>> {
     const committed = this.store.claimTruths();
@@ -273,6 +279,7 @@ export class TruthDraft implements TruthAccess {
       predicates: this.store.predicates,
       facts: () => facts,
       resolveUnk: (unk) => this.identityOf(unk),
+      itemOrigin: (item) => this.itemOrigin(item),
     };
   }
 }

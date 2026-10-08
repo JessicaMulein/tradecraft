@@ -1,0 +1,7 @@
+id: ambient
+version: 1.0.0
+contentSchema: 2
+role: extension
+requires:
+  - id: core
+    range: "^1.0.0"

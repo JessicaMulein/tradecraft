@@ -231,6 +231,27 @@ function withIntercept(state: WorldState, id: InterceptId): WorldState {
   };
 }
 
+/** A pending cover duty at the player's current place and time. */
+function withPendingDuty(state: WorldState, id: string): WorldState {
+  const duty = {
+    id,
+    template: 'desk-work',
+    loc: state.player.loc,
+    slot: { day: state.time.day, phase: state.time.phase },
+    phases: 1,
+    mandatory: true,
+    standingGain: 0.04,
+    suspicionDelta: 0.02,
+    attendees: [] as const,
+    status: 'pending' as const,
+  };
+  const ambient = {
+    ...(state.ambient ?? {}),
+    duties: [...(state.ambient?.duties ?? []), duty],
+  };
+  return { ...state, ambient: ambient as WorldState['ambient'] };
+}
+
 /** The kinds the catalogue offered. */
 function kindsOf(state: WorldState): Set<string> {
   return new Set(buildActionCatalogue(state, CTX).map((o) => o.action.kind));
@@ -525,6 +546,19 @@ describe('PlayerViewEngine — quotes read the Case File projection', () => {
       .actions()
       .find((o) => o.action.kind === 'arrest' && (o.action as { npc: string }).npc === target);
     expect(offered?.quote.allowed).toBe(true);
+  });
+});
+
+describe('buildActionCatalogue — cover duties', () => {
+  it('offers attend-duty for a pending cover duty and omits it when there is none', () => {
+    const w = world();
+    expect(kindsOf(w).has('attend-duty')).toBe(false);
+    const dutyId = 'duty:desk-work:0:1';
+    const offered = buildActionCatalogue(withPendingDuty(w, dutyId), CTX).filter(
+      (option) => option.action.kind === 'attend-duty',
+    );
+    expect(offered.map((option) => (option.action as { duty: string }).duty)).toEqual([dutyId]);
+    expectWellFormedQuote(offered[0]?.quote ?? { allowed: false, phases: 0, money: 0 });
   });
 });
 

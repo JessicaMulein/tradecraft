@@ -1,0 +1,32 @@
+- id: review-board
+  use: review
+  title: Review board
+  body: The board records {name} at the rank of {rank}. The score for this posting is {score}.
+- id: capture-outcome
+  use: capture
+  title: Capture
+  body: Headquarters records a capture. The outcome on file is {outcome}.
+- id: accusation
+  use: accusation
+  title: Accusation
+  body: Headquarters records your accusation against {name}. The cable names no one else.
+- id: personal-file
+  use: personal-file
+  title: Personal file
+  body: Your file lists the people you can name, and the cities and years where you saw them.
+- id: occupation-couriers
+  use: background-event
+  title: Courier season
+  body: Courier routes thicken as the occupation borders settle.
+- id: hardening-radios
+  use: background-event
+  title: New radio sets
+  body: New radio sets reach the stations, and microdot film follows them.
+- id: crisis-cables
+  use: background-event
+  title: Border crisis
+  body: A border crisis fills the cables. Short burst transmissions become common.
+- id: wall-barrier
+  use: background-event
+  title: The barrier
+  body: A barrier divides the city. Transistor sets replace the older radios.

@@ -46,10 +46,13 @@ export const MAX_EXTRACTED_CLAIMS = 8;
 export const UNKNOWN_ENTITY = 'unknown';
 
 /** The id-grammar fragments the schema accepts for each entity argument kind. */
-const ENTITY_PATTERNS: Readonly<Record<'npc' | 'unk' | 'org', string>> = {
+const ENTITY_PATTERNS: Readonly<Record<'npc' | 'unk' | 'org' | 'loc' | 'item' | 'evt', string>> = {
   npc: 'npc:[A-Za-z0-9][A-Za-z0-9_-]*',
   unk: 'unk:(?:0|[1-9][0-9]*)',
   org: 'org:[A-Za-z0-9][A-Za-z0-9_-]*',
+  loc: 'loc:[A-Za-z0-9][A-Za-z0-9_-]*',
+  item: 'item:[A-Za-z0-9][A-Za-z0-9_./-]*',
+  evt: 'evt:[A-Za-z0-9][A-Za-z0-9_-]*',
 };
 
 /**
@@ -58,7 +61,9 @@ const ENTITY_PATTERNS: Readonly<Record<'npc' | 'unk' | 'org', string>> = {
  * generated JSON Schema is a single readable `pattern` the endpoint renders
  * cleanly.
  */
-function entitySchema(kinds: readonly ('npc' | 'unk' | 'org')[]): z.ZodType<string> {
+function entitySchema(
+  kinds: readonly ('npc' | 'unk' | 'org' | 'loc' | 'item' | 'evt')[],
+): z.ZodType<string> {
   const alternatives = [...kinds.map((k) => ENTITY_PATTERNS[k]), UNKNOWN_ENTITY];
   const pattern = new RegExp(`^(?:${alternatives.join('|')})$`);
   return z.string().regex(pattern);

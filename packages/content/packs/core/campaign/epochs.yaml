@@ -1,0 +1,26 @@
+# The 1948–1962 era. Events are fictional station history, not a chronicle
+# of the real period. The ranges meet and do not overlap.
+- id: occupation-years
+  years: [1948, 1950]
+  ciphers: [caesar, columnar, vigenere, book, otp]
+  flags: [courier-heavy]
+  tension: [0.4, 0.6]
+  events: [occupation-couriers]
+- id: hardening
+  years: [1951, 1955]
+  ciphers: [caesar, columnar, vigenere, book, otp]
+  flags: [radio-sets, microdot]
+  tension: [0.5, 0.7]
+  events: [hardening-radios]
+- id: crisis-years
+  years: [1956, 1958]
+  ciphers: [caesar, columnar, vigenere, book, otp]
+  flags: [burst-transmission, microdot]
+  tension: [0.6, 0.9]
+  events: [crisis-cables]
+- id: wall-years
+  years: [1959, 1962]
+  ciphers: [caesar, columnar, vigenere, book, otp]
+  flags: [burst-transmission, transistor]
+  tension: [0.6, 1]
+  events: [wall-barrier]

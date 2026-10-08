@@ -325,14 +325,30 @@ const altHashArb = fc
 const corruptBytesArb = fc.oneof(
   // Not valid JSON at all.
   fc.string({ maxLength: 40 }).map((s) => `${s}\u0000not json {`),
-  // Valid JSON, but not a save snapshot.
+  // Valid JSON, but not a save snapshot. A readable numeric `version` other
+  // than the supported one is a version error, so those values stay out of
+  // this arbitrary.
   fc
     .oneof(
-      fc.jsonValue().map((v) => JSON.stringify(v)),
+      fc
+        .jsonValue()
+        .map((v) => JSON.stringify(v))
+        .filter((text) => {
+          try {
+            const parsed: unknown = JSON.parse(text);
+            if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+              return true;
+            }
+            const version = (parsed as { version?: unknown }).version;
+            return typeof version !== 'number' || version === SAVE_VERSION;
+          } catch {
+            return true;
+          }
+        }),
       fc.constant('null'),
       fc.constant('[]'),
       fc.constant('{}'),
-      fc.constant('{"version":2}'),
+      fc.constant('{"version":3}'),
     ),
 );
 

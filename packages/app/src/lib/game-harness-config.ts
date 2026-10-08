@@ -33,12 +33,26 @@ export const WALK_REPO_ROOT = resolvePath(
 );
 
 /**
+ * The scenario fields a harness may change from the core defaults: which packs
+ * to load, the city, and the opt-in plot-library and ambient-world features. A
+ * calibration run passes these to measure the balance with those features on.
+ */
+export interface ScenarioOverrides {
+  readonly packs?: { readonly dirs: readonly string[]; readonly load: readonly string[] };
+  readonly setting?: { readonly city: string; readonly startDate?: string };
+  readonly plotSelection?: { readonly enabled: boolean };
+  readonly ambient?: { readonly enabled: boolean; readonly density?: 'sparse' | 'standard' | 'rich' };
+  readonly mole?: boolean;
+}
+
+/**
  * A fully-specified, deterministic {@link ScenarioConfig} the harnesses generate
  * worlds from: the core pack with unit recruitment weights, like the golden
  * replay fixtures. No randomness and no fs beyond the pack load, so every walk
- * of a given seed regenerates the same world.
+ * of a given seed regenerates the same world. `overrides` replaces whole
+ * top-level blocks (packs, setting, plotSelection, ambient, mole).
  */
-export function walkScenario(preset = 'standard'): ScenarioConfig {
+export function walkScenario(preset = 'standard', overrides: ScenarioOverrides = {}): ScenarioConfig {
   return ScenarioConfigSchema.parse({
     difficulty: { preset },
     mole: true,
@@ -58,6 +72,7 @@ export function walkScenario(preset = 'standard'): ScenarioConfig {
       exposure: { k1: 1, k2: 1, k3: 1 },
       turn: { w1: 1, w2: 1, w3: 1, w4: 1, w5: 1 },
     },
+    ...overrides,
   });
 }
 

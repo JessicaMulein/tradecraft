@@ -105,7 +105,7 @@ Dependencies on other follow-on specs, as interface assumptions:
 - [ ] 4. Checkpoint - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 5. Region clock and Fidelity Tiers
-  - [ ] 5.1 Define the ambient-world contract
+  - [x] 5.1 Define the ambient-world contract
     - Define the `AmbientSimulator` interface and the `AmbientCoupling` union, including the six ambient-world hook kinds (delay-stage, reroute-location, channel-outage, cover-suspicion-delta, informant-report, detection-bonus) alongside location-closed, crowd-modifier and route-delay.
     - Implement `applyCouplings` for every kind, with ambient-world's caps.
     - Implement the `SliceAmbient` fallback adapter.

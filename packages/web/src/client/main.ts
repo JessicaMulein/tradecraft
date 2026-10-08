@@ -2,6 +2,8 @@
 import { getJson, postJson, postStream, readSse, type ApiError } from './api.js';
 import { AudioPlayer } from './audio/player.js';
 import { Director } from './director.js';
+import * as aids from './aids.js';
+import { hereStatus, isDutyAlert, isNoticeFact, statusLine } from './city-text.js';
 import { GROUPS, costLabel, emptyNames, loadNames, optionLabel, phaseName, type Names } from './labels.js';
 import type { CueInputs, CueManifest, CueMap } from '../shared/cue/types.js';
 
@@ -14,7 +16,8 @@ interface Offered {
 interface StateBody {
   started: boolean; stateVersion: number; paused: boolean; turnRunning: boolean;
   status?: { time: { day: number; phase: number | string }; location: { name: string }; budget: number; standing: number; ended: boolean };
-  here?: { location: { tags: string[]; type: string; district: { id: string } } };
+  here?: { location: { tags: string[]; type: string; district: { id: string }; status?: string } };
+  dutyAlert?: string | null;
   scene?: { location: { name: string; description: string; tags: string[]; type: string; district: { id: string; name: string } }; weather: string; crowd: string; visible: { label: string }[] };
   actions?: Offered[];
 }
@@ -37,6 +40,7 @@ let director: Director | undefined;
 let busy = false;
 let screen: CueInputs['screen'] = 'title';
 let lastActionKind: string | undefined;
+let dutyAlert: string | undefined;
 let factKinds: string[] = [];
 let gameOver: CueInputs['gameOver'];
 let current: StateBody | undefined;
@@ -89,12 +93,26 @@ function render(s: StateBody): void {
   $('title').hidden = true;
   $('game').hidden = false;
   const st = s.status;
-  $('status').textContent = `Day ${st.time.day}, ${phaseName(st.time.phase)} · ${st.location.name} · budget ${st.budget} · standing ${st.standing}`;
+  if (s.dutyAlert !== undefined) {
+    dutyAlert = s.dutyAlert ?? undefined;
+  }
+  $('status').textContent = statusLine(
+    {
+      day: st.time.day,
+      phase: phaseName(st.time.phase),
+      location: st.location.name,
+      budget: st.budget,
+      standing: st.standing,
+    },
+    dutyAlert,
+  );
   const sc = $('scene');
+  const statusNote = hereStatus(s.here?.location.status);
   sc.replaceChildren(
     text('h2', '', s.scene.location.name),
     text('p', '', s.scene.location.description),
     text('p', 'dim', `${s.scene.weather}; ${s.scene.crowd} crowd. ${s.scene.visible.map((v) => v.label).join(', ')}`),
+    ...(statusNote === undefined ? [] : [text('p', 'dim', statusNote)]),
   );
   renderActions(s.actions ?? []);
   direct();
@@ -282,7 +300,10 @@ function appendChunk(c: Record<string, unknown>): void {
   const feed = $('feed');
   const kind = c['kind'] as string;
   let el: HTMLElement | undefined;
-  if (kind === 'fact') el = text('p', 'fact', String(c['text']));
+  if (kind === 'fact') {
+    const line = String(c['text']);
+    el = text('p', isNoticeFact(line) ? 'fact notice' : 'fact', line);
+  }
   else if (kind === 'flavour') el = text('p', 'flavour', String(c['text']));
   else if (kind === 'speech') {
     el = document.createElement('p'); el.className = 'speech';
@@ -387,20 +408,52 @@ async function choose(o: Offered): Promise<void> {
   await runTurn('/api/act', body, a.kind, after);
 }
 
+const AID_TITLES: Record<string, string> = {
+  journal: 'Journal',
+  map: 'Map',
+  people: 'People',
+  intercepts: 'Intercepts',
+  help: 'Help',
+  city: 'City',
+  stories: 'Stories',
+  duties: 'Cover duties',
+};
+
 async function showAid(name: string): Promise<void> {
-  const pre = $('aid');
-  if (!pre.hidden && pre.dataset['name'] === name) {
-    pre.hidden = true;
+  const box = $('aid');
+  if (!box.hidden && box.dataset['name'] === name) {
+    box.hidden = true;
     if (screen === 'intercept') { screen = 'city'; direct(); }
     return;
   }
   try {
     const body = await getJson<Record<string, unknown>>(`/api/views/${name}`);
-    pre.textContent = JSON.stringify(body[name] ?? body, null, 2);
-    pre.dataset['name'] = name;
-    pre.hidden = false;
+    const v = body[name] as never;
+    let content: HTMLElement;
+    switch (name) {
+      case 'journal': content = aids.journal(v, names, (t) => void addNote(t)); break;
+      case 'map': content = aids.map(v); break;
+      case 'city': content = aids.city(v); break;
+      case 'stories': content = aids.stories(v); break;
+      case 'duties': content = aids.duties(v); break;
+      case 'people': content = aids.people(v); break;
+      case 'intercepts': content = aids.intercepts(v, names); break;
+      default: content = aids.help(v, (k) => GROUPS.find(([g]) => g === k)?.[1] ?? k, costLabel);
+    }
+    box.replaceChildren(aids.el('h2', '', AID_TITLES[name] ?? name), content);
+    box.dataset['name'] = name;
+    box.hidden = false;
     if (name === 'intercepts' && screen === 'city') { screen = 'intercept'; direct(); }
     else if (name !== 'intercepts' && screen === 'intercept') { screen = 'city'; direct(); }
+  } catch (e) { notice(errText(e)); }
+}
+
+async function addNote(textValue: string): Promise<void> {
+  const day = current?.status?.time.day ?? 0;
+  try {
+    await postJson('/api/notes', { attachTo: day, text: textValue });
+    $('aid').hidden = true;
+    await showAid('journal');
   } catch (e) { notice(errText(e)); }
 }
 
@@ -462,8 +515,17 @@ async function main(): Promise<void> {
   window.setInterval(() => { if (screen !== 'title') direct(); }, 5000);
   const es = new EventSource('/api/events');
   es.addEventListener('notification', (e) => {
-    const n = JSON.parse((e as MessageEvent<string>).data) as { text?: string };
-    if (n.text !== undefined) notice(n.text);
+    const n = JSON.parse((e as MessageEvent<string>).data) as { kind?: string; factLine?: string; text?: string };
+    const line = n.factLine ?? n.text;
+    if (line === undefined) return;
+    if (isDutyAlert(n.kind)) {
+      dutyAlert = line;
+      if (current?.status !== undefined && current.scene !== undefined) {
+        render({ ...current, dutyAlert: line });
+      }
+      return;
+    }
+    notice(line);
   });
   try {
     const s = await getJson<StateBody>('/api/state');

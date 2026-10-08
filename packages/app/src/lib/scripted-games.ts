@@ -82,7 +82,12 @@ import {
 
 import { createGame, type Game } from './composition-root.js';
 import { buildFakeSeams } from './fake-seams.js';
-import { WALK_REPO_ROOT, walkModels, walkScenario } from './game-harness-config.js';
+import {
+  WALK_REPO_ROOT,
+  walkModels,
+  walkScenario,
+  type ScenarioOverrides,
+} from './game-harness-config.js';
 
 // ---------------------------------------------------------------------------
 // The shared harness (Req 23.1, 23.5)
@@ -104,6 +109,8 @@ export interface ScriptedGameOptions {
   readonly preset: ScriptedPreset;
   /** Whether the internal mole is in play. Off by default, as in the shipped scenario. */
   readonly mole?: boolean;
+  /** Scenario blocks to change from the core defaults (packs, city, plot library, ambient). */
+  readonly scenario?: ScenarioOverrides;
 }
 
 /** One turn a script played: when it started, what was played and what streamed back. */
@@ -165,7 +172,7 @@ export class ScriptedGame {
    * `createGame` builds no endpoint client (Req 23.5).
    */
   static async start(options: ScriptedGameOptions): Promise<ScriptedGame> {
-    const scenario = walkScenario(options.preset);
+    const scenario = walkScenario(options.preset, options.scenario);
     const holder: { engine?: PlayerViewEngine } = {};
     const seams: Partial<TurnPipelineConfig> = {
       ...buildFakeSeams({

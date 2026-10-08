@@ -78,9 +78,13 @@ import {
   stageTransmissionPropositions,
 } from '../cipher/world-intercepts.js';
 import { composeNewspaper, dailyMaterial } from '../docs/newspaper.js';
+import { falseFlagRumours, withFalseFlagRumour } from '../plotgen/twists.js';
 import { publicTextLocations } from '../docs/public-text.js';
 import type { NamerContext } from '../docs/namer.js';
 import { projectFullTick, applyFullTick } from '../hostile/project.js';
+import { publishOutletEditions, retirePreviousEditions } from '../ambient/news.js';
+import { ambientDayBoundary } from '../ambient/tick.js';
+import { informantReportsForTick } from '../ambient/hooks.js';
 import { dailyTickFull } from '../hostile/hostile.js';
 import { executePlotDay, type PlotWorld } from './plot-execution.js';
 import { liveDisruption } from './disruption.js';
@@ -693,21 +697,53 @@ function boundaryMoves(
  * seizure it recorded can abort the Plot (Req 4.5).
  */
 const hostileTickHook: WorldHook = (draft, ctx) => {
-  const projection = projectFullTick(draft, ctx.time.day, ctx.scratch, ctx.deps);
+  const ambient = ambientDayBoundary(draft);
+  const working = ambient.state;
+  const projection = projectFullTick(working, ctx.time.day, ctx.scratch, ctx.deps);
+  const bonuses = working.ambient?.detectionBonuses;
+  const reports = working.ambient === undefined ? undefined : informantReportsForTick(working.ambient);
   const result = dailyTickFull(
     projection.state,
     projection.candidates,
     ctx.time,
     ctx.rng,
     projection.base,
-    projection.inputs,
+    {
+      ...projection.inputs,
+      ...(bonuses !== undefined && Object.keys(bonuses).length > 0
+        ? { detectionBonuses: bonuses }
+        : {}),
+      ...(reports !== undefined && reports.length > 0 ? { informantReports: reports } : {}),
+    },
   );
-  const applied = applyFullTick(draft, result, ctx.scratch, ctx);
+  let applied = applyFullTick(working, result, ctx.scratch, ctx);
+  if (
+    applied.state.ambient !== undefined &&
+    (result.spawnedDetectionBonuses.length > 0 ||
+      (bonuses !== undefined && Object.keys(bonuses).length > 0) ||
+      (reports !== undefined && reports.length > 0))
+  ) {
+    const detectionBonuses: Record<string, number> = {};
+    for (const bonus of result.spawnedDetectionBonuses) {
+      detectionBonuses[bonus.npc] = bonus.bonus;
+    }
+    applied = {
+      ...applied,
+      state: {
+        ...applied.state,
+        ambient: {
+          ...applied.state.ambient,
+          detectionBonuses,
+          informantReports: [],
+        },
+      },
+    };
+  }
 
   const abort = worldAbortCheck(applied.state, ctx.time);
   return {
     state: abort.state,
-    events: [...applied.events, ...abort.events],
+    events: [...applied.events, ...abort.events, ...ambient.events],
   };
 };
 
@@ -757,11 +793,14 @@ const newspaperHook: WorldHook = (draft, ctx) => {
     orgs: draft.orgs,
   };
   const daily = createPrng(ctx.dailyStreamSeed);
-  const composed = composeNewspaper(
-    template,
-    withPlants,
-    { ...namer, date: ctx.time },
-    daily,
+  const composed = withFalseFlagRumour(
+    composeNewspaper(
+      template,
+      withPlants,
+      { ...namer, date: ctx.time },
+      daily,
+    ),
+    ctx.time.day === 1 ? falseFlagRumours(draft) : [],
   );
 
   const obtainableAt = publicTextLocations(draft.city);
@@ -783,13 +822,29 @@ const newspaperHook: WorldHook = (draft, ctx) => {
     doc: document.id as DocId,
   };
 
+  const sliceEdition = {
+    ...draft,
+    documents: { ...draft.documents, [document.id]: document },
+    documentPropositions,
+    newspapers: { ...draft.newspapers, [ctx.time.day]: document.id as DocId },
+  };
+  const withOutlets =
+    draft.ambient === undefined
+      ? sliceEdition
+      : publishOutletEditions(
+          sliceEdition,
+          template,
+          namer,
+          ctx.time,
+          createPrng(`${ctx.dailyStreamSeed}:outlets`),
+        );
+
+  const published = withOutlets.ambient === undefined
+    ? withOutlets
+    : retirePreviousEditions(withOutlets, ctx.time.day);
+
   return {
-    state: {
-      ...draft,
-      documents: { ...draft.documents, [document.id]: document },
-      documentPropositions,
-      newspapers: { ...draft.newspapers, [ctx.time.day]: document.id as DocId },
-    },
+    state: published,
     events: [event],
   };
 };

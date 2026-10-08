@@ -51,6 +51,7 @@ export const DOCUMENT_KINDS = [
   'dossier',
   'cable',
   'seized',
+  'notice',
 ] as const;
 
 /** One Document kind. */

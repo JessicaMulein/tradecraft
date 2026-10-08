@@ -396,6 +396,51 @@ describe('newspaper hook', () => {
     expect(event?.kind === 'newspaper' && event.doc).toBe(docId);
   });
 
+  it('sells an outlet edition at the same kiosks as the city paper', () => {
+    const base = atDay(BASE, 1);
+    const armed = {
+      ...base,
+      ambient: {
+        preparedEditions: [
+          {
+            outlet: 'tagblatt',
+            items: [
+              {
+                id: 'story:strike',
+                source: 'city-event' as const,
+                headline: 'The works are out',
+                summary: 'The morning shift did not report.',
+                asserts: [],
+              },
+            ],
+          },
+        ],
+        outlets: [{ id: 'tagblatt', name: 'The Tagblatt', slant: 'commercial' as const }],
+      },
+    } as WorldState;
+    const { state } = HOOKS.newspaper(armed, ctx(1));
+    const cityPaper = state.documents[state.newspapers[1]];
+    const outletId = Object.keys(state.documents).find((id) => id.includes('outlet-tagblatt'));
+    expect(outletId).toBeDefined();
+    if (outletId === undefined || cityPaper === undefined) {
+      return;
+    }
+    expect(state.documents[outletId]?.obtainableAt).toEqual(cityPaper.obtainableAt);
+    expect(state.documents[outletId]?.obtainableAt?.length ?? 0).toBeGreaterThan(0);
+    expect(state.documents[outletId]?.title).toBe('The Tagblatt');
+  });
+
+  it('takes yesterday\'s paper off the rack when today\'s edition is published', () => {
+    const armed = { ...atDay(BASE, 1), ambient: { preparedEditions: [] } } as WorldState;
+    const first = HOOKS.newspaper(armed, ctx(1)).state;
+    const yesterday = first.documents[first.newspapers[1]];
+    expect(yesterday?.obtainableAt?.length ?? 0).toBeGreaterThan(0);
+    const second = HOOKS.newspaper(atDay(first, 2), ctx(2)).state;
+    expect(second.documents[first.newspapers[1]]?.obtainableAt).toEqual([]);
+    const today = second.documents[second.newspapers[2]];
+    expect(today?.obtainableAt?.length ?? 0).toBeGreaterThan(0);
+  });
+
   it('folds a scratch plant into the published edition, asserting its Proposition (Req 2.5, 3.8)', () => {
     // A real plant carries a real false-belief Proposition. The edition must
     // provably assert it — not merely be published. With only the city-weather

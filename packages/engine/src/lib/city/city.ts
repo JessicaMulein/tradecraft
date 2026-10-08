@@ -247,6 +247,7 @@ export function crowdAt(
   loc: Location,
   t: GameTime,
   weather: Weather,
+  crowdFactor = 1,
 ): CrowdLevel {
   const model = city.crowdModels[loc.type];
   if (model === undefined) {
@@ -255,7 +256,7 @@ export function crowdAt(
     // a defensive floor, not an expected path.
     return 'empty';
   }
-  return crowdLevel(model, t, weatherTagsFor(weather.condition, cityData));
+  return crowdLevel(model, t, weatherTagsFor(weather.condition, cityData), crowdFactor);
 }
 
 /** Map a `[0, ∞)` crowd value to its band. */
@@ -311,6 +312,7 @@ export function crowdLevel(
   model: CrowdModel,
   t: GameTime,
   weatherTags: ReadonlySet<string>,
+  crowdFactor = 1,
 ): CrowdLevel {
   let level = baseCrowd(model, t);
   for (const mod of model.weatherModifiers) {
@@ -318,7 +320,7 @@ export function crowdLevel(
       level *= mod.crowdMultiplier;
     }
   }
-  return bandOf(level);
+  return bandOf(level * crowdFactor);
 }
 
 // ---------------------------------------------------------------------------
@@ -345,6 +347,7 @@ export function travelCost(
   from: LocId,
   to: LocId,
   countersurveillance: boolean,
+  routes?: readonly Route[],
 ): number {
   const fromLoc = city.locations[from];
   const toLoc = city.locations[to];
@@ -358,7 +361,7 @@ export function travelCost(
     return csSurcharge;
   }
 
-  const base = shortestDistrictCost(city, fromLoc.district, toLoc.district);
+  const base = shortestDistrictCost(city, fromLoc.district, toLoc.district, routes ?? city.routes);
   return base === Infinity ? Infinity : base + csSurcharge;
 }
 
@@ -367,6 +370,7 @@ function shortestDistrictCost(
   city: City,
   from: DistrictId,
   to: DistrictId,
+  routes: readonly Route[],
 ): number {
   if (from === to) {
     return 0;
@@ -382,7 +386,7 @@ function shortestDistrictCost(
       list.push({ to: b, cost });
     }
   };
-  for (const route of city.routes) {
+  for (const route of routes) {
     addEdge(route.a, route.b, route.cost);
     addEdge(route.b, route.a, route.cost);
   }

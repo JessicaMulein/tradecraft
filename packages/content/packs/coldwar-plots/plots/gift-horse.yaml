@@ -1,0 +1,168 @@
+- id: gift-horse
+  templateSchema: 2
+  kind: plot
+  displayName: Gift horse
+  archetype: dangle
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - dangle
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: walk-in
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A stranger offers a secret at the first meeting and asks for nothing yet.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A handler is told the volunteer came in of his own accord.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - walk-in
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the gift horse is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the gift horse repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: belief
+      resolve: runtime
+      after: &a1
+        - confirm
+      alternatives:
+        - id: press
+          when:
+            - kind: alertness-at-least
+              value: 0.5
+              negate: true
+          stages:
+            - id: press-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: The volunteer pushes for a second meeting before the first has been checked.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The volunteer is instructed, over the air, to ask for money next.
+              onDisrupted: *a2
+        - id: drop
+          when:
+            - kind: default
+          stages:
+            - id: drop-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A parcel is left where the volunteer said it would be, and a second man watches it.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: A call confirms the parcel was collected by the man who was supposed to be watching it.
+              onDisrupted: *a2
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: identify-role
+        role: leader
+    failure:
+      - kind: stage-completed
+        stage: press-work
+      - kind: stage-completed
+        stage: drop-work

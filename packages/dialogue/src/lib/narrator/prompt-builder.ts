@@ -205,6 +205,18 @@ function renderDynamic(
     lines.push('No one else is in view.');
   }
 
+  if (scene.ambient !== undefined) {
+    if (scene.ambient.events.length > 0) {
+      lines.push(`The city: ${scene.ambient.events.join(', ')}.`);
+    }
+    if (scene.ambient.status !== undefined) {
+      lines.push(`The location is ${scene.ambient.status}.`);
+    }
+    for (const incident of scene.ambient.incidents) {
+      lines.push(incident);
+    }
+  }
+
   const facts =
     factLines.length === 0
       ? ['(No facts to narrate.)']

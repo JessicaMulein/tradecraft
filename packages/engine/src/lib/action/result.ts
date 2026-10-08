@@ -76,6 +76,15 @@ export interface SceneDescriptor {
   readonly risk: number;
   /** NPCs scheduled at the scene's Location at the current time. */
   readonly visible: readonly NpcId[];
+  /**
+   * Public city labels for the Narrator. Absent when ambient is off, and when
+   * nothing public is happening, so a slice scene stays the slice shape.
+   */
+  readonly ambient?: {
+    readonly events: readonly string[];
+    readonly status?: string;
+    readonly incidents: readonly string[];
+  };
 }
 
 /**

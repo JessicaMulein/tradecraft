@@ -1,0 +1,9 @@
+- id: gazette
+  name: "The Evening Gazette"
+  slant: commercial
+- id: herald
+  name: "The Morning Herald"
+  slant: government
+- id: parish
+  name: "The Parish Paper"
+  slant: church

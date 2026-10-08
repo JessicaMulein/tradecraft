@@ -70,6 +70,12 @@ import type { CityData } from '@tradecraft/content';
 
 import type { AliasResolver, CaseFile, Claim } from '../casefile/casefile.js';
 import { isAliasPredicate } from '../casefile/casefile.js';
+import { knownLocationStatus } from '../city/city-views.js';
+
+function statusField(state: WorldState, loc: string): { readonly status: string } | Record<string, never> {
+  const status = knownLocationStatus(state, loc);
+  return status === undefined ? {} : { status };
+}
 
 // ---------------------------------------------------------------------------
 // Person labels (name-or-descriptor; Requirement 23.4)
@@ -198,6 +204,8 @@ export interface HereView {
     readonly risk: number;
     /** Whether the Location is public (known from game start; Req 21.8). */
     readonly public: boolean;
+    /** Status the player last saw or read. Absent until they have learned one. */
+    readonly status?: string;
   };
   readonly crowd: CrowdLevel;
   readonly weather: string;
@@ -307,6 +315,7 @@ export function hereView(
       atmosphere: place === undefined ? [] : [...place.atmosphere],
       risk: place?.risk ?? 0,
       public: place?.public ?? false,
+      ...statusField(state, loc),
     },
     crowd: crowdNow(state, cityData, loc),
     weather: weatherNow(state, cityData).label,
@@ -572,6 +581,8 @@ export interface MapLocation {
    * yet, so this is a documented seam the player-aid shape already carries).
    */
   readonly lastVisit?: GameTime;
+  /** Status last seen or read. Omitted until the player has learned one. */
+  readonly status?: string;
 }
 
 /** A Route on the Map, with its phase cost (design: "Routes with travel costs"). */
@@ -709,6 +720,7 @@ export function mapView(state: WorldState, cityData: CityData): MapView {
       crowd: crowdNow(state, cityData, loc.id),
       deadDrops: drops,
       travelCost: travelCost(state.city, here, loc.id, false),
+      ...statusField(state, loc.id),
     };
     const bucket = byDistrict.get(loc.district);
     if (bucket === undefined) {

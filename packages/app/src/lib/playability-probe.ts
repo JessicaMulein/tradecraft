@@ -24,6 +24,7 @@ import {
   type WorldState,
 } from '@tradecraft/engine';
 import type { PlayerViewEngine, TurnChunk } from '@tradecraft/player-view';
+import type { ScenarioOverrides } from './game-harness-config.js';
 import { ScriptedGame, type ScriptedPreset } from './scripted-games.js';
 
 /** How a probed game ended, or why the probe stopped. */
@@ -65,13 +66,15 @@ export interface ProbeOptions {
    * daily case score, so any arrest threshold can be evaluated after the fact.
    */
   readonly calibrate?: boolean;
+  /** Scenario blocks to change from the core defaults (packs, city, plot library, ambient). */
+  readonly scenario?: ScenarioOverrides;
 }
 
 /** The most turns the probe plays before it reports `stalled`. */
 export const MAX_PROBE_TURNS = 1500;
 
-/** Phases between Station collection runs. */
-const SWEEP_EVERY_PHASES = 8;
+/** Phases between Station sweeps. Retention is two days, so this stays inside it. */
+const SWEEP_EVERY_PHASES = 4;
 
 function ordinal(t: GameTime): number {
   return t.day * 4 + t.phase;
@@ -156,6 +159,31 @@ function stationId(game: ScriptedGame): LocId | undefined {
     .map()
     .districts.flatMap((d) => d.locations)
     .find((l) => l.type === 'station-hq' || l.type.endsWith('/station-hq'))?.id;
+}
+
+/** A shift is open on its phase and the one after, matching the engine's grace. */
+function dutyOpen(
+  now: { day: number; phase: number },
+  slot: { day: number; phase: number },
+): boolean {
+  if (slot.day === now.day && slot.phase === now.phase) return true;
+  if (slot.phase < 3) return slot.day === now.day && now.phase === slot.phase + 1;
+  return now.day === slot.day + 1 && now.phase === 0;
+}
+async function keepCover(game: ScriptedGame): Promise<boolean> {
+  const state = world(game);
+  const now = state.time;
+  const due = (state.ambient?.duties ?? []).filter(
+    (duty) => duty.status === 'pending' && duty.mandatory && dutyOpen(now, duty.slot),
+  );
+  const duty = due[0];
+  if (duty === undefined) {
+    return false;
+  }
+  if (state.player.loc !== duty.loc) {
+    return travel(game, duty.loc);
+  }
+  return tryPlay(game, (a) => a.kind === 'attend-duty' && a.duty === duty.id);
 }
 
 /** Travel by the direct route if the catalogue offers it now. */
@@ -409,7 +437,12 @@ export async function probeSeed(
   preset: ScriptedPreset,
   options: ProbeOptions = {},
 ): Promise<ProbeResult> {
-  const game = await ScriptedGame.start({ seed, preset, seams: { classify: statedIntent } });
+  const game = await ScriptedGame.start({
+    seed,
+    preset,
+    seams: { classify: statedIntent },
+    ...(options.scenario === undefined ? {} : { scenario: options.scenario }),
+  });
   try {
     const initial = world(game);
     const finalDeadline = Math.max(...initial.plot.stages.map((s) => s.deadline.day));
@@ -433,6 +466,7 @@ export async function probeSeed(
       if (game.over) break;
       await decryptAll(game, decrypted);
       if (game.over) break;
+      if (await keepCover(game)) continue;
 
       const state = world(game);
       const handles = leaderHandles(state);

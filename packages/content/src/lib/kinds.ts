@@ -86,6 +86,8 @@ export const ArchetypeSchema = z
   .object({
     id: ContentIdSchema,
     role: ArchetypeRoleSchema,
+    /** When true, a recruited asset of this archetype can follow the officer. Absent means city-bound. */
+    mobile: z.boolean().optional(),
     allowedAllegiances: z
       .array(AllegianceSchema)
       .min(1, 'an archetype must allow at least one allegiance'),
@@ -351,6 +353,7 @@ export const DOCUMENT_KINDS = [
   'cable',
   'seized',
   'public-text',
+  'notice',
 ] as const;
 export const DocumentKindSchema = z.enum(DOCUMENT_KINDS);
 
@@ -420,7 +423,9 @@ export type PersonaLibrary = z.infer<typeof PersonaLibrarySchema>;
 /**
  * A Cover Identity the player can be issued: a title and employer org, the
  * Location Types where it fits plausibly, and the Cover Suspicion modifiers it
- * carries at those and other places.
+ * carries at those and other places. `official` is the campaign flag (default
+ * true when absent): an official cover is expelled on a burn, a non-official
+ * one is not.
  */
 export const CoverIdentitySchema = z
   .object({
@@ -437,6 +442,7 @@ export const CoverIdentitySchema = z
       })
       .strict(),
     tags: TagsFieldSchema,
+    official: z.boolean().optional(),
   })
   .strict();
 export type CoverIdentity = z.infer<typeof CoverIdentitySchema>;

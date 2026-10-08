@@ -1,0 +1,26 @@
+- id: budget-credit
+  cost: 2
+  effect:
+    kind: budget-credit
+    amount: 40
+- id: extra-drop
+  cost: 3
+  effect:
+    kind: extra-player-drop
+- id: trace-priority
+  cost: 2
+  effect:
+    kind: trace-priority
+- id: cipher-aid
+  cost: 3
+  effect:
+    kind: cipher-aid
+- id: prepared-legend
+  cost: 4
+  effect:
+    kind: prepared-legend
+- id: language-course
+  cost: 2
+  effect:
+    kind: language-crash-course
+    skill: german

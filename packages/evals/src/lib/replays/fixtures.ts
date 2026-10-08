@@ -120,6 +120,11 @@ export interface SessionManifest {
   readonly preset?: DifficultyPresetId;
   readonly plan: readonly PlanStep[];
   readonly modelsConfig: ModelsConfig;
+  /** Present when the session was recorded with ambient simulation on. */
+  readonly ambient?: {
+    readonly enabled: boolean;
+    readonly density: 'sparse' | 'standard' | 'rich';
+  };
 }
 
 /** A loaded golden fixture: its id, the replayable session and the golden. */
@@ -177,11 +182,15 @@ function presetOf(content: ContentSet, id: string): DifficultyPreset {
  * flag (`easy` | `standard` | `hard`); the golden-replay callers pass nothing
  * and keep the `standard` preset they recorded under.
  */
-export function buildInputs(preset: DifficultyPresetId = 'standard'): GenerateInputs {
+export function buildInputs(
+  preset: DifficultyPresetId = 'standard',
+  ambient?: SessionManifest['ambient'],
+): GenerateInputs {
   const { content, cityData, descriptors, publicTexts } = loadCore();
   const scenario = ScenarioConfigSchema.parse({
     difficulty: { preset },
     mole: true,
+    ...(ambient === undefined ? {} : { ambient }),
     recruitment: {
       pitch: { w1: 1, w2: 1, w3: 1, w4: 1 },
       firstContact: { a: 1, b: 1, c: 1, d: 1 },
@@ -283,9 +292,10 @@ export function loadFixture(
  * from that preset rather than one shared bundle.
  */
 export function loadAllFixtures(root: string = REPLAYS_DIR): LoadedFixture[] {
-  return listFixtureIds(root).map((id) =>
-    loadFixture(id, buildInputs(fixturePreset(id, root)), root),
-  );
+  return listFixtureIds(root).map((id) => {
+    const ambient = readManifest(join(root, id)).ambient;
+    return loadFixture(id, buildInputs(fixturePreset(id, root), ambient), root);
+  });
 }
 
 /**

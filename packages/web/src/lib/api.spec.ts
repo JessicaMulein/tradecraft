@@ -32,6 +32,7 @@ describe('read API', () => {
     const body = res.json() as { schemaVersion: number; started: boolean; actions: { ref: string }[] };
     expect(body.schemaVersion).toBe(1);
     expect(body.started).toBe(true);
+    expect(res.json()['dutyAlert']).toBeNull();
     expect(body.actions).toHaveLength(4);
     expect(new Set(body.actions.map((a) => a.ref)).size).toBe(4);
   });
@@ -43,9 +44,26 @@ describe('read API', () => {
     expect((await h.request({ path: '/api/views/journal' })).json()['error']).toEqual({ code: 'not-started' });
   });
 
+  it('puts a cover-duty notice on the status payload', async () => {
+    h = await startHarness();
+    h.engine.api.notifications.list = () =>
+      [
+        {
+          id: 'notification:duty',
+          kind: 'cover-duty-due',
+          at: { day: 3, phase: 0 },
+          factLine: 'Your employer expects you for Office hours.',
+          dismissed: false,
+          duty: 'Office hours',
+        },
+      ] as never;
+    const body = (await h.request({ path: '/api/state' })).json();
+    expect(body['dutyAlert']).toBe('Your employer expects you for Office hours.');
+  });
+
   it('serves each view and validates ids', async () => {
     h = await startHarness();
-    for (const name of ['journal', 'map', 'people', 'documents', 'intercepts', 'help']) {
+    for (const name of ['journal', 'map', 'people', 'documents', 'intercepts', 'help', 'city', 'stories', 'duties']) {
       const res = await h.request({ path: `/api/views/${name}` });
       expect(res.status, name).toBe(200);
       expect(res.json()[name], name).toBeDefined();

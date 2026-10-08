@@ -48,6 +48,7 @@ import {
   generateGame,
   type AdvanceWorldDeps,
   type GenerateInputs,
+  type PostingContext,
   type ScenarioConfig,
   type TruthStore,
   type WorldState,
@@ -158,6 +159,11 @@ export interface CreateGameOptions {
    * random seed.
    */
   readonly featuredSeeds?: FeaturedSeeds;
+  /**
+   * When set, `newGame` generates the slice from this Posting Context: carry,
+   * legend, year and history are applied on the posting's own streams.
+   */
+  readonly posting?: PostingContext;
 }
 
 /**
@@ -370,6 +376,7 @@ function buildGameFactory(
   content: ContentSet,
   inputsBase: Omit<GenerateInputs, 'preset' | 'scenario'>,
   scenario: ScenarioConfig,
+  posting?: PostingContext,
 ): GameFactory {
   return {
     generate(seed: string, opts: NewGameOptions) {
@@ -378,7 +385,7 @@ function buildGameFactory(
         preset: resolvePreset(content, opts.preset),
         scenario: { ...scenario, mole: opts.mole, narration: opts.narration },
       };
-      const { world, truth } = generateGame(seed, inputs);
+      const { world, truth } = generateGame(seed, inputs, {}, posting);
       return { inputs, world, truth };
     },
   };
@@ -544,7 +551,7 @@ export function createGame(options: CreateGameOptions): Game {
 
   // Step 5: the GameFactory and the facade. The facade starts game-less with the
   // placeholder stores; `newGame`/`load` replace every store in one swap.
-  const gameFactory = buildGameFactory(content, inputsBase, scenario);
+  const gameFactory = buildGameFactory(content, inputsBase, scenario, options.posting);
   const engine = new PlayerViewEngine({
     state: emptyWorld(content, inputsBase, scenario),
     caseFile: new CaseFile(),

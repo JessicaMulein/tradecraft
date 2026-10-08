@@ -122,6 +122,8 @@ const TAG_TO_LITERAL_KIND: Record<string, Literal['kind']> = {
 
 const PLACE_SIGIL = '@';
 const WINDOW_SIGIL = '~';
+/** A predicate instrument, written `^<entityId>` (plot-library Req 11.4). */
+const INSTRUMENT_SIGIL = '^';
 const LITERAL_SIGIL = '=';
 const WINDOW_RANGE = '..';
 
@@ -166,6 +168,9 @@ function encodeOne(
   }
   if (prop.window !== undefined) {
     tokens.push(`${WINDOW_SIGIL}${encodeWindow(prop.window)}`);
+  }
+  if (prop.instrument !== undefined) {
+    tokens.push(`${INSTRUMENT_SIGIL}${prop.instrument}`);
   }
   return tokens.join(' ');
 }
@@ -301,8 +306,14 @@ function parseLine(
 
   let place: LocId | undefined;
   let window: TimeWindow | undefined;
+  let instrument: EntityId | undefined;
   for (const token of rest) {
-    if (token.startsWith(PLACE_SIGIL)) {
+    if (token.startsWith(INSTRUMENT_SIGIL)) {
+      if (instrument !== undefined) {
+        throw new Error(`parseFieldMessage: ${where} has more than one instrument`);
+      }
+      instrument = parseEntityId(token.slice(INSTRUMENT_SIGIL.length), `${where} instrument`);
+    } else if (token.startsWith(PLACE_SIGIL)) {
       if (place !== undefined) {
         throw new Error(`parseFieldMessage: ${where} has more than one place`);
       }
@@ -326,6 +337,7 @@ function parseLine(
     object,
     ...(place !== undefined ? { place } : {}),
     ...(window !== undefined ? { window } : {}),
+    ...(instrument !== undefined ? { instrument } : {}),
   };
   return proposition;
 }

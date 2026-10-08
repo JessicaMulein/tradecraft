@@ -1,0 +1,64 @@
+- id: art-forger
+  templateSchema: 2
+  kind: side-thread
+  displayName: art-forger
+  archetype: currency-forgery
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags: []
+    allowWith: []
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+      mandatory: false
+      fallback:
+        - function:cafe
+  roleSlots:
+    witness:
+      query:
+        - role:civilian
+  cells: []
+  stages:
+    - id: seen
+      requires: []
+      deadline:
+        min: 6
+        max: 12
+      traces:
+        - kind: meeting
+          roles:
+            - witness
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+          text: A dealer examines a canvas with a jeweller’s glass and does not name the painter.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call describes the canvas by its cracks and not by its signature.
+      onDisrupted:
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+  stageCount:
+    min: 1
+    max: 2
+  outcomes:
+    success: []
+    failure:
+      - kind: stage-completed
+        stage: seen
+  spawn:
+    - worldgen
+  mimics: currency-forgery

@@ -120,6 +120,7 @@ const ORG_NAME_POOLS: Readonly<Record<OrgKind, readonly string[]>> = {
   station: ['the Station', 'Vienna Station', 'the Field Station'],
   hostile: ['the Hostile Service', 'the opposing service', 'the Resident network'],
   cell: ['the Cell', 'the network', 'the ring'],
+  front: ['a local crew'],
 };
 
 /** The apparent-allegiance category each org projects. */
@@ -127,6 +128,7 @@ const ORG_ALLEGIANCE: Readonly<Record<OrgKind, AllegianceCategory>> = {
   station: 'station',
   hostile: 'hostile',
   cell: 'cell',
+  front: 'neutral',
 };
 
 /**
@@ -135,16 +137,19 @@ const ORG_ALLEGIANCE: Readonly<Record<OrgKind, AllegianceCategory>> = {
  * stream, so which name each org carries varies by seed while the ids stay
  * canonical.
  */
-export function generateOrgs(prng: Prng): GeneratedOrgs {
+export function generateOrgs(prng: Prng, hostileName?: string): GeneratedOrgs {
   const make = (id: OrgId, kind: OrgKind): Org => ({
     id,
     name: prng.pick(ORG_NAME_POOLS[kind]),
     kind,
     allegiance: ORG_ALLEGIANCE[kind],
   });
-  // Draw order is fixed: station, hostile, cell.
+  // Draw order is fixed: station, hostile, cell. A posting still draws the
+  // hostile name, then replaces it, so the cell draw stays on the same sample.
   const station = make(STATION_ORG_ID, 'station');
-  const hostile = make(HOSTILE_ORG_ID, 'hostile');
+  const drawnHostile = make(HOSTILE_ORG_ID, 'hostile');
+  const hostile =
+    hostileName === undefined ? drawnHostile : { ...drawnHostile, name: hostileName };
   const cell = make(CELL_ORG_ID, 'cell');
   const orgs: Record<OrgId, Org> = {
     [STATION_ORG_ID]: station,
@@ -875,12 +880,16 @@ function stampNpc(
  * absent from the content — that is a pack gap the smoke tests should catch,
  * not a runtime condition to paper over.
  */
+/** Plot-library principal cap (Req 6.5). The slice roster stays under it. */
+export const PRINCIPAL_CAP = 22;
+
 export function generatePrincipals(
   prng: Prng,
   content: ContentSet,
   descriptors: DescriptorData,
   city: City,
   orgs: GeneratedOrgs,
+  options?: { readonly cap?: number },
 ): GeneratedPrincipals {
   const binder = cityScheduleBinder(city, content);
 
@@ -945,6 +954,14 @@ export function generatePrincipals(
     .shuffle(CONTACT_ROLE_IDS.map((id) => require(id)))
     .slice(0, contactCount);
   const contacts = contactArchetypes.map((archetype) => stamp(archetype));
+
+  const cap = options?.cap;
+  if (cap !== undefined && index < cap) {
+    const filler = require(CONTACT_ROLE_IDS[0] ?? CHIEF_ROLE_ID);
+    while (index < cap) {
+      stamp(filler);
+    }
+  }
 
   return {
     npcs,

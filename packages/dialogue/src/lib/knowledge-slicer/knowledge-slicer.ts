@@ -87,6 +87,12 @@ export interface SliceOptions {
    * Defaults to concealing nothing.
    */
   readonly conceal?: Iterable<string>;
+  /**
+   * Entities the NPC holds through ambient propositions and recollections.
+   * Appended after the slice's own list. Omitted, the known-entity set is
+   * exactly the slice.
+   */
+  readonly extraEntities?: readonly EntityId[];
 }
 
 /** The namespace raw kind the predicate renderer expects for an entity binding. */
@@ -205,7 +211,7 @@ export function sliceKnowledge(
 
   const seen = new Set<EntityId>();
   const knownEntities: EntityId[] = [];
-  for (const id of slice.knownEntities) {
+  for (const id of [...slice.knownEntities, ...(options.extraEntities ?? [])]) {
     if (seen.has(id)) {
       continue;
     }

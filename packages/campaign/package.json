@@ -1,0 +1,31 @@
+{
+  "name": "@tradecraft/campaign",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@tradecraft/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./view": {
+      "@tradecraft/source": "./src/view.ts",
+      "types": "./dist/view.d.ts",
+      "import": "./dist/view.js",
+      "default": "./dist/view.js"
+    }
+  },
+  "dependencies": {
+    "@tradecraft/content": "workspace:*",
+    "@tradecraft/engine": "workspace:*",
+    "tslib": "^2.3.0",
+    "yaml": "2.9.0",
+    "zod": "^4.6.5"
+  }
+}

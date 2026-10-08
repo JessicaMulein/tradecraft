@@ -1,0 +1,24 @@
+- id: debt
+  text: "A debt comes due."
+  weight: 1
+  effects:
+    needs: { money: -0.1 }
+    moneyNeed: 0.05
+- id: illness
+  text: "They take to their bed."
+  weight: 1
+  effects:
+    work: sick
+    mood: -0.1
+- id: windfall
+  text: "A small sum comes in."
+  weight: 1
+  effects:
+    mice: { money: 0.05 }
+    needs: { money: 0.1 }
+- id: taken-in
+  text: "They are taken in for questioning."
+  weight: 1
+  excludeFor: [principal]
+  effects:
+    detain: true

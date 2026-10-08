@@ -51,6 +51,11 @@ export interface FlavourCacheCoords {
   readonly phase: Phase;
   /** The crowd band the Location is in at the visit. */
   readonly crowd: CrowdLevel;
+  /**
+   * Location status from an ambient overlay. Absent or `open` keeps the
+   * slice key `(loc, phase, crowd)`. Any other status is part of the key.
+   */
+  readonly status?: string;
 }
 
 /**
@@ -82,7 +87,11 @@ export type FlavourCacheSnapshot = Readonly<Record<string, CachedFlavour>>;
  * Pure and deterministic: the same coords always produce the same string.
  */
 export function flavourCacheKey(coords: FlavourCacheCoords): string {
-  return `${coords.loc}|${coords.phase}|${coords.crowd}`;
+  const base = `${coords.loc}|${coords.phase}|${coords.crowd}`;
+  if (coords.status === undefined || coords.status === 'open') {
+    return base;
+  }
+  return `${base}|${coords.status}`;
 }
 
 /**

@@ -1,0 +1,141 @@
+- id: refugee-train
+  templateSchema: 2
+  kind: plot
+  displayName: Refugee train
+  archetype: people-smuggling
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - smuggling
+    allowWith:
+      - sabotage
+      - kompromat
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: board
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A family boards the last carriage with tickets that do not match their names.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call lists the carriage and the names that will not match the tickets.
+      onDisrupted: &a1
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - board
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the refugee train is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the refugee train repeats the meeting and names both people.
+      onDisrupted: *a1
+    - id: arrive
+      requires:
+        - confirm
+      deadline:
+        min: 14
+        max: 22
+      traces:
+        - kind: meeting
+          roles:
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: At the far station one of them does not get off with the others.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: The far station reports one passenger did not leave with the family.
+      onDisrupted: *a1
+    - subplot:
+        template: border-crossing
+        as: cross
+        map:
+          traveller: courier
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: identify-role
+        role: leader
+      - kind: arrest-role
+        role: courier
+    failure:
+      - kind: stage-completed
+        stage: arrive
+  secondary:
+    standingPenalty: 3
+    standingReward: 2
+    damageReport: Headquarters reports damage from a second operation.

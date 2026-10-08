@@ -1,0 +1,31 @@
+# Fictional headquarters figures. One of them is drawn as the mole.
+- id: marta-elling
+  name: Marta Elling
+  role: Head of personnel
+  faction: security
+  access: [personnel, cables]
+- id: josef-adler
+  name: Josef Adler
+  role: Cable clerk
+  faction: operations
+  access: [cables]
+- id: helen-crowe
+  name: Helen Crowe
+  role: Legend desk
+  faction: registry
+  access: [legends]
+- id: anton-voss
+  name: Anton Voss
+  role: Directive editor
+  faction: operations
+  access: [directives, cables]
+- id: irene-pell
+  name: Irene Pell
+  role: Security officer
+  faction: security
+  access: [personnel, legends]
+- id: marko-senn
+  name: Marko Senn
+  role: Liaison clerk
+  faction: registry
+  access: [legends, directives]

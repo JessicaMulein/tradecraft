@@ -1,0 +1,71 @@
+- id: OCCURS_AT
+  subject: [evt]
+  object: { entity: [loc] }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: OC
+  render:
+    second: "It happens at {object}."
+    third: "{subject} happens at {object}."
+  extractorHint: "A city event takes place at a location."
+
+- id: ATTENDS
+  subject: [npc, unk]
+  object: { entity: [evt] }
+  place: optional
+  window: optional
+  evaluator: fact-match
+  fieldCode: AD
+  render:
+    second: "You attend {object}."
+    third: "{subject} attends {object}."
+  extractorHint: "A person attends a city event."
+
+- id: HAS_STATUS
+  subject: [npc, loc]
+  object: { literal: text }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: HS
+  render:
+    second: "You are {object}."
+    third: "{subject} is {object}."
+  extractorHint: "A person or place has a status."
+
+- id: RELATED_TO
+  subject: [npc]
+  object: { entity: [npc] }
+  place: none
+  window: none
+  evaluator: fact-match
+  fieldCode: RL
+  render:
+    second: "You are related to {object}."
+    third: "{subject} is related to {object}."
+  extractorHint: "Two people are kin or otherwise related."
+
+- id: INVOLVED_WITH
+  subject: [npc]
+  object: { entity: [npc] }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: IV
+  render:
+    second: "You are involved with {object}."
+    third: "{subject} is involved with {object}."
+  extractorHint: "Two people are involved with each other."
+
+- id: OWES
+  subject: [npc]
+  object: { entity: [npc] }
+  place: none
+  window: optional
+  evaluator: fact-match
+  fieldCode: OW
+  render:
+    second: "You owe {object}."
+    third: "{subject} owes {object}."
+  extractorHint: "One person owes another."

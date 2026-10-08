@@ -17,9 +17,15 @@ A deterministic simulation owns all ground truth: who works for whom, where peop
 
 ## Status
 
-The vertical slice is playable end to end through `pnpm play`: the Turn Pipeline runs the day-boundary hooks (Plot, schedules, the Hostile Service, newspapers, Directives, Cable replies, end detection), every action is dispatched, the App Shell drives the game, and new games, saves and debriefs work. `pnpm run check` is green across all eight packages.
+The vertical slice is playable end to end through `pnpm play`: the Turn Pipeline runs the day-boundary hooks (Plot, schedules, the Hostile Service, newspapers, Directives, Cable replies, end detection), every action is dispatched, the App Shell drives the game, and new games, saves and debriefs work.
+
+Follow-on specs that were on the roadmap are in the repo and **off by default**. `content-expansion`, `plot-library`, `ambient-world` and `campaign-career` are implemented. Shipped `config/scenario.yaml` still loads only the `core` pack. Plot library and ambient city stay off unless a scenario sets `plotSelection.enabled` or `ambient.enabled`. Campaign is a separate career loop, not the default `pnpm play` path. `generatorVersion` stays `0.7.0`.
+
+`pnpm run check` is not currently green: engine typecheck has a handful of pre-existing errors, dependency-cruiser still reports four content-tools lint-rule cycles (unchanged since the initial commit), and evals golden replays 01–05 fail on a core-pack content-hash drift plus new ambient gate witnesses. Those goldens are not being re-recorded.
 
 The developer playtest (slice-integration task 20) is still to do: full campaigns through `pnpm play` with live models, and an evals run to set the active model profile.
+
+Plot library and ambient are **not** both ready for shipped play. The plot library now holds the CI bands (expert 100% / 97% / 83%). Ambient holds on easy and standard and fails on hard. Do not turn either flag on in `config/scenario.yaml`. Multi-city stays unstarted until hard ambient is inside the bands.
 
 ## Requirements
 
@@ -101,26 +107,45 @@ Measured on 100 seeds per preset when the arrest thresholds were last set:
 | standard | 7 | 90% | 53% | 87% |
 | hard | 7 | 91% | 63% | 97% |
 
-The expert reads ground truth to decide where to look and stands in for perfect cryptanalysis, so these are upper bounds; a human player finds the evidence more slowly. `packages/app/src/lib/playability.calibration.spec.ts` holds the bands in CI on a fixed sample. When a deliberate change moves them, re-measure, update the bands and this table together, and re-run `pnpm seeds:vet`.
+The expert reads ground truth to decide where to look and stands in for perfect cryptanalysis, so these are upper bounds; a human player finds the evidence more slowly. `packages/app/src/lib/playability.calibration.spec.ts` holds the bands in CI on a fixed **core-only** sample. When a deliberate change moves them, re-measure, update the bands and this table together, and re-run `pnpm seeds:vet`.
+
+### Feature-on re-measure (8 Oct 2026, after the deadline fix)
+
+Same seed prefix as CI (`calibration-N`, `calibration-idle-N`, `calibration-reckless-N`). Sample: 30 expert / 15 idle / 15 reckless seeds per preset — the CI sample size. Bands unchanged: expert win ≥ 80%, median win fraction in [0.35, 0.75], very-early wins ≤ 15%, expert burned ≤ 10%; idle always `failure-plot`; reckless burned ≥ 60% on `standard` and ≥ 75% on `hard`.
+
+| Mode | easy expert | standard expert | hard expert | idle | reckless std / hard |
+| --- | --- | --- | --- | --- | --- |
+| core (shipped) | 100% · median 44% · holds | 100% · 48% · holds | 90% · 58% · holds | 15/15 plot | 93% / 100% · holds |
+| ambient on | 100% · 50% · holds | 93% · 46% · holds | 87% · 59% · holds | 15/15 plot | 100% / 100% · holds |
+| plot library on | 100% · 52% · ~53d · holds | 97% · 56% · ~50d · holds | 83% · 57% · ~46d · holds | 15/15 plot | 100% / 100% · holds |
+| both on | 100% · 55% · holds | 93% · 56% · holds | 83% · 57% · holds | 15/15 plot | 100% / 100% · holds |
+
+Core still holds after the expert probe started sweeping the Station every day, inside the two-day intercept retention. Ambient holds on easy, standard, and hard (100% / 93% / 87%, medians 50% / 46% / 59%). Outlet editions are sold at the kiosk with the city paper and come off the rack the next day, and a cover shift can be kept a phase late at a place that cover fits. A missed shift still drops standing with the employer; the suspicion from the miss stays small enough that skipping the day job does not, by itself, put a tail on a player who never takes to the street. The plot library holds every band. Meetings evidence a real contact, a confirm stage carries a second signal before the finale, and a subplot's confirm waits on its own opening instead of firing in the first week. With both flags on, the same bands hold (100% / 93% / 83%, medians 55% / 56% / 57%) on the library clock, about 46–53 days. CI still measures core only. Bands were not retuned. Do not enable either flag in the shipped scenario.
+
+Library deadlines accumulate the way slice `buildStages` does: `max(predecessor days) + draw(min, max) + slack`, with sibling alternatives sharing the branch point. Opening `coldwar-plots` stages are 12–20 days, the confirm beat is 6–10, and the finale is 14–22. Side threads stay shorter. `attend-duty` is in the action catalogue. Trace lines are no longer the two recycled sentences.
 
 ## Architecture
 
-A pnpm + Nx monorepo of eight TypeScript packages:
+A pnpm + Nx monorepo of twelve TypeScript packages:
 
 | Package | Role |
 | --- | --- |
 | `content` | Zod schemas and the Content Pack loader. Imports only `zod` and `yaml`. |
-| `engine` | The deterministic simulation: seeded PRNG streams, world generation, actions, clock, Plot, Hostile Service, ciphers, endings. Owns all truth. |
+| `engine` | The deterministic simulation: seeded PRNG streams, world generation, actions, clock, Plot, Hostile Service, ciphers, endings, opt-in ambient city and plot library. Owns all truth. |
 | `llm` | OpenAI-compatible Gateway (routing by Model Role, retries, recording and replay) and the LM Studio Model Manager (preflight, load/unload). |
 | `dialogue` | Knowledge slicing, prompt building, intent classification, Leak/Specifics/Refusal guards, the Narrator and Claim extraction. |
-| `player-view` | The truth boundary: Case File, Journal, view projections, the Turn Pipeline, saves and debrief. |
+| `player-view` | The truth boundary: Case File, Journal, view projections, the Turn Pipeline, saves and debrief. May import campaign only through `packages/campaign/src/view.ts`. |
 | `tui` | Ink terminal screens. May import only `player-view`. |
 | `app` | The Composition Root (`createGame`), the `pnpm play` launcher, file-backed saves and Outcome Records, the Fake Seams, and the playability probe and featured seeds. Nothing but `evals` may import it. |
 | `evals` | Golden replays, the model evaluation harness and the debug CLIs. |
+| `campaign` | Career loop: HQ, postings, Review Board, carry-over, arcs. Campaign Truth does not cross the public API. |
+| `content-tools` | Authoring lint (period, CE-PLOTBIND, pack cross-refs). |
+| `plot-lab` | Bind, reachability and oracle CLI for plot-library templates. |
+| `web` | Localhost web shell over the same `player-view` facade (`pnpm play:web`). |
 
 Boundaries are enforced by `.dependency-cruiser.cjs`. Ground-truth values are branded `Truth<T>` in the engine and never cross into `player-view` projections.
 
-Configuration lives in `config/models.yaml` (role → model, two profiles), `config/scenario.yaml` and `config/featured-seeds.json` (written by `pnpm seeds:vet`). Content lives in `packages/content/packs/core/`.
+Configuration lives in `config/models.yaml` (role → model, two profiles), `config/scenario.yaml` and `config/featured-seeds.json` (written by `pnpm seeds:vet`). Content lives under `packages/content/packs/`. The shipped scenario loads `core` only.
 
 ### Content Packs
 
@@ -128,19 +153,51 @@ Content is data, versioned in packs (`pack.yaml` with `id`, `version`, `contentS
 
 Packs cannot add new mechanics (action kinds, channel kinds, cipher kinds). Those are code.
 
+Packs on disk, beyond `core`:
+
+| Pack | Role | Loaded by shipped play? |
+| --- | --- | --- |
+| `core` | Predicates, the core city, archetypes, difficulty presets, slice plots | Yes |
+| `ambient` | Civic orgs, cover duties, events, incidents, life, outlets, regard | No. The engine catalogue reads `packages/content/packs/ambient/*.yaml` from disk when `ambient.enabled`. Do not add this pack to `packs.load` — those kinds are not registered on the composition-root loader. |
+| `coldwar-plots` | Template-schema-v2 plots and side threads | No. Loaded only when a scenario lists it and sets `plotSelection.enabled`. |
+| `era-cold-war-early` | Era profile | No |
+| `lib-western`, `lib-russian`, `lib-iberian`, `lib-eastern-mediterranean`, `lib-central-europe`, `lib-descriptors`, `lib-archetypes` | Shared name and flavour libraries | No |
+| `city-vienna`, `city-berlin`, `city-istanbul`, `city-lisbon`, `city-trieste` | Authored cities | No. `generate()` can take a city bundle; the `pnpm play` launcher does not resolve `setting.city`. |
+
 A Plot or Side Thread stage's traces bind to Locations by **function tag** (a Tag Query like `[function:cafe]`), not by a specific Location Type id. A city satisfies a plot's observable events by tagging *some* public Location for each function the plot needs; the lint's CE-PLOTBIND rule fails a release build whose city cannot, rather than letting it fall over at generation. One upshot: the shipped cities still carry a few Location-Type ids kept from an earlier id-matched binding (e.g. a café typed `core/kaffeehaus`). These are harmless — tag-binding resolves them correctly — so they are left as-is; if you revisit those packs, you can rename them to local-flavor ids in the same pass (it needs a `GENERATOR_VERSION` bump and a golden re-record, so it is not worth doing on its own).
 
 ## Roadmap
 
-1. **slice-integration** (`.kiro/specs/slice-integration/`) — assembled the slice into a playable game: the day-boundary hooks in the Turn Pipeline, every action dispatched, `newGame`/saves/`validateFeed`, the Prompt Builder in live dialogue, the TUI App Shell and the Composition Root. Remaining: the final playtest (slice task 24).
-2. **content-expansion** — pack roles, a Content Kind Registry, Era Packs, Library Packs, real-city packs (Vienna, Berlin, Istanbul, Lisbon, Trieste) and authoring tools.
-3. **plot-library** — more Plot templates and cross-city stage hooks.
-4. **ambient-world** — a living city: events, NPC lives, gossip, rolling news, cover-job demands.
-5. **campaign-career** — careers across games via Outcome Records.
-6. **multi-city** — a Region of 2–4 cities with intercity travel, borders, papers and several rival services.
+Follow-on order: content-expansion → plot-library → ambient-world → campaign-career → multi-city. Single-city mode stays unchanged. Debrief stays at eight sections.
 
-Under consideration: a localhost web interface over the same `player-view` facade, AI-rendered still frames for scenes, natural-language commands, street-level movement with car tails, smuggling through checkpoints, and settings outside the early Cold War.
+1. **slice-integration** — assembled the slice into a playable game. Remaining: the developer playtest (task 20 / slice task 24).
+2. **content-expansion** — done. Content Kind Registry, Era and Library packs, five authored city packs, authoring tools. Shipped play still loads `core` only; the launcher does not resolve `setting.city`.
+3. **plot-library** — done, opt-in (`plotSelection.enabled`). Template schema v2, `coldwar-plots`, Plot Lab. The 30/15 sample holds (expert 100% / 97% / 83%). Leave it off in the shipped scenario.
+4. **ambient-world** — done, opt-in (`ambient.enabled`). Living city, duties, gossip, news, couplings. Catalogue reads the `ambient` pack from disk. `attend-duty` is in the action catalogue. The 30/15 sample holds (expert 100% / 93% / 87%), and both-on holds with it (100% / 93% / 83%). Leave it off in the shipped scenario.
+5. **campaign-career** — done. HQ, postings, Review Board, carry-over and arcs. Separate from the default slice loop.
+6. **multi-city** — next, not started. Task 5.1 (the ambient-world contract) is done; tasks 1–4 and 6–15 are open. The calibration hold is lifted: ambient and both-on sit inside the bands. 1.1 is the next start. Leave the flags off in the shipped scenario.
+
+Later specs that already have `requirements.md` / `design.md` / `tasks.md` (none of these are started):
+
+- **web-shell** — localhost browser client over `player-view`. `pnpm play:web` exists; the spec tasks are unchecked.
+- **street-ops** — street graph, drive sessions, tails, checkpoints, concealment.
+- **setting-generalization** — era profiles, terminology maps, capabilities beyond the early Cold War.
+- **natural-language-commands** — phrasebook matcher and typed-line orchestration.
 
 ## Specs
 
-Specs live in `.kiro/specs/<name>/` as `requirements.md`, `design.md` and `tasks.md`: `tradecraft` (the slice), `slice-integration` (assembles the slice into a playable game; the specs after it depend on it), `content-expansion`, `plot-library`, `ambient-world`, `campaign-career` and `multi-city`.
+Specs live in `.kiro/specs/<name>/` as `requirements.md`, `design.md` and `tasks.md`:
+
+| Spec | Status |
+| --- | --- |
+| `tradecraft` | The slice. Done. |
+| `slice-integration` | Assembled. Playtest (task 20) still open. |
+| `content-expansion` | Implemented. Shipped play path still core-only. |
+| `plot-library` | Implemented, opt-in. 30/15 sample holds. |
+| `ambient-world` | Implemented, opt-in. Easy and standard hold. Hard does not. |
+| `campaign-career` | Implemented. |
+| `multi-city` | Next. 5.1 done; the rest open. |
+| `web-shell` | Spec only (launcher command exists). |
+| `street-ops` | Spec only. |
+| `setting-generalization` | Spec only. |
+| `natural-language-commands` | Spec only. |

@@ -140,10 +140,11 @@ function preset(id: string): DifficultyPreset {
 /** The shipped presets to sweep over (varied Difficulty Preset, Req 34.3). */
 const PRESET_IDS = ['easy', 'standard', 'hard'] as const;
 
-function inputs(p: DifficultyPreset): GenerateInputs {
+function inputs(p: DifficultyPreset, ambient = false): GenerateInputs {
   const scenario = ScenarioConfigSchema.parse({
     difficulty: { preset: p.id },
     mole: true,
+    ...(ambient ? { ambient: { enabled: true, density: 'sparse' as const } } : {}),
     recruitment: {
       pitch: { w1: 1, w2: 1, w3: 1, w4: 1 },
       firstContact: { a: 1, b: 1, c: 1, d: 1 },
@@ -413,12 +414,13 @@ const caseArb: fc.Arbitrary<Case> = fc
     truth: truthArb,
     viewState: viewStateArb,
     pipeline: pipelineArb,
+    ambient: fc.boolean(),
     // `noInvalidDate`: fast-check 4 can draw an Invalid Date, whose
     // `toISOString()` throws, which made this property fail intermittently.
     savedAt: fc.date({ noInvalidDate: true }).map((d) => d.toISOString()),
   })
   .map((c) => {
-    const world = generate(c.seed, inputs(preset(c.presetId)));
+    const world = generate(c.seed, inputs(preset(c.presetId), c.ambient));
     const sources: SaveSources = {
       world,
       journal: journalFrom(c.entries, c.notes),

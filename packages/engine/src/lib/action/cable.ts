@@ -45,12 +45,18 @@
  * uses).
  */
 
-import type { EntityId, LocId } from '../model/core.js';
+import type { EntityId, LocId, NpcId, UnkId } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import { DEFAULT_CABLE_DELAY_PHASES, submitCable } from '../station/cables.js';
+import {
+  arrestEvidenceOf,
+  arrestThresholdOf,
+  resolveTargetNpc,
+  WRONGFUL_STANDING_PENALTY,
+} from './arrest.js';
 import { isAtStation } from './intercept.js';
+import type { ActionQuote, ActionResult, Observation, ResolverContext } from './result.js';
 import { npcsScheduledAt } from './surveil.js';
-import type { ActionQuote, ActionResult, Observation } from './result.js';
 import type { CableAction, CableRequest } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -71,6 +77,19 @@ export const CABLE_UNKNOWN_TARGET_REASON =
 /** The reason a funds request naming a non-positive or non-finite amount is disallowed. */
 export const CABLE_FUNDS_AMOUNT_REASON =
   'a funds request must name a positive amount';
+
+/**
+ * The reason an identification report is refused: the Case File evidence count
+ * is below the arrest threshold. The quote reads that count only.
+ */
+export const CABLE_IDENTIFY_EVIDENCE_REASON =
+  'HQ will not hear that identification until the evidence is in the file';
+
+/**
+ * The acknowledgement for an identification report. Correct and wrong reports
+ * play this same line.
+ */
+export const IDENTIFY_REPORT_ACK = 'HQ acknowledges your report.';
 
 /**
  * The confirmation Fact Line a sent Cable plays, by request kind. The reply
@@ -160,13 +179,77 @@ function sceneDescriptorAt(
 // Quote (Req 9.1, 9.2)
 // ---------------------------------------------------------------------------
 
+function isPersonId(entity: string): entity is NpcId | UnkId {
+  return entity.startsWith('npc:') || entity.startsWith('unk:');
+}
+
+/** The role holder named by `roleTag` on a library plot, else the slice plot. */
+function holderOf(state: WorldState, roleTag: string): string | undefined {
+  for (const plot of state.plots ?? []) {
+    const holder = plot.roleHolders[roleTag];
+    if (holder !== undefined) {
+      return holder;
+    }
+  }
+  const slice = state.plot.roles.find(
+    (role) => role.slot === roleTag && role.npc !== undefined,
+  );
+  return slice?.npc;
+}
+
+/**
+ * Record an identification and, when the resolved entity is not the role
+ * holder, apply the wrongful-arrest penalty. The acknowledgement does not
+ * depend on the result.
+ */
+function applyIdentification(
+  state: WorldState,
+  identify: { readonly entity: EntityId; readonly roleTag: string },
+  ctx: ResolverContext | undefined,
+): WorldState {
+  const resolved = isPersonId(identify.entity)
+    ? ctx === undefined
+      ? identify.entity
+      : (resolveTargetNpc(identify.entity, ctx) ?? identify.entity)
+    : identify.entity;
+  const holder = holderOf(state, identify.roleTag);
+  const correct = holder !== undefined && resolved === holder;
+  let player: WorldState['player'] = {
+    ...state.player,
+    identifications: [
+      ...(state.player.identifications ?? []),
+      { entity: identify.entity, roleTag: identify.roleTag, correct },
+    ],
+  };
+  let standing = state.station.standing;
+  if (!correct) {
+    const arrest = state.meta.preset.arrest;
+    player = {
+      ...player,
+      arrestAuthority: player.arrestAuthority + arrest.wrongfulAuthorityPenalty,
+    };
+    standing -= WRONGFUL_STANDING_PENALTY;
+  }
+  return {
+    ...state,
+    player,
+    station: { ...state.station, standing },
+  };
+}
+
 /**
  * Quote a {@link CableAction} (pure, no draws). The player must be at an open
  * Station. A trace needs a target in `player.known.entities`; a funds request
- * that names an amount needs a positive, finite one; a report is always
- * allowed. An allowed Cable costs {@link CABLE_PHASE_COST} phase and no money.
+ * that names an amount needs a positive, finite one; a plain report is always
+ * allowed. An identification report is allowed only when the projected Case
+ * File evidence count for its entity is at least the arrest threshold. An
+ * allowed Cable costs {@link CABLE_PHASE_COST} phase and no money.
  */
-export function quoteCable(state: WorldState, a: CableAction): ActionQuote {
+export function quoteCable(
+  state: WorldState,
+  a: CableAction,
+  ctx?: ResolverContext,
+): ActionQuote {
   const gate = stationGate(state);
   if (gate !== undefined) {
     return disallowed(gate);
@@ -183,8 +266,19 @@ export function quoteCable(state: WorldState, a: CableAction): ActionQuote {
         (Number.isFinite(body.amount) && body.amount > 0)
         ? allowedQuote()
         : disallowed(CABLE_FUNDS_AMOUNT_REASON);
-    case 'report':
-      return allowedQuote();
+    case 'report': {
+      if (body.identify === undefined) {
+        return allowedQuote();
+      }
+      const evidence = isPersonId(body.identify.entity)
+        ? ctx === undefined
+          ? 0
+          : arrestEvidenceOf(ctx, body.identify.entity)
+        : 0;
+      return evidence >= arrestThresholdOf(state)
+        ? allowedQuote()
+        : disallowed(CABLE_IDENTIFY_EVIDENCE_REASON);
+    }
     default:
       // Unreachable for a well-typed body; a malformed one is refused, not thrown on.
       return disallowed('HQ does not accept that request');
@@ -211,8 +305,9 @@ export function resolveCable(
   state: WorldState,
   a: CableAction,
   render: (state: WorldState, observations: readonly Observation[]) => string[],
+  ctx?: ResolverContext,
 ): { next: WorldState; result: ActionResult } {
-  if (!quoteCable(state, a).allowed) {
+  if (!quoteCable(state, a, ctx).allowed) {
     return {
       next: state,
       result: {
@@ -228,16 +323,21 @@ export function resolveCable(
   const pending = submitCable(a.body, state.time, {
     delayPhases: cableReplyDelayPhases(state),
   });
+  const identify = a.body.kind === 'report' ? a.body.identify : undefined;
+  const judged = identify === undefined ? state : applyIdentification(state, identify, ctx);
   const next: WorldState = {
-    ...state,
+    ...judged,
     station: {
-      ...state.station,
-      pendingCables: [...state.station.pendingCables, pending],
+      ...judged.station,
+      pendingCables: [...judged.station.pendingCables, pending],
     },
   };
 
   const observations: Observation[] = [
-    { kind: 'message', line: CABLE_SENT_LINES[a.body.kind] },
+    {
+      kind: 'message',
+      line: identify === undefined ? CABLE_SENT_LINES[a.body.kind] : IDENTIFY_REPORT_ACK,
+    },
   ];
   return {
     next,

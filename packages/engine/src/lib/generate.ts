@@ -64,6 +64,9 @@
  * - **brief** — `derive(seed, 0x62726966)`. Owned by the Starting Brief
  *   (`BRIEF_STREAM_INDEX` in `./city/starting-brief.ts`); the brief step draws
  *   on it so adding a brief draw does not shift the core stream.
+ * - **carry** — `derive(derive(postingSeed, 0x60000), j)` for carry attempt *j*
+ *   (block `0x60000`–`0x6FFFF`). Used only when a Posting Context is passed.
+ *   Arc threads use `derive(derive(postingSeed, 0x61000), j)` inside that block.
  * - **setting** — `derive(seed, 0x30000 + j)` for setting attempt *j* (block
  *   `0x30000`–`0x30FFF`, {@link import('./setting/stream.js').SETTING_STREAM_BASE}).
  *   Owned by the content-expansion setting step (`./setting/`): the Start Date
@@ -83,11 +86,12 @@ import type {
   DescriptorData,
   PublicText,
   DifficultyPreset,
+  PlotTemplate,
 } from '@tradecraft/content';
 
 import { createPrng, derive } from './prng/prng.js';
 import type { PrngState } from './prng/prng.js';
-import { asTruth } from './model/core.js';
+import { asTruth, revealTruth } from './model/core.js';
 import type {
   ChannelId,
   DeadDropId,
@@ -99,6 +103,7 @@ import type {
   OrgId,
   PropId,
   Proposition,
+  UnkId,
 } from './model/core.js';
 import type {
   WorldState,
@@ -109,6 +114,23 @@ import { generateCity } from './city/generate.js';
 import { DAILY_STREAM_BASE } from './city/city.js';
 import { generateOrgs, generatePrincipals } from './city/principals.js';
 import { generatePlot } from './city/plot.js';
+import { initAmbient } from './ambient/init.js';
+import { anchorsOf, storedWitnesses, verifierResult } from './ambient/solvability.js';
+import { graphFromWitnesses, registerRegionGraph } from './region/verify.js';
+import type { BindCity } from './plotgen/bind.js';
+import { SELECT_STREAM } from './plotgen/index.js';
+import { bindCityFromView, buildLibrarySession, LibrarySelectionError, slicePlotOf } from './plotgen/library.js';
+import { materialiseTwists, twistGroundTruth } from './plotgen/twists.js';
+import { libraryPreset } from './plotgen/preset.js';
+import { fillLookalikeShare, type LookalikeFill } from './plotgen/sidethread.js';
+import type { TemplateHistory } from './plotgen/select.js';
+import {
+  fallbackSelect,
+  selectPlot,
+  type PostingPlotSelection,
+} from './plot-select.js';
+import { applyPostingCarry, serviceDisplayName } from './carry/apply.js';
+import type { PostingContext } from './carry/types.js';
 import {
   generateComms,
   withDeadDropSites,
@@ -275,6 +297,13 @@ export const MAX_GENERATION_ATTEMPTS = 8;
 export const MAX_NOISE_ATTEMPTS = 8;
 
 /**
+ * Ambient init retries (ambient-world Req 3.4). Attempt k draws
+ * `derive(derive(seed, 0x50000), k)`. The slice graph is unchanged, so a
+ * well-formed pack passes on the first attempt; the ceiling matches noise.
+ */
+export const MAX_AMBIENT_ATTEMPTS = 8;
+
+/**
  * The maximum number of **setting** attempts before giving up (content-expansion
  * design, "City instantiation"; Req 9.9: "After 4 setting attempts it throws
  * `GeneratorError { seed, city }`"). The setting step runs *before* the core
@@ -318,7 +347,7 @@ export class GeneratorError extends Error {
    * naming the seed, so a caller can tell the failures apart and reroll
    * accordingly.
    */
-  readonly phase: 'core' | 'noise' | 'setting';
+  readonly phase: 'core' | 'noise' | 'setting' | 'ambient' | 'carry';
   /**
    * The city the game was placed in when generation failed (content-expansion
    * Req 9.9: `GeneratorError { seed, city }`). `'core'` for the Core City or a
@@ -331,7 +360,7 @@ export class GeneratorError extends Error {
     seed: string,
     attempts: number,
     lastFailure?: FailedTarget,
-    phase: 'core' | 'noise' | 'setting' = 'core',
+    phase: 'core' | 'noise' | 'setting' | 'ambient' | 'carry' = 'core',
     city?: string,
   ) {
     const reason =
@@ -420,6 +449,17 @@ export interface GenerateOptions {
    */
   readonly maxNoiseAttempts?: number;
   /**
+   * The discovery gate re-run after ambient init (ambient-world Req 3.4).
+   * Defaults to {@link verifyDiscoveryPaths}. A test can fail it to drive the
+   * ambient retry. It must be pure.
+   */
+  readonly ambientVerifier?: DiscoveryVerifier;
+  /**
+   * Ambient init attempts before {@link GeneratorError}. Defaults to
+   * {@link MAX_AMBIENT_ATTEMPTS}.
+   */
+  readonly maxAmbientAttempts?: number;
+  /**
    * The maximum setting-stream attempts before giving up (content-expansion
    * Req 9.9). Defaults to {@link MAX_SETTING_ATTEMPTS}.
    */
@@ -434,6 +474,18 @@ export interface GenerateOptions {
    * sink; production passes none and the generator uses {@link NO_USAGE_SINK}.
    */
   readonly usage?: UsageSink;
+  /**
+   * Template History for plot selection. Read only after the setting step, and
+   * only when `scenario.plotSelection.enabled`. Omitted, selection sees an
+   * empty history. The setting step does not read it, so Districts, Locations
+   * and Routes stay fixed across histories (plot-library Req 14.4).
+   */
+  readonly history?: TemplateHistory;
+  /**
+   * Set only for a posting. Step 4 then uses {@link selectPlot} instead of the
+   * slice's uniform template draw. Omitted, step 4 is unchanged.
+   */
+  readonly posting?: PostingPlotSelection;
 }
 
 // ---------------------------------------------------------------------------
@@ -561,10 +613,48 @@ interface SettingCity {
  * core stream state at the start of step 2 is the same as the core seed's
  * initial state.
  */
+/**
+ * The schema-1 template step 4 instantiates for a posting. Library selection
+ * draws on the select stream. The slice fallback draws once on the core stream,
+ * matching the uniform pick a game without a posting makes.
+ */
+function postingTemplate(
+  prng: ReturnType<typeof createPrng>,
+  content: GenerateInputs['content'],
+  posting: PostingPlotSelection,
+  worldSeed: string,
+): PlotTemplate {
+  const candidates = [...content.plotTemplates.values()].sort((a, b) =>
+    a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
+  );
+  if (candidates.length === 0) {
+    throw new Error('generatePlot(): the content set defines no Plot templates');
+  }
+  const rng =
+    posting.selection === null ? prng : createPrng(derive(worldSeed, SELECT_STREAM));
+  const id = selectPlot(posting.history, posting.selection, candidates, rng);
+  const found = candidates.find((template) => sameTemplate(template.id, id));
+  if (found !== undefined) {
+    return found;
+  }
+  const fallbackId = fallbackSelect(candidates, posting.history.templateHistory, prng);
+  const fallback = candidates.find((template) => sameTemplate(template.id, fallbackId));
+  if (fallback === undefined) {
+    throw new Error('generatePlot(): the content set defines no Plot templates');
+  }
+  return fallback;
+}
+
+function sameTemplate(left: string, right: string): boolean {
+  return left === right || left.endsWith(`/${right}`) || right.endsWith(`/${left}`);
+}
+
 function runCoreStream(
   worldSeed: string,
   inputs: GenerateInputs,
   settingCity: SettingCity,
+  posting?: PostingPlotSelection,
+  ctx?: PostingContext,
 ): CoreStreamResult {
   const { content, preset, scenario, descriptors, publicTexts } = inputs;
   const prng = createPrng(worldSeed);
@@ -573,11 +663,22 @@ function runCoreStream(
   // its public-known set come from the setting step.
   const { city, knownLocations } = settingCity;
 
-  // Step 2 — organisations and Principal NPCs.
-  const orgs = generateOrgs(prng);
-  const principals = generatePrincipals(prng, content, descriptors, city, orgs);
+  // Step 2 — organisations and Principal NPCs. A posting names the hostile
+  // service from its Service Definition and still consumes the name draw.
+  const hostileName =
+    ctx === undefined ? undefined : serviceDisplayName(content.services, ctx.service);
+  const orgs = generateOrgs(prng, hostileName);
+  const principals = generatePrincipals(
+    prng,
+    content,
+    descriptors,
+    city,
+    orgs,
+    scenario.plotSelection?.enabled === true ? { cap: 22 } : undefined,
+  );
 
-  // Step 3/4 — the Plot (stage DAG).
+  // Step 3/4 — the Plot (stage DAG). A posting selects from its history.
+  // Without one, the slice draws a template on this same stream.
   const { plot } = generatePlot(
     prng,
     content,
@@ -586,6 +687,7 @@ function runCoreStream(
     orgs,
     principals,
     START,
+    posting === undefined ? undefined : postingTemplate(prng, content, posting, worldSeed),
   );
 
   // Step 5 — Channels and Dead Drops, folded onto the city's Locations.
@@ -799,6 +901,43 @@ function runSettingStep(
 }
 
 /**
+ * Districts, Locations and Routes from one setting attempt (plot-library
+ * Property 18). This is the setting step alone: template history is not an
+ * argument, because selection runs afterwards. `undefined` when that attempt's
+ * City Pack instantiation is infeasible.
+ */
+export interface SettingGeography {
+  readonly city: string;
+  readonly attempt: number;
+  readonly year: number;
+  readonly districts: SettingCity['city']['districts'];
+  readonly locations: SettingCity['city']['locations'];
+  readonly routes: SettingCity['city']['routes'];
+  readonly bind: BindCity;
+}
+
+export function settingGeography(
+  seed: string,
+  inputs: GenerateInputs,
+  attempt = 0,
+): SettingGeography | undefined {
+  const step = runSettingStep(seed, attempt, inputs, NO_USAGE_SINK);
+  if (step.infeasible) {
+    return undefined;
+  }
+  const city = step.settingCity.city;
+  return {
+    city: step.selection.city,
+    attempt: step.selection.attempt,
+    year: step.selection.year,
+    districts: city.districts,
+    locations: city.locations,
+    routes: city.routes,
+    bind: bindCityFromView(step.view),
+  };
+}
+
+/**
  * Treat a slice-era {@link ContentSet} (one that carries none of the
  * content-expansion fields) as a Core-City-only {@link ContentSetV2}: an empty
  * city registry, no era (an unbounded Period Window), no Culture Groups or
@@ -850,6 +989,7 @@ function assembleWorld(
   core: CoreStreamResult,
   inputs: GenerateInputs,
   setting: SettingSelection,
+  history?: TemplateHistory,
 ): WorldState {
   const { content, preset, scenario } = inputs;
 
@@ -899,6 +1039,46 @@ function assembleWorld(
 
   const stationOrg: OrgId = core.orgs.station.id;
 
+  let library: ReturnType<typeof buildLibrarySession>;
+  try {
+    library =
+      scenario.plotSelection?.enabled === true
+        ? buildLibrarySession(
+          {
+            templates: [...(content.plotTemplatesV2?.values() ?? [])],
+            sideThreads: [...(content.sideThreadTemplatesV2?.values() ?? [])],
+            city: bindCityFromView(cityView(core.city, content, setting)),
+            preset,
+            year: setting.year,
+            seed: displaySeed,
+            ...(history === undefined ? {} : { history }),
+            world: {
+              hostileOrg: core.orgs.hostile.id,
+              contacts: core.principals.contacts,
+              stationStaff: core.principals.staff,
+              ...(core.knowledge.mole === undefined
+                ? {}
+                : { mole: revealTruth(core.knowledge.mole.npc) }),
+              orgsForQuery: () => [core.orgs.hostile.id],
+              npcsForQuery: () => [
+                ...core.principals.cell,
+                ...core.principals.hostile,
+                ...core.principals.staff,
+                ...core.principals.contacts,
+              ],
+            },
+          },
+          createPrng(derive(displaySeed, SELECT_STREAM)),
+        )
+        : undefined;
+  } catch (error) {
+    if (error instanceof LibrarySelectionError) {
+      throw new GeneratorError(displaySeed, 4, undefined, 'core');
+    }
+    throw error;
+  }
+  const primaryPlot = library?.plots[0];
+
   const world: WorldState = {
     meta: {
       seed: displaySeed,
@@ -917,6 +1097,7 @@ function assembleWorld(
       // setting attempt the stream was derived at. Stored so a save restores
       // the setting exactly (design, "Data Models"; Property 13).
       setting,
+      ...(library === undefined ? {} : { selection: library.selection }),
     },
     time: START,
     // The core stream's serialised state after generation, so a save taken right
@@ -924,7 +1105,20 @@ function assembleWorld(
     rng: core.rngState,
 
     city: core.city,
-    orgs: core.orgs.orgs,
+    orgs:
+      library === undefined
+        ? core.orgs.orgs
+        : {
+            ...core.orgs.orgs,
+            ...Object.fromEntries(
+              library.plots.flatMap((item) =>
+                item.cells.map((cell) => [
+                  cell.org,
+                  { id: cell.org as OrgId, name: cell.spec, kind: 'cell' as const, allegiance: 'cell' as const },
+                ]),
+              ),
+            ),
+          },
     npcs,
     // Every NPC starts where its schedule puts it at the start time, or
     // `absent` when the schedule names no Location then. `foldNoise` recomputes
@@ -935,7 +1129,8 @@ function assembleWorld(
     // No NPC has told the player anything yet: every Told List starts empty.
     told: {},
 
-    plot: core.plot,
+    plot: primaryPlot === undefined ? core.plot : slicePlotOf(primaryPlot),
+    ...(library === undefined ? {} : { plots: library.plots, libraryThreads: library.threads }),
     // Side Threads are owned by the noise generator (task 6.2).
     sideThreads: [],
 
@@ -1018,7 +1213,7 @@ function assembleWorld(
     scheduled: [],
   };
 
-  return world;
+  return library === undefined ? world : materialiseTwists(world);
 }
 
 /**
@@ -1142,6 +1337,8 @@ interface NoiseStreamResult {
   readonly sideThreads: GeneratedSideThreads;
   readonly rumours: GeneratedRumours;
   readonly traffic: GeneratedNoiseTraffic;
+  /** Lookalikes placed before the ordinary side-thread quota. Absent on the slice path. */
+  readonly libraryThreads?: ReturnType<typeof fillLookalikeShare>;
 }
 
 /**
@@ -1179,6 +1376,7 @@ function runNoiseStream(
   core: CoreStreamResult,
   inputs: GenerateInputs,
   settings: NoiseSettings,
+  lookalikes?: Omit<LookalikeFill, 'sideThreadCount'>,
 ): NoiseStreamResult {
   const { content, descriptors } = inputs;
 
@@ -1201,7 +1399,13 @@ function runNoiseStream(
     principalNames,
   );
 
-  // Step 2 — Side Threads (non-Cell minor storylines with their own channels).
+  // Step 2 — Lookalikes first, through the side-thread spawn, then the ordinary
+  // side-thread quota. The slice path omits the lookalike request, so its draws
+  // stay on the same noise stream as before.
+  const libraryThreads =
+    lookalikes === undefined
+      ? undefined
+      : fillLookalikeShare({ ...lookalikes, sideThreadCount: settings.sideThreads }, prng);
   const sideThreads = generateSideThreads(
     prng,
     content,
@@ -1231,7 +1435,13 @@ function runNoiseStream(
     START,
   );
 
-  return { background, sideThreads, rumours, traffic };
+  return {
+    background,
+    sideThreads,
+    rumours,
+    traffic,
+    ...(libraryThreads === undefined ? {} : { libraryThreads }),
+  };
 }
 
 /**
@@ -1301,7 +1511,8 @@ function foldNoise(
     // The Background NPCs start where their schedules put them, like the core
     // NPCs; the core NPCs' positions are unchanged by the recompute.
     whereabouts: whereaboutsAt(npcs, coreWorld.time),
-    sideThreads: noise.sideThreads.sideThreads,
+    sideThreads: [...coreWorld.sideThreads, ...noise.sideThreads.sideThreads],
+    ...(noise.libraryThreads === undefined ? {} : { libraryThreads: noise.libraryThreads }),
     channels,
   };
 
@@ -1369,15 +1580,44 @@ function foldNoise(
  * the noise draws stay independent while the world still reads back under the
  * player's seed.
  */
+/** Lookalike request for a library world. The slice path has no `plots`, so it stays undefined. */
+function lookalikeFill(
+  world: WorldState,
+  core: CoreStreamResult,
+  inputs: GenerateInputs,
+  setting: SettingSelection,
+): Omit<LookalikeFill, 'sideThreadCount'> | undefined {
+  if (world.plots === undefined) {
+    return undefined;
+  }
+  const cellMembers = new Set<string>();
+  for (const plot of world.plots) {
+    for (const cell of plot.cells) {
+      for (const npc of cell.members) {
+        cellMembers.add(npc);
+      }
+    }
+  }
+  return {
+    threads: [...(inputs.content.sideThreadTemplatesV2?.values() ?? [])],
+    plots: [...(inputs.content.plotTemplatesV2?.values() ?? [])],
+    city: bindCityFromView(cityView(core.city, inputs.content, setting)),
+    preset: inputs.preset,
+    share: libraryPreset(inputs.preset).lookalikeShare,
+    cellMembers,
+  };
+}
+
 function runNoiseLoop(
   displaySeed: string,
   noiseSeed: string,
   coreWorld: WorldState,
   core: CoreStreamResult,
   inputs: GenerateInputs,
+  setting: SettingSelection,
   verify: DiscoveryVerifier,
   maxAttempts: number,
-): WorldState {
+): FoldedNoise {
   const settings = noiseSettings(inputs.preset);
 
   let lastResult: DiscoveryResult | undefined;
@@ -1386,7 +1626,7 @@ function runNoiseLoop(
     // stream with derive(noiseSeed, attempt), the design's "next noise seed".
     const streamSeed = attempt === 0 ? noiseSeed : derive(noiseSeed, attempt);
     const prng = createPrng(streamSeed);
-    const noise = runNoiseStream(prng, core, inputs, settings);
+    const noise = runNoiseStream(prng, core, inputs, settings, lookalikeFill(coreWorld, core, inputs, setting));
     const folded = foldNoise(coreWorld, core, noise);
 
     const result = verify({
@@ -1403,11 +1643,73 @@ function runNoiseLoop(
     lastResult = result;
 
     if (result.ok) {
-      return folded.world;
+      return folded;
     }
   }
 
   throw new GeneratorError(displaySeed, maxAttempts, lastResult?.failure, 'noise');
+}
+
+/**
+ * Attach ambient state after the noise pass and re-verify. Attempt k uses
+ * {@link initAmbient}'s derived seed. A failed gate discards that state and
+ * tries the next seed, up to {@link MAX_AMBIENT_ATTEMPTS}.
+ */
+function runAmbientLoop(
+  displaySeed: string,
+  world: WorldState,
+  core: CoreStreamResult,
+  knowledge: GeneratedKnowledge,
+  inputs: GenerateInputs,
+  verify: DiscoveryVerifier,
+  maxAttempts: number,
+): WorldState {
+  let lastResult: DiscoveryResult | undefined;
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const ambient = initAmbient(
+      world,
+      inputs.content,
+      inputs.preset,
+      inputs.scenario,
+      attempt,
+    );
+    const withAmbient = { ...world, ambient };
+    const result = verify({
+      brief: core.brief,
+      plot: core.plot,
+      knowledge,
+      comms: { ...core.comms, channels: world.channels },
+      city: core.city,
+      orgs: core.orgs,
+      principals: { ...core.principals, npcs: world.npcs },
+    });
+    lastResult = result;
+    if (result.ok) {
+      const verified = verifierResult(result);
+      registerRegionGraph(
+        displaySeed,
+        graphFromWitnesses(verified.witnesses, Object.keys(core.city.locations)),
+      );
+      return {
+        ...withAmbient,
+        ambient: {
+          ...ambient,
+          gate: {
+            solvable: [...verified.solvable].sort(),
+            anchors: [...anchorsOf(verified, withAmbient)].sort(),
+            slowRunsToday: 0,
+            witnesses: storedWitnesses(verified.witnesses),
+          },
+        },
+      };
+    }
+  }
+  throw new GeneratorError(
+    displaySeed,
+    maxAttempts,
+    lastResult?.failure,
+    'ambient',
+  );
 }
 
 /**
@@ -1450,8 +1752,9 @@ export function generate(
   seed: string,
   inputs: GenerateInputs,
   options: GenerateOptions = {},
+  ctx?: PostingContext,
 ): WorldState {
-  return generateGame(seed, inputs, options).world;
+  return generateGame(seed, inputs, options, ctx).world;
 }
 
 /**
@@ -1500,13 +1803,17 @@ export function generateGame(
   seed: string,
   inputs: GenerateInputs,
   options: GenerateOptions = {},
+  ctx?: PostingContext,
 ): GenerateResult {
   const verify = options.verifier ?? verifyDiscoveryPaths;
   const maxAttempts = options.maxAttempts ?? MAX_GENERATION_ATTEMPTS;
   const noiseVerify = options.noiseVerifier ?? verifyDiscoveryPaths;
   const maxNoiseAttempts = options.maxNoiseAttempts ?? MAX_NOISE_ATTEMPTS;
+  const ambientVerify = options.ambientVerifier ?? verifyDiscoveryPaths;
+  const maxAmbientAttempts = options.maxAmbientAttempts ?? MAX_AMBIENT_ATTEMPTS;
   const maxSettingAttempts = options.maxSettingAttempts ?? MAX_SETTING_ATTEMPTS;
   const usage = options.usage ?? NO_USAGE_SINK;
+  const posted = ctx === undefined ? inputs : withPostingOverrides(inputs, ctx);
 
   // The setting step runs *first*, before any Plot selection (content-expansion
   // Req 9.11), on its own stream `derive(seed, 0x30000 + j)` for setting attempt
@@ -1521,7 +1828,7 @@ export function generateGame(
     settingAttempt < maxSettingAttempts;
     settingAttempt += 1
   ) {
-    const step = runSettingStep(seed, settingAttempt, inputs, usage);
+    const step = runSettingStep(seed, settingAttempt, posted, usage);
     settingCity = step.selection.city;
 
     if (step.infeasible) {
@@ -1530,12 +1837,17 @@ export function generateGame(
       continue;
     }
 
+    const posting =
+      options.posting ??
+      (ctx === undefined ? undefined : postingFromContext(ctx, posted, step.settingCity, step.selection));
     const coreLoop = runCoreLoop(
       seed,
       step.settingCity,
-      inputs,
+      posted,
       verify,
       maxAttempts,
+      posting,
+      ctx,
     );
     if (coreLoop.core === undefined) {
       // The core retry budget was exhausted for this setting attempt's city;
@@ -1549,23 +1861,41 @@ export function generateGame(
     // The display seed stays the caller's seed, so the world reads back under
     // the seed the player entered; a core retry only changed the stream the
     // world was drawn from.
-    const coreWorld = assembleWorld(seed, core, inputs, step.selection);
+    const coreWorld = assembleWorld(seed, core, posted, step.selection, options.history);
+    const carried =
+      ctx === undefined
+        ? coreWorld
+        : carryWorld(seed, coreWorld, core, ctx, posted, verify);
 
     // The noise stream runs *after* the core world is verified, on its own
     // separate stream (derive(seed, NOISE_STREAM_BASE), then derive(thatSeed, k)
     // per retry), and the full world is re-verified (design, Noise Generator;
     // Requirements 29.5, 29.6). The display seed is unchanged by noise — noise
-    // only adds entities and beliefs.
+    // only adds entities and beliefs. A posting's carry step has already run,
+    // on its own stream, and only adds entities.
     const noiseSeed = derive(seed, NOISE_STREAM_BASE);
-    const noiseWorld = runNoiseLoop(
+    const noise = runNoiseLoop(
       seed,
       noiseSeed,
-      coreWorld,
+      carried,
       core,
-      inputs,
+      posted,
+      step.selection,
       noiseVerify,
       maxNoiseAttempts,
     );
+    const ambientWorld =
+      posted.scenario.ambient?.enabled === true
+        ? runAmbientLoop(
+            seed,
+            noise.world,
+            core,
+            noise.knowledge,
+            posted,
+            ambientVerify,
+            maxAmbientAttempts,
+          )
+        : noise.world;
 
     // The Cipher Engine mints the real ciphertext Intercepts for every
     // interceptable firing the full world produces — Plot Stage transmission
@@ -1576,12 +1906,12 @@ export function generateGame(
     // what the player has *captured*, which the intercept action delivers off
     // `transmissions` into `intercepts` (Property 18). Seeding runs on its own
     // cipher stream so it never perturbs a core or noise draw.
-    const world = seedTransmissions(seed, noiseWorld, core, inputs);
+    const world = seedTransmissions(seed, ambientWorld, core, posted);
 
     // With the full world assembled, seed the Truth Store with every core and
     // noise ground-truth Proposition and the mole's allegiance, so `holds`
     // answers from the first turn (design, World Generator; Requirement 2.1).
-    const truth = seedTruthStore(inputs.content, core.knowledge, world);
+    const truth = seedTruthStore(posted.content, core.knowledge, world);
     return { world, truth };
   }
 
@@ -1616,17 +1946,109 @@ type CitySelectorValue = string;
  * by the setting step is passed into every attempt — slice step 1 does not run
  * on the core stream (content-expansion Req 9.10, 9.11).
  */
+function withPostingOverrides(inputs: GenerateInputs, ctx: PostingContext): GenerateInputs {
+  return {
+    ...inputs,
+    preset: mergeRecord(inputs.preset, ctx.presetOverrides),
+    scenario: {
+      ...inputs.scenario,
+      recruitment: mergeRecord(inputs.scenario.recruitment, ctx.scenarioOverrides),
+    },
+  };
+}
+
+function mergeRecord<T>(base: T, overrides: Readonly<Record<string, unknown>>): T {
+  if (!isPlainRecord(base)) {
+    return base;
+  }
+  let changed = false;
+  const out: Record<string, unknown> = { ...base };
+  for (const [key, value] of Object.entries(overrides)) {
+    if (value === undefined) {
+      continue;
+    }
+    const current = base[key];
+    const next =
+      isPlainRecord(current) && isPlainRecord(value) ? mergeRecord(current, value) : value;
+    if (next !== current) {
+      out[key] = next;
+      changed = true;
+    }
+  }
+  return (changed ? out : base) as T;
+}
+
+function isPlainRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function postingFromContext(
+  ctx: PostingContext,
+  inputs: GenerateInputs,
+  settingCity: SettingCity,
+  setting: SettingSelection,
+): PostingPlotSelection {
+  const context = {
+    year: ctx.year,
+    ...(ctx.tension === undefined ? {} : { tension: ctx.tension }),
+    ...(ctx.epochFlags.length === 0 ? {} : { epochFlags: ctx.epochFlags }),
+    ...(ctx.history.context.rank === undefined ? {} : { rank: ctx.history.context.rank }),
+    ...(ctx.history.context.scaling === undefined ? {} : { scaling: ctx.history.context.scaling }),
+  };
+  const history = { templateHistory: ctx.history.templateHistory, context };
+  const templates = [...(inputs.content.plotTemplatesV2?.values() ?? [])].filter(
+    (template) => template.kind === 'plot',
+  );
+  if (templates.length === 0) {
+    return { history, selection: null };
+  }
+  return {
+    history,
+    selection: {
+      templates,
+      city: bindCityFromView(cityView(settingCity.city, inputs.content, setting)),
+      preset: inputs.preset,
+      year: ctx.year,
+      excluded: [],
+    },
+  };
+}
+
+function carryWorld(
+  seed: string,
+  world: WorldState,
+  core: CoreStreamResult,
+  ctx: PostingContext,
+  inputs: GenerateInputs,
+  verify: DiscoveryVerifier,
+): WorldState {
+  const applied = applyPostingCarry(
+    world,
+    core,
+    ctx,
+    inputs.content,
+    inputs.preset.coverSuspicionBurnThreshold,
+    verify,
+  );
+  if (!applied.ok) {
+    throw new GeneratorError(seed, applied.error.attempts, applied.error.failure, 'carry');
+  }
+  return applied.world;
+}
+
 function runCoreLoop(
   seed: string,
   settingCity: SettingCity,
   inputs: GenerateInputs,
   verify: DiscoveryVerifier,
   maxAttempts: number,
+  posting?: PostingPlotSelection,
+  ctx?: PostingContext,
 ): { core?: CoreStreamResult; lastResult?: DiscoveryResult } {
   let lastResult: DiscoveryResult | undefined;
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     const worldSeed = attempt === 0 ? seed : derive(seed, attempt);
-    const core = runCoreStream(worldSeed, inputs, settingCity);
+    const core = runCoreStream(worldSeed, inputs, settingCity, posting, ctx);
 
     const result = verify({
       brief: core.brief,
@@ -1720,6 +2142,8 @@ export function seedTruthStore(
   for (const thread of world.sideThreads) {
     facts.push(...thread.propositions);
   }
+  const twist = twistGroundTruth(world);
+  facts.push(...twist.facts);
 
   // The mole's true allegiance is ground truth too; record it so an engine
   // module can read it back. Keyed by the mole NPC id. No mole ⇒ no allegiance.
@@ -1727,11 +2151,30 @@ export function seedTruthStore(
   if (knowledge.mole !== undefined) {
     allegiances.set(knowledge.mole.npc, knowledge.mole.trueAllegiance);
   }
+  for (const entry of twist.allegiances) {
+    allegiances.set(entry.npc, entry.allegiance);
+  }
+
+  const itemOrigins = new Map<string, EntityId>();
+  for (const plot of world.plots ?? []) {
+    for (const [item, origin] of Object.entries(plot.itemOrigins ?? {})) {
+      itemOrigins.set(item, origin as EntityId);
+    }
+  }
+
+  const identities = new Map<UnkId, NpcId>();
+  const carry = world.carry === undefined ? undefined : revealTruth(world.carry);
+  if (carry !== undefined) {
+    for (const entry of Object.values(carry.unk)) {
+      identities.set(entry.unk, entry.npc);
+    }
+  }
 
   return TruthStore.from(content.predicates.evaluators, {
     facts,
     allegiances,
-    identities: new Map(),
+    identities,
     claimTruths: [],
+    ...(itemOrigins.size === 0 ? {} : { itemOrigins }),
   });
 }

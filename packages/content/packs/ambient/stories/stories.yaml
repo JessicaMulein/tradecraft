@@ -1,0 +1,11 @@
+- id: strike
+  beats: [announced, resolved]
+
+- id: curfew
+  beats: [announced, resolved]
+
+- id: shortage
+  beats: [announced, resolved]
+
+- id: checkpoint
+  beats: [announced, resolved]

@@ -87,6 +87,7 @@ import { scheduledLocation } from '../city/npc.js';
 import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
 import type { TruthAccess, TruthReader } from '../truth/truth.js';
 import { visiblePersons } from './identify.js';
+import { applyRecogniserPass } from '../carry/recognise.js';
 import type { ActionQuote, ActionResult, Observation } from './result.js';
 import type { FollowAction, ObservationSource, SurveilAction } from './types.js';
 
@@ -567,6 +568,26 @@ function runDetection(
   };
 }
 
+/** The ordinary "made" line and the seen-before lines, plus any hidden events. */
+function noteRecogniser(
+  observations: Observation[],
+  raised: SimEvent[],
+  recognised: ReturnType<typeof applyRecogniserPass>,
+): void {
+  if (
+    recognised.made &&
+    !observations.some((obs) => obs.kind === 'message' && obs.line === MADE_FACT_LINE)
+  ) {
+    observations.push({ kind: 'message', line: MADE_FACT_LINE });
+  }
+  for (const line of recognised.seenBefore) {
+    observations.push({ kind: 'message', line });
+  }
+  for (const event of recognised.events) {
+    raised.push(event);
+  }
+}
+
 /** Raise the player's suspicion / Cover Suspicion by the detection delta. */
 function raiseCoverSuspicion(state: WorldState): WorldState {
   const next = clamp01(revealTruth(state.player.coverSuspicion) + DETECTION_SUSPICION_DELTA);
@@ -629,6 +650,7 @@ export function resolveSurveil(
   let next = state;
   const observations: Observation[] = [];
   const claimsAdded: string[] = [];
+  const raised: SimEvent[] = [];
 
   // The slice's clock is one phase per step, so the window's phases are the
   // current phase repeated; each watched phase sights the same scheduled NPCs
@@ -679,13 +701,24 @@ export function resolveSurveil(
         observations.push(detection.madeObservation);
       }
     }
+    const recognised = applyRecogniserPass(
+      next,
+      rng,
+      surveilDetectionBase(next),
+      present,
+      present,
+      at,
+      a.at,
+    );
+    next = recognised.next;
+    noteRecogniser(observations, raised, recognised);
   }
 
   const result: ActionResult = {
     observations,
     factLines: render(next, observations),
     scene: sceneDescriptorAt(next, a.at),
-    events: [],
+    events: raised,
     claimsAdded,
   };
   return { next, result };
@@ -784,6 +817,7 @@ export function resolveFollow(
   let next = state;
   const observations: Observation[] = [];
   const claimsAdded: string[] = [];
+  const raised: SimEvent[] = [];
   const at = state.time;
 
   const npc = resolveTarget(state, truth, a.target);
@@ -844,13 +878,24 @@ export function resolveFollow(
         observations.push(detection.madeObservation);
       }
     }
+    const recognised = applyRecogniserPass(
+      next,
+      rng,
+      followDetectionBase(next),
+      present,
+      present,
+      at,
+      targetLoc,
+    );
+    next = recognised.next;
+    noteRecogniser(observations, raised, recognised);
   }
 
   const result: ActionResult = {
     observations,
     factLines: render(next, observations),
     scene: sceneDescriptorAt(next, next.player.loc),
-    events: [],
+    events: raised,
     claimsAdded,
   };
   return { next, result };

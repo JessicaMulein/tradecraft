@@ -128,6 +128,56 @@ import { plotTraceInterceptId } from '../cipher/world-intercepts.js';
  */
 export const DELAY_DAYS = 1;
 
+/**
+ * Push one stage's deadline out by `days` and leave abort pressure untouched.
+ * Ambient delay hooks call this directly so they never draw `onDisrupted` and
+ * never raise Abort Pressure. Returns `undefined` when the stage is absent or
+ * the plot is no longer running.
+ */
+export function delayStage(
+  plot: PlotState,
+  stageId: string,
+  days: number,
+): PlotState | undefined {
+  if (plot.status !== 'running') {
+    return undefined;
+  }
+  const index = plot.stages.findIndex((stage) => stage.id === stageId);
+  if (index < 0) {
+    return undefined;
+  }
+  const stage = plot.stages[index];
+  if (stage === undefined) {
+    return undefined;
+  }
+  const delayed: StageState = {
+    ...stage,
+    deadline: { day: stage.deadline.day + days, phase: stage.deadline.phase },
+  };
+  const stages = plot.stages.map((entry, i) => (i === index ? delayed : entry));
+  return { ...plot, stages };
+}
+
+/**
+ * The first other location of the same type as `from`, in id order. This is
+ * the slice reroute's same-type rule without a draw, so an ambient reroute
+ * cannot fall through into an abort.
+ */
+export function sameTypeAlternative(
+  locations: Readonly<Record<string, { readonly type: string }>>,
+  from: string,
+): string | undefined {
+  const type = locations[from]?.type;
+  if (type === undefined) {
+    return undefined;
+  }
+  const alternatives = Object.entries(locations)
+    .filter(([id, location]) => id !== from && location.type === type)
+    .map(([id]) => id)
+    .sort();
+  return alternatives[0];
+}
+
 // ---------------------------------------------------------------------------
 // Trace classification
 // ---------------------------------------------------------------------------

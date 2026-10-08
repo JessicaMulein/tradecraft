@@ -34,6 +34,11 @@ describe('flavourCacheKey', () => {
     expect(a).toBe(b);
   });
 
+  it('adds a non-open location status to the key', () => {
+    expect(flavourCacheKey({ ...cafeMorningBusy, status: 'open' })).toBe('loc:cafe|1|busy');
+    expect(flavourCacheKey({ ...cafeMorningBusy, status: 'raided' })).toBe('loc:cafe|1|busy|raided');
+  });
+
   it('is sensitive to the Location', () => {
     const base: FlavourCacheCoords = { loc: 'loc:cafe' as LocId, phase: 1, crowd: 'busy' };
     const other: FlavourCacheCoords = { ...base, loc: 'loc:bar' as LocId };

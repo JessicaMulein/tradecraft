@@ -63,6 +63,7 @@ import {
 } from '../casefile/evidence.js';
 import { helpView } from '../aids/help.js';
 import { HintStore } from '../aids/hints.js';
+import { cityView, dutiesView, storiesView, type CityView, type DutiesView, type StoriesView } from '../city/city-views.js';
 import { buildDebrief, type RecordedFeed } from '../debrief/debrief.js';
 import { Journal } from '../journal/journal.js';
 import { journalView } from '../journal/view.js';
@@ -806,6 +807,9 @@ export class PlayerViewEngine implements EngineApi {
     here: (): HereView => hereView(this.deps.state, this.deps.cityData),
     journal: (): JournalView => journalView(this.journalStore),
     map: (): MapView => mapView(this.deps.state, this.deps.cityData),
+    city: (): CityView => cityView(this.deps.state, this.deps.caseFile, this.notificationStore.list()),
+    stories: (): StoriesView => storiesView(this.deps.state),
+    duties: (): DutiesView => dutiesView(this.deps.state),
     people: (): PeopleView => peopleView(this.deps.state, this.deps.caseFile),
     documents: (): DocumentListView => documentListView(this.deps.state),
     document: (id: DocId): DocumentView | undefined =>

@@ -113,10 +113,12 @@
 import {
   asTruth,
   revealTruth,
+  type EntityId,
   type ItemId,
   type NpcId,
   type Proposition,
 } from '../model/core.js';
+import { currentHolder, type TruthAccess } from '../truth/truth.js';
 import type {
   Document,
   SimEvent,
@@ -487,9 +489,37 @@ export interface ServiceDropInputs {
   readonly watcher?: NpcId;
   readonly riskTolerance?: number;
   readonly copyAsserts?: readonly Proposition[];
+  /** When present, a seize records HANDS_OVER(holder, org:station, item). */
+  readonly truth?: TruthAccess;
 }
 
 /** A stable event id for a drop event, derived from the drop, time and tag. */
+function recordSeizure(
+  state: WorldState,
+  drop: DeadDrop,
+  items: readonly ItemId[],
+  truth: TruthAccess | undefined,
+): void {
+  if (truth === undefined) {
+    return;
+  }
+  const facts = truth.facts().map((fact) => revealTruth(fact));
+  for (const item of items) {
+    const origin = truth.itemOrigin(item);
+    const holder = currentHolder(facts, item, state.time, origin) ?? drop.owner;
+    const recipient: EntityId = state.station.org;
+    truth.addFact({
+      id: `prop:hands-over:${item}:${state.time.day}.${state.time.phase}`,
+      subject: holder,
+      predicate: 'HANDS_OVER',
+      object: recipient,
+      instrument: item,
+      place: drop.loc,
+      window: { from: state.time },
+    });
+  }
+}
+
 function dropEventId(dropId: DeadDrop['id'], tag: string, state: WorldState): SimEvent['id'] {
   return `event:service-drop:${dropId}:${tag}:${state.time.day}.${state.time.phase}` as SimEvent['id'];
 }
@@ -682,6 +712,7 @@ function resolveHostileDrop(
 
   if (a.hostileMode === 'seize') {
     const seized = drop.contents;
+    recordSeizure(state, drop, seized, inputs.truth);
     // Empty the drop.
     const emptiedDrop: DeadDrop = { ...drop, contents: [] };
     next = { ...next, deadDrops: { ...next.deadDrops, [drop.id]: emptiedDrop } };

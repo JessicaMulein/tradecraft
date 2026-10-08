@@ -1,0 +1,28 @@
+import type { InputDefinition } from '../../../config/workspace-json-project-json';
+import type { ShowTargetBaseOptions } from '../command-object';
+import { type ResolvedTarget } from './utils';
+export declare function showTargetInfoHandler(args: ShowTargetBaseOptions): Promise<void>;
+export type TargetInfoData = ReturnType<typeof resolveTargetInfoData>;
+declare function resolveTargetInfoData(t: ResolvedTarget): {
+    project: string;
+    target: string;
+    configuration?: string;
+    executor: string;
+    command?: string;
+    _commandSourceKey?: string;
+    customHasher?: boolean;
+    dependsOn?: string[];
+    _depSources?: number[];
+    transitiveTasks?: string[];
+    parallelism: boolean;
+    continuous: boolean;
+    cache: boolean;
+    inputs?: (string | InputDefinition)[];
+    _inputSources?: number[];
+    outputs?: string[];
+    options: any;
+    configurations?: string[];
+    defaultConfiguration?: string;
+    sourceMap?: Record<string, [file: string, plugin: string]>;
+};
+export {};

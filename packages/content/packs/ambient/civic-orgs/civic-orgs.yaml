@@ -1,0 +1,27 @@
+- id: police
+  name: "City police"
+  kind: police
+- id: dock-union
+  name: "The dock union"
+  kind: union
+- id: tram-union
+  name: "The tram union"
+  kind: union
+- id: civic-party
+  name: "The civic party"
+  kind: party
+- id: labour-party
+  name: "The labour party"
+  kind: party
+- id: centre-party
+  name: "The centre party"
+  kind: party
+- id: mill
+  name: "The mill"
+  kind: employer
+- id: press-house
+  name: "The press house"
+  kind: employer
+- id: cover-desk
+  name: "The trade desk"
+  kind: cover-employer

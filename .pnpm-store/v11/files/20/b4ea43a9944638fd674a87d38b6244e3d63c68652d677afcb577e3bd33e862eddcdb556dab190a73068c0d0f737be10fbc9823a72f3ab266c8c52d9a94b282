@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "executors": {
+    "test": {
+      "implementation": "./dist/src/executors/test/vitest.impl",
+      "schema": "./dist/src/executors/test/schema.json",
+      "description": "Test using Vitest"
+    }
+  }
+}

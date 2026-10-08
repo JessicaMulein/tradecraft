@@ -371,6 +371,43 @@ setting:
   });
 });
 
+describe('ambient scenario block', () => {
+  it('accepts density and the regard weight, and reports a bad density with its path', () => {
+    const ok = parseScenarioConfig(
+      `
+difficulty:
+  preset: standard
+ambient:
+  enabled: true
+  density: rich
+recruitment:
+  pitch: { w1: 1, w2: 1, w3: 1, w4: 1 }
+  firstContact: { a: 1, b: 1, c: 1, d: 1, e: 1 }
+  meeting: { trust: 1, riskAversion: 1, scheduleConflict: 1, agendaInterest: 1, regard: 1 }
+  exposure: { k1: 1, k2: 1, k3: 1 }
+  turn: { w1: 1, w2: 1, w3: 1, w4: 1, w5: 1 }
+`,
+      'test.yaml',
+      CONTEXT,
+    );
+    expect(ok.ok).toBe(true);
+    if (ok.ok) {
+      expect(ok.value.scenario.ambient).toEqual({ enabled: true, density: 'rich' });
+      expect(ok.value.scenario.recruitment.firstContact.e).toBe(1);
+      expect(ok.value.scenario.recruitment.meeting.regard).toBe(1);
+    }
+    const bad = parseScenarioConfig(
+      `${MINIMAL}ambient:\n  enabled: true\n  density: crowded\n`,
+      'test.yaml',
+      CONTEXT,
+    );
+    expect(bad.ok).toBe(false);
+    if (!bad.ok) {
+      expect(bad.issues.some((issue) => issue.path.includes('ambient.density'))).toBe(true);
+    }
+  });
+});
+
 // --- formatting -------------------------------------------------------------
 
 describe('formatConfigIssues', () => {

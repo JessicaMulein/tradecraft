@@ -66,6 +66,7 @@ import {
   type Phase,
   type Proposition,
   type PropId,
+  type Truth,
 } from '../model/core.js';
 import {
   type TraceChannelKind,
@@ -180,6 +181,8 @@ export interface SideThreadState {
   readonly traces: readonly SideThreadTrace[];
   /** The noise-traffic Channels the thread owns (owned by its participants). */
   readonly channels: readonly Channel[];
+  /** Set when ambient spawned the thread during play. Slice threads omit it. */
+  readonly origin?: Truth<'emergent'>;
 }
 
 // ---------------------------------------------------------------------------

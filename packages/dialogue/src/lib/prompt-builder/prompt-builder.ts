@@ -70,6 +70,12 @@ export type {
 /** The default NPC prompt token budget (Requirement 15.2). */
 export const DEFAULT_TOKEN_BUDGET = 3000;
 
+/** How many ambient propositions block 3 will mention. */
+export const AMBIENT_FACT_CAP = 8;
+
+/** Token budget for the ambient sentences in blocks 3 and 4 together. */
+export const AMBIENT_TOKEN_CAP = 400;
+
 /**
  * Thrown when the static blocks (1–3) alone exceed the token budget. These
  * blocks are never trimmed, so there is nothing the builder can do — the fault
@@ -217,7 +223,7 @@ function renderPersona(input: PromptInput, namer: Namer): string {
  * only" rule reads. Both come from the Knowledge Slicer, so this block is the
  * slicer's deterministic output verbatim.
  */
-function renderKnowledge(view: KnowledgeView, namer: Namer): string {
+function renderKnowledge(view: KnowledgeView, namer: Namer, city?: string): string {
   const factLines =
     view.facts.length === 0
       ? ['(You know nothing in particular worth volunteering.)']
@@ -225,10 +231,13 @@ function renderKnowledge(view: KnowledgeView, namer: Namer): string {
   const names = view.knownEntities.map((id) => `- ${namer(id)}`);
   const entityLines =
     names.length === 0 ? ['(You know of no one in particular.)'] : names;
-  return (
+  const base =
     `# What you know\n${factLines.join('\n')}\n\n` +
-    `# People, places and organisations you know of\n${entityLines.join('\n')}`
-  );
+    `# People, places and organisations you know of\n${entityLines.join('\n')}`;
+  if (city === undefined || city.length === 0) {
+    return base;
+  }
+  return `${base}\n\n${city}`;
 }
 
 /**
@@ -338,6 +347,90 @@ function renderProposition(
 // Assembly and trimming
 // ---------------------------------------------------------------------------
 
+function propositionEntities(proposition: PromptInput['toldList'][number]['proposition']): EntityId[] {
+  const ids: EntityId[] = [proposition.subject as EntityId];
+  if (typeof proposition.object === 'string') {
+    ids.push(proposition.object);
+  }
+  if (proposition.place !== undefined) {
+    ids.push(proposition.place);
+  }
+  return ids;
+}
+
+function citySection(lines: readonly string[]): string {
+  if (lines.length === 0) {
+    return '';
+  }
+  return `# The city as you know it\n${lines.map((line) => `- ${line}`).join('\n')}`;
+}
+
+function memorySection(lines: readonly string[]): string {
+  if (lines.length === 0) {
+    return '';
+  }
+  return `# What you remember\n${lines.map((line) => `- ${line}`).join('\n')}`;
+}
+
+/**
+ * Keep at most 8 ambient facts, then drop the lowest-salience facts and
+ * recollections until the two sections fit in {@link AMBIENT_TOKEN_CAP}.
+ * Fact selection does not depend on the recollections, so block 3 stays put
+ * for the whole day.
+ */
+function fitAmbient(input: PromptInput): {
+  readonly city: string;
+  readonly memories: string;
+  readonly entities: readonly EntityId[];
+} {
+  const ambient = input.ambient;
+  if (ambient === undefined) {
+    return { city: '', memories: '', entities: [] };
+  }
+  const facts = [...ambient.facts]
+    .sort((a, b) => b.salience - a.salience || (a.proposition.id < b.proposition.id ? -1 : 1))
+    .slice(0, AMBIENT_FACT_CAP);
+  const factLines = facts.map((fact) =>
+    renderProposition(fact.proposition, input.predicates, input.namer),
+  );
+  while (factLines.length > 0 && estimateTokens(citySection(factLines)) > AMBIENT_TOKEN_CAP) {
+    factLines.pop();
+    facts.pop();
+  }
+  const room = AMBIENT_TOKEN_CAP - estimateTokens(citySection(factLines));
+  const memories = [...ambient.recollections].sort(
+    (a, b) => b.salience - a.salience || (a.text < b.text ? -1 : 1),
+  );
+  const keptMemories: string[] = [];
+  const keptMemoryEntities: EntityId[] = [];
+  for (const memory of memories) {
+    const next = [...keptMemories, memory.text];
+    if (estimateTokens(memorySection(next)) > room) {
+      continue;
+    }
+    keptMemories.push(memory.text);
+    keptMemoryEntities.push(...(memory.entities ?? []));
+  }
+  const entities: EntityId[] = [];
+  const seen = new Set<string>();
+  for (const id of [
+    ...facts.flatMap((fact) => propositionEntities(fact.proposition)),
+    ...ambient.recollections.flatMap((memory) => memory.entities ?? []),
+    ...keptMemoryEntities,
+  ]) {
+    if (seen.has(id)) {
+      continue;
+    }
+    seen.add(id);
+    entities.push(id);
+  }
+  return {
+    city: citySection(factLines),
+    memories: memorySection(keptMemories),
+    entities,
+  };
+}
+
 /** Join blocks in order with a blank line between them. */
 function joinBlocks(blocks: readonly Block[]): string {
   return blocks.map((b) => b.text).join('\n\n');
@@ -363,8 +456,10 @@ export function buildPrompt(
   budget: number = DEFAULT_TOKEN_BUDGET,
 ): BuiltPrompt {
   const namer = input.namer;
+  const ambient = fitAmbient(input);
   const view = sliceKnowledge(input.knowledge, input.predicates, namer, {
     conceal: input.agenda?.conceal,
+    extraEntities: ambient.entities,
   });
 
   const coverIntact = input.coverIntact ?? true;
@@ -380,7 +475,7 @@ export function buildPrompt(
   };
   const knowledge: Block = {
     kind: 'knowledge',
-    text: renderKnowledge(view, namer),
+    text: renderKnowledge(view, namer, ambient.city),
   };
   const staticBlocks: Block[] = [globalFrame, persona, knowledge];
 
@@ -402,11 +497,16 @@ export function buildPrompt(
   }
 
   // Build the trimmable blocks at their fullest, then trim in order.
-  const makeToldBlock = (compress: boolean): Block[] => {
+  const makeToldBlock = (compress: boolean, includeMemories: boolean): Block[] => {
     const toldText = renderToldList(input, namer, compress);
-    const text =
-      relationship === undefined ? toldText : `${toldText}\n\n${relationship}`;
-    return [{ kind: 'told-list', text }];
+    const parts = [toldText];
+    if (relationship !== undefined) {
+      parts.push(relationship);
+    }
+    if (includeMemories && ambient.memories.length > 0) {
+      parts.push(ambient.memories);
+    }
+    return [{ kind: 'told-list', text: parts.join('\n\n') }];
   };
 
   const makeRecentBlock = (dropOldest: number): Block[] => {
@@ -430,7 +530,7 @@ export function buildPrompt(
   let toldCompressed = false;
   let recentTurnsDropped = 0;
 
-  let told = makeToldBlock(false);
+  let told = makeToldBlock(false, true);
   let recent = makeRecentBlock(0);
   let current = assemble(told, recent);
 
@@ -447,7 +547,14 @@ export function buildPrompt(
   // Step 2: still over budget — compress the Told List to one line per subject.
   if (current.tokens > budget) {
     toldCompressed = true;
-    told = makeToldBlock(true);
+    told = makeToldBlock(true, true);
+    current = assemble(told, recent);
+  }
+
+  // Recollections travel with the Told List. Drop them only after that list
+  // has already been compressed, so a long memory cannot change block 3.
+  if (current.tokens > budget && ambient.memories.length > 0) {
+    told = makeToldBlock(toldCompressed, false);
     current = assemble(told, recent);
   }
 

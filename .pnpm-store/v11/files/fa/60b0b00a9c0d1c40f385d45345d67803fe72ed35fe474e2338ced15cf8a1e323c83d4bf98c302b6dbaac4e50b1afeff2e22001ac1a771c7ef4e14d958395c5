@@ -1,0 +1,6 @@
+import type { TSESLint } from '@typescript-eslint/utils';
+declare const plugin: {
+    configs: Record<string, unknown>;
+    rules: Record<string, TSESLint.RuleModule<string, unknown[]>>;
+};
+export default plugin;

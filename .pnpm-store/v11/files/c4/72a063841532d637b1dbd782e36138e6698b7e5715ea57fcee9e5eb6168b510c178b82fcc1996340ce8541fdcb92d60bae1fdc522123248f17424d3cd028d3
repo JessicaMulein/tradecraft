@@ -1,0 +1,108 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = useImportMetaDirname;
+exports.rewriteDirname = rewriteDirname;
+const devkit_1 = require("@nx/devkit");
+// Only ESM-only extensions. A `.ts`/`.js` config can still be loaded as CJS,
+// where `import.meta` is a syntax error.
+const CONFIG_FILE_PATTERN = /(^|\/)(vite|vitest)\.config\.(mts|mjs)$/;
+let ts;
+async function useImportMetaDirname(tree) {
+    let touchedCount = 0;
+    (0, devkit_1.visitNotIgnoredFiles)(tree, '.', (filePath) => {
+        if (!CONFIG_FILE_PATTERN.test(filePath)) {
+            return;
+        }
+        const original = tree.read(filePath, 'utf-8');
+        if (!original?.includes('__dirname')) {
+            return;
+        }
+        const updated = rewriteDirname(original);
+        if (updated !== original) {
+            tree.write(filePath, updated);
+            touchedCount += 1;
+        }
+    });
+    if (touchedCount > 0) {
+        devkit_1.logger.info(`Replaced \`__dirname\` with \`import.meta.dirname\` in ${touchedCount} Vite config file(s).`);
+    }
+    await (0, devkit_1.formatFiles)(tree);
+}
+function rewriteDirname(source) {
+    ts ??= (0, devkit_1.ensurePackage)('typescript', '*');
+    const sourceFile = ts.createSourceFile('tmp.mts', source, ts.ScriptTarget.Latest, 
+    /* setParentNodes */ true, ts.ScriptKind.TS);
+    // A config TypeScript can only error-recover on may not mean what its AST
+    // says, so leave it for a human rather than rewrite it blind.
+    if (sourceFile.parseDiagnostics?.length) {
+        return source;
+    }
+    const references = [];
+    let bailOut = false;
+    const visit = (node) => {
+        if (ts.isIdentifier(node) && node.text === '__dirname') {
+            const kind = classify(node);
+            if (kind === 'bail') {
+                bailOut = true;
+            }
+            else if (kind === 'reference') {
+                references.push(node);
+            }
+        }
+        ts.forEachChild(node, visit);
+    };
+    visit(sourceFile);
+    if (bailOut || references.length === 0) {
+        return source;
+    }
+    let updated = source;
+    for (const node of references.reverse()) {
+        const start = node.getStart(sourceFile);
+        updated =
+            updated.slice(0, start) +
+                'import.meta.dirname' +
+                updated.slice(node.getEnd());
+    }
+    return updated;
+}
+/**
+ * `bail` abandons the whole file: something binds `__dirname` in scope, so the
+ * identifier no longer means the CJS global, or it is a shorthand property
+ * where key and value are one token. `skip` leaves a single identifier alone.
+ *
+ * The name-position test is inverted on purpose - anything sitting in a
+ * parent's `name` or `propertyName` slot is excluded by default, so node kinds
+ * nobody enumerated (class fields, accessors, enum members) cannot be rewritten
+ * into invalid syntax.
+ */
+function classify(node) {
+    const parent = node.parent;
+    if (!parent) {
+        return 'reference';
+    }
+    if (ts.isShorthandPropertyAssignment(parent)) {
+        return 'bail';
+    }
+    if (bindsDirname(parent, node)) {
+        return 'bail';
+    }
+    if (parent.name === node || parent.propertyName === node) {
+        return 'skip';
+    }
+    return 'reference';
+}
+/** Declarations that put a new `__dirname` in scope, shadowing the global. */
+function bindsDirname(parent, node) {
+    if (parent.name !== node) {
+        return false;
+    }
+    return (ts.isVariableDeclaration(parent) ||
+        ts.isParameter(parent) ||
+        ts.isBindingElement(parent) ||
+        ts.isFunctionDeclaration(parent) ||
+        ts.isClassDeclaration(parent) ||
+        ts.isImportClause(parent) ||
+        ts.isImportSpecifier(parent) ||
+        ts.isNamespaceImport(parent) ||
+        ts.isExportSpecifier(parent));
+}

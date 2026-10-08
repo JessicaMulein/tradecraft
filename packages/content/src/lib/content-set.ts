@@ -30,6 +30,7 @@ import type {
   RumourTemplate,
   SideThreadTemplate,
 } from './kinds.js';
+import type { PlotItem, PlotTemplateV2 } from './plot-v2.js';
 import type { Hint } from './hint.js';
 import type { GlossaryTerm } from './glossary.js';
 import type { DifficultyPreset } from './difficulty.js';
@@ -65,6 +66,14 @@ export interface ContentSet {
   readonly locationTypes: ContentRegistry<LocationType>;
   readonly plotTemplates: ContentRegistry<PlotTemplate>;
   readonly sideThreadTemplates: ContentRegistry<SideThreadTemplate>;
+  /**
+   * Template Schema v2 plots and side threads (plot-library). Empty when the
+   * loaded packs ship only slice templates. Optional on the type so fixtures
+   * built before this field existed still typecheck; the loader always sets it.
+   */
+  readonly plotTemplatesV2?: ContentRegistry<PlotTemplateV2>;
+  readonly sideThreadTemplatesV2?: ContentRegistry<PlotTemplateV2>;
+  readonly plotItems?: ContentRegistry<PlotItem>;
   readonly documentTemplates: ContentRegistry<DocumentTemplate>;
   readonly personaLibraries: ContentRegistry<PersonaLibrary>;
   readonly coverIdentities: ContentRegistry<CoverIdentity>;

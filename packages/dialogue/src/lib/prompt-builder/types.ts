@@ -95,6 +95,22 @@ export interface PromptInput {
   readonly recentTurns: readonly RecentTurn[];
 
   // --- block 6: current turn -----------------------------------------------
+  /**
+   * Ambient city knowledge the NPC holds. Absent when the scenario leaves
+   * ambient off, which leaves blocks 3 and 4 byte-identical to the slice.
+   * `facts` is the day-boundary snapshot (at most the builder keeps 8).
+   * `recollections` are rendered sentences; an unnamed person is already a
+   * descriptor in `text` and is omitted from `entities`.
+   */
+  readonly ambient?: {
+    readonly facts: readonly { readonly proposition: Proposition; readonly salience: number }[];
+    readonly recollections: readonly {
+      readonly text: string;
+      readonly salience: number;
+      readonly entities?: readonly EntityId[];
+    }[];
+  };
+
   /** The player's latest line. */
   readonly playerLine: string;
   /** The classified Intent as a stage direction, if one has been computed. */

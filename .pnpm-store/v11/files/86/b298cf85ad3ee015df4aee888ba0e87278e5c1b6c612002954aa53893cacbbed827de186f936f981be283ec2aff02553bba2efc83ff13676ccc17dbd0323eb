@@ -1,0 +1,2 @@
+import enforceModuleBoundariesRule from './src/rules/enforce-module-boundaries';
+export declare const enforceModuleBoundaries: typeof enforceModuleBoundariesRule;

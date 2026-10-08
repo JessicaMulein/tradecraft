@@ -33,7 +33,7 @@ const localId = fc
   .stringMatching(/^[A-Za-z0-9][A-Za-z0-9_-]*$/)
   .filter((s) => s.length > 0 && s.length < 24);
 
-const nonUnkNamespace = fc.constantFrom('npc', 'loc', 'org', 'item', 'doc', 'chan');
+const nonUnkNamespace = fc.constantFrom('npc', 'loc', 'org', 'item', 'doc', 'chan', 'evt');
 
 const entityIdArb: fc.Arbitrary<EntityId> = fc.oneof(
   fc.tuple(nonUnkNamespace, localId).map(([ns, id]) => `${ns}:${id}` as EntityId),
@@ -128,7 +128,7 @@ describe('EntityId', () => {
     );
   });
 
-  it('lists exactly the seven design namespaces', () => {
+  it('lists the design namespaces, including city events', () => {
     expect([...ENTITY_NAMESPACES]).toEqual([
       'npc',
       'loc',
@@ -137,6 +137,7 @@ describe('EntityId', () => {
       'doc',
       'chan',
       'unk',
+      'evt',
     ]);
   });
 });

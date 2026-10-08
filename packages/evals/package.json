@@ -18,6 +18,7 @@
   "dependencies": {
     "@tradecraft/app": "workspace:*",
     "@tradecraft/content": "workspace:*",
+    "@tradecraft/dialogue": "workspace:*",
     "@tradecraft/engine": "workspace:*",
     "@tradecraft/llm": "workspace:*",
     "@tradecraft/player-view": "workspace:*",

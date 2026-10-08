@@ -51,6 +51,7 @@ import {
   ScenarioConfigSchema,
   type ScenarioConfig,
   type ScenarioResolutionContext,
+  type SettingCity,
 } from '@tradecraft/engine';
 import {
   ConnectionError,
@@ -276,7 +277,22 @@ function resolutionContext(content: ContentSet): ScenarioResolutionContext {
     presets.set(key, value);
   }
   const availablePackIds = new Set(content.manifest.packs.map((p) => p.id));
-  return { presets, availablePackIds };
+  const cities = new Map<string, SettingCity>();
+  for (const [id, bundle] of Object.entries(content.cities)) {
+    cities.set(id, {
+      startDates: {
+        from: bundle.def.startDates.from,
+        to: bundle.def.startDates.to,
+      },
+    });
+  }
+  const period = content.era?.period;
+  return {
+    presets,
+    availablePackIds,
+    cities,
+    ...(period === undefined ? {} : { eraPeriod: { from: period.from, to: period.to } }),
+  };
 }
 
 /**

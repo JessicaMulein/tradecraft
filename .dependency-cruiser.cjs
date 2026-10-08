@@ -140,6 +140,56 @@ module.exports = {
       to: { path: '^packages/content-tools/' },
     },
     {
+      name: 'no-plot-lab-in-runtime',
+      severity: 'error',
+      comment:
+        'player-view and tui must not import plot-lab. The lab is an authoring ' +
+        'check over template graphs; the shipped game never depends on it.',
+      from: { path: '^packages/(player-view|tui)/' },
+      to: { path: '^packages/plot-lab/' },
+    },
+    {
+      name: 'no-tui-in-campaign',
+      severity: 'error',
+      comment:
+        'campaign must not import tui. The career loop is headless; the ' +
+        'terminal client renders views it is given.',
+      from: { path: '^packages/campaign/' },
+      to: { path: '^packages/tui/' },
+    },
+    {
+      name: 'campaign-view-only',
+      severity: 'error',
+      comment:
+        'player-view may import campaign only through the view entry. ' +
+        'The Campaign API under src/lib/campaign is the exception: it drives ' +
+        'step and save. Campaign Truth stays inside that folder and is not ' +
+        're-exported to the rest of player-view.',
+      from: {
+        path: '^packages/player-view/',
+        pathNot: '^packages/player-view/src/lib/campaign/',
+      },
+      to: {
+        path: '^packages/campaign/',
+        pathNot: '^packages/campaign/src/view\\.ts$',
+      },
+    },
+    {
+      name: 'ambient-hooks-only',
+      severity: 'error',
+      comment:
+        'Only engine/ambient/hooks may import plot mutation and hostile ' +
+        'belief writers. The rest of the ambient sim records pending hooks ' +
+        'and lets the gateway apply them.',
+      from: {
+        path: '^packages/engine/src/lib/ambient/',
+        pathNot: '^packages/engine/src/lib/ambient/hooks',
+      },
+      to: {
+        path: '^packages/engine/src/lib/(clock/plot-execution|clock/plot-abort|hostile)/',
+      },
+    },
+    {
       name: 'no-circular',
       severity: 'error',
       comment:

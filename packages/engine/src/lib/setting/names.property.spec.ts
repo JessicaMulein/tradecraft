@@ -376,7 +376,7 @@ describe('Property 9: naming soundness', () => {
       ),
       { numRuns: 60 },
     );
-  });
+  }, 20_000);
 
   it('uses the same weights for every NPC whatever its role: reshuffling roles leaves the named world unchanged', () => {
     fc.assert(

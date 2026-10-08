@@ -50,6 +50,8 @@ import type { Proposition } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import type { Prng } from '../prng/prng.js';
 import type { ActionQuote, ActionResult, Observation } from './result.js';
+import { learnAnnouncedStatus } from '../ambient/locations.js';
+import { noticeStillPosted } from '../ambient/news.js';
 import type { ObservationSource, ReadAction } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -86,6 +88,15 @@ export function quoteRead(state: WorldState, a: ReadAction): ActionQuote {
     return {
       allowed: false,
       reason: `no such Document ${a.doc}`,
+      phases: 0,
+      money: 0,
+    };
+  }
+
+  if (!noticeStillPosted(state, a.doc)) {
+    return {
+      allowed: false,
+      reason: `${doc.title} has been taken down`,
       phases: 0,
       money: 0,
     };
@@ -207,7 +218,7 @@ export function resolveRead(
     claimsAdded.push(propId);
   }
 
-  const next = markDocumentRead(state, a.doc);
+  const next = learnAnnouncedStatus(markDocumentRead(state, a.doc), `${doc.title}\n${doc.body}`);
   return {
     next,
     result: {

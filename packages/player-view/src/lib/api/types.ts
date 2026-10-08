@@ -66,6 +66,7 @@ import type { Notification } from '../notify/notification.js';
 // (with its sub-types) from one place further down, mirroring the Map/People
 // view re-export pattern.
 import type { DebriefView } from '../debrief/debrief.js';
+import type { CityView, DutiesView, StoriesView } from '../city/city-views.js';
 
 export type { Notification, NotificationKind } from '../notify/notification.js';
 
@@ -440,6 +441,8 @@ export interface HelpView {
 // `buildDebrief` that fills it live in `../debrief/debrief.ts`; the type is
 // re-exported here so the `EngineApi` interface keeps naming `DebriefView` from
 // one place (mirroring the Map/People view re-export above).
+export type { CityView, StoriesView, DutiesView } from '../city/city-views.js';
+
 export type {
   DebriefView,
   DebriefAllegiance,
@@ -505,6 +508,9 @@ export interface EngineApi {
     here(): HereView;
     journal(): JournalView;
     map(): MapView;
+    city(): CityView;
+    stories(): StoriesView;
+    duties(): DutiesView;
     people(): PeopleView;
     documents(): DocumentListView;
     document(id: DocId): DocumentView | undefined;

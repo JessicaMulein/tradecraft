@@ -51,8 +51,8 @@ const tokenArb: fc.Arbitrary<string> = fc
   .stringMatching(/^[a-z]{4,9}$/)
   .map((s) => s[0].toUpperCase() + s.slice(1));
 
-/** The six valid entity-id namespaces (see EntityId in @tradecraft/engine). */
-const namespaceArb = fc.constantFrom('npc', 'loc', 'org', 'item', 'doc', 'chan');
+/** Entity-id namespaces, including city events (ambient-world `evt:`). */
+const namespaceArb = fc.constantFrom('npc', 'loc', 'org', 'item', 'doc', 'chan', 'evt');
 
 /**
  * Neutral filler words that stitch the surface forms into a sentence. They are

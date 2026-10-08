@@ -131,6 +131,8 @@ export interface DebriefLead {
   readonly kind: 'side-thread' | 'rumour';
   /** The Side Thread id the lead traced to, when `kind === 'side-thread'`. */
   readonly thread?: string;
+  /** Set when that thread was spawned by the city during play. */
+  readonly emergent?: true;
 }
 
 /**
@@ -193,6 +195,23 @@ export interface DebriefScore {
  * final reckoning. Returned by {@link buildDebrief} and by the facade's
  * `views.debrief()` once the game has ended.
  */
+export interface PlotDebrief {
+  readonly displayName: string;
+  readonly archetype: string;
+  readonly role: 'primary' | 'secondary';
+  readonly result: string;
+  readonly timeline: readonly { readonly stage: string; readonly status: string; readonly facade?: boolean }[];
+  readonly branches: readonly { readonly id: string; readonly taken: string; readonly cause: string }[];
+  readonly subPlots: readonly string[];
+  readonly cells: readonly {
+    readonly name: string;
+    readonly members: readonly string[];
+    readonly cutouts: readonly string[];
+  }[];
+  readonly mimics?: string;
+  readonly twist?: { readonly kind: string; readonly propositions: readonly { readonly text: string; readonly heldInCaseFile: boolean }[] };
+}
+
 export interface DebriefView {
   /** The final outcome tag. */
   readonly outcome: Outcome;
@@ -214,6 +233,19 @@ export interface DebriefView {
   readonly directives: readonly DebriefDirectiveResult[];
   /** The score and the player's grading accuracy. */
   readonly score: DebriefScore;
+  /** Library plots, present when the world was built with plot selection. */
+  readonly plots?: readonly PlotDebrief[];
+  /** Lookalike labels for library side threads. */
+  readonly lookalikes?: readonly { readonly id: string; readonly mimics?: string }[];
+  /**
+   * Hooks that touched the Plot, and side threads the city spawned. Present
+   * only when ambient is on. The TUI prints this inside the timeline and the
+   * side-thread pages.
+   */
+  readonly city?: {
+    readonly hooks: readonly { readonly kind: string; readonly day: number; readonly detail: string }[];
+    readonly emergentThreads: readonly { readonly id: string }[];
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -283,6 +315,50 @@ export function buildDebrief(
     fedPropositions: classifyFeeds(truth, feeds),
     directives: directiveResults(state),
     score: scoreGrading(state, truth, caseFile),
+    ...(state.ambient === undefined ? {} : { city: cityReckoning(state) }),
+    ...(state.plots === undefined
+      ? {}
+      : {
+          plots: state.plots.map((plot) => ({
+            displayName: plot.displayName,
+            archetype: plot.archetype,
+            role: plot.role,
+            result: plot.resolution?.result ?? 'unresolved',
+            timeline: plot.stages
+              .filter((stage) => stage.status === 'executed' || stage.status === 'disrupted' || stage.offMap)
+              .map((stage) => ({
+                stage: stage.id,
+                status: stage.offMap && stage.status === 'executed' ? 'off-map' : stage.status,
+                ...(stage.facade ? { facade: true } : {}),
+              })),
+            branches: plot.runtimeBranches.flatMap((branch) =>
+              branch.resolved === undefined
+                ? []
+                : [{ id: branch.id, taken: branch.resolved.alt, cause: branch.resolved.cause }],
+            ),
+            subPlots: plot.subPlots,
+            cells: plot.cells.map((cell) => ({
+              name: cell.spec,
+              members: cell.members,
+              cutouts: cell.members.filter((member) => plot.cutouts.includes(member)),
+            })),
+            ...(plot.twist === undefined
+              ? {}
+              : {
+                  twist: {
+                    kind: plot.twist.kind,
+                    propositions: plot.twist.propositions.map((text) => ({
+                      text,
+                      heldInCaseFile: caseFileHoldsPredicate(caseFile, text),
+                    })),
+                  },
+                }),
+          })),
+          lookalikes: (state.libraryThreads ?? []).map((thread) => ({
+            id: thread.id,
+            ...(thread.mimics === undefined ? {} : { mimics: thread.mimics }),
+          })),
+        }),
   };
 }
 
@@ -352,6 +428,17 @@ function buildTimeline(state: WorldState): DebriefTimelineEntry[] {
 // ---------------------------------------------------------------------------
 // Lies (Req 19.6)
 // ---------------------------------------------------------------------------
+
+/** True when a Case File claim uses `predicate`, or a namespaced id ending in it. */
+function caseFileHoldsPredicate(caseFile: CaseFile, predicate: string): boolean {
+  for (const claim of caseFile.list()) {
+    const id = claim.prop.predicate;
+    if (id === predicate || id.endsWith(`/${predicate}`)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /**
  * Find the Case File Claims that were lies. Two sources mark a Claim a lie:
@@ -424,6 +511,35 @@ function findLies(
  * matches both (unusual) is reported once, as a Side Thread (the stronger
  * provenance).
  */
+function emergentMark(state: WorldState, threadId: string): { readonly emergent: true } | Record<string, never> {
+  const thread = state.sideThreads.find((item) => item.id === threadId);
+  if (thread?.origin !== undefined && revealTruth(thread.origin) === 'emergent') {
+    return { emergent: true };
+  }
+  return {};
+}
+
+function cityReckoning(state: WorldState): NonNullable<DebriefView['city']> {
+  const hooks: { kind: string; day: number; detail: string }[] = [];
+  const ledger = state.ambient === undefined ? [] : revealTruth(state.ambient.hookLedger);
+  for (const item of ledger) {
+    if (item === null || typeof item !== 'object' || !('kind' in item)) {
+      continue;
+    }
+    const record = item as { readonly kind?: unknown; readonly day?: unknown; readonly detail?: unknown };
+    hooks.push({
+      kind: typeof record.kind === 'string' ? record.kind : '',
+      day: typeof record.day === 'number' ? record.day : 0,
+      detail: typeof record.detail === 'string' ? record.detail : '',
+    });
+  }
+  const emergentThreads = state.sideThreads
+    .filter((thread) => thread.origin !== undefined && revealTruth(thread.origin) === 'emergent')
+    .map((thread) => ({ id: thread.id }))
+    .sort((a, b) => (a.id < b.id ? -1 : 1));
+  return { hooks, emergentThreads };
+}
+
 function findNoiseLeads(state: WorldState, caseFile: CaseFile): DebriefLead[] {
   // The Side-Thread provenance: minted PropId prefixes and the participant/
   // Location sets per thread, so a Claim can be matched to the thread it reports.
@@ -453,6 +569,7 @@ function findNoiseLeads(state: WorldState, caseFile: CaseFile): DebriefLead[] {
         text: renderProposition(claim.prop),
         kind: 'side-thread',
         thread: threadByPrefix,
+        ...emergentMark(state, threadByPrefix),
       });
       continue;
     }
@@ -476,6 +593,7 @@ function findNoiseLeads(state: WorldState, caseFile: CaseFile): DebriefLead[] {
         text: renderProposition(claim.prop),
         kind: 'side-thread',
         thread: threadByEntities,
+        ...emergentMark(state, threadByEntities),
       });
     }
   }

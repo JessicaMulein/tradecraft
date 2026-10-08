@@ -338,6 +338,26 @@ describe('OutcomeRecordSchema — round-trip and validation (Req 35.3)', () => {
     expect(parsed).toEqual(record);
   });
 
+  it('accepts schema 2 when the library plots and selection hash are present', () => {
+    // Feature: plot-library, Property 20: Debrief coherence and Outcome Record
+    const record = sampleRecord();
+    const next = {
+      ...record,
+      schema: 2 as const,
+      plots: [
+        {
+          templateId: 'rail-junction',
+          variantKey: 'rail-junction@1|s:|o:|t:-',
+          archetype: 'sabotage',
+          role: 'primary' as const,
+          outcome: 'disrupted',
+        },
+      ],
+      selection: { historyHash: 'abc' },
+    };
+    expect(parseOutcomeRecord(JSON.parse(JSON.stringify(next)))).toEqual(next);
+  });
+
   it('rejects a record of the wrong schema version', () => {
     const record = sampleRecord();
     const wrong = { ...record, schema: 2 };

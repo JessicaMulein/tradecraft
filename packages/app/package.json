@@ -16,6 +16,7 @@
     }
   },
   "dependencies": {
+    "@tradecraft/campaign": "workspace:*",
     "@tradecraft/content": "workspace:*",
     "@tradecraft/dialogue": "workspace:*",
     "@tradecraft/engine": "workspace:*",

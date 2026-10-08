@@ -276,6 +276,9 @@ export const DEFAULT_DETECTION_BASE: DetectionBase = {
   drop: 0.04,
 };
 
+/** Added to the next detection check when a hostile informant names who was seen. */
+export const INFORMANT_DETECTION_BONUS = 0.1;
+
 /**
  * Run the Hostile Service's daily counter-intelligence pass — detection on each
  * Asset and the response to each detection (design, `dailyTick` steps 1–2;
@@ -317,6 +320,7 @@ export function dailyTickWithBase(
   at: GameTime,
   rng: Prng,
   base: DetectionBase,
+  bonuses: Readonly<Record<string, number>> = {},
 ): DailyTickResult {
   const { detections } = runDetection(
     rng,
@@ -324,6 +328,7 @@ export function dailyTickWithBase(
     state.beliefs,
     state.doctrine,
     base,
+    bonuses,
   );
 
   const events: SimEvent[] = [];
@@ -442,6 +447,17 @@ export interface FullTickInputs {
    * {@link FullTickInputs.tailing} to run step 6.
    */
   readonly tailingThresholds?: TailingThresholds;
+  /**
+   * Bonuses added to this tick's detection probability, keyed by NPC id.
+   * Omitted means every bonus is zero, so the detection coins match the slice.
+   */
+  readonly detectionBonuses?: Readonly<Record<string, number>>;
+  /**
+   * Hidden informant reports recorded by the ambient hook gateway. The tailing
+   * step reads a hostile-handler report and turns its seen-with NPC into a
+   * detection bonus for the next detection pass.
+   */
+  readonly informantReports?: readonly InformantReportInput[];
   // --- Task 19.4 inputs (steps 7 and 8) ---------------------------------
   /**
    * The day's candidate newspaper plants (step 7; Req 30.2), projected in by the
@@ -547,6 +563,18 @@ export interface FullTickResult extends DailyTickResult {
    * when the service ran no interceptable traffic today.
    */
   readonly commsTraffic: readonly InterceptSource[];
+  /**
+   * Detection bonuses the tailing step produced from hostile informant reports.
+   * The next detection pass consumes them. Empty when no hostile report named
+   * a seen-with NPC.
+   */
+  readonly spawnedDetectionBonuses: readonly { readonly npc: NpcId; readonly bonus: number }[];
+}
+
+/** A hidden informant report the ambient gateway hands the tailing step. */
+export interface InformantReportInput {
+  readonly handler: 'police' | 'hostile';
+  readonly seenWith?: NpcId;
 }
 
 /**
@@ -625,7 +653,14 @@ export function dailyTickFull(
   inputs: FullTickInputs = {},
 ): FullTickResult {
   // Steps 1–2: detection and the per-response events.
-  const detectionPass = dailyTickWithBase(state, candidates, at, rng, base);
+  const detectionPass = dailyTickWithBase(
+    state,
+    candidates,
+    at,
+    rng,
+    base,
+    inputs.detectionBonuses ?? {},
+  );
   const events: SimEvent[] = [...detectionPass.events];
   let next = detectionPass.next;
 
@@ -735,6 +770,16 @@ export function dailyTickFull(
     events.push(...result.events);
   }
 
+  // Ambient informant reports are read here, after tailing, and never mark a
+  // channel compromised. A hostile report that names who was seen produces a
+  // detection bonus for the next detection pass.
+  const spawnedDetectionBonuses: { npc: NpcId; bonus: number }[] = [];
+  for (const report of inputs.informantReports ?? []) {
+    if (report.handler === 'hostile' && report.seenWith !== undefined) {
+      spawnedDetectionBonuses.push({ npc: report.seenWith, bonus: INFORMANT_DETECTION_BONUS });
+    }
+  }
+
   // Step 7 (task 19.4): newspaper plants (Req 30.2). `planNewspaperPlants` draws
   // one coin per considered candidate on `rng`, gated/weighted by
   // `deceptionAppetite`. These draws run strictly *after* the detection coins
@@ -771,6 +816,7 @@ export function dailyTickFull(
     tailing,
     newspaperPlants,
     commsTraffic,
+    spawnedDetectionBonuses,
   };
 }
 

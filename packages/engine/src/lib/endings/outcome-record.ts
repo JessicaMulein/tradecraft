@@ -59,6 +59,9 @@ import type { Doctrine } from '../hostile/doctrine.js';
  */
 export const OUTCOME_RECORD_SCHEMA_VERSION = 1 as const;
 
+/** Plot-library records. Readers accept schema 1 and schema 2. */
+export const OUTCOME_RECORD_SCHEMA_V2 = 2 as const;
+
 // ---------------------------------------------------------------------------
 // Outcome tag
 // ---------------------------------------------------------------------------
@@ -173,9 +176,20 @@ export interface HostileMemory {
  * `../model/state.ts`; `WorldState.ended.outcome` reads only its `outcome` tag,
  * via the state module's re-export.
  */
+export interface OutcomePlotRecord {
+  readonly templateId: string;
+  readonly variantKey: string;
+  readonly archetype: string;
+  readonly role: 'primary' | 'secondary';
+  readonly outcome: string;
+}
+
 export interface OutcomeRecord {
   /** The schema version this record was written under (Req 35.3). */
-  readonly schema: typeof OUTCOME_RECORD_SCHEMA_VERSION;
+  readonly schema: typeof OUTCOME_RECORD_SCHEMA_VERSION | typeof OUTCOME_RECORD_SCHEMA_V2;
+  /** Library plots and the selection hash. Required on schema 2, absent on schema 1. */
+  readonly plots?: readonly OutcomePlotRecord[];
+  readonly selection?: { readonly historyHash: string };
   /** An optional campaign id a future layer may stamp (design: `campaignId?`). */
   readonly campaignId?: string;
 
@@ -281,24 +295,41 @@ const HostileMemorySchema: z.ZodType<HostileMemory> = z
  * The parse/serialise round-trip is exact: `OutcomeRecordSchema.parse(
  * JSON.parse(JSON.stringify(record)))` returns a value deep-equal to `record`.
  */
-export const OutcomeRecordSchema: z.ZodType<OutcomeRecord> = z
+const outcomeRecordFields = {
+  campaignId: z.string().optional(),
+  outcome: z.enum(['success', 'failure-plot', 'failure-burned']),
+  endedAt: GameTimeSchema,
+  seed: z.string(),
+  generatorVersion: z.string(),
+  content: ContentManifestSchema,
+  difficulty: z.string(),
+  standing: z.number(),
+  directives: z.array(OutcomeDirectiveSchema),
+  survivingAssets: z.array(SurvivingAssetSchema),
+  cover: OutcomeCoverSchema,
+  hostileMemory: HostileMemorySchema,
+  budgetRemaining: z.number(),
+} as const;
+
+const OutcomePlotRecordSchema = z
   .strictObject({
-    schema: z.literal(OUTCOME_RECORD_SCHEMA_VERSION),
-    campaignId: z.string().optional(),
-    outcome: z.enum(['success', 'failure-plot', 'failure-burned']),
-    endedAt: GameTimeSchema,
-    seed: z.string(),
-    generatorVersion: z.string(),
-    content: ContentManifestSchema,
-    difficulty: z.string(),
-    standing: z.number(),
-    directives: z.array(OutcomeDirectiveSchema),
-    survivingAssets: z.array(SurvivingAssetSchema),
-    cover: OutcomeCoverSchema,
-    hostileMemory: HostileMemorySchema,
-    budgetRemaining: z.number(),
+    templateId: z.string(),
+    variantKey: z.string(),
+    archetype: z.string(),
+    role: z.enum(['primary', 'secondary']),
+    outcome: z.string(),
   })
-  .meta({ id: 'OutcomeRecord' }) as unknown as z.ZodType<OutcomeRecord>;
+  .meta({ id: 'OutcomePlotRecord' });
+
+export const OutcomeRecordSchema: z.ZodType<OutcomeRecord> = z.union([
+  z.strictObject({ schema: z.literal(OUTCOME_RECORD_SCHEMA_VERSION), ...outcomeRecordFields }),
+  z.strictObject({
+    schema: z.literal(OUTCOME_RECORD_SCHEMA_V2),
+    ...outcomeRecordFields,
+    plots: z.array(OutcomePlotRecordSchema),
+    selection: z.strictObject({ historyHash: z.string() }),
+  }),
+]) as unknown as z.ZodType<OutcomeRecord>;
 
 /**
  * Parse and validate an unknown value as an {@link OutcomeRecord} (Req 35.3).

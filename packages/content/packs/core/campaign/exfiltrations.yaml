@@ -1,0 +1,19 @@
+- id: fixer-lead
+  archetype: emigre-fixer
+  cost: 3
+  benefit:
+    kind: extra-lead
+- id: waiter-language
+  archetype: cafe-waiter
+  cost: 2
+  benefit:
+    kind: language
+    language: german
+    levels: 1
+- id: journalist-standing
+  archetype: friendly-journalist
+  cost: 2
+  benefit:
+    kind: faction
+    faction: security
+    amount: 1

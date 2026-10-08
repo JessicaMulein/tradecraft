@@ -1,6 +1,7 @@
 export {
   createPrng,
   derive,
+  fnv1a32,
   parsePrngState,
   PrngStateSchema,
   seedState,
@@ -20,6 +21,7 @@ export {
   DocIdSchema,
   ChannelIdSchema,
   UnkIdSchema,
+  EvtIdSchema,
   type EntityNamespace,
   type EntityId,
   type NpcId,
@@ -29,6 +31,7 @@ export {
   type DocId,
   type ChannelId,
   type UnkId,
+  type EvtId,
   // Game time
   PHASE_NAMES,
   PHASES_PER_DAY,
@@ -1003,6 +1006,7 @@ export {
   // generator version, and the impure `randomSeed` sibling (kept out of the
   // pure path).
   generate,
+  settingGeography,
   // `generateGame` is `generate`'s full form (Req 1.5, 2.1, 27.6): it returns
   // both the `WorldState` and the Truth Store seeded with every core and noise
   // ground-truth Proposition (memberships, the mole's facts, Plot and Side
@@ -1015,6 +1019,7 @@ export {
   GENERATOR_VERSION,
   MAX_GENERATION_ATTEMPTS,
   MAX_NOISE_ATTEMPTS,
+  MAX_AMBIENT_ATTEMPTS,
   MAX_SETTING_ATTEMPTS,
   NOISE_STREAM_BASE,
   HOSTILE_STREAM_BASE,
@@ -1026,6 +1031,53 @@ export {
   type GenerateResult,
   type DiscoveryVerifier,
 } from './lib/generate.js';
+
+export {
+  fallbackSelect,
+  selectPlot,
+  toTemplateHistory,
+  type PlotSelectHistory,
+  type PostingPlotSelection,
+} from './lib/plot-select.js';
+
+export {
+  CARRY_ATTEMPTS,
+  CARRY_STREAM_BASE,
+  CARRY_STREAM_LIMIT,
+  ARC_STREAM_BASE,
+  arcStreamSeed,
+  carryStreamSeed,
+} from './lib/carry/streams.js';
+export {
+  applyPostingCarry,
+  serviceDisplayName,
+  type CarryCore,
+  type CarryFailure,
+} from './lib/carry/apply.js';
+export {
+  arcDropId,
+  nextCarryDrop,
+  type ArcClueSpec,
+  type ArcThreadSpec,
+  type CarryIn,
+  type CarryModifiers,
+  type CarryState,
+  type CarriedPerson,
+  type CarriedPlacement,
+  type PersonalFileInput,
+  type PlacementRole,
+  type PlayerHistoryInput,
+  type PostingContext,
+  type RequisitionEffect,
+} from './lib/carry/types.js';
+export {
+  applyRecogniserPass,
+  npcsAt,
+  queueCarryLines,
+  seenBeforeFactLine,
+  takeCarryLines,
+  type RecogniserPass,
+} from './lib/carry/recognise.js';
 
 export {
   // Noise generator, step 1: Background NPCs from civilian archetypes
@@ -1769,6 +1821,34 @@ export {
 } from './lib/endings/outcome-store.js';
 
 export {
+  // Posting Result (campaign-career Req 5.3, 6.5, 7.3, 7.5, 21.6). Stats from
+  // the action log and action results, carry from the view and case file,
+  // redaction against the protected set, and schema-1 outcome records lifted
+  // to schema 2.
+  buildPlayerCarry,
+  buildPostingResult,
+  normaliseOutcome,
+  postingStats,
+  redactDebrief,
+  revealDebriefs,
+  type BuildPostingResultInput,
+  type BuiltPostingResult,
+  type CarryCaseFile,
+  type CarryClaim,
+  type CarryPerson,
+  type CarryView,
+  type DebriefFact,
+  type PlayerCarry,
+  type PostedAsset,
+  type PostedDebrief,
+  type PostedHostile,
+  type PostingStats,
+  type PostingTruthExtract,
+  type RedactedDebrief,
+  type RedactedItem,
+} from './lib/outcome/posting-result.js';
+
+export {
   // Feed action (Req 37.1, 37.2, 37.6): `quoteFeed`/`resolveFeed` (an invalid
   // feed is disallowed with the first `FeedError`'s reason; a valid one is
   // allowed only on a player-turned Asset with a Contact Channel; resolve
@@ -1966,3 +2046,209 @@ export {
   NO_USAGE_SINK,
   type UsageSink,
 } from './lib/setting/index.js';
+
+export {
+  SELECT_STREAM,
+  advanceLibrary,
+  bind,
+  bindCityFromView,
+  branchConfigurations,
+  buildLibrarySession,
+  contingentBelief,
+  identifyReport,
+  projectLibraryFacts,
+  verifyLibrary,
+  bindable,
+  checkConsistency,
+  countsTowardAbort,
+  accumulatedDeadlineDays,
+  evaluateOutcomes,
+  expand,
+  worstCaseDeadlineDay,
+  historyHash,
+  instantiate,
+  instantiateSideThread,
+  libraryPreset,
+  lookalikeCount,
+  reschedule,
+  resolveBranch,
+  rerouteAlternative,
+  select,
+  variantKey,
+  type BindCity,
+  type LibrarySession,
+  type PlotStateV2,
+  type SelectionResult,
+  type TemplateHistory,
+} from './lib/plotgen/index.js';
+
+export {
+  AMBIENT_HOOK_KINDS,
+  AMBIENT_KINDS,
+  EVENT_CATEGORIES,
+  METRIC_IDS,
+  AmbientSpawnSchema,
+  EventTemplateSchema,
+  ambientJsonSchema,
+} from './lib/ambient/content.js';
+export { ambientPreset, type AmbientPresetValues } from './lib/ambient/preset.js';
+export {
+  checkAmbientPredicate,
+  checkAmbientRefs,
+  duplicateIdIssues,
+  scanDenylist,
+} from './lib/ambient/check.js';
+export { ambientBudgets, type AmbientBudgets } from './lib/ambient/budgets.js';
+export { initAmbient } from './lib/ambient/init.js';
+export {
+  applyMetricDelta,
+  applyPlayerDelta,
+  decayMetrics,
+  metricTotal,
+} from './lib/ambient/metrics.js';
+export { calendarDate, calendarDay, seasonForMonth } from './lib/ambient/calendar.js';
+export {
+  activateDormant,
+  effectiveLocation,
+  effectiveRoutes,
+  raidDrop,
+  serviceDrop,
+} from './lib/ambient/locations.js';
+export { applyStageOps, electionDelta, selectEvents } from './lib/ambient/events.js';
+export { selectIncidents } from './lib/ambient/incidents.js';
+
+export {
+  applyHook,
+  informantReportsForTick,
+  type AmbientHook,
+  type HookResult,
+} from './lib/ambient/hooks.js';
+
+export {
+  ambientDayBoundary,
+  ambientPhase,
+  ambientTurn,
+  type AmbientTickResult,
+} from './lib/ambient/tick.js';
+
+export {
+  applyLifeEvent,
+  clampLeverDelta,
+  dailyAgenda,
+  emptyLife,
+  isPrincipalNpc,
+  lifeEvents,
+  stepLife,
+  type LifeEventTemplate,
+} from './lib/ambient/life.js';
+
+export {
+  introductionTrustBonus,
+  stepTies,
+  tieAffinityBetween,
+  tieProposition,
+} from './lib/ambient/ties.js';
+
+export { demote, promote, requestPromotion, stepPopulace } from './lib/ambient/populace.js';
+
+export {
+  compact,
+  greetingLine,
+  noticeCheck,
+  noticeTurn,
+  recollectionGrounded,
+  regardDelta,
+  regardOf,
+  stepMemory,
+  type Recollection,
+  type Regard,
+} from './lib/ambient/memory.js';
+
+export { commitGossip, eligiblePair, stepGossip } from './lib/ambient/gossip.js';
+export {
+  AMBIENT_FACT_CAP,
+  ambientScene,
+  incidentFactLines,
+  promptFactsFor,
+  recollectionLine,
+  recollectionPrompts,
+  refreshPromptCache,
+  selectAmbientFacts,
+} from './lib/ambient/prompt.js';
+export {
+  addDevelopment,
+  closeStale,
+  editionCandidates,
+  noticeLines,
+  noticeStillPosted,
+  openStory,
+  postNotice,
+  printedArticles,
+  stepNews,
+} from './lib/ambient/news.js';
+export { stepThreads, type ThreadCatalogue } from './lib/ambient/threads.js';
+export {
+  keepsAnchor,
+  quoteAttendDuty,
+  resolveAttendDuty,
+  scaleHighRiskSuspicion,
+  settleDuties,
+  stepCover,
+} from './lib/ambient/cover.js';
+export {
+  anchorsOf,
+  applyForDuration,
+  footprint,
+  gate,
+  verifierResult,
+  type GateCache,
+  type GateDecision,
+  type StructuralChange,
+  type VerifierResult,
+} from './lib/ambient/solvability.js';
+export {
+  AMBIENT_STREAM,
+  ambientDaySeed,
+  ambientInitRetry,
+  ambientKeySeed,
+} from './lib/ambient/streams.js';
+export type { AmbientState, Density, Metrics } from './lib/ambient/state.js';
+export {
+  advanceAmbientCity,
+  ambientContractOf,
+  coarseSignature,
+  createAmbientSimulator,
+  playerConcerning,
+  spineSignature,
+  type CityAmbient,
+} from './lib/ambient/fidelity.js';
+export {
+  AMBIENT_COUPLING_KINDS,
+  AmbientContractError,
+  ambientCouplingCaps,
+  applyCouplings,
+  emptyCouplingDraft,
+  exampleCouplings,
+  referenceCity,
+  referenceSimulator,
+  referenceSpine,
+  runAmbientContract,
+  sliceAmbient,
+  sliceCity,
+  sliceSpine,
+  type AmbientContract,
+  type AmbientCoupling,
+  type AmbientOriginEvent,
+  type AmbientSimulator,
+  type AmbientStep,
+  type CouplingCaps,
+  type CouplingDraft,
+  type GossipRef,
+  type IRouteId,
+  type RefCity,
+  type SliceCity,
+  type SpineView,
+  type Window as CouplingWindow,
+} from './lib/fidelity/index.js';
+
+export { custodyHolds } from './lib/truth/truth.js';

@@ -1,0 +1,184 @@
+- id: rail-junction
+  templateSchema: 2
+  kind: plot
+  displayName: Rail junction
+  archetype: sabotage
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - sabotage
+    allowWith:
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    junction:
+      kind: loc
+      query:
+        - function:warehouse
+    charge:
+      kind: item
+      query:
+        - materiel:explosive
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    spotter:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: recon
+      roles:
+        - spotter
+    - id: action
+      roles:
+        - leader
+  cutouts:
+    - role: courier
+      links:
+        - recon
+        - action
+  stages:
+    - id: case-junction
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - spotter
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A railwayman walks the junction box and times the night freight.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: The night freight’s time is read out once and not repeated.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - case-junction
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the rail junction is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the rail junction repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: approach
+      resolve: runtime
+      after: &a1
+        - confirm
+      alternatives:
+        - id: night
+          when:
+            - kind: alertness-at-least
+              value: 0.5
+              negate: true
+          stages:
+            - id: night-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: Someone works on the points after the last passenger train has gone.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: A call says the points will be wrong for twelve minutes.
+              onDisrupted: *a2
+        - id: inside
+          when:
+            - kind: default
+          stages:
+            - id: inside-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A lamp is left burning in the signal box for a man who does not work there.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The signal box is told to look the other way when the lamp goes out.
+              onDisrupted: *a2
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: arrest-role
+        role: leader
+      - kind: seize-item
+        item: charge
+    failure:
+      - kind: stage-completed
+        stage: inside-work
+      - kind: stage-completed
+        stage: night-work
+  materiel: charge

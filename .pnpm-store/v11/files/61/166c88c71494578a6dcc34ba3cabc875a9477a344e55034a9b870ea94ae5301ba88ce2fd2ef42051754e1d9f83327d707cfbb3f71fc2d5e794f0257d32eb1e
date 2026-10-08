@@ -1,0 +1,34 @@
+import { Tree } from '@nx/devkit';
+export declare const tsConfigBaseOptions: {
+    rootDir: string;
+    sourceMap: boolean;
+    declaration: boolean;
+    moduleResolution: string;
+    emitDecoratorMetadata: boolean;
+    experimentalDecorators: boolean;
+    importHelpers: boolean;
+    target: string;
+    module: string;
+    lib: string[];
+    skipLibCheck: boolean;
+    skipDefaultLibCheck: boolean;
+    strict: boolean;
+    paths: {};
+};
+export declare function getTsConfigBaseOptions(tree: Tree): {
+    rootDir: string;
+    sourceMap: boolean;
+    declaration: boolean;
+    emitDecoratorMetadata: boolean;
+    experimentalDecorators: boolean;
+    importHelpers: boolean;
+    target: string;
+    module: string;
+    lib: string[];
+    skipLibCheck: boolean;
+    skipDefaultLibCheck: boolean;
+    strict: boolean;
+    paths: {};
+    moduleResolution: "bundler" | "node10";
+};
+export declare function extractTsConfigBase(host: Tree): void;

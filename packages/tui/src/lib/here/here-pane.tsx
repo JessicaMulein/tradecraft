@@ -55,6 +55,7 @@ export function HerePane({ here }: HerePaneProps): ReactElement {
       <Text dimColor>
         {here.weather} · {here.crowd} · risk {location.risk} · {access}
       </Text>
+      {location.status !== undefined && <Text dimColor>Status: {location.status}</Text>}
       <Text dimColor>Here: {visible}</Text>
     </Box>
   );

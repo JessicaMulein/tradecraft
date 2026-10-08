@@ -45,7 +45,7 @@ export type { Namer } from './template.js';
 
 /** A bound entity argument: its id plus the raw kind the predicate declared. */
 export interface EntityBinding {
-  readonly kind: 'npc' | 'unk' | 'org';
+  readonly kind: 'npc' | 'unk' | 'org' | 'item';
   readonly id: string;
 }
 
@@ -62,6 +62,8 @@ export interface RenderBindings {
   readonly object: EntityBinding | { readonly literal: string };
   readonly place?: string;
   readonly when?: string;
+  /** The predicate's instrument argument, when it declares one. */
+  readonly instrument?: EntityBinding;
 }
 
 /** The two perspectives a predicate renders in. */
@@ -287,6 +289,9 @@ function allowedSlots(definition: PredicateDefinition): string[] {
   if (definition.window !== 'none') {
     slots.push('when');
   }
+  if (definition.instrument !== undefined) {
+    slots.push('instrument');
+  }
   return slots;
 }
 
@@ -309,6 +314,9 @@ function toTemplateBindings(
   }
   if (bindings.when !== undefined) {
     out.when = bindings.when;
+  }
+  if (bindings.instrument !== undefined) {
+    out.instrument = bindings.instrument;
   }
   return out;
 }

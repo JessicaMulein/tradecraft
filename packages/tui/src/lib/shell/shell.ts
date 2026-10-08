@@ -142,6 +142,12 @@ function applyKeyAction(state: ShellState, action: ShellKeyAction): ShellState {
       return { ...state, screen: { kind: 'journal' }, overlay: undefined };
     case 'open-map':
       return { ...state, screen: { kind: 'map' }, overlay: undefined };
+    case 'open-city':
+      return { ...state, screen: { kind: 'city' }, overlay: undefined };
+    case 'open-stories':
+      return { ...state, screen: { kind: 'stories' }, overlay: undefined };
+    case 'open-duties':
+      return { ...state, screen: { kind: 'duties' }, overlay: undefined };
     case 'open-people':
       return { ...state, screen: { kind: 'people' }, overlay: undefined };
     case 'open-feed':

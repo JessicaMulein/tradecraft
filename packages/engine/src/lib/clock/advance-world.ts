@@ -56,7 +56,7 @@
 
 import { DAILY_STREAM_BASE, weatherForDay } from '../city/city.js';
 import { detectEnd, type EndCondition } from '../endings/end-conditions.js';
-import type { GameTime } from '../model/core.js';
+import { revealTruth, type GameTime } from '../model/core.js';
 import type {
   EventId,
   SimEvent,
@@ -66,7 +66,10 @@ import type {
 import { derive, type Prng } from '../prng/prng.js';
 import type { TalkSceneRequest } from '../action/result.js';
 import { addPhases, isDayStart, DAY_BOUNDARY_HOOK_ORDER } from './clock.js';
+import type { DocumentTemplate } from '@tradecraft/content';
+import { advanceLibrary, projectLibraryFacts, renderDamageCable, syncPrimaryStages } from '../plotgen/library.js';
 import { phaseStep } from './phase-step.js';
+import { takeCarryLines } from '../carry/recognise.js';
 import { newDayScratch, type AdvanceWorldDeps } from './world-types.js';
 
 // ---------------------------------------------------------------------------
@@ -98,6 +101,11 @@ export interface AdvanceWorldResult {
   readonly phasesSpent: number;
   /** The talk scene a kept meeting opened, if the advance stopped at one. */
   readonly openScene?: TalkSceneRequest;
+  /**
+   * Fact lines a meeting recogniser check queued. Present only when there is
+   * at least one, so a world with nothing queued keeps the previous shape.
+   */
+  readonly lines?: readonly string[];
   /** The End Condition the advance detected, if the game ended. */
   readonly ended?: EndCondition;
 }
@@ -167,6 +175,45 @@ export function advanceWorld(
     push(stepResult.events);
     current = t;
 
+    if (state.plots !== undefined && state.plots.length > 0 && state.ended === undefined) {
+      const stepped = advanceLibrary(
+        syncPrimaryStages(state.plot, state.plots),
+        projectLibraryFacts({
+          arrests: state.player.arrests,
+          identifications: state.player.identifications,
+          alertness: revealTruth(state.player.coverSuspicion),
+          adoptedBeliefs: state.hostile.beliefs.adopted.flatMap((prop) => [prop.predicate, prop.id]),
+          nowDay: t.day,
+          people: Object.values(state.npcs).map((npc) => ({
+            id: npc.id,
+            status: npc.status === undefined ? 'active' : revealTruth(npc.status),
+            hostileCustody: state.relationships[npc.id]?.custody?.by === 'hostile',
+          })),
+          plots: state.plots,
+          sliceRoles: state.plot.roles,
+          sliceDisruptedStageIds: state.plot.stages
+            .filter((stage) => stage.status === 'disrupted')
+            .map((stage) => stage.templateId),
+          seizedItemIds: state.plot.materielSeized ? [revealTruth(state.plot.materiel)] : [],
+        }),
+        t,
+        rng,
+      );
+      const documents = fileDamageCables(state, deps.content.documentTemplates, stepped.damageCables, t);
+      state = {
+        ...state,
+        plots: stepped.plots,
+        station: { ...state.station, standing: state.station.standing + stepped.standingDelta },
+        ...(documents === undefined ? {} : { documents }),
+      };
+      push(stepped.events);
+      if (stepped.primaryEnded !== undefined) {
+        ended = { outcome: stepped.primaryEnded.outcome, at: t, cause: stepped.primaryEnded.cause };
+        state = writeEnded(state, ended);
+        break;
+      }
+    }
+
     // `detectEnd` after the Phase Step (Req 7.1). The hooks already write
     // `ended` on an abort; `detectEnd` reports it (idempotent) or a fresh end
     // (a completed Plot, a burn, a leader arrest) the Phase Step produced.
@@ -186,12 +233,13 @@ export function advanceWorld(
 
   // Thread the runtime stream's final state back into the Draft, as the
   // pipeline records at commit (design step 7).
-  const result: WorldState = { ...state, time: current, rng: rng.state() };
+  const flushed = takeCarryLines({ ...state, time: current, rng: rng.state() });
   return {
-    state: result,
+    state: flushed.state,
     events: minted,
     phasesSpent,
     ...(openScene !== undefined ? { openScene } : {}),
+    ...(flushed.lines.length === 0 ? {} : { lines: flushed.lines }),
     ...(ended !== undefined ? { ended } : {}),
   };
 }
@@ -305,4 +353,39 @@ function writeEnded(state: WorldState, end: EndCondition): WorldState {
  */
 function eventId(at: GameTime, seq: number): EventId {
   return `evt:${at.day}:${at.phase}:${seq}`;
+}
+
+function cableTemplate(
+  templates: AdvanceWorldDeps['content']['documentTemplates'],
+  local: string,
+): DocumentTemplate | undefined {
+  for (const [key, value] of templates) {
+    if ((key === local || key.endsWith(`/${local}`)) && value.kind === 'cable') {
+      return value;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * File each Secondary damage-report Cable into the world's documents. The
+ * event already names the document id. Absent when this phase delivered none.
+ */
+function fileDamageCables(
+  state: WorldState,
+  templates: AdvanceWorldDeps['content']['documentTemplates'],
+  cables: readonly { readonly doc: string; readonly text: string; readonly plotId: string }[],
+  at: GameTime,
+): WorldState['documents'] | undefined {
+  if (cables.length === 0) {
+    return undefined;
+  }
+  const documents = { ...state.documents };
+  const ctx = { city: state.city, npcs: state.npcs, orgs: state.orgs };
+  for (const cable of cables) {
+    const template = cableTemplate(templates, cable.text) ?? cableTemplate(templates, 'cable-hq-directive');
+    const document = renderDamageCable(cable.text, at, cable.plotId, template, ctx);
+    documents[document.id] = document;
+  }
+  return documents;
 }

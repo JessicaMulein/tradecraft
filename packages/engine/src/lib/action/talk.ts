@@ -70,6 +70,7 @@ import {
 import type { WorldState } from '../model/state.js';
 import type { Prng } from '../prng/prng.js';
 import { scheduledLocation } from '../city/npc.js';
+import { regardDelta } from '../ambient/memory.js';
 import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
 import type { TruthReader } from '../truth/truth.js';
 import {
@@ -395,6 +396,7 @@ export function resolveApproach(
     firstContactWeightsOf(state),
     revealTruth(state.player.coverSuspicion),
     rng,
+    regardDelta(state, npcId),
   );
 
   if (succeeded) {

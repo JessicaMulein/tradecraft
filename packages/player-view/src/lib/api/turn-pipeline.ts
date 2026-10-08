@@ -87,6 +87,7 @@ import {
   applyDialogueTurn,
   balance,
   buildOutcomeRecord,
+  ambientTurn,
   buildWorldHooks,
   createPrng,
   isIntent,
@@ -1145,6 +1146,7 @@ export function createTurnDriver(
     let ended: EndCondition | undefined;
     let openScene: TalkSceneRequest | undefined;
     let phasesSpent = 0;
+    let factLines: readonly string[] = [];
 
     try {
       // Step 5: resolve. `resolve` returns the next state, the result (its
@@ -1184,7 +1186,11 @@ export function createTurnDriver(
       const deps = advanceDepsFor(advance, ctx.content, cityData, next, caseFile, truthDraft);
       const advanced = advanceWorld(next, phases, rng, deps);
 
-      draft = advanced.state;
+      draft = ambientTurn(advanced.state, action);
+      factLines =
+        advanced.lines === undefined
+          ? result.factLines
+          : [...result.factLines, ...advanced.lines];
       phasesSpent = advanced.phasesSpent;
       events = [...result.events, ...advanced.events];
 
@@ -1242,7 +1248,10 @@ export function createTurnDriver(
     // clock and is available here for that follow-on. (seam; design step 8)
     actionLog.append({ kind: 'action', turn: turnId, at: draft.time, action });
     void phasesSpent;
-    engine.journal.recordAction(result, draft.time);
+    engine.journal.recordAction(
+      factLines === result.factLines ? result : { ...result, factLines },
+      draft.time,
+    );
 
     // The game may have ended this turn (a Plot abort, an arrest, a burn).
     // Surface it. The Fact Lines are already committed, then the ended chunk.
@@ -1261,11 +1270,11 @@ export function createTurnDriver(
       if (pre.ended === undefined) {
         writeOutcomeRecordOnce(draft, truth);
       }
-      for (const line of result.factLines) {
+      for (const line of factLines) {
         yield { kind: 'fact', text: line };
       }
       yield* deliverChunks(engine, events);
-      for (const chunk of streamHints(engine, result.factLines, action)) {
+      for (const chunk of streamHints(engine, factLines, action)) {
         yield chunk;
       }
       yield { kind: 'ended', outcome: draft.ended.outcome };
@@ -1276,7 +1285,7 @@ export function createTurnDriver(
     // Step 10: stream the committed turn. Fact Lines first, before any Narrator
     // call (Req 15.5); then the turn's Notifications; then the post-commit
     // Narrator Flavour.
-    for (const line of result.factLines) {
+    for (const line of factLines) {
       yield { kind: 'fact', text: line };
     }
 
@@ -1286,7 +1295,7 @@ export function createTurnDriver(
     // Fire the hint triggers from this turn's Player View facts, after the
     // Fact Lines and Notifications and before the Narrator Flavour (design,
     // "Hints": "fact, notification, hint, then narrate + done"; Req 19.10).
-    for (const chunk of streamHints(engine, result.factLines, action)) {
+    for (const chunk of streamHints(engine, factLines, action)) {
       yield chunk;
     }
 

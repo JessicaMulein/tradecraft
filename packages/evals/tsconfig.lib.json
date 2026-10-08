@@ -24,6 +24,9 @@
     },
     {
       "path": "../app/tsconfig.lib.json"
+    },
+    {
+      "path": "../dialogue/tsconfig.lib.json"
     }
   ],
   "exclude": [

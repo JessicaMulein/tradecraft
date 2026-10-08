@@ -97,6 +97,11 @@ const entries: EntityEntry[] = [
     aliases: [{ text: 'the safehouse', distinctive: true }],
   },
   { id: 'org:hostile', canonicalName: 'Vostok', aliases: [] },
+  {
+    id: 'evt:fair',
+    canonicalName: 'Harvest fair',
+    aliases: [{ text: 'Harvest fair', distinctive: true }],
+  },
 ];
 
 const registry = EntityRegistry.from(entries);
@@ -107,6 +112,7 @@ const ALL_IDS: readonly EntityId[] = [
   'npc:mira',
   'loc:safehouse',
   'org:hostile',
+  'evt:fair',
 ];
 
 /**
@@ -119,6 +125,7 @@ const SURFACE_FORMS: Readonly<Record<EntityId, readonly string[]>> = {
   'npc:mira': registry.distinctiveAliasesOf('npc:mira'),
   'loc:safehouse': registry.distinctiveAliasesOf('loc:safehouse'),
   'org:hostile': registry.distinctiveAliasesOf('org:hostile'),
+  'evt:fair': registry.distinctiveAliasesOf('evt:fair'),
 };
 
 // ---------------------------------------------------------------------------

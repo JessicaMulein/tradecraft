@@ -64,19 +64,22 @@ export type AllegianceCategory = (typeof ALLEGIANCE_CATEGORIES)[number];
 // ---------------------------------------------------------------------------
 
 /**
- * The kind of organisation (design, "World Generator", step 2). Exactly three
- * organisations exist in a generated world: the player's own {@link
- * OrgKind.station|Station}, the opposing {@link OrgKind.hostile|Hostile
- * Service}, and the {@link OrgKind.cell|Cell} the player is hunting.
+ * The kind of organisation (design, "World Generator", step 2). A generated
+ * world has the player's own {@link OrgKind.station|Station}, the opposing
+ * {@link OrgKind.hostile|Hostile Service}, and the {@link OrgKind.cell|Cell}
+ * the player is hunting. A false-flag twist may also mint a {@link
+ * OrgKind.front|front}: a cover organisation that is not the service, so a
+ * planted membership does not mark anyone hostile.
  */
-export const ORG_KINDS = ['station', 'hostile', 'cell'] as const;
+export const ORG_KINDS = ['station', 'hostile', 'cell', 'front'] as const;
 
 /** The kind of one organisation. */
 export type OrgKind = (typeof ORG_KINDS)[number];
 
 /**
  * An organisation record (the design's `Org`). The Station, the Hostile Service
- * and the Cell are each an {@link Org}. `allegiance` is the apparent-allegiance
+ * and the Cell are each an {@link Org}, and so is a false-flag front: a named
+ * cover organisation with neutral allegiance. `allegiance` is the
  * category the org projects, which doubles as the category every NPC who truly
  * serves it presents when they are not under cover: a Station officer reads
  * `station`, a Cell member `cell`, a hostile officer `hostile`.

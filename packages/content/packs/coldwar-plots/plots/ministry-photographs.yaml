@@ -1,0 +1,145 @@
+- id: ministry-photographs
+  templateSchema: 2
+  kind: plot
+  displayName: Ministry photographs
+  archetype: kompromat
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - kompromat
+    allowWith:
+      - sabotage
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:hotel-bar
+    film:
+      kind: item
+      query:
+        - materiel:document
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: sit
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A photographer poses a civil servant and takes one frame too many.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call says the sitting is done and the extra frame is in the camera.
+      onDisrupted: &a1
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - sit
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the ministry photographs is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the ministry photographs repeats the meeting and names both people.
+      onDisrupted: *a1
+    - id: print
+      requires:
+        - confirm
+      deadline:
+        min: 14
+        max: 22
+      traces:
+        - kind: meeting
+          roles:
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: Prints are handed over in an envelope that used to hold sheet music.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: The envelope is confirmed in the hands of the man who collects sheet music.
+      onDisrupted: *a1
+    - subplot:
+        template: honey-trap
+        as: lure
+        map:
+          mark: leader
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: seize-item
+        item: film
+      - kind: arrest-role
+        role: leader
+    failure:
+      - kind: stage-completed
+        stage: print
+  secondary:
+    standingPenalty: 3
+    standingReward: 2
+    damageReport: Headquarters reports damage from a second operation.

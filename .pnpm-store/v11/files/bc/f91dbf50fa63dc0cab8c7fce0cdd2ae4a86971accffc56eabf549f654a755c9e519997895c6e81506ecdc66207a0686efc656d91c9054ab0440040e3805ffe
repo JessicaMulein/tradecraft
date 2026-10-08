@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.readPackageJson = exports.isWholeFileChange = exports.isLockFileChange = exports.isDeletedFileChange = exports.defaultFileRead = exports.calculateFileChanges = exports.WholeFileChange = exports.TEN_MEGABYTES = exports.LockFileChange = exports.DeletedFileChange = void 0;
+var internal_1 = require("@nx/devkit/internal");
+Object.defineProperty(exports, "DeletedFileChange", { enumerable: true, get: function () { return internal_1.DeletedFileChange; } });
+Object.defineProperty(exports, "LockFileChange", { enumerable: true, get: function () { return internal_1.LockFileChange; } });
+Object.defineProperty(exports, "TEN_MEGABYTES", { enumerable: true, get: function () { return internal_1.TEN_MEGABYTES; } });
+Object.defineProperty(exports, "WholeFileChange", { enumerable: true, get: function () { return internal_1.WholeFileChange; } });
+Object.defineProperty(exports, "calculateFileChanges", { enumerable: true, get: function () { return internal_1.calculateFileChanges; } });
+Object.defineProperty(exports, "defaultFileRead", { enumerable: true, get: function () { return internal_1.defaultFileRead; } });
+Object.defineProperty(exports, "isDeletedFileChange", { enumerable: true, get: function () { return internal_1.isDeletedFileChange; } });
+Object.defineProperty(exports, "isLockFileChange", { enumerable: true, get: function () { return internal_1.isLockFileChange; } });
+Object.defineProperty(exports, "isWholeFileChange", { enumerable: true, get: function () { return internal_1.isWholeFileChange; } });
+Object.defineProperty(exports, "readPackageJson", { enumerable: true, get: function () { return internal_1.readPackageJson; } });

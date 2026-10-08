@@ -127,10 +127,11 @@ function preset(id: string): DifficultyPreset {
 
 const STANDARD = preset('standard');
 
-function inputs(): GenerateInputs {
+function inputs(ambient = false): GenerateInputs {
   const scenario = ScenarioConfigSchema.parse({
     difficulty: { preset: 'standard' },
     mole: false,
+    ...(ambient ? { ambient: { enabled: true, density: 'sparse' as const } } : {}),
     recruitment: {
       pitch: { w1: 1, w2: 1, w3: 1, w4: 1 },
       firstContact: { a: 1, b: 1, c: 1, d: 1 },
@@ -142,8 +143,8 @@ function inputs(): GenerateInputs {
   return { content, preset: STANDARD, scenario, cityData, descriptors, publicTexts };
 }
 
-function world(seed = 'phase-cost-alpha'): WorldState {
-  return generate(seed, inputs());
+function world(seed = 'phase-cost-alpha', ambient = false): WorldState {
+  return generate(seed, inputs(ambient));
 }
 
 /** A Truth Store that knows the surveillance / alias predicates (kinds). */
@@ -240,17 +241,20 @@ function candidateActions(state: WorldState): Action[] {
  * so the opening-hours gate does not mask the per-action cost assertions.
  */
 function reachableStates(seed: string): WorldState[] {
-  const start = allOpen(world(seed));
-  const states: WorldState[] = [start];
-  const dests = reachableLocations(start).slice(0, 3);
-  for (const to of dests) {
-    const { next } = resolve(
-      start,
-      { kind: 'travel', to, countersurveillance: false },
-      createPrng(`move-${to}`),
-      ctxWith(truth()),
-    );
-    states.push(allOpen(next));
+  const states: WorldState[] = [];
+  for (const ambient of [false, true]) {
+    const start = allOpen(world(seed, ambient));
+    states.push(start);
+    const dests = reachableLocations(start).slice(0, 3);
+    for (const to of dests) {
+      const { next } = resolve(
+        start,
+        { kind: 'travel', to, countersurveillance: false },
+        createPrng(`move-${to}`),
+        ctxWith(truth()),
+      );
+      states.push(allOpen(next));
+    }
   }
   return states;
 }

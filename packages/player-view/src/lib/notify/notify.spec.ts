@@ -215,6 +215,47 @@ describe('notify — visibility', () => {
     expect(notify([arrestEvent()], view())).toEqual([]);
   });
 
+  it('a recogniser sighting adds no Notification', () => {
+    const event = {
+      kind: 'officer-recognised',
+      id: 'evt:officer-recognised',
+      at: time(1, 0),
+      visibility: 'hidden',
+      npc: 'npc:viktor',
+      loc: 'loc:cafe',
+    } as SimEvent;
+    expect(notify([event], view())).toEqual([]);
+  });
+
+  it('builds cover, announcement and disturbed-drop Notifications and ignores hidden city events', () => {
+    const v = view();
+    const [due, missed, note, announcement, disturbed] = notify(
+      [
+        playerEvent({ kind: 'cover-duty-due', duty: 'Office hours' } as never),
+        playerEvent({ kind: 'cover-duty-missed', duty: 'Desk work' } as never),
+        playerEvent({ kind: 'cover-employer-message', text: 'The office asked after you.' } as never),
+        playerEvent({ kind: 'public-announcement', text: 'A curfew begins at dusk.' } as never),
+        playerEvent({ kind: 'drop-disturbed', drop: 'drop:alley' } as never),
+      ],
+      v,
+    );
+    expect(due?.factLine).toContain('Office hours');
+    expect(missed?.factLine).toContain('Desk work');
+    expect(note?.factLine).toBe('The office asked after you.');
+    expect(announcement?.factLine).toBe('A curfew begins at dusk.');
+    expect(disturbed?.factLine).toContain('The Landtmann');
+    expect(
+      notify(
+        [
+          playerEvent({ kind: 'life-event', npc: 'npc:ana', visibility: 'hidden' } as never),
+          playerEvent({ kind: 'gossip', npc: 'npc:ana', visibility: 'hidden' } as never),
+          playerEvent({ kind: 'ambient-hook', name: 'delay', visibility: 'hidden' } as never),
+        ],
+        v,
+      ),
+    ).toEqual([]);
+  });
+
   it('produces no Notification for day-start, a player missed meeting, or a custody release', () => {
     const v = view();
     expect(notify([playerEvent({ kind: 'day-start', weather: { summary: 'clear' } } as never)], v)).toEqual([]);

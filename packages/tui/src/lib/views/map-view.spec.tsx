@@ -111,6 +111,20 @@ describe('MapPane', () => {
     expect(frame).toContain('(1p)');
   });
 
+  it('shows a status the player has learned', () => {
+    const closed = {
+      ...populated,
+      districts: populated.districts.map((district) => ({
+        ...district,
+        locations: district.locations.map((place) =>
+          place.id === populated.here ? { ...place, status: 'closed-temporarily' } : place,
+        ),
+      })),
+    };
+    const { lastFrame } = render(<MapPane map={closed} />);
+    expect(lastFrame() ?? '').toContain('closed-temporarily');
+  });
+
   it('marks the current Location with a cursor', () => {
     const { lastFrame } = render(<MapPane map={populated} />);
     const lines = (lastFrame() ?? '').split('\n');

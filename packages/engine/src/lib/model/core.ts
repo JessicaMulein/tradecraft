@@ -38,6 +38,7 @@ import { z } from 'zod';
  * - `chan` — a communications Channel.
  * - `unk`  — an Unidentified Subject: a person the player has observed but not
  *            yet identified. Its local id is a non-negative integer (`unk:3`).
+ * - `evt`  — a City Event minted by the ambient simulation.
  */
 export const ENTITY_NAMESPACES = [
   'npc',
@@ -47,6 +48,7 @@ export const ENTITY_NAMESPACES = [
   'doc',
   'chan',
   'unk',
+  'evt',
 ] as const;
 
 export type EntityNamespace = (typeof ENTITY_NAMESPACES)[number];
@@ -73,8 +75,10 @@ export type DocId = `doc:${string}`;
 export type ChannelId = `chan:${string}`;
 /** An Unidentified Subject id. The local part is a non-negative integer. */
 export type UnkId = `unk:${number}`;
+/** A City Event id minted by the ambient simulation. */
+export type EvtId = `evt:${string}`;
 
-export type EntityId = NpcId | LocId | OrgId | ItemId | DocId | ChannelId | UnkId;
+export type EntityId = NpcId | LocId | OrgId | ItemId | DocId | ChannelId | UnkId | EvtId;
 
 /**
  * A Dead Drop id (`drop:<local>`). A Dead Drop is a concealed site at a
@@ -154,6 +158,7 @@ export const ItemIdSchema = namespacedSchema('item');
 export const DocIdSchema = namespacedSchema('doc');
 export const ChannelIdSchema = namespacedSchema('chan');
 export const UnkIdSchema = namespacedSchema('unk');
+export const EvtIdSchema = namespacedSchema('evt');
 
 /** Parser for any {@link EntityId}. */
 export const EntityIdSchema: z.ZodType<EntityId> = z
@@ -289,6 +294,8 @@ export interface Proposition {
   readonly object: EntityId | Literal;
   readonly place?: LocId;
   readonly window?: TimeWindow;
+  /** A third argument, for predicates that declare an instrument (plot-library). */
+  readonly instrument?: EntityId;
 }
 
 /**
@@ -310,6 +317,7 @@ export const PropositionSchema: z.ZodType<Proposition> = z
     object: PropositionObjectSchema,
     place: LocIdSchema.optional(),
     window: TimeWindowSchema.optional(),
+    instrument: EntityIdSchema.optional(),
   })
   .meta({
     id: 'Proposition',

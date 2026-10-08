@@ -456,6 +456,7 @@ function nonsenseActions(state: WorldState): readonly Action[] {
     arrest: { kind: 'arrest', npc: 'npc:nobody' },
     'turn-agent': { kind: 'turn-agent', npc: 'npc:nobody', lever: 'money', offer: Number.NaN },
     feed: { kind: 'feed', asset: 'npc:nobody', items: [] },
+    'attend-duty': { kind: 'attend-duty', duty: 'duty:none' },
     wait: { kind: 'wait', phases: 1 },
   };
   return Object.values(sample);

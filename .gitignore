@@ -8,6 +8,9 @@ out-tsc
 # game saves and outcome records (saves/<name>.save.json, saves/outcomes/)
 saves/
 
+# play metrics (scenario.metrics.path, default logs/metrics.jsonl)
+logs/
+
 # dependencies
 node_modules
 

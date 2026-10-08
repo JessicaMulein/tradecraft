@@ -78,7 +78,7 @@ import { ActionMenu } from '../here/action-menu.js';
 import { CaseFileBrowser } from '../casefile/case-file-browser.js';
 import { DocumentsPane } from '../documents/documents.js';
 import { Workbench } from '../workbench/workbench.js';
-import { JournalPane, MapPane, PeoplePane } from '../views/index.js';
+import { CityPane, DutiesPane, JournalPane, MapPane, PeoplePane, StoriesPane } from '../views/index.js';
 import { FeedComposer } from '../feed/feed-composer.js';
 import type { ComposeOptions } from '../feed/feed.js';
 import { SaveLoadScreen } from '../save-load/save-load-screen.js';
@@ -489,6 +489,15 @@ function ScreenView({
     case 'map':
       return <MapPane map={api.views.map()} />;
 
+    case 'city':
+      return <CityPane view={api.views.city()} />;
+
+    case 'stories':
+      return <StoriesPane view={api.views.stories()} />;
+
+    case 'duties':
+      return <DutiesPane view={api.views.duties()} />;
+
     case 'people':
       return <PeoplePane view={api.views.people()} selected={-1} />;
 
@@ -579,9 +588,17 @@ function SceneScreen({
 }: SceneScreenProps): ReactElement {
   const options: readonly ActionOption[] = menuOpen ? api.actions() : [];
   const latestAlert = state.alerts.at(-1);
+  const dutyAlert = [...state.alerts]
+    .reverse()
+    .find(
+      (alert) =>
+        alert.kind === 'cover-duty-due' ||
+        alert.kind === 'cover-duty-missed' ||
+        alert.kind === 'cover-employer-message',
+    );
   return (
     <Box flexDirection="column">
-      <StatusBar status={api.status()} />
+      <StatusBar status={api.status()} dutyAlert={dutyAlert?.factLine} />
       {latestAlert !== undefined && (
         <Box>
           <Text color="yellow">{latestAlert.factLine}</Text>

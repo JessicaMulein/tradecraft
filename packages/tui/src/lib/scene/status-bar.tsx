@@ -45,6 +45,11 @@ export interface StatusBarProps {
    * and money cost are shown. `undefined` when nothing is highlighted.
    */
   readonly highlighted?: ActionOption;
+  /**
+   * A cover-duty notice for the status bar. Absent when no duty is due, missed,
+   * or answered by the employer.
+   */
+  readonly dutyAlert?: string;
 }
 
 /** The highlighted action's cost summary, e.g. "surveil: 1 phase, 20". */
@@ -63,6 +68,7 @@ export function StatusBar({
   status,
   directives = [],
   highlighted,
+  dutyAlert,
 }: StatusBarProps): ReactElement {
   const directiveLabel =
     directives.length === 0 ? 'none' : directives.join('; ');
@@ -80,6 +86,11 @@ export function StatusBar({
       {highlighted !== undefined && (
         <Box>
           <Text dimColor>Cost — {costLabel(highlighted)}</Text>
+        </Box>
+      )}
+      {dutyAlert !== undefined && dutyAlert.length > 0 && (
+        <Box>
+          <Text color="yellow">Duty: {dutyAlert}</Text>
         </Box>
       )}
     </Box>

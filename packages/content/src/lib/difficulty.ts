@@ -128,6 +128,31 @@ export const DifficultyPresetSchema = z
       .nonnegative('the trace-request delay must not be negative'),
     coverSuspicionBurnThreshold: ProbabilitySchema,
     hintsDefault: z.boolean(),
+    /**
+     * Plot-library knobs. Absent fields keep the slice preset unchanged; the
+     * selector applies the design defaults (easy 0/0/2/0.25, standard
+     * 1/0.35/3/0.4, hard 2/0.6/3/0.5) when a field is omitted.
+     */
+    secondaryPlots: z.number().int().min(0).max(2).optional(),
+    twistProbability: ProbabilitySchema.optional(),
+    maxCells: z.number().int().positive().optional(),
+    lookalikeShare: ProbabilitySchema.optional(),
+    /**
+     * Ambient-world knobs. Absent fields keep the slice preset unchanged;
+     * `ambientPreset()` applies the design table when a field is omitted.
+     */
+    ambient: z
+      .object({
+        eventDensity: z.number().positive().optional(),
+        policeBaseline: ProbabilitySchema.optional(),
+        informantDensity: ProbabilitySchema.optional(),
+        gossipDistortion: ProbabilitySchema.optional(),
+        informantBonus: ProbabilitySchema.optional(),
+        maxPlotDelayDays: z.number().int().positive().optional(),
+        maxCoverSuspicionPerDay: ProbabilitySchema.optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type DifficultyPreset = z.infer<typeof DifficultyPresetSchema>;

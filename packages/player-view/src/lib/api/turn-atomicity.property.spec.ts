@@ -132,10 +132,11 @@ function preset(id: string): DifficultyPreset {
 
 const STANDARD = preset('standard');
 
-function scenario() {
+function scenario(ambient = false) {
   return ScenarioConfigSchema.parse({
     difficulty: { preset: 'standard' },
     mole: true,
+    ...(ambient ? { ambient: { enabled: true, density: 'sparse' as const } } : {}),
     recruitment: {
       pitch: { w1: 1, w2: 1, w3: 1, w4: 1 },
       firstContact: { a: 1, b: 1, c: 1, d: 1 },
@@ -146,12 +147,12 @@ function scenario() {
   });
 }
 
-function inputs(): GenerateInputs {
-  return { content, preset: STANDARD, scenario: scenario(), cityData, descriptors, publicTexts };
+function inputs(ambient = false): GenerateInputs {
+  return { content, preset: STANDARD, scenario: scenario(ambient), cityData, descriptors, publicTexts };
 }
 
-function world(seed: string): WorldState {
-  return generate(seed, inputs());
+function world(seed: string, ambient = false): WorldState {
+  return generate(seed, inputs(ambient));
 }
 
 /**
@@ -184,8 +185,8 @@ const WAIT: Action = { kind: 'wait', phases: 1 };
  * stores default to fresh instances the config shares, so a caller can observe
  * the action log the pipeline writes.
  */
-function makeEngine(seed: string, config: TurnPipelineConfig = {}) {
-  const state = withScene(world(seed));
+function makeEngine(seed: string, config: TurnPipelineConfig = {}, ambient = false) {
+  const state = withScene(world(seed, ambient));
   const caseFile = new CaseFile();
   const journal = new Journal();
   const notifications = new NotificationStore();
@@ -295,10 +296,11 @@ const preCommitSeamArb = fc.constantFrom<PreCommitSeam>('classify', 'voice');
 describe('Property 29: Turn atomicity (Req 16.4, 42.1, 42.4)', () => {
   it('leaves every observable store at its pre-turn value when a dialogue model call fails before commit', async () => {
     await fc.assert(
-      fc.asyncProperty(seedArb, preCommitSeamArb, async (seed, seam) => {
+      fc.asyncProperty(seedArb, preCommitSeamArb, fc.boolean(), async (seed, seam, ambient) => {
         const { engine, journal, notifications, actionLog } = makeEngine(
           seed,
           failingSayConfig(seam),
+          ambient,
         );
 
         const before = snapshot(engine, journal, notifications, actionLog);
@@ -326,10 +328,10 @@ describe('Property 29: Turn atomicity (Req 16.4, 42.1, 42.4)', () => {
 
   it('commits coherently when an action turn succeeds (state advanced, action log grew together)', async () => {
     await fc.assert(
-      fc.asyncProperty(seedArb, async (seed) => {
+      fc.asyncProperty(seedArb, fc.boolean(), async (seed, ambient) => {
         const { engine, journal, notifications, actionLog } = makeEngine(seed, {
           narrate: okNarrate,
-        });
+        }, ambient);
 
         const before = snapshot(engine, journal, notifications, actionLog);
         const chunks = await drain(engine.act(WAIT));
@@ -360,11 +362,11 @@ describe('Property 29: Turn atomicity (Req 16.4, 42.1, 42.4)', () => {
 
   it('commits coherently when a dialogue turn succeeds (log grew, speech streamed, nothing paused)', async () => {
     await fc.assert(
-      fc.asyncProperty(seedArb, async (seed) => {
+      fc.asyncProperty(seedArb, fc.boolean(), async (seed, ambient) => {
         const { engine, journal, notifications, actionLog } = makeEngine(seed, {
           classify: okClassify,
           voice: okVoice,
-        });
+        }, ambient);
 
         const before = snapshot(engine, journal, notifications, actionLog);
         const chunks = await drain(engine.say('Tell me about the courier.'));
@@ -388,10 +390,10 @@ describe('Property 29: Turn atomicity (Req 16.4, 42.1, 42.4)', () => {
 
   it('keeps the action commit intact when the Narrator fails after commit (fact-only, never rolled back)', async () => {
     await fc.assert(
-      fc.asyncProperty(seedArb, async (seed) => {
+      fc.asyncProperty(seedArb, fc.boolean(), async (seed, ambient) => {
         const { engine, journal, notifications, actionLog } = makeEngine(seed, {
           narrate: () => Promise.reject(new Error('narrator timeout')),
-        });
+        }, ambient);
 
         const before = snapshot(engine, journal, notifications, actionLog);
         const chunks = await drain(engine.act(WAIT));
@@ -417,7 +419,7 @@ describe('Property 29: Turn atomicity (Req 16.4, 42.1, 42.4)', () => {
 
   it('retries a paused turn from the pre-turn state deterministically', async () => {
     await fc.assert(
-      fc.asyncProperty(seedArb, async (seed) => {
+      fc.asyncProperty(seedArb, fc.boolean(), async (seed, ambient) => {
         // Two independent engines at the same seed. Each fails its first `say`
         // (voice rejects), pausing at the pre-turn state, then retries with the
         // same successful seams. A deterministic retry from the retained
@@ -429,7 +431,7 @@ describe('Property 29: Turn atomicity (Req 16.4, 42.1, 42.4)', () => {
             if (attempt === 1) return Promise.reject(new Error('endpoint unreachable'));
             return okVoice('', 'ask', { npc: 'npc:x' as NpcId, speakerName: 'The contact' });
           };
-          return makeEngine(seed, { classify: okClassify, voice });
+          return makeEngine(seed, { classify: okClassify, voice }, ambient);
         }
 
         const a = pauseThenRetry();

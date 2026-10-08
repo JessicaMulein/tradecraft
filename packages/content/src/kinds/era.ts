@@ -14,7 +14,7 @@
 
 import { z } from 'zod';
 
-import { ContentIdSchema, TagIdSchema } from '../lib/common.js';
+import { ContentIdSchema, ContentRefSchema, TagIdSchema } from '../lib/common.js';
 import { CIPHER_KINDS } from '../lib/difficulty.js';
 import { DOCUMENT_KINDS } from '../lib/kinds.js';
 import type { ContentKindRegistration } from '../lib/registry.js';
@@ -52,11 +52,12 @@ export type YearRange = z.infer<typeof YearRangeSchema>;
 
 /**
  * A City id, as referenced by a city-scoped Anachronism Entry or public text.
- * It is a content id naming a loaded City Definition. (Tag ids, referenced by
- * an Era's default climate Tag and a technology item, use the shared
- * {@link TagIdSchema} from `../lib/common.js`.)
+ * The linter compares it with the loaded City Definition id, which is
+ * `<pack>/<name>` (for example `city-berlin/berlin`). A bare id is still
+ * accepted. (Tag ids, referenced by an Era's default climate Tag and a
+ * technology item, use the shared {@link TagIdSchema} from `../lib/common.js`.)
  */
-export const CityIdSchema = ContentIdSchema;
+export const CityIdSchema = ContentRefSchema;
 
 // --- Era --------------------------------------------------------------------
 

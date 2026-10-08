@@ -1,0 +1,144 @@
+- id: counterfeit-tide
+  templateSchema: 2
+  kind: plot
+  displayName: Counterfeit tide
+  archetype: currency-forgery
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - forgery
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    press:
+      kind: loc
+      query:
+        - function:warehouse
+    plates:
+      kind: item
+      query:
+        - materiel:plates
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    printer:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: printers
+      roles:
+        - printer
+    - id: distributors
+      roles:
+        - leader
+  cutouts:
+    - role: courier
+      links:
+        - printers
+        - distributors
+  stages:
+    - id: engrave
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - printer
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A printer locks the shop and leaves one press running.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call says the plate is cut and the shop will be dark tomorrow.
+      onDisrupted: &a1
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - engrave
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the counterfeit tide is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the counterfeit tide repeats the meeting and names both people.
+      onDisrupted: *a1
+    - id: move
+      requires:
+        - confirm
+      deadline:
+        min: 14
+        max: 22
+      traces:
+        - kind: meeting
+          roles:
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: Bundles of notes travel in a bread crate that is heavier than bread.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: The crate’s route is given as three tram stops and a cellar.
+      onDisrupted: *a1
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: seize-item
+        item: plates
+      - kind: abort
+    failure:
+      - kind: stage-completed
+        stage: move

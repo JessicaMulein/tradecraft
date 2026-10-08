@@ -36,6 +36,8 @@ const HIDDEN_KINDS: readonly SimEventKind[] = [
   'plot-adapted',
   'plot-completed',
   'plot-aborted',
+  'branch-resolved',
+  'plot-resolved',
   'asset-detected',
   'asset-arrested',
   'asset-doubled',
@@ -47,6 +49,16 @@ const HIDDEN_KINDS: readonly SimEventKind[] = [
   'player-burned',
   'mole-report',
   'walk-in-approach',
+  'city-event-stage',
+  'incident',
+  'life-event',
+  'gossip',
+  'informant-report',
+  'ambient-hook',
+  'location-status',
+  'drop-raided',
+  'promotion',
+  'officer-recognised',
 ];
 
 const PLAYER_VISIBLE_KINDS: readonly SimEventKind[] = [
@@ -63,6 +75,11 @@ const PLAYER_VISIBLE_KINDS: readonly SimEventKind[] = [
   'asset-silent',
   'retainer-due',
   'custody-released',
+  'public-announcement',
+  'cover-duty-due',
+  'cover-duty-missed',
+  'cover-employer-message',
+  'drop-disturbed',
 ];
 
 const kindArb: fc.Arbitrary<SimEventKind> = fc.constantFrom(...SIM_EVENT_KINDS);

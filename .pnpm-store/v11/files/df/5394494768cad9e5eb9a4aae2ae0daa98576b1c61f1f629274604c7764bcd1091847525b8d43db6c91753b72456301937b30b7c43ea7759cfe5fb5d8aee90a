@@ -1,0 +1,28 @@
+import { GeneratorCallback, Tree } from '@nx/devkit';
+import { Linter as LinterEnum, LinterType } from '../utils/linter';
+interface LintProjectOptions {
+    project: string;
+    linter?: LinterEnum | LinterType;
+    eslintFilePatterns?: string[];
+    tsConfigPaths?: string[];
+    skipFormat: boolean;
+    enableTypedLinting?: boolean;
+    /**
+     * @deprecated Use `enableTypedLinting` instead. This option will be removed in Nx v24.
+     */
+    setParserOptionsProject?: boolean;
+    skipPackageJson?: boolean;
+    unitTestRunner?: string;
+    rootProject?: boolean;
+    keepExistingVersions?: boolean;
+    addPlugin?: boolean;
+    eslintConfigFormat?: 'mjs' | 'cjs';
+    /**
+     * @internal
+     */
+    addExplicitTargets?: boolean;
+    addPackageJsonDependencyChecks?: boolean;
+}
+export declare function lintProjectGenerator(tree: Tree, options: LintProjectOptions): Promise<GeneratorCallback>;
+export declare function lintProjectGeneratorInternal(tree: Tree, options: LintProjectOptions): Promise<GeneratorCallback>;
+export {};

@@ -160,13 +160,17 @@ export type NarrationMode = (typeof NARRATION_MODES)[number];
 export const RecruitmentWeightsSchema = z
   .object({
     pitch: weights(['w1', 'w2', 'w3', 'w4']),
-    firstContact: weights(['a', 'b', 'c', 'd']),
+    firstContact: weights(['a', 'b', 'c', 'd']).extend({
+      e: z.number().optional(),
+    }),
     meeting: weights([
       'trust',
       'riskAversion',
       'scheduleConflict',
       'agendaInterest',
-    ]),
+    ]).extend({
+      regard: z.number().optional(),
+    }),
     exposure: weights(['k1', 'k2', 'k3']),
     turn: weights(['w1', 'w2', 'w3', 'w4', 'w5']),
   })
@@ -226,6 +230,31 @@ export const ScenarioConfigSchema = z
       enabled: true,
       path: 'logs/metrics.jsonl',
     }),
+    /**
+     * Plot-library selection weights. Absent, the slice generator keeps
+     * choosing the Plot on the core stream. Set `enabled` to run selection
+     * on the dedicated select stream (plot-library Req 14).
+     */
+    plotSelection: z
+      .object({
+        enabled: z.boolean().default(false),
+        archetypePenalty: z.number().positive().default(0.3),
+        variantPenalty: z.number().positive().default(0.5),
+        historyWindow: z.number().int().positive().default(5),
+      })
+      .strict()
+      .optional(),
+    /**
+     * Ambient-world simulation. Absent means off, so a core scenario keeps
+     * the slice game. Density scales the ambient caps.
+     */
+    ambient: z
+      .object({
+        enabled: z.boolean().default(false),
+        density: z.enum(['sparse', 'standard', 'rich']).default('standard'),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 

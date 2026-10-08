@@ -115,9 +115,9 @@
  * ## Purity
  *
  * {@link phaseStep} reads only its arguments and returns new values (Req 5.6).
- * No sub-step draws a random value today. `rng` is the runtime stream the step
- * would draw from, accepted so that a future draw cannot reach for another
- * stream (Req 5.1).
+ * The meeting recogniser check draws from `rng` when a recogniser is present
+ * at a kept meeting. Every other sub-step draws nothing, so a world with no
+ * carry state leaves the runtime stream where it was (Req 5.1).
  */
 
 import type { ContentSet, DocumentTemplate } from '@tradecraft/content';
@@ -147,6 +147,9 @@ import {
   type Proposition,
 } from '../model/core.js';
 import type { SimEvent, WorldState } from '../model/state.js';
+import { applyRecogniserPass, npcsAt, queueCarryLines } from '../carry/recognise.js';
+import { MADE_FACT_LINE } from '../action/surveil.js';
+import { ambientPhase } from '../ambient/tick.js';
 import type { Prng } from '../prng/prng.js';
 import {
   inStationCustody,
@@ -246,13 +249,14 @@ export function phaseStep(
   };
 
   apply(stepSchedules(state, from, to));
-  const meetings = stepMeetings(state, from, to);
+  const meetings = stepMeetings(state, from, to, rng);
   apply(meetings);
   apply(stepCables(state, to, deps));
   apply(stepDirectives(state, to, deps));
   apply(stepRetainers(state, from, to));
   apply(stepConsequences(state, to));
   apply(stepCustody(state, to));
+  apply(ambientPhase(state));
 
   return meetings.openScene === undefined
     ? { state, events }
@@ -393,7 +397,7 @@ const NO_FACT_LINES = (): string[] => [];
  * - An accepted meeting with an NPC who is out of play is voided at its slot.
  * - A void meeting raises `meeting-no-show` when the player is at its Location.
  */
-function stepMeetings(state: WorldState, from: GameTime, to: GameTime): MeetingsStep {
+function stepMeetings(state: WorldState, from: GameTime, to: GameTime, rng: Prng): MeetingsStep {
   const due = Object.values(state.meetings)
     .filter(
       (m) =>
@@ -425,6 +429,19 @@ function stepMeetings(state: WorldState, from: GameTime, to: GameTime): Meetings
     if (slot.result.openScene !== undefined) {
       after = withContact(after, meeting.npc, meeting.slot);
       openScene ??= slot.result.openScene;
+      const present = npcsAt(after, meeting.at, meeting.slot);
+      const recognised = applyRecogniserPass(
+        after,
+        rng,
+        after.meta.preset.detectionBase.surveil,
+        present,
+        present,
+        meeting.slot,
+        meeting.at,
+      );
+      const lines = [...recognised.seenBefore, ...(recognised.made ? [MADE_FACT_LINE] : [])];
+      after = queueCarryLines(recognised.next, lines);
+      events.push(...recognised.events);
     }
     next = after;
     events.push(...slot.result.events);

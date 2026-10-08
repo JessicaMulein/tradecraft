@@ -1,0 +1,46 @@
+# Skills, including two languages. Modifier paths are numeric preset or
+# recruitment-weight fields.
+- id: surveillance
+  name: Surveillance
+  language: false
+  xp:
+    from: [surveilObservations, followsCompleted]
+    perLevel: [6, 14, 24, 36, 50]
+  effects:
+    - path: detectionBase.surveil
+      op: mul
+      perLevel: -0.06
+      bounds: [0.7, 1]
+- id: cryptanalysis
+  name: Cryptanalysis
+  language: false
+  xp:
+    from: [decrypts]
+    perLevel: [3, 7, 12, 18, 25]
+  effects:
+    - path: tradecraftErrorProbability
+      op: add
+      perLevel: 0.02
+      bounds: [0, 0.1]
+- id: german
+  name: German
+  language: true
+  xp:
+    from: [conversations]
+    perLevel: [4, 10, 18, 28, 40]
+  effects:
+    - path: firstContact.a
+      op: add
+      perLevel: 0.15
+      bounds: [0, 3]
+- id: russian
+  name: Russian
+  language: true
+  xp:
+    from: [conversations]
+    perLevel: [4, 10, 18, 28, 40]
+  effects:
+    - path: firstContact.a
+      op: add
+      perLevel: 0.15
+      bounds: [0, 3]

@@ -230,6 +230,7 @@ export function eventRefs(event: SimEvent): JournalRef[] {
     case 'meeting-missed-by-player':
       return [event.meeting];
     case 'drop-unserviced':
+    case 'drop-disturbed':
       return [event.drop];
     default:
       return [];

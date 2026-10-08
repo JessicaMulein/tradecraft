@@ -33,7 +33,13 @@
 
 import { asTruth, revealTruth, type LocId } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
+import { applyRecogniserPass, npcsAt } from '../carry/recognise.js';
+import { MADE_FACT_LINE } from './surveil.js';
 import { travelCost } from '../city/city.js';
+import { effectiveRoutes, observeLocation } from '../ambient/locations.js';
+import { scaleHighRiskSuspicion } from '../ambient/cover.js';
+import { greetingLine } from '../ambient/memory.js';
+import { noticeLines } from '../ambient/news.js';
 import type { Prng } from '../prng/prng.js';
 import type { ActionQuote, ActionResult } from './result.js';
 import type { TravelAction } from './types.js';
@@ -106,7 +112,11 @@ export function quoteTravel(state: WorldState, a: TravelAction): ActionQuote {
     };
   }
 
-  const cost = travelCost(state.city, from, to, a.countersurveillance);
+  const overlayRoutes =
+    state.ambient !== undefined && state.ambient.overlays.length > 0
+      ? effectiveRoutes(state.city.routes, state.ambient.overlays, state.time)
+      : undefined;
+  const cost = travelCost(state.city, from, to, a.countersurveillance, overlayRoutes);
   if (!Number.isFinite(cost)) {
     return {
       allowed: false,
@@ -153,6 +163,22 @@ export function resolveTravel(
   // countersurveillance route avoids the watchers, which is what it is for.
   let suspicionDelta =
     tailed && dest !== undefined ? dest.risk * COVER_SUSPICION_RISK_FACTOR : 0;
+  if (dest !== undefined && state.ambient !== undefined && state.ambient.overlays.length > 0) {
+    const fromLoc = state.city.locations[state.player.loc];
+    const hop = fromLoc === undefined
+      ? undefined
+      : effectiveRoutes(state.city.routes, state.ambient.overlays, state.time).find(
+          (route) =>
+            (route.a === fromLoc.district && route.b === dest.district) ||
+            (route.b === fromLoc.district && route.a === dest.district),
+        );
+    if (hop?.checkpoint !== undefined) {
+      suspicionDelta += hop.checkpoint.coverRisk;
+      if (rng.next() < hop.checkpoint.detection) {
+        suspicionDelta += hop.checkpoint.coverRisk;
+      }
+    }
+  }
   if (!tailed && dest !== undefined && !a.countersurveillance && dest.risk > 0) {
     const watch =
       state.meta.preset.detectionBase.surveil *
@@ -162,6 +188,13 @@ export function resolveTravel(
     if (rng.next() < Math.min(1, watch)) {
       suspicionDelta = dest.risk * WATCHER_SUSPICION_FACTOR;
     }
+  }
+  if (state.ambient !== undefined && dest !== undefined) {
+    suspicionDelta = scaleHighRiskSuspicion(
+      suspicionDelta,
+      dest.risk,
+      revealTruth(state.ambient.coverStanding),
+    );
   }
   const nextCoverSuspicion = revealTruth(state.player.coverSuspicion) + suspicionDelta;
 
@@ -175,7 +208,7 @@ export function resolveTravel(
     nextTailed = rng.next() < COUNTERSURVEILLANCE_TAIL_FACTOR;
   }
 
-  const next: WorldState = {
+  const moved: WorldState = {
     ...state,
     player: {
       ...state.player,
@@ -184,9 +217,19 @@ export function resolveTravel(
       tailed: asTruth(nextTailed),
     },
   };
-
-  const result = travelResult(next, to, suspicionDelta);
-  return { next, result };
+  const arrived = observeLocation(moved, to);
+  const present = dest === undefined ? [] : npcsAt(arrived, to, state.time);
+  const recognised = applyRecogniserPass(
+    arrived,
+    rng,
+    state.meta.preset.detectionBase.surveil,
+    present,
+    present,
+    state.time,
+    to,
+  );
+  const result = travelResult(recognised.next, to, suspicionDelta, recognised);
+  return { next: recognised.next, result };
 }
 
 /**
@@ -200,6 +243,7 @@ function travelResult(
   next: WorldState,
   to: LocId,
   suspicionDelta: number,
+  recognised: ReturnType<typeof applyRecogniserPass>,
 ): ActionResult {
   const loc = next.city.locations[to];
   const name = loc?.name ?? to;
@@ -207,11 +251,22 @@ function travelResult(
     suspicionDelta > 0
       ? `You arrive at ${name}. You sense you may have been followed.`
       : `You arrive at ${name}.`;
+  const greeting = greetingLine(next, to);
+  const notices = noticeLines(next, to);
+  const extra = [
+    ...recognised.seenBefore,
+    ...(recognised.made ? [MADE_FACT_LINE] : []),
+  ];
+  const factLines = [line, ...(greeting === undefined ? [] : [greeting]), ...notices, ...extra];
+  const observations: ActionResult['observations'] = [
+    { kind: 'message', line },
+    ...extra.map((text) => ({ kind: 'message' as const, line: text })),
+  ];
   return {
-    observations: [{ kind: 'message', line }],
-    factLines: [line],
+    observations,
+    factLines,
     scene: sceneDescriptorAt(next, to),
-    events: [],
+    events: [...recognised.events],
     claimsAdded: [],
   };
 }

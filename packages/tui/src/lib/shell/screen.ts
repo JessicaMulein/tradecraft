@@ -91,6 +91,9 @@ export type Screen =
   | { readonly kind: 'workbench'; readonly intercept?: InterceptId }
   | { readonly kind: 'journal' }
   | { readonly kind: 'map' }
+  | { readonly kind: 'city' }
+  | { readonly kind: 'stories' }
+  | { readonly kind: 'duties' }
   | { readonly kind: 'people' }
   | { readonly kind: 'feed'; readonly asset: NpcId }
   | { readonly kind: 'save-load'; readonly mode: 'save' | 'load' }

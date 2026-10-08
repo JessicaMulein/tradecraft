@@ -978,3 +978,28 @@ describe('loadContent — Template Variants (task 2.2, Req 8.2, 8.3)', () => {
     ).toContain('Era');
   });
 });
+
+describe('loadContent — template schema v2 (plot-library task 1.1)', () => {
+  const v2Plot = { id: 'sample', templateSchema: 2, kind: 'plot' };
+
+  it('rejects template schema 2 unless pack.yaml declares contentSchema 2', () => {
+    const rejected = expectErrors(
+      loadContent(writePacks({ core: corePack({ 'plots/sample.yaml': v2Plot }) }).dirs, ['core']),
+    );
+    expect(rejected.some((error) => error.path.endsWith('templateSchema'))).toBe(true);
+    expect(rejected.some((error) => error.message.includes('contentSchema: 2'))).toBe(true);
+
+    const allowed = expectErrors(
+      loadContent(
+        writePacks({
+          lib: corePack({
+            'pack.yaml': { id: 'lib', version: '1.0.0', contentSchema: 2 },
+            'plots/sample.yaml': v2Plot,
+          }),
+        }).dirs,
+        ['lib'],
+      ),
+    );
+    expect(allowed.some((error) => error.message.includes('contentSchema: 2'))).toBe(false);
+  });
+});

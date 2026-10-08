@@ -1,0 +1,131 @@
+- id: honey-trap
+  templateSchema: 2
+  kind: plot
+  displayName: honey-trap
+  archetype: support
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: true
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - exfiltration
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: begin
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A mark is drawn into a compromising meeting.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call describes the mark’s drink and the hour he is expected.
+      onDisrupted: &a1
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - begin
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the honey trap is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the honey trap repeats the meeting and names both people.
+      onDisrupted: *a1
+    - id: finish
+      requires:
+        - confirm
+      deadline:
+        min: 14
+        max: 22
+      traces:
+        - kind: meeting
+          roles:
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The courier collects the mark after the compromising hour and does not smile.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: The courier reports the mark left by the back stair.
+      onDisrupted: *a1
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: arrest-role
+        role: leader
+      - kind: abort
+    failure:
+      - kind: stage-completed
+        stage: finish

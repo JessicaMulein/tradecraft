@@ -1,0 +1,38 @@
+# Three starting backgrounds. Each sets rank, skills, languages, traits and
+# faction reputation. Skill and trait ids are defined in this directory.
+- id: analyst
+  name: Analyst
+  text: A desk officer trained on ciphers before the first posting.
+  rank: case-officer
+  skills:
+    cryptanalysis: 1
+  languages:
+    - german
+  traits:
+    - methodical
+  factions:
+    security: 1
+- id: field-officer
+  name: Field officer
+  text: An officer who learned the street before the desk.
+  rank: case-officer
+  skills:
+    surveillance: 1
+  languages: []
+  traits:
+    - watchful
+  factions:
+    operations: 1
+- id: linguist
+  name: Linguist
+  text: An officer hired for two languages and sent out to use them.
+  rank: case-officer
+  skills:
+    german: 2
+    russian: 1
+  languages:
+    - german
+    - russian
+  traits: []
+  factions:
+    security: 1

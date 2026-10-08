@@ -29,3 +29,16 @@ button:disabled{color:var(--dim);cursor:not-allowed}
 #doc-list ul{list-style:none;padding:0}#doc-list li{margin:.2rem 0}
 #doc-list .unread{color:var(--acc)}
 .dim{color:var(--dim)}
+#aid{background:#1c1b16;border:1px solid #444;padding:1rem;margin:1rem 0;max-height:none}
+#aid h2{margin:0 0 .5rem;font-size:1.1rem}
+#aid h3{margin:1rem 0 .3rem;font-size:1rem;color:var(--acc)}
+#aid h4{margin:.5rem 0 .2rem;font-size:.95rem;color:var(--dim);text-transform:capitalize}
+.aid-table{border-collapse:collapse;width:100%;font-size:.92rem}
+.aid-table th{text-align:left;color:var(--dim);font-weight:normal;border-bottom:1px solid #444;padding:.2rem .4rem}
+.aid-table td{padding:.25rem .4rem;border-bottom:1px solid #2a2924;vertical-align:top}
+.tag{margin-left:.4rem;font-size:.8rem;border:1px solid var(--acc);color:var(--acc);padding:0 .3rem}
+.facts,.notes{margin:.2rem 0 .6rem;padding-left:1.2rem}
+.fact.notice{border-left:2px solid var(--dim);padding-left:.4rem}
+.note-form{display:flex;gap:.5rem}.note-form input{flex:1}
+.glossary dt{color:var(--acc);margin-top:.5rem}.glossary dd{margin:0 0 0 1rem}
+@media (max-width:700px){.aid-table{display:block;overflow-x:auto}}

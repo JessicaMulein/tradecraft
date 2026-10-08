@@ -143,10 +143,11 @@ function preset(id: string): DifficultyPreset {
 
 const STANDARD = preset('standard');
 
-function scenario() {
+function scenario(ambient = false) {
   return ScenarioConfigSchema.parse({
     difficulty: { preset: 'standard' },
     mole: true,
+    ...(ambient ? { ambient: { enabled: true, density: 'sparse' as const } } : {}),
     recruitment: {
       pitch: { w1: 1, w2: 1, w3: 1, w4: 1 },
       firstContact: { a: 1, b: 1, c: 1, d: 1 },
@@ -157,8 +158,8 @@ function scenario() {
   });
 }
 
-function inputs(): GenerateInputs {
-  return { content, preset: STANDARD, scenario: scenario(), cityData, descriptors, publicTexts };
+function inputs(ambient = false): GenerateInputs {
+  return { content, preset: STANDARD, scenario: scenario(ambient), cityData, descriptors, publicTexts };
 }
 
 /** The resolver context: the loaded content set (travel/wait need nothing more). */
@@ -198,11 +199,11 @@ function planToAction(plan: Plan, world: WorldState): Action {
  * reproduced session. Returns the final world and the recorded action log — the
  * two things Property 14 asserts are reproduced identically.
  */
-function replaySession(seed: string, plan: readonly Plan[]): {
+function replaySession(seed: string, plan: readonly Plan[], ambient = false): {
   readonly world: WorldState;
   readonly log: ReturnType<ActionLog['all']>;
 } {
-  let world = generate(seed, inputs());
+  let world = generate(seed, inputs(ambient));
   const rng = createPrng(world.rng);
   const log = new ActionLog();
   let at: GameTime = world.time;
@@ -280,9 +281,9 @@ describe('Property 14: replay determinism (Req 17.4)', () => {
     'replaying the same seed and action log reproduces an identical session (world + action log)',
     () => {
       fc.assert(
-        fc.property(seedArb, planArb, (seed, plan) => {
-          const first = replaySession(seed, plan);
-          const second = replaySession(seed, plan);
+        fc.property(seedArb, planArb, fc.boolean(), (seed, plan, ambient) => {
+          const first = replaySession(seed, plan, ambient);
+          const second = replaySession(seed, plan, ambient);
 
           // The reproduced world is byte-for-byte identical (including the
           // serialised PRNG state), and so is the recorded action log.
@@ -302,9 +303,9 @@ describe('Property 14: replay determinism (Req 17.4)', () => {
     'the two reproduced worlds are deep-equal but distinct object instances',
     () => {
       fc.assert(
-        fc.property(seedArb, planArb, (seed, plan) => {
-          const first = replaySession(seed, plan);
-          const second = replaySession(seed, plan);
+        fc.property(seedArb, planArb, fc.boolean(), (seed, plan, ambient) => {
+          const first = replaySession(seed, plan, ambient);
+          const second = replaySession(seed, plan, ambient);
           expect(second.world).not.toBe(first.world);
           expect(second.world).toEqual(first.world);
         }),
@@ -321,8 +322,8 @@ describe('Property 14: replay determinism (Req 17.4)', () => {
     'the reproduced action log is in seq order with one entry per planned action',
     () => {
       fc.assert(
-        fc.property(seedArb, planArb, (seed, plan) => {
-          const { log } = replaySession(seed, plan);
+        fc.property(seedArb, planArb, fc.boolean(), (seed, plan, ambient) => {
+          const { log } = replaySession(seed, plan, ambient);
           expect(log).toHaveLength(plan.length);
           log.forEach((entry, i) => {
             expect(entry.seq).toBe(i);
@@ -343,10 +344,10 @@ describe('Property 14: replay determinism (Req 17.4)', () => {
     'distinct seeds with the same action log generally diverge',
     () => {
       fc.assert(
-        fc.property(seedArb, seedArb, planArb, (s1, s2, plan) => {
+        fc.property(seedArb, seedArb, planArb, fc.boolean(), (s1, s2, plan, ambient) => {
           fc.pre(s1 !== s2);
-          const a = replaySession(s1, plan);
-          const b = replaySession(s2, plan);
+          const a = replaySession(s1, plan, ambient);
+          const b = replaySession(s2, plan, ambient);
           expect(b.world).not.toEqual(a.world);
         }),
         { numRuns: NUM_RUNS },

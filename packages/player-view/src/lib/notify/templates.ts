@@ -112,6 +112,31 @@ export function assetSilentFactLine(
   return `${namer(npc)} has been silent for ${span}.`;
 }
 
+/** A public announcement the Station has already heard. */
+export function publicAnnouncementFactLine(text: string): string {
+  return text;
+}
+
+/** A cover duty is one phase away. */
+export function coverDutyDueFactLine(duty: string): string {
+  return `Your employer expects you for ${duty}.`;
+}
+
+/** A mandatory cover duty was missed. */
+export function coverDutyMissedFactLine(duty: string): string {
+  return `Your employer notes that you missed ${duty}.`;
+}
+
+/** A message from the cover employer. */
+export function coverEmployerMessageFactLine(text: string): string {
+  return text;
+}
+
+/** A dead drop the player services has been disturbed. */
+export function dropDisturbedFactLine(namer: NotifyNamer, drop: string): string {
+  return `The dead drop at ${namer(drop)} has been disturbed.`;
+}
+
 /** A retainer is due to a money-motivated Asset. */
 export function retainerDueFactLine(
   namer: NotifyNamer,

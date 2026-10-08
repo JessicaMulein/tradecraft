@@ -94,9 +94,10 @@ export function detectionProbability(
   npc: NpcId,
   doctrine: Doctrine,
   base: DetectionBase,
+  bonus = 0,
 ): number {
   const exposure = effectiveExposure(beliefs, npc);
-  return clamp01(base.meeting * (1 + doctrine.securityConsciousness) * exposure);
+  return clamp01(base.meeting * (1 + doctrine.securityConsciousness) * exposure + bonus);
 }
 
 // ---------------------------------------------------------------------------
@@ -210,13 +211,20 @@ export function runDetection(
   beliefs: HostileBeliefs,
   doctrine: Doctrine,
   base: DetectionBase,
+  bonuses: Readonly<Record<string, number>> = {},
 ): DetectionResult {
   const detections: Detection[] = [];
   for (const candidate of candidates) {
     if (beliefs.suspectedAssets.includes(candidate.npc)) {
       continue; // already detected; no coin, so the stream is history-independent
     }
-    const p = detectionProbability(beliefs, candidate.npc, doctrine, base);
+    const p = detectionProbability(
+      beliefs,
+      candidate.npc,
+      doctrine,
+      base,
+      bonuses[candidate.npc] ?? 0,
+    );
     if (!rng.bool(p)) {
       continue;
     }

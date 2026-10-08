@@ -29,6 +29,9 @@
  */
 
 import type { DifficultyPreset as ContentDifficultyPreset } from '@tradecraft/content';
+import type { AmbientState } from '../ambient/state.js';
+import type { CarryState } from '../carry/types.js';
+import type { LibrarySelection, PlotStateV2 } from '../plotgen/types.js';
 import { z } from 'zod';
 
 import type { Action, Meeting as MeetingModel } from '../action/types.js';
@@ -545,6 +548,8 @@ export const SIM_EVENT_KINDS = [
   'plot-adapted',
   'plot-completed',
   'plot-aborted',
+  'branch-resolved',
+  'plot-resolved',
   'asset-detected',
   'asset-arrested',
   'asset-doubled',
@@ -556,6 +561,16 @@ export const SIM_EVENT_KINDS = [
   'player-burned',
   'mole-report',
   'walk-in-approach',
+  'city-event-stage',
+  'incident',
+  'life-event',
+  'gossip',
+  'informant-report',
+  'ambient-hook',
+  'location-status',
+  'drop-raided',
+  'promotion',
+  'officer-recognised',
   // player-visible
   'day-start',
   'newspaper',
@@ -570,6 +585,11 @@ export const SIM_EVENT_KINDS = [
   'asset-silent',
   'retainer-due',
   'custody-released',
+  'public-announcement',
+  'cover-duty-due',
+  'cover-duty-missed',
+  'cover-employer-message',
+  'drop-disturbed',
 ] as const;
 
 /** The discriminant of a {@link SimEvent}. */
@@ -594,6 +614,8 @@ export const SIM_EVENT_VISIBILITY: Readonly<Record<SimEventKind, EventVisibility
   'plot-adapted': 'hidden',
   'plot-completed': 'hidden',
   'plot-aborted': 'hidden',
+  'branch-resolved': 'hidden',
+  'plot-resolved': 'hidden',
   'asset-detected': 'hidden',
   'asset-arrested': 'hidden',
   'asset-doubled': 'hidden',
@@ -605,6 +627,16 @@ export const SIM_EVENT_VISIBILITY: Readonly<Record<SimEventKind, EventVisibility
   'player-burned': 'hidden',
   'mole-report': 'hidden',
   'walk-in-approach': 'hidden',
+  'city-event-stage': 'hidden',
+  incident: 'hidden',
+  'life-event': 'hidden',
+  gossip: 'hidden',
+  'informant-report': 'hidden',
+  'ambient-hook': 'hidden',
+  'location-status': 'hidden',
+  'drop-raided': 'hidden',
+  promotion: 'hidden',
+  'officer-recognised': 'hidden',
   // player-visible: addressed to the player or the Station
   'day-start': 'player',
   newspaper: 'player',
@@ -619,6 +651,11 @@ export const SIM_EVENT_VISIBILITY: Readonly<Record<SimEventKind, EventVisibility
   'asset-silent': 'player',
   'retainer-due': 'player',
   'custody-released': 'player',
+  'public-announcement': 'player',
+  'cover-duty-due': 'player',
+  'cover-duty-missed': 'player',
+  'cover-employer-message': 'player',
+  'drop-disturbed': 'player',
 };
 
 /** The fixed visibility of an event kind (Requirement 39.1). */
@@ -677,6 +714,8 @@ export type SimEvent = SimEventBase &
     | { readonly kind: 'plot-adapted'; readonly change: string }
     | { readonly kind: 'plot-completed' }
     | { readonly kind: 'plot-aborted'; readonly trigger: AbortTrigger }
+    | { readonly kind: 'branch-resolved'; readonly branch: string; readonly alt: string; readonly cause: string }
+    | { readonly kind: 'plot-resolved'; readonly plot: string; readonly result: 'disrupted' | 'succeeded' }
     | { readonly kind: 'asset-detected' | 'asset-arrested' | 'asset-doubled'; readonly npc: NpcId }
     | { readonly kind: 'feed-delivered'; readonly agent: NpcId; readonly props: readonly Proposition[] }
     | { readonly kind: 'belief-adopted'; readonly prop: Proposition }
@@ -697,6 +736,13 @@ export type SimEvent = SimEventBase &
     | { readonly kind: 'player-burned' }
     | { readonly kind: 'mole-report'; readonly summary: string }
     | { readonly kind: 'walk-in-approach'; readonly npc: NpcId; readonly genuine: Truth<boolean> }
+    | { readonly kind: 'city-event-stage'; readonly event: string }
+    | { readonly kind: 'incident'; readonly loc: LocId; readonly factLine: string }
+    | { readonly kind: 'life-event' | 'gossip' | 'informant-report' | 'promotion'; readonly npc: NpcId }
+    | { readonly kind: 'ambient-hook'; readonly name: string }
+    | { readonly kind: 'location-status'; readonly loc: LocId; readonly status: string }
+    | { readonly kind: 'drop-raided'; readonly drop: DeadDropId }
+    | { readonly kind: 'officer-recognised'; readonly npc: NpcId; readonly loc: LocId }
     // --- player-visible (no Truth fields) --------------------------------
     | { readonly kind: 'day-start'; readonly weather: Weather }
     | { readonly kind: 'newspaper'; readonly doc: DocId }
@@ -716,6 +762,9 @@ export type SimEvent = SimEventBase &
     | { readonly kind: 'asset-silent'; readonly npc: NpcId; readonly days: number }
     | { readonly kind: 'retainer-due'; readonly npc: NpcId; readonly amount: number }
     | { readonly kind: 'custody-released'; readonly npc: NpcId }
+    | { readonly kind: 'public-announcement' | 'cover-employer-message'; readonly text: string }
+    | { readonly kind: 'cover-duty-due' | 'cover-duty-missed'; readonly duty: string }
+    | { readonly kind: 'drop-disturbed'; readonly drop: DeadDropId }
   );
 
 /**
@@ -880,6 +929,11 @@ export interface WorldState {
      * `generatorVersion` check.
      */
     readonly setting: SettingSelection;
+    /**
+     * Plot-library selection, present when `scenario.plotSelection.enabled`
+     * built this world. Absent on a slice generation.
+     */
+    readonly selection?: LibrarySelection;
   };
   readonly time: GameTime;
   readonly rng: PrngState;
@@ -906,6 +960,28 @@ export interface WorldState {
   readonly told: Record<NpcId, readonly Proposition[]>;
 
   readonly plot: PlotState;
+  /**
+   * Library plots when selection ran. The slice `plot` stays the played
+   * operation; `plots[0]` is the library primary. Absent on a slice generation.
+   */
+  readonly plots?: readonly PlotStateV2[];
+  /**
+   * Lookalike side threads the noise generator placed before the ordinary
+   * side-thread quota. Absent when selection did not run.
+   */
+  readonly libraryThreads?: readonly {
+    readonly id: string;
+    readonly templateId: string;
+    readonly mimics?: string;
+    readonly participants?: readonly string[];
+    readonly place?: string;
+    readonly at?: number;
+    readonly traces?: readonly {
+      readonly kind: string;
+      readonly text: string;
+      readonly roles: readonly string[];
+    }[];
+  }[];
   readonly sideThreads: readonly SideThreadState[];
 
   readonly channels: Record<ChannelId, Channel>;
@@ -1005,6 +1081,16 @@ export interface WorldState {
     readonly contacts: readonly NpcId[];
     readonly arrestAuthority: number;
     /**
+     * Identification reports the Station has filed (plot-library Req 10.4).
+     * A correct report names a role the resolved entity holds. Absent until
+     * the first identification cable.
+     */
+    readonly identifications?: readonly {
+      readonly entity: string;
+      readonly roleTag: string;
+      readonly correct: boolean;
+    }[];
+    /**
      * The entities the Station has arrested on the player's request, in the
      * order the arrests were granted. A granted `arrest` appends to it, and the
      * Objective Evaluator decides `arrest` objectives from it
@@ -1025,6 +1111,19 @@ export interface WorldState {
 
   /** Future events, ordered by time (the design's `scheduled`). */
   readonly scheduled: readonly SimEvent[];
+
+  /**
+   * Ambient city life. Absent when the scenario leaves ambient off, which is
+   * the shipped default, so a slice world stays a slice world.
+   */
+  readonly ambient?: AmbientState;
+
+  /**
+   * Carry-in for a posting: placements, recognisers and the campaign unk map.
+   * Truth-branded, so a player view does not read it. Absent on a slice
+   * generation.
+   */
+  readonly carry?: Truth<CarryState>;
 
   readonly ended?: {
     readonly outcome: Outcome;

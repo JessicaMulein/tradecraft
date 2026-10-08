@@ -31,7 +31,9 @@
  * - `pay` each running Asset;
  * - `service-drop` each known Dead Drop;
  * - `arrest` each person the Case File holds arrest evidence against, present
- *   or not (an arrest is a Station request with no Location gate); and
+ *   or not (an arrest is a Station request with no Location gate);
+ * - `attend-duty` for each pending cover duty (the quote refuses it until the
+ *   player is at that duty's location in its slot); and
  * - `wait` is always present, so the catalogue is never empty.
  *
  * Actions that need free input from the player — a decrypt submission, feed
@@ -192,6 +194,16 @@ export function buildActionCatalogue(
   // TUI fills the items to leave).
   for (const drop of state.player.known.drops) {
     add({ kind: 'service-drop', drop, leave: [] });
+  }
+
+  // attend-duty — each pending cover duty. The quote allows it only at the
+  // duty's location during its slot, so a duty the player cannot keep yet is
+  // listed and refused with a reason.
+  for (const duty of state.ambient?.duties ?? []) {
+    if (duty.status !== 'pending') {
+      continue;
+    }
+    add({ kind: 'attend-duty', duty: duty.id });
   }
 
   return options;

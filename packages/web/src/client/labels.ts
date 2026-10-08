@@ -80,6 +80,7 @@ export const GROUPS: readonly (readonly [string, string])[] = [
   ['arrest', 'Arrest'],
   ['cable', 'Send a cable'],
   ['wait', 'Wait'],
+  ['attend-duty', 'Attend to cover'],
 ];
 
 /** Any entity: a person or organisation, else a place, else a document. */
@@ -121,6 +122,7 @@ export function optionLabel(a: Act, n: Names): string {
         : b['kind'] === 'funds' ? 'request funds' : 'report to HQ';
     }
     case 'wait': return phases(a['phases']);
+    case 'attend-duty': return tidy(String(a['duty']));
     default: return a.kind;
   }
 }

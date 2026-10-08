@@ -153,10 +153,11 @@ const SEEDS = [
 ];
 
 /** A minimal valid scenario config, with the mole enabled. */
-function scenario(presetId: string) {
+function scenario(presetId: string, ambient = false) {
   return ScenarioConfigSchema.parse({
     difficulty: { preset: presetId },
     mole: true,
+    ...(ambient ? { ambient: { enabled: true, density: 'sparse' as const } } : {}),
     recruitment: {
       pitch: { w1: 1, w2: 1, w3: 1, w4: 1 },
       firstContact: { a: 1, b: 1, c: 1, d: 1 },
@@ -167,11 +168,11 @@ function scenario(presetId: string) {
   });
 }
 
-function inputs(presetId: string): GenerateInputs {
+function inputs(presetId: string, ambient = false): GenerateInputs {
   return {
     content,
     preset: preset(presetId),
-    scenario: scenario(presetId),
+    scenario: scenario(presetId, ambient),
     cityData,
     descriptors,
     publicTexts,
@@ -315,8 +316,8 @@ describe('Property 3: Truth isolation (Req 2.1, 2.2, 7.3)', () => {
 
   it('serializes no truth-branded value from any player-facing projection', () => {
     fc.assert(
-      fc.property(seedArb, presetArb, (seed, presetId) => {
-        const { world } = generateGame(seed, inputs(presetId));
+      fc.property(seedArb, presetArb, fc.boolean(), (seed, presetId, ambient) => {
+        const { world } = generateGame(seed, inputs(presetId, ambient));
         const { json, mapJson } = serializeAllViews(world);
 
         // No Truth-field name appears as a serialized key in the views.
@@ -356,8 +357,8 @@ describe('Property 3: Truth isolation (Req 2.1, 2.2, 7.3)', () => {
 
   it('references every visible unidentified NPC by descriptor, never by name', () => {
     fc.assert(
-      fc.property(seedArb, presetArb, (seed, presetId) => {
-        const { world } = generateGame(seed, inputs(presetId));
+      fc.property(seedArb, presetArb, fc.boolean(), (seed, presetId, ambient) => {
+        const { world } = generateGame(seed, inputs(presetId, ambient));
         const { json, scene } = serializeAllViews(world);
         // Not every world has an unidentified NPC visible at a Location at some
         // phase; when one does, assert the dual-direction rule.
@@ -378,8 +379,8 @@ describe('Property 3: Truth isolation (Req 2.1, 2.2, 7.3)', () => {
 
   it('lands Case File Claims with no truth value, belief or lie field (Req 7.3)', () => {
     fc.assert(
-      fc.property(seedArb, presetArb, (seed, presetId) => {
-        const { world } = generateGame(seed, inputs(presetId));
+      fc.property(seedArb, presetArb, fc.boolean(), (seed, presetId, ambient) => {
+        const { world } = generateGame(seed, inputs(presetId, ambient));
         const scene = findSceneWithUnknowns(world);
         const at = scene?.state ?? world;
         const cf = seedCaseFile(at);

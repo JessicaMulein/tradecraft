@@ -1,0 +1,9 @@
+- id: security
+  name: Security
+  text: The office that watches the service's own people.
+- id: operations
+  name: Operations
+  text: The office that sends officers into the field.
+- id: registry
+  name: Registry
+  text: The office that keeps the files and the legends.

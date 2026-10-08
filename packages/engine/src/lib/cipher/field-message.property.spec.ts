@@ -122,7 +122,7 @@ const localPart = fc
  * `org` take a url-safe local part; `unk` is `unk:<non-negative integer>` — the
  * only namespace whose local part is a plain number (see `core.ts`).
  */
-function entityIdArbForKind(kind: 'npc' | 'unk' | 'org'): fc.Arbitrary<EntityId> {
+function entityIdArbForKind(kind: 'npc' | 'unk' | 'org' | 'loc' | 'item' | 'evt'): fc.Arbitrary<EntityId> {
   if (kind === 'unk') {
     return fc.nat({ max: 100_000 }).map((n) => `unk:${n}` as EntityId);
   }
@@ -329,6 +329,23 @@ describe('Property 25: Predicate-derived round-trip (Req 32.3, 7.2)', () => {
         expect(parsed).toEqual(expected);
       }),
       { numRuns: 200 },
+    );
+  });
+
+  it('round-trips an instrument argument', () => {
+    // Feature: plot-library, Property 14: Instrument round-trip
+    const definition = definitions[0];
+    if (definition === undefined) {
+      throw new Error('the predicate registry is empty');
+    }
+    fc.assert(
+      fc.property(propositionArbFor(definition), entityIdArbForKind('item'), (prop, instrument) => {
+        const withInstrument: Proposition = { ...prop, instrument };
+        const encoded = encodePropositions([withInstrument], registry);
+        const parsed = parseFieldMessage(encoded, registry);
+        expect(parsed).toEqual([withParsedId(withInstrument, 0)]);
+      }),
+      { numRuns: 100 },
     );
   });
 

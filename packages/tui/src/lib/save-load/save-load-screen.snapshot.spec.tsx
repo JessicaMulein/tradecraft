@@ -96,7 +96,7 @@ describe('SaveLoadScreen snapshots', () => {
       > bravo  seed s2 · standard · Day 1, morning  [manifest mismatch]
         charlie  seed s3 · standard · Day 5, night
 
-      This save was taken under different Content Packs. It cannot be loaded; the current game is 
+      This save was taken under different Content Packs. It cannot be loaded; the current game is
       unchanged.
         core: save 1.0.0 vs loaded 1.1.0
         noir: save 0.3.0 vs loaded —

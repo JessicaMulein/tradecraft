@@ -1,0 +1,7 @@
+/**
+ * The Oxlint plugins a Vitest-tested project needs. Declared here so the linter
+ * does not have to know what a test runner requires; `@nx/js`'s
+ * `addLintingToProject` reads it through `ensurePackage`.
+ */
+export declare const oxlintPlugins: string[];
+export { createOrEditViteConfig, ViteConfigFileOptions, } from './src/utils/generator-utils';

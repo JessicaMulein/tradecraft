@@ -1,0 +1,239 @@
+- id: incident-1
+  locQuery: [function:cafe]
+  phases: [morning]
+  factLine: "A waiter drops a tray and the room looks up."
+  newsworthy: false
+
+- id: incident-2
+  locQuery: [function:cafe]
+  phases: [afternoon]
+  factLine: "Two regulars argue over a newspaper and then go quiet."
+  newsworthy: false
+
+- id: incident-3
+  locQuery: [function:cafe]
+  phases: [evening]
+  factLine: "Someone asks the room whether the night tram is still running."
+  newsworthy: false
+
+- id: incident-4
+  locQuery: [function:cafe]
+  phases: [morning]
+  factLine: "The espresso machine hisses and conversation stops for a moment."
+  newsworthy: false
+
+- id: incident-5
+  locQuery: [function:cafe]
+  phases: [midday]
+  factLine: "A woman leaves a parcel on a chair and comes back for it flustered."
+  newsworthy: true
+
+- id: incident-6
+  locQuery: [function:park]
+  phases: [afternoon]
+  factLine: "Children chase a ball across the path and scatter the benches."
+  newsworthy: false
+
+- id: incident-7
+  locQuery: [function:park]
+  phases: [morning]
+  factLine: "A brass band practises under the trees and draws a small crowd."
+  newsworthy: false
+
+- id: incident-8
+  locQuery: [function:park]
+  phases: [evening]
+  factLine: "A keeper locks one of the side gates early."
+  newsworthy: false
+
+- id: incident-9
+  locQuery: [function:park]
+  phases: [midday]
+  factLine: "Pigeons lift off the gravel as a siren passes on the ring road."
+  newsworthy: false
+
+- id: incident-10
+  locQuery: [venue:market]
+  phases: [morning]
+  factLine: "A stall holder calls that the bread is down to the last tray."
+  newsworthy: true
+
+- id: incident-11
+  locQuery: [venue:market]
+  phases: [midday]
+  factLine: "Someone's string bag splits and apples roll under the stalls."
+  newsworthy: false
+
+- id: incident-12
+  locQuery: [venue:market]
+  phases: [afternoon]
+  factLine: "A queue for coal coupons doubles back on itself."
+  newsworthy: true
+
+- id: incident-13
+  locQuery: [venue:market]
+  phases: [morning]
+  factLine: "A fishmonger argues with a clerk about the morning's price."
+  newsworthy: false
+
+- id: incident-14
+  locQuery: [function:transit-hub]
+  phases: [early-morning]
+  factLine: "The platform announcer says the next train is delayed."
+  newsworthy: false
+
+- id: incident-15
+  locQuery: [function:transit-hub]
+  phases: [morning]
+  factLine: "Passengers press toward a carriage that will not open its doors."
+  newsworthy: false
+
+- id: incident-16
+  locQuery: [function:transit-hub]
+  phases: [evening]
+  factLine: "A conductor checks papers at the foot of the stairs."
+  newsworthy: true
+
+- id: incident-17
+  locQuery: [function:transit-hub]
+  phases: [afternoon]
+  factLine: "A luggage cart blocks the corridor until two porters shift it."
+  newsworthy: false
+
+- id: incident-18
+  locQuery: [function:transit]
+  phases: [morning]
+  factLine: "A tram bell rings twice and the car does not move."
+  newsworthy: false
+
+- id: incident-19
+  locQuery: [function:transit]
+  phases: [evening]
+  factLine: "People step down from a tram that has lost its lights."
+  newsworthy: false
+
+- id: incident-20
+  locQuery: [function:hotel-bar]
+  phases: [evening]
+  factLine: "A pianist starts a tune and a table tells him to keep it down."
+  newsworthy: false
+
+- id: incident-21
+  locQuery: [function:hotel-bar]
+  phases: [night]
+  factLine: "The barman waters the last of the brandy and nobody complains."
+  newsworthy: false
+
+- id: incident-22
+  locQuery: [function:hotel-bar]
+  phases: [afternoon]
+  factLine: "A bellhop is sent out for cigarettes and comes back empty-handed."
+  newsworthy: false
+
+- id: incident-23
+  locQuery: [function:cinema]
+  phases: [evening]
+  factLine: "The projector stutters and the audience stamps once."
+  newsworthy: false
+
+- id: incident-24
+  locQuery: [function:cinema]
+  phases: [afternoon]
+  factLine: "A newsreel of a parade draws a thin, polite clap."
+  newsworthy: false
+
+- id: incident-25
+  locQuery: [function:bookshop]
+  phases: [afternoon]
+  factLine: "The shopkeeper turns a foreign journal face-down when the door opens."
+  newsworthy: false
+
+- id: incident-26
+  locQuery: [function:bookshop]
+  phases: [morning]
+  factLine: "A student asks for a title that is no longer on the shelf."
+  newsworthy: false
+
+- id: incident-27
+  locQuery: [function:library]
+  phases: [midday]
+  factLine: "A reader is asked to whisper and the whole table looks up."
+  newsworthy: false
+
+- id: incident-28
+  locQuery: [function:library]
+  phases: [afternoon]
+  factLine: "Someone returns a stack of newspapers tied with string."
+  newsworthy: false
+
+- id: incident-29
+  locQuery: [function:port]
+  phases: [morning]
+  factLine: "A crane stops over a barge and the dockers wait."
+  newsworthy: false
+
+- id: incident-30
+  locQuery: [function:port]
+  phases: [afternoon]
+  factLine: "A customs man walks the quay with a clipboard and no hurry."
+  newsworthy: true
+
+- id: incident-31
+  locQuery: [function:warehouse]
+  phases: [morning]
+  factLine: "A shutter sticks halfway and two men argue about whose shift it is."
+  newsworthy: false
+
+- id: incident-32
+  locQuery: [function:warehouse]
+  phases: [afternoon]
+  factLine: "A lorry reverses into the yard and the horn scatters the clerks."
+  newsworthy: false
+
+- id: incident-33
+  locQuery: [function:kiosk]
+  phases: [morning]
+  factLine: "The kiosk has sold out of the morning edition before nine."
+  newsworthy: true
+
+- id: incident-34
+  locQuery: [function:kiosk]
+  phases: [evening]
+  factLine: "A man buys three papers and folds them into his coat."
+  newsworthy: false
+
+- id: incident-35
+  locQuery: [function:cafe]
+  phases: [night]
+  factLine: "The owner stacks chairs while one table is still talking."
+  newsworthy: false
+
+- id: incident-36
+  locQuery: [function:meeting-spot]
+  phases: [evening]
+  factLine: "A small group breaks up the moment a patrol turns the corner."
+  newsworthy: true
+
+- id: incident-37
+  locQuery: [function:meeting-spot]
+  phases: [afternoon]
+  factLine: "Someone leaves a folded note under a saucer and does not look back."
+  newsworthy: false
+
+- id: incident-38
+  locQuery: [venue:market]
+  phases: [evening]
+  factLine: "Stalls come down early and the square smells of cabbage water."
+  newsworthy: false
+
+- id: incident-39
+  locQuery: [function:transit-hub]
+  phases: [night]
+  factLine: "The last train leaves with half its carriages dark."
+  newsworthy: false
+
+- id: incident-40
+  locQuery: [function:park]
+  phases: [night]
+  factLine: "A couple hurries off a bench when the lamps come on."
+  newsworthy: false

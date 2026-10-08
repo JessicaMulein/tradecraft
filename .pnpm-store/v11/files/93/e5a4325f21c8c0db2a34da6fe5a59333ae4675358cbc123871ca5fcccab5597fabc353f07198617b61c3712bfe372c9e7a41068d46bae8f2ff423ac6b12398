@@ -1,0 +1,5 @@
+export declare const DIST_TAGS: readonly ['latest', 'next', 'canary'];
+export type DistTag = (typeof DIST_TAGS)[number];
+export declare function isLegacyEra(targetVersion: string): boolean;
+export declare function normalizeVersion(version: string): string;
+export declare function normalizeVersionWithTagCheck(pkg: string, version: string): Promise<string>;

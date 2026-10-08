@@ -1,0 +1,15 @@
+- id: unrest
+  baseline: 0.2
+  decay: 0.05
+- id: police
+  baseline: 0.3
+  decay: 0.05
+- id: shortage
+  baseline: 0.2
+  decay: 0.05
+- id: tension
+  baseline: 0.3
+  decay: 0.05
+- id: festivity
+  baseline: 0.1
+  decay: 0.05

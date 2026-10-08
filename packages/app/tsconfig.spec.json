@@ -31,6 +31,9 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "../campaign/tsconfig.lib.json"
     }
   ]
 }

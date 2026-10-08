@@ -137,6 +137,7 @@ export const TEMPLATES: TemplateTable = {
     }),
   }),
   wait: null,
+  'attend-duty': null,
 };
 
 /** The template an Offered Action carries, or undefined when it needs no input. */

@@ -1,0 +1,7 @@
+import { CreateNodes } from '@nx/devkit';
+export interface EslintPluginOptions {
+    targetName?: string;
+    extensions?: string[];
+}
+export declare const createNodes: CreateNodes<EslintPluginOptions>;
+export declare const createNodesV2: CreateNodes<EslintPluginOptions>;

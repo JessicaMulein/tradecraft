@@ -61,6 +61,15 @@ import {
   SideThreadTemplateSchema,
 } from './kinds.js';
 import { HintSchema } from './hint.js';
+import {
+  PlotItemSchema,
+  PlotTemplateV2Schema,
+  ProperNounFileSchema,
+  checkPlotTemplateV2,
+  isTemplateSchemaV2,
+  type PlotItem,
+  type PlotTemplateV2,
+} from './plot-v2.js';
 import { GlossaryFileSchema, type GlossaryTerm } from './glossary.js';
 import { DifficultyPresetSchema } from './difficulty.js';
 import {
@@ -170,6 +179,12 @@ interface Registries {
    */
   glossary: Map<string, GlossaryTerm>;
   difficultyPresets: Map<string, Namespaced<z.infer<typeof DifficultyPresetSchema>>>;
+  /** Template Schema v2 plots (plot-library). Slice plots stay in `plotTemplates`. */
+  plotTemplatesV2: Map<string, Namespaced<PlotTemplateV2>>;
+  sideThreadTemplatesV2: Map<string, Namespaced<PlotTemplateV2>>;
+  plotItems: Map<string, Namespaced<PlotItem>>;
+  /** Pack-level proper nouns, keyed by pack id. */
+  properNouns: Map<string, readonly string[]>;
   /**
    * Service Definitions, keyed by namespaced id (content-expansion task 1.8).
    * Shared services from an Era Pack and a City Pack's City-Scoped
@@ -263,6 +278,7 @@ const KIND_RULES: readonly KindRule[] = [
     schema: DifficultyPresetSchema,
     match: fileOrDir('difficulty'),
   },
+  { key: 'plotItems', schema: PlotItemSchema, match: fileOrDir('plot-items') },
   // The content-expansion `service` kind (task 1.8). Shared services from an
   // Era Pack and a City Pack's City-Scoped local-security service parse and
   // merge here so a `CityDefinition.services` reference can resolve (Req 19.2).
@@ -320,21 +336,6 @@ function effectiveRegistry(
     }
   }
   return [...byKind.values()];
-}
-
-/**
- * Whether a pack-relative file path belongs to any registered content kind.
- * A kind owns `<dir>.yaml`/`<dir>.yml` and any `.yaml`/`.yml` under `<dir>/`,
- * matching how the slice `KIND_RULES` locate a kind's files. Used to decide
- * whether a file whose kind the slice does not parse is nonetheless a
- * registered kind (and so accepted) or an unregistered one (and so refused,
- * Requirement 17.2).
- */
-function isRegisteredFile(
-  relPath: string,
-  registry: readonly ContentKindRegistration[],
-): boolean {
-  return registry.some((reg) => fileOrDir(reg.dir)(relPath));
 }
 
 // --- disk + yaml -----------------------------------------------------------
@@ -659,6 +660,10 @@ function emptyRegistries(): Registries {
     hints: new Map(),
     glossary: new Map(),
     difficultyPresets: new Map(),
+    plotTemplatesV2: new Map(),
+    sideThreadTemplatesV2: new Map(),
+    plotItems: new Map(),
+    properNouns: new Map(),
     services: new Map(),
     templateVariants: new Map(),
     descriptorPools: new Map(),
@@ -711,6 +716,7 @@ function parseAndMerge(
   ordered: readonly DiscoveredPack[],
   registry: readonly ContentKindRegistration[],
   errors: ErrorSink,
+  callerKinds: readonly ContentKindRegistration[] = [],
 ): Registries {
   const reg = emptyRegistries();
 
@@ -732,24 +738,49 @@ function parseAndMerge(
         continue;
       }
 
+      if (file.relPath === 'proper-nouns.yaml' || file.relPath === 'proper-nouns.yml') {
+        mergeProperNouns(reg, pack, file, errors);
+        continue;
+      }
+
       const rule = KIND_RULES.find((r) => r.match(file.relPath));
       if (rule === undefined) {
-        // No slice rule parses this file. It is accepted only if its kind is
-        // registered in the effective Content Kind Registry (a kind added by
-        // this spec or a caller, whose parsing/merging arrives in a later
-        // task) or it is an always-ignored file; otherwise its kind is
-        // unregistered and the pack is refused (Requirement 17.2).
-        if (
-          !isIgnoredFile(file.relPath) &&
-          !isRegisteredFile(file.relPath, registry)
-        ) {
-          errors.push({
-            pack: pack.manifest.id,
-            file: file.relPath,
-            path: '',
-            message: `file does not correspond to any registered content kind`,
-          });
+        // Ignored files (city.yaml, public texts, lint) are accepted as-is.
+        // A caller-registered kind is schema-checked here (ambient-world Req
+        // 22.3); the registering package stores the items. Anything else is
+        // an unregistered file and is refused (Requirement 17.2).
+        if (isIgnoredFile(file.relPath)) {
+          continue;
         }
+        const caller = callerKinds.find((reg) => fileOrDir(reg.dir)(file.relPath));
+        if (caller !== undefined) {
+          const list = toItemList(file.content, pack.manifest.id, file.relPath, errors);
+          list.items.forEach((item, index) => {
+            const parsed = caller.schema.safeParse(item);
+            if (!parsed.success) {
+              pushZodErrors(errors, pack.manifest.id, file.relPath, list.pathAt(index), parsed.error);
+            }
+          });
+          continue;
+        }
+        // The core pack ships `campaign/` for the campaign package. Those files
+        // are schema-checked when that package registers its kinds. A slice
+        // load does not know the kinds, so it leaves the directory unread.
+        if (
+          file.relPath.startsWith('campaign/') &&
+          !callerKinds.some((reg) => reg.dir.startsWith('campaign/'))
+        ) {
+          continue;
+        }
+        if (registry.some((reg) => fileOrDir(reg.dir)(file.relPath))) {
+          continue;
+        }
+        errors.push({
+          pack: pack.manifest.id,
+          file: file.relPath,
+          path: '',
+          message: `file does not correspond to any registered content kind`,
+        });
         continue;
       }
 
@@ -772,7 +803,19 @@ function mergePredicates(
     pushZodErrors(errors, pack.manifest.id, file.relPath, '', result.error);
     return;
   }
-  reg.predicates.push(...result.data);
+  const overrides = new Set(pack.manifest.overrides);
+  for (const definition of result.data) {
+    const index = reg.predicates.findIndex((existing) => existing.id === definition.id);
+    if (index === -1) {
+      reg.predicates.push(definition);
+      continue;
+    }
+    if (overrides.has(definition.id)) {
+      reg.predicates[index] = definition;
+      continue;
+    }
+    reg.predicates.push(definition);
+  }
 }
 
 /**
@@ -822,6 +865,72 @@ function mergeGlossary(
   }
 }
 
+function mergeProperNouns(
+  reg: Registries,
+  pack: DiscoveredPack,
+  file: PackFile,
+  errors: ErrorSink,
+): void {
+  const result = ProperNounFileSchema.safeParse(file.content);
+  if (!result.success) {
+    pushZodErrors(errors, pack.manifest.id, file.relPath, '', result.error);
+    return;
+  }
+  reg.properNouns.set(pack.manifest.id, result.data.nouns);
+}
+
+function mergeV2Template(
+  reg: Registries,
+  pack: DiscoveredPack,
+  file: PackFile,
+  key: 'plotTemplates' | 'sideThreadTemplates',
+  basePath: string,
+  item: unknown,
+  overrides: ReadonlySet<string>,
+  errors: ErrorSink,
+): void {
+  const result = PlotTemplateV2Schema.safeParse(item);
+  if (!result.success) {
+    pushZodErrors(errors, pack.manifest.id, file.relPath, basePath, result.error);
+    return;
+  }
+  const value = result.data;
+  if (key === 'sideThreadTemplates' && value.kind !== 'side-thread') {
+    errors.push({
+      pack: pack.manifest.id,
+      file: file.relPath,
+      path: basePath === '' ? 'kind' : `${basePath}.kind`,
+      message: 'a side-threads file must declare kind side-thread',
+    });
+    return;
+  }
+  if (key === 'plotTemplates' && value.kind !== 'plot') {
+    errors.push({
+      pack: pack.manifest.id,
+      file: file.relPath,
+      path: basePath === '' ? 'kind' : `${basePath}.kind`,
+      message: 'a plots file must declare kind plot',
+    });
+    return;
+  }
+  const namespacedId = `${pack.manifest.id}/${value.id}`;
+  const target = key === 'plotTemplates' ? reg.plotTemplatesV2 : reg.sideThreadTemplatesV2;
+  const existing = target.get(namespacedId);
+  if (existing !== undefined) {
+    const allowed = overrides.has(value.id) || overrides.has(namespacedId);
+    if (!allowed) {
+      errors.push({
+        pack: pack.manifest.id,
+        file: file.relPath,
+        path: basePath === '' ? 'id' : `${basePath}.id`,
+        message: `duplicate id "${namespacedId}" (declare it in this pack's "overrides" to redefine it)`,
+      });
+      return;
+    }
+  }
+  target.set(namespacedId, { value, ownerPack: pack.manifest.id });
+}
+
 function mergeKeyedKind(
   reg: Registries,
   pack: DiscoveredPack,
@@ -834,6 +943,23 @@ function mergeKeyedKind(
   const target = reg[rule.key] as Map<string, Namespaced<{ id: string }>>;
 
   list.items.forEach((item, index) => {
+    if (
+      (rule.key === 'plotTemplates' || rule.key === 'sideThreadTemplates') &&
+      isTemplateSchemaV2(item)
+    ) {
+      if (pack.manifest.contentSchema < 2) {
+        const base = list.pathAt(index);
+        errors.push({
+          pack: pack.manifest.id,
+          file: file.relPath,
+          path: base === '' ? 'templateSchema' : `${base}.templateSchema`,
+          message: 'template schema 2 is only valid when pack.yaml declares contentSchema: 2',
+        });
+        return;
+      }
+      mergeV2Template(reg, pack, file, rule.key, list.pathAt(index), item, overrides, errors);
+      return;
+    }
     const result = rule.schema.safeParse(item);
     if (!result.success) {
       pushZodErrors(errors, pack.manifest.id, file.relPath, list.pathAt(index), result.error);
@@ -1221,6 +1347,47 @@ function toContentRegistry<T>(
  *   through the Content Kind Registry, so a follow-on package's kinds load
  *   without `content` importing them (Requirement 17.7).
  */
+function checkPlotLibrary(
+  reg: Registries,
+  vocabulary: ReturnType<typeof buildTagVocabulary>,
+  errors: ErrorSink,
+): void {
+  const templates = new Map<string, PlotTemplateV2>();
+  for (const [id, entry] of reg.plotTemplatesV2) {
+    templates.set(id, entry.value);
+    templates.set(entry.value.id, entry.value);
+  }
+  for (const [id, entry] of reg.sideThreadTemplatesV2) {
+    templates.set(id, entry.value);
+    templates.set(entry.value.id, entry.value);
+  }
+  const itemTagSets = [...reg.plotItems.values()].map((entry) => entry.value.tags);
+  const visit = (
+    map: Map<string, Namespaced<PlotTemplateV2>>,
+    file: string,
+  ): void => {
+    for (const [id, entry] of map) {
+      const found = checkPlotTemplateV2({
+        template: entry.value,
+        file,
+        pack: entry.ownerPack,
+        vocabulary: {
+          tagAppliesTo: vocabulary.appliesTo,
+          requiredQueries: vocabulary.requiredQueries,
+        },
+        templates,
+        itemTagSets,
+        packNouns: reg.properNouns.get(entry.ownerPack) ?? [],
+      });
+      for (const issue of found) {
+        errors.push({ ...issue, path: `${id}.${issue.path}` });
+      }
+    }
+  };
+  visit(reg.plotTemplatesV2, 'plots');
+  visit(reg.sideThreadTemplatesV2, 'side-threads');
+}
+
 export function loadContent(
   dirs: readonly string[],
   selected: readonly string[],
@@ -1250,7 +1417,7 @@ export function loadContent(
   // Step 5: merge the parsed files into the registries (parsing itself ran in
   // discovery). The Provenance gate above (step 4) has already refused any
   // draft-area pack or generated-but-unreviewed file.
-  const reg = parseAndMerge(ordered, registry, errors);
+  const reg = parseAndMerge(ordered, registry, errors, opts?.kinds ?? []);
 
   // Step 5: cross-references, plus the city → Service Definition references
   // (task 1.8, Req 19.2).
@@ -1269,6 +1436,7 @@ export function loadContent(
   }));
   const vocabulary = buildTagVocabulary(packsForTagCheck);
   checkTags(packsForTagCheck, registry, vocabulary, errors);
+  checkPlotLibrary(reg, vocabulary, errors);
 
   // Step 6: compile the predicate registry (templates for other kinds compile
   // in later tasks; predicate renderers compile here and surface template-slot
@@ -1327,6 +1495,9 @@ export function loadContent(
     locationTypes: toContentRegistry(reg.locationTypes),
     plotTemplates: toContentRegistry(reg.plotTemplates),
     sideThreadTemplates: toContentRegistry(reg.sideThreadTemplates),
+    plotTemplatesV2: toContentRegistry(reg.plotTemplatesV2),
+    sideThreadTemplatesV2: toContentRegistry(reg.sideThreadTemplatesV2),
+    plotItems: toContentRegistry(reg.plotItems),
     documentTemplates: toContentRegistry(reg.documentTemplates),
     personaLibraries: toContentRegistry(reg.personaLibraries),
     coverIdentities: toContentRegistry(reg.coverIdentities),

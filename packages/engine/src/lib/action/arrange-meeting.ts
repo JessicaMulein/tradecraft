@@ -92,6 +92,7 @@ import type { Prng } from '../prng/prng.js';
 import { scheduledLocation } from '../city/npc.js';
 import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
 import { sigmoid } from '../recruit/first-contact.js';
+import { regardDelta } from '../ambient/memory.js';
 import { hasContactChannel } from './talk.js';
 import type { ActionQuote, ActionResult, Observation } from './result.js';
 import type { ArrangeMeetingAction, Meeting, MeetingStatus } from './types.js';
@@ -176,6 +177,8 @@ export interface MeetingWeights {
   readonly riskAversion: number;
   readonly scheduleConflict: number;
   readonly agendaInterest: number;
+  /** Ambient regard weight. Absent means the regard term is zero. */
+  readonly regard?: number;
 }
 
 /** The per-meeting inputs the acceptance σ reads. All in natural units; the
@@ -189,6 +192,8 @@ export interface MeetingAcceptanceInputs {
   readonly scheduleConflict: number;
   /** The NPC's interest in meeting (dangles/handlers high). */
   readonly agendaInterest: number;
+  /** Warmth minus wariness. Omitted means no ambient regard. */
+  readonly regard?: number;
 }
 
 /**
@@ -206,7 +211,8 @@ export function meetingAcceptanceProbability(
     weights.trust * inputs.trust -
     weights.riskAversion * inputs.locRisk -
     weights.scheduleConflict * inputs.scheduleConflict +
-    weights.agendaInterest * inputs.agendaInterest;
+    weights.agendaInterest * inputs.agendaInterest +
+    (weights.regard ?? 0) * (inputs.regard ?? 0);
   return sigmoid(x);
 }
 
@@ -506,6 +512,7 @@ export function resolveArrangeMeeting(
       locRisk: loc.risk,
       scheduleConflict: scheduleConflictAt(state, a.npc, a.at, a.slot),
       agendaInterest,
+      regard: regardDelta(state, a.npc),
     },
     weights,
   );

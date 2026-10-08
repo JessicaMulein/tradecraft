@@ -76,6 +76,7 @@ const BASE_PHASE_COST: Readonly<Record<ActionKind, number>> = {
   arrest: ARREST_PHASE_COST,
   'turn-agent': 1,
   feed: 0,
+  'attend-duty': 1,
   wait: 1,
 };
 

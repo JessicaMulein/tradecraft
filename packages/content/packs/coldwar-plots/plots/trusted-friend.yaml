@@ -1,0 +1,144 @@
+- id: trusted-friend
+  templateSchema: 2
+  kind: plot
+  displayName: Trusted friend
+  archetype: technical-penetration
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - penetration
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+  params:
+    hall:
+      kind: loc
+      query:
+        - function:hotel-bar
+    device:
+      kind: item
+      query:
+        - materiel:device
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:station-staff
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: survey
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A technician walks the hotel corridor and counts the doors that face the street.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call counts the doors that face the street and stops at the target room.
+      onDisrupted: &a1
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - survey
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the trusted friend is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the trusted friend repeats the meeting and names both people.
+      onDisrupted: *a1
+    - id: plant
+      requires:
+        - confirm
+      deadline:
+        min: 14
+        max: 22
+      traces:
+        - kind: meeting
+          roles:
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A device no larger than a cigarette case is fitted behind a picture rail.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: The device is confirmed live, and the call is shorter than the greeting.
+      onDisrupted: *a1
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: arrest-role
+        role: courier
+      - kind: seize-item
+        item: device
+    failure:
+      - kind: stage-completed
+        stage: plant
+  twist:
+    kind: inside-man
+    mandatory: true
+    insideRole: courier
+    propositions:
+      - predicate: REPORTS_TO
+        subject: role:courier
+        object: org:hostile

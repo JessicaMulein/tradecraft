@@ -352,10 +352,11 @@ describe('SaveSnapshot — schema and JSON round-trip', () => {
     expect(snapshot.ledger).toEqual(w.station.ledger);
   });
 
-  it('writes version 2 and the new v2 parts (Req 13.8)', () => {
+  it('writes version 3 and keeps the v2 parts (Req 13.8)', () => {
     const snapshot = saveSnapshot(sources());
-    expect(snapshot.version).toBe(2);
-    expect(SAVE_VERSION).toBe(2);
+    expect(snapshot.version).toBe(3);
+    expect(SAVE_VERSION).toBe(3);
+    expect(snapshot.world.ambient).toBeUndefined();
     // The Case File, Truth Store, view state and pipeline counters are present.
     expect(snapshot.caseFile.claims).toHaveLength(2);
     expect(snapshot.caseFile.nextId).toBe(3);

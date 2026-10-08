@@ -1,0 +1,81 @@
+{
+  "seed": "ambient-golden-seven",
+  "preset": "standard",
+  "ambient": {
+    "enabled": true,
+    "density": "standard"
+  },
+  "plan": [
+    {
+      "kind": "wait",
+      "phases": 4
+    },
+    {
+      "kind": "wait",
+      "phases": 4
+    },
+    {
+      "kind": "wait",
+      "phases": 4
+    },
+    {
+      "kind": "wait",
+      "phases": 4
+    },
+    {
+      "kind": "wait",
+      "phases": 4
+    },
+    {
+      "kind": "wait",
+      "phases": 4
+    },
+    {
+      "kind": "wait",
+      "phases": 4
+    }
+  ],
+  "modelsConfig": {
+    "endpoint": "http://localhost:1234/v1",
+    "profiles": {
+      "base": {
+        "voice": {
+          "model": "voice-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "fast": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "narrator": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "bookkeeping": {
+          "model": "fast-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        },
+        "judge": {
+          "model": "voice-model",
+          "temperature": 0.7,
+          "maxTokens": 200,
+          "timeoutMs": 8000,
+          "reasoning": "off"
+        }
+      }
+    },
+    "active": "base"
+  }
+}

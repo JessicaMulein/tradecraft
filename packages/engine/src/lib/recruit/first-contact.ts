@@ -107,6 +107,8 @@ export interface FirstContactWeights {
   readonly b: number;
   readonly c: number;
   readonly d: number;
+  /** Ambient regard weight. Absent means the regard term is zero. */
+  readonly e?: number;
 }
 
 /** The inputs the σ formula reads from the NPC being approached. */
@@ -141,13 +143,15 @@ export function firstContactProbability(
   loc: Location,
   weights: FirstContactWeights,
   suspicion: number,
+  regardDelta = 0,
 ): number {
   const fit = coverFit(cover, loc, npc.archetype);
   const x =
     weights.a * fit -
     weights.b * npc.wariness -
     weights.c * suspicion +
-    weights.d * npc.openness;
+    weights.d * npc.openness +
+    (weights.e ?? 0) * regardDelta;
   return sigmoid(x);
 }
 
@@ -171,7 +175,8 @@ export function firstContact(
   weights: FirstContactWeights,
   suspicion: number,
   rng: Prng,
+  regardDelta = 0,
 ): boolean {
-  const p = firstContactProbability(npc, cover, loc, weights, suspicion);
+  const p = firstContactProbability(npc, cover, loc, weights, suspicion, regardDelta);
   return rng.next() < p;
 }

@@ -35,7 +35,12 @@ import {
   meetingDueFactLine,
   meetingNoShowFactLine,
   meetingReplyFactLine,
+  coverDutyDueFactLine,
+  coverDutyMissedFactLine,
+  coverEmployerMessageFactLine,
+  dropDisturbedFactLine,
   newspaperFactLine,
+  publicAnnouncementFactLine,
   retainerDueFactLine,
   walkInFactLine,
   type NotifyNamer,
@@ -125,6 +130,41 @@ function notificationForEvent(
         npc: event.npc,
         amount: event.amount,
         factLine: retainerDueFactLine(namer, event.npc, event.amount),
+      };
+    case 'public-announcement':
+      return {
+        ...base,
+        kind: 'public-announcement',
+        text: event.text,
+        factLine: publicAnnouncementFactLine(event.text),
+      };
+    case 'cover-duty-due':
+      return {
+        ...base,
+        kind: 'cover-duty-due',
+        duty: event.duty,
+        factLine: coverDutyDueFactLine(event.duty),
+      };
+    case 'cover-duty-missed':
+      return {
+        ...base,
+        kind: 'cover-duty-missed',
+        duty: event.duty,
+        factLine: coverDutyMissedFactLine(event.duty),
+      };
+    case 'cover-employer-message':
+      return {
+        ...base,
+        kind: 'cover-employer-message',
+        text: event.text,
+        factLine: coverEmployerMessageFactLine(event.text),
+      };
+    case 'drop-disturbed':
+      return {
+        ...base,
+        kind: 'drop-disturbed',
+        drop: event.drop,
+        factLine: dropDisturbedFactLine(namer, event.drop),
       };
     // Player-visible kinds that carry no status-bar Notification.
     case 'day-start':

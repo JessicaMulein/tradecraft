@@ -34,6 +34,9 @@ export type ShellKeyAction =
   | 'open-workbench'
   | 'open-journal'
   | 'open-map'
+  | 'open-city'
+  | 'open-stories'
+  | 'open-duties'
   | 'open-people'
   | 'open-feed'
   | 'save'
@@ -64,6 +67,9 @@ export const KEY_MAP: readonly KeyBinding[] = [
   { key: 'w', action: 'open-workbench', description: 'Workbench' },
   { key: 'j', action: 'open-journal', description: 'Journal' },
   { key: 'm', action: 'open-map', description: 'Map' },
+  { key: 'y', action: 'open-city', description: 'City' },
+  { key: 'r', action: 'open-stories', description: 'Stories' },
+  { key: 'k', action: 'open-duties', description: 'Cover duties' },
   { key: 'p', action: 'open-people', description: 'People' },
   { key: 'f', action: 'open-feed', description: 'Feed composer for the selected turned Asset' },
   { key: 's', action: 'save', description: 'Save' },

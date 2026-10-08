@@ -1,0 +1,69 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getNxCommandHandlers = getNxCommandHandlers;
+exports.introspectBuilder = introspectBuilder;
+/**
+ * Reach into the yargs commandsObject to enumerate registered command
+ * handlers. Lazy-required: nx-commands pulls in the full command tree
+ * and is only needed on the slow path.
+ *
+ * Yargs only keys handlers by canonical name. We mirror each alias to its
+ * canonical handler reference so lookups like `handlers['g']` resolve to
+ * the same entry as `handlers['generate']`.
+ */
+function getNxCommandHandlers() {
+    const { commandsObject } = require('../nx-commands');
+    const internal = commandsObject.getInternalMethods();
+    const handlers = { ...internal.getCommandInstance().getCommandHandlers() };
+    for (const row of internal.getUsageInstance().getCommands()) {
+        // usage.getCommands() rows: [usagePattern, description, isDefault, aliases, deprecated]
+        const usagePattern = String(row[0] ?? '');
+        const aliases = Array.isArray(row[3]) ? row[3] : [];
+        const canonical = usagePattern.split(/\s+/)[0];
+        const handler = handlers[canonical];
+        if (!handler)
+            continue;
+        for (const alias of aliases) {
+            if (!handlers[alias])
+                handlers[alias] = handler;
+        }
+    }
+    return handlers;
+}
+/**
+ * Run a yargs builder against a throwaway instance and return its declared
+ * subcommands, visible options, and option-alias groups. Returns null if
+ * the builder throws. Does NOT call `.argv` — would trigger parse and the
+ * help-printing path we're avoiding.
+ */
+function introspectBuilder(builder) {
+    const yargs = require('yargs');
+    const temp = yargs();
+    try {
+        builder(temp);
+    }
+    catch {
+        return null;
+    }
+    const usage = temp.getInternalMethods().getUsageInstance();
+    const subcommands = new Map();
+    for (const [usagePattern, desc] of usage.getCommands()) {
+        const name = String(usagePattern).split(/\s+/)[0];
+        if (name === '$0')
+            continue;
+        subcommands.set(name, desc);
+    }
+    const opts = temp.getOptions();
+    const descriptions = usage.getDescriptions();
+    const options = new Map();
+    for (const k of Object.keys(opts.key ?? {})) {
+        if ((opts.hiddenOptions ?? []).includes(k))
+            continue;
+        options.set(k, descriptions[k]);
+    }
+    const aliases = new Map();
+    for (const [canonical, list] of Object.entries(opts.alias ?? {})) {
+        aliases.set(canonical, list);
+    }
+    return { subcommands, options, aliases };
+}

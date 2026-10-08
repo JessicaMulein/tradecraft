@@ -1,0 +1,11 @@
+- id: standard
+  outcome:
+    success: 4
+    failure-plot: -2
+    failure-burned: -6
+  standing: 0.1
+  directiveMet: 2
+  directiveFailed: 2
+  wrongful: 3
+  assetLost: 2
+  faction: 1

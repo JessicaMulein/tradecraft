@@ -210,6 +210,11 @@ export interface AssetTaskContext {
   readonly candidates?: readonly Truth<Proposition>[];
   readonly dropContents?: readonly Truth<Proposition>[];
   readonly isMemberOfOrg?: OrgMembershipLookup;
+  /**
+   * Affinity of an ambient tie between the asset and an introduce target.
+   * Omitted means no tie, so the inherited trust is the slice share alone.
+   */
+  readonly tieAffinity?: number;
 }
 
 const NO_MEMBERSHIP: OrgMembershipLookup = () => false;
@@ -244,7 +249,7 @@ export function runAssetTask(
     case 'collect':
       return resolveCollect(task, ctx.candidates ?? [], profile, isMemberOfOrg, rng);
     case 'introduce':
-      return resolveIntroduce(task, ctx.rel);
+      return resolveIntroduce(task, ctx.rel, ctx.tieAffinity);
     case 'service':
       return resolveService(task, ctx.dropContents ?? [], profile, isMemberOfOrg, rng);
     case 'plant':
@@ -274,8 +279,9 @@ function resolveCollect(
  * trust"; Req 22.6). The inherited trust is {@link INTRODUCTION_TRUST_SHARE} of
  * the introducer's current trust, clamped to `[0, 1]`.
  */
-function resolveIntroduce(task: IntroduceTask, rel: Relationship): IntroduceResult {
-  const inheritedTrust = clamp01(rel.trust * INTRODUCTION_TRUST_SHARE);
+function resolveIntroduce(task: IntroduceTask, rel: Relationship, tieAffinity?: number): IntroduceResult {
+  const bonus = tieAffinity === undefined ? 0 : Math.min(0.2, Math.max(0, tieAffinity) * 0.2);
+  const inheritedTrust = clamp01(rel.trust * INTRODUCTION_TRUST_SHARE + bonus);
   return { kind: 'introduce', target: task.target, channel: true, inheritedTrust };
 }
 

@@ -113,7 +113,9 @@ function pendingCableId(request: CableRequest, sentAt: GameTime): string {
       ? `trace:${request.target}`
       : request.kind === 'funds'
         ? `funds:${request.amount ?? ''}`
-        : 'report';
+        : request.identify === undefined
+          ? 'report'
+          : `report:${request.identify.entity}:${request.identify.roleTag}`;
   return `cable:${tag}:${sentAt.day}:${sentAt.phase}`;
 }
 

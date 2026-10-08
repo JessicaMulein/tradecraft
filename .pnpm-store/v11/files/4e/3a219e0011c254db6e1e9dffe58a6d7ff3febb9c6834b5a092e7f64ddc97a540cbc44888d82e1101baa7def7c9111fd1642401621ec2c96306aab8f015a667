@@ -1,0 +1,49 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ignoreVitestTempFiles = ignoreVitestTempFiles;
+exports.addVitestTempFilesToGitIgnore = addVitestTempFilesToGitIgnore;
+const devkit_1 = require("@nx/devkit");
+const internal_1 = require("@nx/js/internal");
+const versions_1 = require("./versions");
+async function ignoreVitestTempFiles(tree, projectRoot) {
+    addVitestTempFilesToGitIgnore(tree);
+    await ignoreVitestTempFilesInEslintConfig(tree, projectRoot);
+}
+function addVitestTempFilesToGitIgnore(tree) {
+    let gitIgnoreContents = tree.exists('.gitignore')
+        ? tree.read('.gitignore', 'utf-8')
+        : '';
+    if (!/^vitest\.config\.\*\.timestamp\*$/m.test(gitIgnoreContents)) {
+        gitIgnoreContents = (0, devkit_1.stripIndents) `${gitIgnoreContents}
+      vitest.config.*.timestamp*`;
+    }
+    tree.write('.gitignore', gitIgnoreContents);
+}
+async function ignoreVitestTempFilesInEslintConfig(tree, projectRoot) {
+    // Checked before `ensurePackage` so an Oxlint workspace does not install
+    // `@nx/eslint` only for `isEslintConfigSupported` to send it straight back.
+    if (!(0, internal_1.detectLinters)(tree).includes('eslint')) {
+        return;
+    }
+    (0, devkit_1.ensurePackage)('@nx/eslint', versions_1.nxVersion);
+    // Use CommonJS `require` rather than a dynamic ESM `import`: `ensurePackage`
+    // makes the on-demand-installed package available via `Module._initPaths`,
+    // which `require()` honors but ESM resolution does not. Under nodenext, a
+    // dynamic `import()` is preserved as a true ESM dynamic import, so it can't
+    // see the temp install — generators that go down this path crash with
+    // `Cannot find package '@nx/eslint'`.
+    const { addIgnoresToLintConfig, isEslintConfigSupported, useFlatConfig, } = require('@nx/eslint/internal');
+    if (!isEslintConfigSupported(tree)) {
+        return;
+    }
+    const isUsingFlatConfig = useFlatConfig(tree);
+    if (!projectRoot && !isUsingFlatConfig) {
+        // root eslintrc files ignore all files and the root eslintrc files add
+        // back all the project files, so we only add the ignores to the project
+        // eslintrc files
+        return;
+    }
+    // for flat config, we update the root config file
+    const directory = isUsingFlatConfig ? '' : (projectRoot ?? '');
+    addIgnoresToLintConfig(tree, directory, ['**/vitest.config.*.timestamp*']);
+}

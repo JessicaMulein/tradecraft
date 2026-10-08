@@ -65,6 +65,9 @@ import {
   type TruthStore,
   type TurnId,
   type WorldState,
+  ambientScene,
+  promptFactsFor,
+  recollectionPrompts,
 } from '@tradecraft/engine';
 import type { CallInput, Gateway } from '@tradecraft/llm';
 
@@ -484,12 +487,14 @@ export function buildNarrateSeam(gateway: Gateway, deps: LiveSeamDeps): NarrateS
   return async (result: ActionResult, state: WorldState): Promise<readonly string[]> => {
     const registry = registryFromWorld(state);
     const leak: LeakContext = { registry, allowed: knownEntities(state) };
+    const labels = ambientEventLabels(state);
     const specifics: SpecificsContext = {
       factLines: result.factLines,
-      sceneDescriptor: describeScene(state),
+      sceneDescriptor: [describeScene(state), ...labels].join(' '),
       // The Specifics Guard's `phase` is the time-of-day *word*, not the engine
       // ordinal; convert through the dialogue helper.
       phase: specificsPhaseFromOrdinal(state.time.phase),
+      ...(labels.length > 0 ? { allowedWords: labels } : {}),
     };
 
     const narration = await streamNarration(
@@ -683,9 +688,18 @@ function timePhrase(time: GameTime): string {
 }
 
 /** A one-line, view-safe scene description for the Specifics Guard allowance. */
+function ambientEventLabels(state: WorldState): readonly string[] {
+  return ambientScene(state, state.player.loc)?.events ?? [];
+}
+
 function describeScene(state: WorldState): string {
   const place = state.city.locations[state.player.loc];
-  return `${place?.name ?? state.player.loc}. It is ${timePhrase(state.time)}.`;
+  const labels = ambientEventLabels(state);
+  const base = `${place?.name ?? state.player.loc}. It is ${timePhrase(state.time)}.`;
+  if (labels.length === 0) {
+    return base;
+  }
+  return `${base} ${labels.join(', ')}.`;
 }
 
 /** An empty Knowledge Slice, used when the NPC's slice is not yet projected. */
@@ -765,6 +779,13 @@ function voicePromptInput(
   const agenda: Agenda | undefined = knowledge?.agenda;
   const namer: Namer = predicateNamer(state);
   const rapport = deps.rapportBand?.(state, npc);
+  const ambient =
+    state.ambient === undefined
+      ? undefined
+      : {
+          facts: promptFactsFor(state, npc),
+          recollections: recollectionPrompts(state, npc, (id) => namer(id)),
+        };
 
   return {
     predicates: deps.predicates,
@@ -773,6 +794,7 @@ function voicePromptInput(
     ...(coverStory !== undefined ? { coverStory } : {}),
     ...(agenda !== undefined ? { agenda } : {}),
     knowledge: slice,
+    ...(ambient === undefined ? {} : { ambient }),
     toldList: toldEntriesFor(state, npc),
     ...(rapport !== undefined && rapport.length > 0 ? { relationshipSummary: rapport } : {}),
     recentTurns: recentTurnsFor(scene, line),

@@ -78,7 +78,7 @@ const CaseFileQuery = z.strictObject({
   grade: z.string().regex(/^[A-F][1-6]$/).optional(),
 });
 
-const SIMPLE_VIEWS = ['journal', 'map', 'people', 'documents', 'intercepts', 'help'] as const;
+const SIMPLE_VIEWS = ['journal', 'map', 'people', 'documents', 'intercepts', 'help', 'city', 'stories', 'duties'] as const;
 
 type Handler = (req: Request, res: Response) => Promise<void> | void;
 
@@ -132,6 +132,9 @@ export function buildRouter(s: ShellState): Router {
     const here = api.views.here();
     const scene = api.views.scene();
     const actions = s.refs.issue(api.actions(), s.stateVersion);
+    const duty = [...api.notifications.list()]
+      .reverse()
+      .find((note) => note.kind === 'cover-duty-due' || note.kind === 'cover-duty-missed' || note.kind === 'cover-employer-message');
     const body: Record<string, unknown> = {
       started: true,
       stateVersion: s.stateVersion,
@@ -141,6 +144,7 @@ export function buildRouter(s: ShellState): Router {
       here,
       scene,
       actions,
+      dutyAlert: duty?.factLine ?? null,
     };
     if (s.gate.paused !== undefined) {
       body['pausedInfo'] = s.gate.paused;

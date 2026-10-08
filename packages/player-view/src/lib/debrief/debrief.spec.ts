@@ -22,6 +22,7 @@
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
+import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -37,7 +38,9 @@ import {
 } from '@tradecraft/content';
 import {
   ScenarioConfigSchema,
+  buildOutcomeRecord,
   generateGame,
+  parseOutcomeRecord,
   revealTruth,
   type GenerateInputs,
   type GameTime,
@@ -45,6 +48,7 @@ import {
   type Proposition,
   type ResolverContext,
   type TruthStore,
+  type PlotStateV2,
   type WorldState,
 } from '@tradecraft/engine';
 
@@ -389,9 +393,157 @@ describe('buildDebrief — Directive results and score', () => {
   });
 });
 
+function libraryPlot(predicate: string): PlotStateV2 {
+  return {
+    id: 'plot:test',
+    templateId: 'test',
+    displayName: 'Test',
+    archetype: 'surveillance',
+    role: 'primary',
+    variantKey: 'test@1',
+    cells: [],
+    cutouts: [],
+    bindings: {},
+    roleHolders: {},
+    knowledge: {},
+    runtimeBranches: [],
+    twist: { kind: 'false-flag', facadeStages: [], propositions: [predicate, 'NOT_HELD'] },
+    outcomes: { success: [], failure: [] },
+    offMap: [],
+    stages: [],
+    subPlots: [],
+    standingPenalty: 0,
+    standingReward: 0,
+  };
+}
+
+describe('buildDebrief — library cells', () => {
+  it('lists the cutouts of each cell', () => {
+    const { world, truth } = game();
+    const plot = {
+      ...libraryPlot('HELD'),
+      cells: [
+        { org: 'org:a', spec: 'recon', security: 0.2, members: ['npc:ada', 'npc:bo'] },
+        { org: 'org:b', spec: 'action', security: 0.2, members: ['npc:cy'] },
+      ],
+      cutouts: ['npc:bo'],
+    };
+    const debrief = buildDebrief({ ...endedWorld(world), plots: [plot] }, truth, new CaseFile());
+    expect(debrief.plots?.[0]?.cells).toEqual([
+      { name: 'recon', members: ['npc:ada', 'npc:bo'], cutouts: ['npc:bo'] },
+      { name: 'action', members: ['npc:cy'], cutouts: [] },
+    ]);
+  });
+});
+
+describe('buildDebrief — library twist propositions', () => {
+  it('marks a twist proposition held only when the case file has that predicate', () => {
+    const { world, truth } = game();
+    const prop = firstTrueFact(truth);
+    const bare = prop.predicate.includes('/')
+      ? prop.predicate.slice(prop.predicate.lastIndexOf('/') + 1)
+      : prop.predicate;
+    const caseFile = new CaseFile();
+    caseFile.add({
+      source: { kind: 'surveillance', loc: prop.place ?? ('loc:x' as never) },
+      prop,
+      observedAt: { day: 1, phase: 0 },
+    });
+    const ended = { ...endedWorld(world), plots: [libraryPlot(bare)] };
+    const held = buildDebrief(ended, truth, caseFile);
+    const empty = buildDebrief(ended, truth, new CaseFile());
+    expect(held.plots?.[0]?.twist?.propositions).toEqual([
+      { text: bare, heldInCaseFile: true },
+      { text: 'NOT_HELD', heldInCaseFile: false },
+    ]);
+    expect(empty.plots?.[0]?.twist?.propositions[0]?.heldInCaseFile).toBe(false);
+  });
+});
+
 // ---------------------------------------------------------------------------
 // Determinism
 // ---------------------------------------------------------------------------
+
+describe('Property 20: Debrief coherence and Outcome Record', () => {
+  it('lists every plot, only the stages that happened, and a matching schema-2 record', () => {
+    // Feature: plot-library, Property 20: Debrief coherence and Outcome Record
+    const { world, truth } = game('debrief-property');
+    fc.assert(
+      fc.property(
+        fc.array(
+          fc.record({
+            status: fc.constantFrom('pending' as const, 'executed' as const, 'disrupted' as const),
+            offMap: fc.boolean(),
+            facade: fc.boolean(),
+          }),
+          { minLength: 1, maxLength: 4 },
+        ),
+        fc.boolean(),
+        fc.array(fc.stringMatching(/^[a-z]{4}$/), { minLength: 1, maxLength: 3 }),
+        fc.constantFrom('disrupted' as const, 'succeeded' as const, undefined),
+        fc.constantFrom('primary' as const, 'secondary' as const),
+        (stages, withTwist, propositions, result, role) => {
+          const plot: PlotStateV2 = {
+            ...libraryPlot(propositions[0] ?? 'HELD'),
+            templateId: 'one',
+            variantKey: 'one@1',
+            displayName: 'One',
+            archetype: 'sabotage',
+            role,
+            stages: stages.map((stage, index) => ({
+              id: `s${index}`,
+              status: stage.status,
+              deadlineDay: 1,
+              offMap: stage.offMap,
+              facade: stage.facade,
+              roles: [],
+            })),
+            offMap: stages.flatMap((stage, index) => (stage.offMap ? [`s${index}`] : [])),
+            ...(withTwist
+              ? { twist: { kind: 'false-flag' as const, facadeStages: [], propositions } }
+              : { twist: undefined }),
+            ...(result === undefined
+              ? { resolution: undefined }
+              : { resolution: { result, at: { day: 1, phase: 0 as const }, by: 'stage-completed' } }),
+          };
+          const state: WorldState = {
+            ...endedWorld(world),
+            plots: [plot],
+            meta: {
+              ...world.meta,
+              selection: { primary: plot.templateId, secondaries: [], historyHash: 'hash-one' },
+            },
+          };
+          const debrief = buildDebrief(state, truth, new CaseFile());
+          expect(debrief.plots?.map((item) => item.displayName)).toEqual([plot.displayName]);
+          const told = debrief.plots?.[0]?.timeline.map((entry) => entry.stage) ?? [];
+          const happened = plot.stages
+            .filter((stage) => stage.status === 'executed' || stage.status === 'disrupted' || stage.offMap)
+            .map((stage) => stage.id);
+          expect(told).toEqual(happened);
+          if (withTwist) {
+            expect(debrief.plots?.[0]?.twist?.propositions.map((item) => item.text)).toEqual(propositions);
+          } else {
+            expect(debrief.plots?.[0]?.twist).toBeUndefined();
+          }
+          const record = buildOutcomeRecord(state, truth);
+          expect(record.schema).toBe(2);
+          expect(parseOutcomeRecord(JSON.parse(JSON.stringify(record)))).toEqual(record);
+          expect(record.plots).toEqual([
+            {
+              templateId: plot.templateId,
+              variantKey: plot.variantKey,
+              archetype: plot.archetype,
+              role: plot.role,
+              outcome: plot.resolution?.result ?? 'unresolved',
+            },
+          ]);
+        },
+      ),
+      { numRuns: 100 },
+    );
+  });
+});
 
 describe('buildDebrief — determinism', () => {
   it('builds an identical debrief for the same ended world', () => {

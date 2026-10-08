@@ -103,6 +103,7 @@ import type { TruthReader } from '../truth/truth.js';
 import type { DeadDrop } from '../city/comms.js';
 import { scheduledLocation } from '../city/npc.js';
 import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { tieAffinityBetween } from '../ambient/ties.js';
 import {
   factInAccess,
   isAsset,
@@ -571,7 +572,15 @@ export function resolveTask(
       ? (inputs.dropContents ?? [])
       : [];
 
-  const outcome = runAssetTask(task, { rel, candidates, dropContents, isMemberOfOrg }, rng);
+  const tieAffinity =
+    state.ambient === undefined || task.kind !== 'introduce'
+      ? undefined
+      : tieAffinityBetween(state.ambient.ties, a.asset, task.target);
+  const outcome = runAssetTask(
+    task,
+    { rel, candidates, dropContents, isMemberOfOrg, ...(tieAffinity !== undefined ? { tieAffinity } : {}) },
+    rng,
+  );
   let applied = applyOutcome(state, a.asset, rel, rel.asset, outcome, candidates, isMemberOfOrg);
   if (
     task.kind === 'collect' &&

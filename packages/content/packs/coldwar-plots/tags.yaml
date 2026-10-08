@@ -1,0 +1,14 @@
+facets:
+  - id: materiel
+    appliesTo:
+      - plot-item
+tags:
+  - id: materiel:explosive
+    description: A demolition charge or explosive materiel
+  - id: materiel:document
+    description: A document, film or photograph the operation moves
+  - id: materiel:plates
+    description: Printing plates for a forged currency
+  - id: materiel:device
+    description: A listening device or technical instrument
+requiredQueries: []

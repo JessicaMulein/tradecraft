@@ -1,0 +1,175 @@
+- id: quiet-physicist
+  templateSchema: 2
+  kind: plot
+  displayName: Quiet physicist
+  archetype: scientist-recruitment
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - recruitment
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:hostile-officer
+    courier:
+      query:
+        - role:cell
+    target:
+      query:
+        - role:civilian
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: approach
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A case officer buys the physicist a second coffee and talks about his family.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call reports the physicist will be at the café after his lecture.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - approach
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the quiet physicist is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the quiet physicist repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: pitch
+      resolve: static
+      after: &a1
+        - confirm
+      alternatives:
+        - id: ideology
+          weight: 1
+          stages:
+            - id: ideology-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: The pitch is made over a paper the physicist has already read.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The case officer confirms the pitch was made and not refused.
+              onDisrupted: *a2
+        - id: compromise
+          weight: 1
+          stages:
+            - id: compromise-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: Photographs of the physicist are laid on the table face down.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: A call says the photographs were shown and the physicist asked for a day.
+              onDisrupted: *a2
+    - subplot:
+        template: honey-trap
+        as: lure
+        map:
+          mark: courier
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: protect-until
+        entity: target
+        until: final-deadline
+      - kind: identify-role
+        role: leader
+    failure:
+      - kind: stage-completed
+        stage: ideology-work
+      - kind: stage-completed
+        stage: compromise-work

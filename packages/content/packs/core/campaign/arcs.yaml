@@ -1,0 +1,61 @@
+# Nemesis and Mole Hunt. Thread ids are the arc-thread templates beside this file.
+- id: nemesis
+  priority: 2
+  binds:
+    nemesis:
+      from: carried-hostile
+      else: generate
+      archetype: hostile-case-officer
+  traits: []
+  stages:
+    - id: shadow
+      when:
+        - kind: posting-index-at-least
+          n: 1
+        - kind: service-is
+          slot: nemesis
+      thread: nemesis-shadow
+      advance:
+        - kind: clue-held
+          clue: nemesis-identified
+    - id: duel
+      when:
+        - kind: stage-done
+          stage: shadow
+        - kind: service-is
+          slot: nemesis
+      thread: nemesis-duel
+      allowsPitch: true
+      advance:
+        - kind: clue-held
+          clue: nemesis-faced
+  resolve:
+    - kind: person-status
+      slot: nemesis
+      in: [arrested, turned, dead]
+- id: mole-hunt
+  priority: 1
+  binds:
+    mole:
+      from: hq-cast
+  traits: []
+  stages:
+    - id: rumour
+      when:
+        - kind: posting-index-at-least
+          n: 0
+      thread: mole-rumour
+      advance:
+        - kind: clue-held
+          clue: mole-access
+    - id: charge
+      when:
+        - kind: stage-done
+          stage: rumour
+      thread: mole-file
+      advance:
+        - kind: clue-held
+          clue: mole-named
+  resolve:
+    - kind: clue-held
+      clue: mole-named

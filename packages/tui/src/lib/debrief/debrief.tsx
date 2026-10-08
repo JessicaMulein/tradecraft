@@ -203,7 +203,7 @@ function NoiseLeadsSection({
       {rows.map((lead) => {
         const source =
           lead.kind === 'side-thread'
-            ? `side thread${lead.thread !== undefined ? ` (${lead.thread})` : ''}`
+            ? `side thread${lead.thread !== undefined ? ` (${lead.thread})` : ''}${lead.emergent ? ', emergent' : ''}`
             : 'rumour';
         return (
           <Text key={lead.claim} dimColor>
@@ -281,6 +281,70 @@ function ScoreSection({ score }: { readonly score: DebriefScore }): ReactElement
   );
 }
 
+function CityCaseSection({ view }: { readonly view: DebriefView }): ReactElement | null {
+  const hooks = view.city?.hooks ?? [];
+  if (hooks.length === 0) {
+    return null;
+  }
+  return (
+    <Box flexDirection="column" marginTop={1}>
+      <Text bold>The city and the case</Text>
+      {hooks.map((hook) => (
+        <Text key={`${hook.kind}:${hook.day}:${hook.detail}`}>
+          Day {hook.day}: {hook.kind}
+          {hook.detail.length > 0 ? ` — ${hook.detail}` : ''}
+        </Text>
+      ))}
+    </Box>
+  );
+}
+
+function EmergentThreadsSection({ view }: { readonly view: DebriefView }): ReactElement | null {
+  const threads = view.city?.emergentThreads ?? [];
+  if (threads.length === 0) {
+    return null;
+  }
+  return (
+    <Box flexDirection="column" marginTop={1}>
+      <Text bold>The city and the case</Text>
+      {threads.map((thread) => (
+        <Text key={thread.id}>Emergent thread {thread.id}</Text>
+      ))}
+    </Box>
+  );
+}
+
+function PlotsSection({ view }: { readonly view: DebriefView }): ReactElement {
+  const plots = view.plots ?? [];
+  if (plots.length === 0) {
+    return <Text dimColor>No library plots.</Text>;
+  }
+  return (
+    <Box flexDirection="column">
+      {plots.map((plot) => (
+        <Text key={plot.displayName}>
+          {plot.displayName} ({plot.role}, {plot.archetype}) — {plot.result}
+          {plot.twist === undefined ? '' : `; twist ${plot.twist.kind}`}
+        </Text>
+      ))}
+      {plots.flatMap((plot) =>
+        plot.cells.map((cell) => (
+          <Text key={`${plot.displayName}:${cell.name}`}>
+            Cell {cell.name}: {cell.members.join(', ')}
+            {cell.cutouts.length === 0 ? '' : `; cutouts ${cell.cutouts.join(', ')}`}
+          </Text>
+        )),
+      )}
+      {(view.lookalikes ?? []).map((thread) => (
+        <Text key={thread.id}>
+          Lookalike {thread.id}
+          {thread.mimics === undefined ? '' : ` mimics ${thread.mimics}`}
+        </Text>
+      ))}
+    </Box>
+  );
+}
+
 /** Render the body of the section identified by `id`. */
 function SectionBody({
   id,
@@ -295,11 +359,22 @@ function SectionBody({
     case 'allegiances':
       return <AllegiancesSection rows={view.allegiances} />;
     case 'timeline':
-      return <TimelineSection rows={view.timeline} />;
+      return (
+        <Box flexDirection="column">
+          <TimelineSection rows={view.timeline} />
+          {(view.plots?.length ?? 0) > 0 ? <PlotsSection view={view} /> : null}
+          <CityCaseSection view={view} />
+        </Box>
+      );
     case 'lies':
       return <LiesSection rows={view.lies} />;
     case 'noise-leads':
-      return <NoiseLeadsSection rows={view.noiseLeads} />;
+      return (
+        <Box flexDirection="column">
+          <NoiseLeadsSection rows={view.noiseLeads} />
+          <EmergentThreadsSection view={view} />
+        </Box>
+      );
     case 'fed-propositions':
       return <FedPropositionsSection rows={view.fedPropositions} />;
     case 'directives':

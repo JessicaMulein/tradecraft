@@ -1,0 +1,36 @@
+# Rank table. Budget scale, arrest authority, station staff, training cap,
+# promotion score and demotion floor. Controller has no promotion score.
+- id: case-officer
+  budgetScale: 1
+  arrestAuthority: 2
+  stationStaff: 2
+  trainingCap: 3
+  promoteAt: 6
+  demoteBelow: -4
+- id: senior-case-officer
+  budgetScale: 1.2
+  arrestAuthority: 3
+  stationStaff: 2
+  trainingCap: 4
+  promoteAt: 8
+  demoteBelow: -3
+- id: deputy-chief
+  budgetScale: 1.4
+  arrestAuthority: 3
+  stationStaff: 3
+  trainingCap: 4
+  promoteAt: 10
+  demoteBelow: -2
+- id: chief-of-station
+  budgetScale: 1.7
+  arrestAuthority: 4
+  stationStaff: 3
+  trainingCap: 5
+  promoteAt: 12
+  demoteBelow: -1
+- id: controller
+  budgetScale: 2
+  arrestAuthority: 4
+  stationStaff: 3
+  trainingCap: 5
+  demoteBelow: 0

@@ -1,0 +1,28 @@
+# Traits. Strained is applied while stress stays at or above 80.
+- id: methodical
+  name: Methodical
+  triggers: []
+  effects:
+    - path: tradecraftErrorProbability
+      op: add
+      perLevel: -0.01
+      bounds: [-0.05, 0]
+- id: watchful
+  name: Watchful
+  triggers: []
+  effects:
+    - path: detectionBase.meeting
+      op: mul
+      perLevel: -0.03
+      bounds: [0.8, 1]
+- id: strained
+  name: Strained
+  triggers:
+    - kind: stress-at-least
+      action: add
+      at: 80
+  effects:
+    - path: tradecraftErrorProbability
+      op: add
+      perLevel: 0.03
+      bounds: [0, 0.1]

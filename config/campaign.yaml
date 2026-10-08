@@ -1,0 +1,56 @@
+# config/campaign.yaml — career tuning.
+#
+# Save location, Review Board thresholds, carry clamps, Notoriety decay,
+# Stress amounts and when the archive reveal opens. A bad field is reported
+# as `<file>: <path>: <message>` and the career refuses to start (Req 24.2).
+
+savePath: saves/campaigns
+
+review:
+  weights:
+    id: standard
+    outcome:
+      success: 4
+      failure-plot: -2
+      failure-burned: -6
+    standing: 0.1
+    directiveMet: 2
+    directiveFailed: 2
+    wrongful: 3
+    assetLost: 2
+    faction: 1
+  # Standing below this yields one assigned offer.
+  assignmentThreshold: 0
+  # Standing below this dismisses the officer.
+  dismissalFloor: -8
+
+carry:
+  coverSuspicionK: 0.5
+  tailFrom: 0.6
+  patternCap: 0.4
+  maxDoctrineShift: 0.2
+  recogniserSuspicion: 0.15
+  assetTrustDecay: 0.1
+  handoverBonus: 2
+
+notorietyDecay: 0.1
+
+stress:
+  burned: 20
+  capture: 40
+  assetArrested: 15
+  leaveRelief: 25
+
+capture:
+  deathBase: 0.2
+  deathMin: 0.02
+  deathMax: 0.5
+
+mole:
+  leak: 0.2
+  threshold: 3
+
+eraDoctrineScale: 0.2
+
+# at-end opens the archive when the career ends. never keeps it closed.
+archiveReveal: at-end

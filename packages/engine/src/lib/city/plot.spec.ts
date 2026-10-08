@@ -35,7 +35,10 @@ import {
   type ContentSet,
   type DescriptorData,
   type DifficultyPreset,
+  normaliseSchema1Plot,
+  PlotTemplateSchema,
   type PlotTemplate,
+  SideThreadTemplateSchema,
 } from '@tradecraft/content';
 
 import { createPrng } from '../prng/prng.js';
@@ -55,6 +58,7 @@ import {
   chooseTemplate,
   deadlinesNonDecreasing,
   generatePlot,
+  instantiateChosenPlot,
   INITIAL_ABORT_PRESSURE,
   type PlotState,
 } from './plot.js';
@@ -169,6 +173,90 @@ describe('chooseTemplate', () => {
   it('throws when the content set defines no Plot templates', () => {
     const empty = { ...content, plotTemplates: new Map() } as unknown as ContentSet;
     expect(() => chooseTemplate(createPrng('x'), empty)).toThrow(/no Plot templates/);
+  });
+});
+
+describe('Property 2: Schema-1 backward compatibility', () => {
+  it('normalises a schema-1 template and matches the slice instantiator', () => {
+    // Feature: plot-library, Property 2: Schema-1 backward compatibility
+    fc.assert(
+      fc.property(
+        fc.string({ minLength: 1, maxLength: 12 }),
+        fc.integer({ min: 1, max: 3 }),
+        (seed, roleCount) => {
+          const roles = Array.from({ length: roleCount }, (_, index) => ({
+            id: `slot${index}`,
+            archetypes: ['courier'],
+          }));
+          const synthetic = PlotTemplateSchema.parse({
+            id: 'synthetic',
+            roleSlots: roles,
+            stages: [
+              {
+                id: 'open',
+                deadline: { min: 1, max: 3 },
+                traces: [{ kind: 'meeting', roles: ['slot0'], text: 'They meet.' }],
+                onDisrupted: { delay: 0.5, reroute: 0.4, abort: 0.1 },
+              },
+              {
+                id: 'close',
+                requires: ['open'],
+                deadline: { min: 2, max: 4 },
+                traces: [{ kind: 'meeting', text: 'They leave.' }],
+                onDisrupted: { delay: 0.5, reroute: 0.4, abort: 0.1 },
+              },
+            ],
+          });
+          const normalised = normaliseSchema1Plot(synthetic);
+          expect(normalised.cells).toEqual([{ id: 'cell', roles: roles.map((role) => role.id) }]);
+          expect(normalised.twist).toBeUndefined();
+          expect(normalised.stages.every((entry) => 'id' in entry && !('branch' in entry) && !('subplot' in entry))).toBe(
+            true,
+          );
+          expect(normalised.stages.every((entry) => !('optional' in entry && entry.optional !== undefined))).toBe(true);
+          expect(normalised.outcomes.success.map((condition) => condition.kind)).toEqual([
+            'arrest-role',
+            'seize-item',
+            'abort',
+          ]);
+          expect(normalised.outcomes.failure).toEqual([{ kind: 'stage-completed', stage: 'close' }]);
+
+          const thread = SideThreadTemplateSchema.parse({
+            id: 'noise',
+            roleSlots: [{ id: 'watcher', archetypes: ['civilian'] }],
+            stages: [
+              {
+                id: 'glimpse',
+                deadline: { min: 1, max: 2 },
+                traces: [{ kind: 'meeting', text: 'A passerby.' }],
+                onDisrupted: { delay: 1, reroute: 0, abort: 0 },
+              },
+            ],
+          });
+          const normalisedThread = normaliseSchema1Plot(thread, 'side-thread');
+          expect(normalisedThread.kind).toBe('side-thread');
+          expect(normalisedThread.cells).toEqual([{ id: 'cell', roles: ['watcher'] }]);
+          expect(normalisedThread.twist).toBeUndefined();
+          expect(normalisedThread.stages.every((entry) => 'id' in entry && !('branch' in entry))).toBe(true);
+
+          const prng = createPrng(seed);
+          const { city } = generateCity(prng, locationTypes, cityData);
+          const orgs = generateOrgs(prng);
+          const principals = generatePrincipals(prng, content, descriptors, city, orgs);
+          const chosen = chooseTemplate(prng, content);
+          const viaSplit = instantiateChosenPlot(prng, chosen, content, STANDARD, city, orgs, principals, START);
+          const whole = genPlot(seed);
+          expect(viaSplit.plot).toEqual(whole);
+          const fromPack = normaliseSchema1Plot(chosen);
+          expect(fromPack.cells).toHaveLength(1);
+          expect(fromPack.twist).toBeUndefined();
+          expect(fromPack.stages.filter((entry) => 'id' in entry).map((entry) => ('id' in entry ? entry.id : ''))).toEqual(
+            chosen.stages.map((stage) => stage.id),
+          );
+        },
+      ),
+      { numRuns: 100 },
+    );
   });
 });
 

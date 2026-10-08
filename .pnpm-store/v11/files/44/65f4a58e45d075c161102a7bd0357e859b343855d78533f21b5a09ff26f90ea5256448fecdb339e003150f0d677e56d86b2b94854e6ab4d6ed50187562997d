@@ -1,0 +1,16 @@
+"use strict";
+// Semi-private surface for first-party Nx packages.
+//
+// External plugins should NOT import from here — this entry is curated for
+// internal consumers and may change without semver protection. Mirrors
+// `@nx/devkit/internal`.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createOrEditViteConfig = exports.oxlintPlugins = void 0;
+/**
+ * The Oxlint plugins a Vitest-tested project needs. Declared here so the linter
+ * does not have to know what a test runner requires; `@nx/js`'s
+ * `addLintingToProject` reads it through `ensurePackage`.
+ */
+exports.oxlintPlugins = ['vitest'];
+var generator_utils_1 = require("./src/utils/generator-utils");
+Object.defineProperty(exports, "createOrEditViteConfig", { enumerable: true, get: function () { return generator_utils_1.createOrEditViteConfig; } });

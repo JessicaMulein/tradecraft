@@ -1,0 +1,179 @@
+- id: nightingale
+  templateSchema: 2
+  kind: plot
+  displayName: Nightingale
+  archetype: defector-abduction
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - abduction
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+    target:
+      query:
+        - role:contact
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: spot
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A nurse points out a man who has stopped using his own name.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call describes the patient by his bed and not by his name.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - spot
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the nightingale is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the nightingale repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: snatch
+      resolve: runtime
+      after: &a1
+        - confirm
+      alternatives:
+        - id: snatch
+          when:
+            - kind: alertness-at-least
+              value: 0.5
+              negate: true
+          stages:
+            - id: snatch-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A car idles at the clinic gate with the back door already open.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The car is told the clinic gate will be unwatched for four minutes.
+              onDisrupted: *a2
+        - id: silence
+          when:
+            - kind: default
+          stages:
+            - id: silence-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: The man from the clinic is walked to a second car and does not look back.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: A single word means the man is across the sector line.
+              onDisrupted: *a2
+    - subplot:
+        template: border-crossing
+        as: escape
+        map:
+          traveller: leader
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: protect-until
+        entity: target
+        until: final-deadline
+      - kind: arrest-role
+        role: leader
+    failure:
+      - kind: stage-completed
+        stage: silence-work
+      - kind: stage-completed
+        stage: snatch-work

@@ -416,6 +416,7 @@ const BUILDERS: ActionBuilders = {
         : [];
     return { kind: 'feed', asset: real ? a ?? p.npc : 'npc:nobody', items };
   },
+  'attend-duty': () => ({ kind: 'attend-duty', duty: 'duty:none' }),
   wait: () => ({ kind: 'wait', phases: 1 }),
 };
 

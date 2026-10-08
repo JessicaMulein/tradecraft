@@ -1,0 +1,174 @@
+- id: fox-in-the-attic
+  templateSchema: 2
+  kind: plot
+  displayName: Fox in the attic
+  archetype: mole-hunt
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - mole-hunt
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+    source:
+      query:
+        - role:station-staff
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: rumour
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A clerk repeats a story about the registry that he did not hear at the registry.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A station frequency carries a rumour that started in the hostile residency.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - rumour
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the fox in the attic is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the fox in the attic repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: narrow
+      resolve: runtime
+      after: &a1
+        - confirm
+      alternatives:
+        - id: wide
+          when:
+            - kind: alertness-at-least
+              value: 0.5
+              negate: true
+          stages:
+            - id: wide-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: Two officers compare notebooks on the same colleague and do not agree.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: A call asks who else has been reading the suspect’s diary.
+              onDisrupted: *a2
+        - id: close
+          when:
+            - kind: default
+          stages:
+            - id: close-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A desk is searched after hours and one file is put back in the wrong place.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The net is told to stop asking questions about one named officer.
+              onDisrupted: *a2
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: protect-until
+        entity: source
+        until: final-deadline
+      - kind: arrest-role
+        role: leader
+    failure:
+      - kind: stage-completed
+        stage: close-work
+      - kind: stage-completed
+        stage: wide-work

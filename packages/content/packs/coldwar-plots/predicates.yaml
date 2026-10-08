@@ -1,0 +1,188 @@
+- id: LOCATED_AT
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - npc
+      - unk
+  place: required
+  window: optional
+  evaluator: fact-match
+  cardinality: functional
+  fieldCode: LA
+  render:
+    second: You are seen at {place}{?when} {when}{/when}.
+    third: "{subject} is seen at {place}{?when} {when}{/when}."
+  extractorHint: A person is observed at a particular location.
+- place: required
+  window: required
+  evaluator: fact-match
+  cardinality: multi
+  implication:
+    role: either
+    other:
+      - materiel
+      - hostile-person
+    weight: 2
+  id: HANDS_OVER
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - npc
+      - unk
+      - org
+  fieldCode: HO
+  instrument:
+    entity:
+      - item
+  render:
+    second: You hand {instrument} to {object}.
+    third: "{subject} hands {instrument} to {object}."
+  extractorHint: Someone passes an item to another person or organisation.
+- place: none
+  window: required
+  evaluator: custody-chain
+  cardinality: functional
+  implication:
+    role: subject
+    other:
+      - materiel
+    weight: 2
+  id: HOLDS
+  subject:
+    - npc
+    - unk
+    - loc
+  object:
+    entity:
+      - item
+  fieldCode: HL
+  render:
+    second: You hold {object}.
+    third: "{subject} holds {object}."
+  extractorHint: Someone is the current holder of an item.
+- place: optional
+  window: optional
+  evaluator: fact-match
+  cardinality: multi
+  implication:
+    role: subject
+    other:
+      - none
+    weight: 1
+  id: FORGES
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - item
+  fieldCode: FG
+  render:
+    second: You forge {object}.
+    third: "{subject} forges {object}."
+  extractorHint: Someone forges an item.
+- place: none
+  window: required
+  evaluator: fact-match
+  cardinality: multi
+  implication:
+    role: subject
+    other:
+      - hostile-channel
+    weight: 2
+  id: CROSSES
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - loc
+  fieldCode: CX
+  render:
+    second: You cross at {object}.
+    third: "{subject} crosses at {object}."
+  extractorHint: Someone crosses a border.
+- place: optional
+  window: optional
+  evaluator: fact-match
+  cardinality: multi
+  implication:
+    role: subject
+    other:
+      - none
+    weight: 1
+  id: COMPROMISES
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - npc
+  fieldCode: CM
+  render:
+    second: You compromise {object}.
+    third: "{subject} compromises {object}."
+  extractorHint: Someone compromises another person.
+- place: required
+  window: required
+  evaluator: fact-match
+  cardinality: multi
+  implication:
+    role: subject
+    other:
+      - none
+    weight: 1
+  id: PHOTOGRAPHS
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - item
+  fieldCode: PH
+  render:
+    second: You photograph {object}.
+    third: "{subject} photographs {object}."
+  extractorHint: Someone photographs an item.
+- place: required
+  window: optional
+  evaluator: fact-match
+  cardinality: multi
+  id: SHELTERS
+  subject:
+    - npc
+    - org
+  object:
+    entity:
+      - npc
+  fieldCode: SH
+  render:
+    second: You shelter {object}.
+    third: "{subject} shelters {object}."
+  extractorHint: Someone shelters another person.
+- place: none
+  window: none
+  evaluator: fact-match-symmetric
+  cardinality: multi
+  implication:
+    role: either
+    other:
+      - hostile-person
+    weight: 2
+  id: CUTOUT_FOR
+  subject:
+    - npc
+    - unk
+  object:
+    entity:
+      - npc
+      - unk
+  fieldCode: CF
+  render:
+    second: You are a cutout for {object}.
+    third: "{subject} is a cutout for {object}."
+  extractorHint: Someone is the cutout between two people.

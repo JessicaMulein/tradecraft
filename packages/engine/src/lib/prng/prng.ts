@@ -93,7 +93,7 @@ function rotl(value: number, k: number): number {
  * FNV-1a over the string's UTF-16 code units. Both bytes of each unit are mixed
  * in, so surrogate pairs and non-ASCII seeds hash distinctly.
  */
-function fnv1a(input: string, basis: number = FNV_OFFSET_BASIS): number {
+export function fnv1a32(input: string, basis: number = FNV_OFFSET_BASIS): number {
   let hash = u32(basis);
   for (let i = 0; i < input.length; i += 1) {
     const unit = input.charCodeAt(i);
@@ -124,7 +124,7 @@ function hex8(word: number): string {
 
 /** Expand an arbitrary seed string into a valid xoshiro128** state. */
 export function seedState(seed: string): PrngState {
-  const nextWord = splitmix32(fnv1a(seed));
+  const nextWord = splitmix32(fnv1a32(seed));
   // xoshiro128** is undefined for an all-zero state, so redraw until non-zero.
   // SplitMix32 makes this effectively unreachable, but the loop keeps the
   // invariant local rather than assumed.
@@ -154,7 +154,7 @@ export function derive(seed: string, n: number): string {
       `derive(): n must be an integer in [0, 2^32), received ${String(n)}`,
     );
   }
-  const nextWord = splitmix32(fnv1a(`${seed}${DERIVE_TAG}${n}`));
+  const nextWord = splitmix32(fnv1a32(`${seed}${DERIVE_TAG}${n}`));
   return `${hex8(nextWord())}${hex8(nextWord())}`;
 }
 

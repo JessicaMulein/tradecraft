@@ -1,0 +1,146 @@
+- id: dockside-fire
+  templateSchema: 2
+  kind: plot
+  displayName: Dockside fire
+  archetype: sabotage
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - sabotage
+    allowWith:
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    dock:
+      kind: loc
+      query:
+        - function:port
+    charge:
+      kind: item
+      query:
+        - materiel:explosive
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: plant
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A tin of solvent is carried onto the pier inside a toolbox.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call says the tin is inside and the watchman’s round is twenty minutes.
+      onDisrupted: &a1
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - plant
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the dockside fire is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the dockside fire repeats the meeting and names both people.
+      onDisrupted: *a1
+    - id: light
+      requires:
+        - confirm
+      deadline:
+        min: 14
+        max: 22
+      traces:
+        - kind: meeting
+          roles:
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A watchman leaves the warehouse door and does not lock it.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: One word on the air means the warehouse has taken.
+      onDisrupted: *a1
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: seize-item
+        item: charge
+      - kind: abort
+    failure:
+      - kind: stage-completed
+        stage: light
+  twist:
+    kind: false-flag
+    mandatory: true
+    decoy:
+      kind: org
+      query:
+        - org:criminal
+    propositions:
+      - predicate: MEMBER_OF
+        subject: role:leader
+        object: org:decoy

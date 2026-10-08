@@ -1,0 +1,22 @@
+name: plot-lab
+
+on:
+  pull_request:
+    paths:
+      - 'packages/content/packs/coldwar-plots/**'
+      - 'packages/plot-lab/**'
+      - 'packages/engine/src/lib/plotgen/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm plot-lab check --seeds 50 --preset standard --cities core --out dist/plot-lab
+      - run: pnpm plot-lab sidethreads --seeds 50 --preset standard --cities core --out dist/plot-lab-threads

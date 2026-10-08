@@ -1,0 +1,173 @@
+- id: green-border
+  templateSchema: 2
+  kind: plot
+  displayName: Green border
+  archetype: border-network
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - border
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: guide
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The guide drinks alone and watches which papers the checkpoint accepts.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A two-group call names the hour the guide will walk them to the wire.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - guide
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the green border is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the green border repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: crossing
+      resolve: runtime
+      after: &a1
+        - confirm
+      alternatives:
+        - id: west
+          when:
+            - kind: alertness-at-least
+              value: 0.5
+              negate: true
+          stages:
+            - id: west-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: Two figures take the west path and do not speak until the wire is behind them.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The west path is confirmed clear, and the call ends in under ten seconds.
+              onDisrupted: *a2
+        - id: east
+          when:
+            - kind: default
+          stages:
+            - id: east-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A courier waits on the east track with a parcel held under his coat.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The east track is named, and the courier is told not to wait past dusk.
+              onDisrupted: *a2
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: arrest-role
+        role: leader
+      - kind: abort
+    failure:
+      - kind: stage-completed
+        stage: east-work
+      - kind: stage-completed
+        stage: west-work
+  secondary:
+    standingPenalty: 3
+    standingReward: 2
+    damageReport: Headquarters reports damage from a second operation.

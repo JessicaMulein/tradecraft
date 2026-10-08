@@ -1,0 +1,185 @@
+- id: emigre-congress
+  templateSchema: 2
+  kind: plot
+  displayName: Emigre congress
+  archetype: assassination
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - assassination
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - mole-hunt
+      - abduction
+      - exfiltration
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+    target:
+      query:
+        - role:contact
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: watch
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A man in the gallery never looks at the speaker he came to see.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A call describes the chairman’s seat and the door behind the stage.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - watch
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the emigre congress is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the emigre congress repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: venue
+      resolve: runtime
+      after: &a1
+        - confirm
+      alternatives:
+        - id: hall
+          when:
+            - kind: alertness-at-least
+              value: 0.5
+              negate: true
+          stages:
+            - id: hall-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: Someone leaves a coat on the chair behind the chairman and does not come back for it.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: Two words on the air mean the hall is clear of uniformed police.
+              onDisrupted: *a2
+        - id: quiet
+          when:
+            - kind: default
+          stages:
+            - id: quiet-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: The chairman is walked out through the kitchen before the toast.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The pickup confirms the chairman is in the car.
+              onDisrupted: *a2
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: protect-until
+        entity: target
+        until: final-deadline
+      - kind: arrest-role
+        role: leader
+    failure:
+      - kind: stage-completed
+        stage: hall-work
+      - kind: stage-completed
+        stage: quiet-work
+  twist:
+    kind: false-flag
+    mandatory: false
+    decoy:
+      kind: org
+      query:
+        - org:criminal
+    propositions:
+      - predicate: MEMBER_OF
+        subject: role:leader
+        object: org:decoy

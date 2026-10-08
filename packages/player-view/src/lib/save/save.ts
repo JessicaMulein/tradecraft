@@ -13,9 +13,15 @@
  * top level too, as the design's `SaveSnapshot` writes it, so a reader can list
  * a save's Budget without walking the whole world.
  *
+ * ## Version 3 (ambient-world)
+ *
+ * `SAVE_VERSION` is `3`. The world may carry `ambient`. A save whose world has
+ * no `ambient` field loads with ambient disabled. Version 2 remains the
+ * slice-integration shape described below; this build writes 3.
+ *
  * ## Version 2 (slice-integration task 9.3)
  *
- * `SAVE_VERSION` is `2`. On top of the version-1 fields the snapshot now carries
+ * On top of the version-1 fields the snapshot carries
  * the Player-View data the slice added: the Case File (its Claims, grades, links
  * and the id counter, via {@link CaseFile.snapshot}/`fromSnapshot`), the Truth
  * Store's ground-truth data with its Maps stored as sorted entry arrays (so the
@@ -53,7 +59,7 @@
  * {@link LoadError} (the facade's own vocabulary) rather than throwing:
  *
  *   - **version** — the save's `version` is not the one this build writes
- *     (`SAVE_VERSION`, currently 2). A save from a newer or older format — an
+ *     (`SAVE_VERSION`, currently 3). A save from a newer or older format — an
  *     older version-1 save included — is not silently reinterpreted;
  *     {@link parseAndLoad} reports a `version` error before its strict schema
  *     could reject the different shape as `corrupt` (slice task 9.3, Req 13.5).
@@ -75,6 +81,7 @@ import {
   type ClaimTruthRecord,
   type CoverState,
   type Ledger,
+  type EntityId,
   type NpcId,
   type PrngState,
   type Proposition,
@@ -121,7 +128,7 @@ import type { LoadError } from '../api/types.js';
  * read; {@link loadSnapshot} refuses any other version with a `version`
  * {@link LoadError} rather than guessing (Requirement 17.1).
  */
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 // ---------------------------------------------------------------------------
 // The Flavour-cache snapshot shape
@@ -162,6 +169,8 @@ export interface TruthSnapshotData {
   /** `[unk, npc]` entries, sorted by `unk:` id. */
   readonly identities: readonly (readonly [UnkId, NpcId])[];
   readonly claimTruths: readonly ClaimTruthRecord[];
+  /** `[item, origin]` entries, sorted by item id. Absent when no origin was recorded. */
+  readonly itemOrigins?: readonly (readonly [string, string])[];
 }
 
 /**
@@ -179,6 +188,13 @@ export function toTruthSnapshot(data: TruthStoreData): TruthSnapshotData {
       a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0,
     ),
     claimTruths: [...data.claimTruths],
+    ...(data.itemOrigins === undefined || data.itemOrigins.size === 0
+      ? {}
+      : {
+          itemOrigins: [...data.itemOrigins.entries()].sort((a, b) =>
+            a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0,
+          ),
+        }),
   };
 }
 
@@ -193,6 +209,9 @@ export function fromTruthSnapshot(snapshot: TruthSnapshotData): TruthStoreData {
     allegiances: new Map(snapshot.allegiances),
     identities: new Map(snapshot.identities),
     claimTruths: snapshot.claimTruths,
+    ...(snapshot.itemOrigins === undefined
+      ? {}
+      : { itemOrigins: new Map(snapshot.itemOrigins) as Map<string, EntityId> }),
   };
 }
 
@@ -472,6 +491,7 @@ const TruthSnapshotSchema: z.ZodType<TruthSnapshotData> = z
       .readonly(),
     identities: z.array(z.tuple([z.string(), z.string()])).readonly(),
     claimTruths: z.array(ClaimTruthRecordShape).readonly(),
+    itemOrigins: z.array(z.tuple([z.string(), z.string()])).readonly().optional(),
   })
   .strict() as unknown as z.ZodType<TruthSnapshotData>;
 

@@ -177,6 +177,34 @@ describe('Debrief sections', () => {
     expect(frame).toContain('Burned');
   });
 
+  it('names a cell cutout on the plot timeline', async () => {
+    const withPlots: DebriefView = {
+      ...view,
+      plots: [
+        {
+          displayName: 'Harbour',
+          archetype: 'sabotage',
+          role: 'primary',
+          result: 'succeeded',
+          timeline: [],
+          branches: [],
+          subPlots: [],
+          cells: [
+            { name: 'recon', members: ['npc:ada', 'npc:bo'], cutouts: ['npc:bo'] },
+          ],
+        },
+      ],
+    };
+    const { lastFrame, stdin } = render(<Debrief view={withPlots} />);
+    await tick();
+    stdin.write(KEY.down);
+    stdin.write(KEY.down);
+    await tick();
+    const frame = lastFrame() ?? '';
+    expect(frame).toContain('Harbour');
+    expect(frame).toContain('Cell recon: npc:ada, npc:bo; cutouts npc:bo');
+  });
+
   it('shows an empty-section line when a list section has no rows', async () => {
     const empty: DebriefView = { ...view, allegiances: [] };
     const { lastFrame, stdin } = render(<Debrief view={empty} />);

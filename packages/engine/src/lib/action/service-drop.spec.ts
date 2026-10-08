@@ -59,6 +59,7 @@ import {
 import type { DeadDrop } from '../city/comms.js';
 import type { PlotState } from '../city/plot.js';
 import type { WorldState } from '../model/state.js';
+import { TruthStore } from '../truth/truth.js';
 import { quote, resolve } from './action.js';
 import {
   quoteServiceDrop,
@@ -713,5 +714,39 @@ describe('service-drop helpers (property)', () => {
         expect(withMateriel).toBe(true);
       }),
     );
+  });
+
+  it('records a seizure as HANDS_OVER to the station', () => {
+    const base = world();
+    const { state, drop } = atHostileDrop(base, ['item:film' as ItemId]);
+    const store = TruthStore.from(new Map([['HOLDS', 'custody-chain']]), {
+      facts: [],
+      allegiances: new Map(),
+      identities: new Map(),
+      claimTruths: [],
+      itemOrigins: new Map([['item:film', 'npc:courier']]),
+    });
+    resolveServiceDrop(
+      state,
+      { kind: 'service-drop', drop: drop.id, leave: [], hostileMode: 'seize' },
+      fixedPrng(1),
+      SEIZED_TEMPLATE,
+      renderLines,
+      { truth: store },
+    );
+    const handover = store.facts().map((fact) => revealTruth(fact)).find((fact) => fact.predicate === 'HANDS_OVER');
+    expect(handover).toMatchObject({
+      subject: 'npc:courier',
+      predicate: 'HANDS_OVER',
+      object: state.station.org,
+      instrument: 'item:film',
+    });
+    const ask = (subject: string) =>
+      store.holds(
+        { id: 'prop:ask', subject, predicate: 'HOLDS', object: 'item:film' },
+        state.time,
+      );
+    expect(ask(state.station.org)).toBe(true);
+    expect(ask('npc:courier')).toBe(false);
   });
 });

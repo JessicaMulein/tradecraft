@@ -84,7 +84,7 @@ function ActionRow({
         dimColor={!allowed}
       >
         {highlighted ? '> ' : '  '}
-        {option.action.kind} — {quoteLabel(option)}
+        {option.action.kind === 'attend-duty' ? 'attend duty' : option.action.kind} — {quoteLabel(option)}
       </Text>
     </Box>
   );

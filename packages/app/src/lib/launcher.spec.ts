@@ -365,6 +365,42 @@ describe('runLauncher — success path (Req 20.5, 20.6)', () => {
     expect(kinds).toContain('wait');
   });
 
+  it('resolves a loaded setting.city and still rejects a city the packs did not load', async () => {
+    const vienna = VALID_SCENARIO.replace(
+      `packs:
+  dirs:
+    - packages/content/packs/core
+  load:
+    - core
+narration: full`,
+      `packs:
+  dirs:
+    - packages/content/packs/core
+    - packages/content/packs/era-cold-war-early
+    - packages/content/packs/lib-central-europe
+    - packages/content/packs/lib-russian
+    - packages/content/packs/city-vienna
+  load:
+    - city-vienna
+setting:
+  city: city-vienna/vienna
+  startDate: '1948-06-01'
+narration: full`,
+    );
+    const loaded = harness({ scenario: vienna });
+    expect(await runLauncher(['--seed', 'vienna'], loaded.io)).toBe(0);
+    expect(loaded.err.join('\n')).not.toContain('unknown city');
+
+    const missing = harness({
+      scenario: VALID_SCENARIO.replace(
+        'narration: full',
+        `setting:\n  city: city-vienna/vienna\nnarration: full`,
+      ),
+    });
+    expect(await runLauncher(['--seed', 'missing'], missing.io)).toBe(1);
+    expect(missing.err.join('\n')).toContain('unknown city "city-vienna/vienna"');
+  });
+
   it('mints a random seed default when `--seed` is absent (no seed pre-filled)', async () => {
     const h = harness();
 

@@ -78,6 +78,7 @@ function LocationRow({
       <Text dimColor>
         {'    '}
         {openHoursLabel(loc.hours)} · risk {loc.risk} · {loc.crowd} · {access} · {loc.travelCost}p
+        {loc.status === undefined ? '' : ` · ${loc.status}`}
         {drops}
       </Text>
     </Box>

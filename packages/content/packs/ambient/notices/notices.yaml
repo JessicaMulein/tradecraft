@@ -1,0 +1,15 @@
+- id: curfew-order
+  title: "Curfew order"
+  body: "The streets close at night. Carry your papers."
+
+- id: strike-call
+  title: "Shop stewards' notice"
+  body: "The presses stop until the wage demand is heard."
+
+- id: bread-queue
+  title: "Bakery notice"
+  body: "Ration bread is sold from six until the trays are empty."
+
+- id: checkpoint-order
+  title: "Checkpoint notice"
+  body: "Papers will be read at the sector crossing until further notice."

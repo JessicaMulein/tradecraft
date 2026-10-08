@@ -22,6 +22,7 @@
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
+import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -41,11 +42,14 @@ import { ScenarioConfigSchema } from '../config/scenario-config.js';
 import { generate, type GenerateInputs } from '../generate.js';
 import { addPhases } from '../clock/clock.js';
 import {
+  asTruth,
   timeToPhases,
   type EntityId,
   type LocId,
   type NpcId,
+  type UnkId,
 } from '../model/core.js';
+import type { TruthAccess } from '../truth/truth.js';
 import type { WorldState } from '../model/state.js';
 import {
   DEFAULT_CABLE_DELAY_PHASES,
@@ -56,10 +60,12 @@ import {
 } from '../station/cables.js';
 import {
   CABLE_FUNDS_AMOUNT_REASON,
+  CABLE_IDENTIFY_EVIDENCE_REASON,
   CABLE_NOT_AT_STATION_REASON,
   CABLE_PHASE_COST,
   CABLE_SENT_LINES,
   CABLE_UNKNOWN_TARGET_REASON,
+  IDENTIFY_REPORT_ACK,
   cableReplyDelayPhases,
   quoteCable,
   resolveCable,
@@ -554,5 +560,121 @@ describe('cable through the top-level quote and resolve', () => {
       expect(out.next.time).toEqual(state.time);
       expect(out.ended).toBeUndefined();
     }
+  });
+});
+
+describe('cable — identification reports', () => {
+  const state = atStation(BASE);
+  const role = state.plot.roles.find((item) => item.npc !== undefined);
+  if (role?.npc === undefined) {
+    throw new Error('the generated plot has no bound role');
+  }
+  const holder = role.npc;
+  const stranger = Object.keys(state.npcs)
+    .sort()
+    .find((id) => id !== holder) as NpcId;
+  const threshold = STANDARD.arrest.threshold;
+  const identify = (entity: EntityId): CableRequest => ({
+    kind: 'report',
+    body: 'I believe this person holds the role.',
+    identify: { entity, roleTag: role.slot },
+  });
+
+  it('keeps the quote and the acknowledgement independent of who the truth store names', () => {
+    // Feature: plot-library, Property 11: Identification is truth-blind
+    fc.assert(
+      fc.property(fc.integer({ min: 0, max: threshold + 4 }), fc.boolean(), (evidence, flip) => {
+        const shared = { [holder]: evidence, [stranger]: evidence };
+        const truth = {
+          identityOf: (id: UnkId) => (id === 'unk:4' ? asTruth(flip ? stranger : holder) : undefined),
+        } as unknown as TruthAccess;
+        const plain: ResolverContext = { content, arrestEvidence: shared };
+        const mutated: ResolverContext = { content, arrestEvidence: shared, truth };
+        expect(quoteCable(state, cable(identify(holder)), mutated)).toEqual(
+          quoteCable(state, cable(identify(holder)), plain),
+        );
+        expect(quoteCable(state, cable(identify(stranger)), mutated)).toEqual(
+          quoteCable(state, cable(identify(holder)), plain),
+        );
+        expect(quoteCable(state, cable(identify(holder)), plain).allowed).toBe(evidence >= threshold);
+        if (evidence < threshold) {
+          return;
+        }
+        const right = resolveCable(state, cable(identify(holder)), renderLines, mutated);
+        const wrong = resolveCable(state, cable(identify(stranger)), renderLines, mutated);
+        expect(right.result.factLines).toEqual([IDENTIFY_REPORT_ACK]);
+        expect(wrong.result.factLines).toEqual(right.result.factLines);
+      }),
+      { numRuns: 100 },
+    );
+  });
+
+  it('allows the report only from the evidence count, for the holder and a stranger alike', () => {
+    const below: ResolverContext = {
+      content,
+      arrestEvidence: { [holder]: threshold - 1, [stranger]: threshold - 1 },
+    };
+    const met: ResolverContext = {
+      content,
+      arrestEvidence: { [holder]: threshold, [stranger]: threshold },
+    };
+    expect(quoteCable(state, cable(identify(holder)), below)).toEqual({
+      allowed: false,
+      reason: CABLE_IDENTIFY_EVIDENCE_REASON,
+      phases: 0,
+      money: 0,
+    });
+    expect(quoteCable(state, cable(identify(stranger)), below)).toEqual(
+      quoteCable(state, cable(identify(holder)), below),
+    );
+    expect(quoteCable(state, cable(identify(holder)), met)).toEqual({
+      allowed: true,
+      phases: CABLE_PHASE_COST,
+      money: 0,
+    });
+    expect(quoteCable(state, cable(identify(stranger)), met)).toEqual(
+      quoteCable(state, cable(identify(holder)), met),
+    );
+  });
+
+  it('acknowledges a correct and a wrong report with the same line', () => {
+    const ctx: ResolverContext = {
+      content,
+      arrestEvidence: { [holder]: threshold, [stranger]: threshold },
+    };
+    const right = resolveCable(state, cable(identify(holder)), renderLines, ctx);
+    const wrong = resolveCable(state, cable(identify(stranger)), renderLines, ctx);
+    expect(right.result.factLines).toEqual([IDENTIFY_REPORT_ACK]);
+    expect(wrong.result.factLines).toEqual(right.result.factLines);
+    expect(right.next.player.identifications).toEqual([
+      { entity: holder, roleTag: role.slot, correct: true },
+    ]);
+    expect(wrong.next.player.identifications).toEqual([
+      { entity: stranger, roleTag: role.slot, correct: false },
+    ]);
+    expect(right.next.player.arrestAuthority).toBe(state.player.arrestAuthority);
+    expect(wrong.next.player.arrestAuthority).toBe(
+      state.player.arrestAuthority + STANDARD.arrest.wrongfulAuthorityPenalty,
+    );
+    expect(right.next.station.pendingCables.at(-1)?.reply).toEqual(
+      wrong.next.station.pendingCables.at(-1)?.reply,
+    );
+  });
+
+  it('resolves an unidentified subject to the role holder before judging the report', () => {
+    const unk: UnkId = 'unk:4';
+    const ctx: ResolverContext = {
+      content,
+      arrestEvidence: { [unk]: threshold },
+      truth: {
+        identityOf: (id: UnkId) => (id === unk ? asTruth(holder) : undefined),
+      } as unknown as TruthAccess,
+    };
+    const out = resolveCable(state, cable(identify(unk)), renderLines, ctx);
+    expect(out.result.factLines).toEqual([IDENTIFY_REPORT_ACK]);
+    expect(out.next.player.identifications).toEqual([
+      { entity: unk, roleTag: role.slot, correct: true },
+    ]);
+    expect(out.next.player.arrestAuthority).toBe(state.player.arrestAuthority);
   });
 });

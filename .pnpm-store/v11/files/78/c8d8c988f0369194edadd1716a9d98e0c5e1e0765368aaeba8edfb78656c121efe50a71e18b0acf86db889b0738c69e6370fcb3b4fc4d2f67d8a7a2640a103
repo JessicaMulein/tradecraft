@@ -1,0 +1,10 @@
+import { ProjectFileMap, ProjectGraph } from '@nx/devkit';
+import { TargetProjectLocator } from '@nx/js/internal';
+import { ProjectRootMappings } from '@nx/devkit/internal';
+export declare function ensureGlobalProjectGraph(ruleName: string): void;
+export declare function readProjectGraph(ruleName: string): {
+    projectGraph: ProjectGraph;
+    projectFileMap: ProjectFileMap;
+    projectRootMappings: ProjectRootMappings;
+    targetProjectLocator: TargetProjectLocator;
+};

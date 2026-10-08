@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.enforceModuleBoundaries = void 0;
+const tslib_1 = require("tslib");
+// Semi-private surface for first-party Nx packages; may change without semver.
+// Rules come from here rather than `./nx`, whose `workspaceRules` initializer
+// compiles the consumer's `tools/eslint-rules` just to reach one rule.
+//
+// Keep the `const` assignment: `export { default as … } from` breaks the ESM
+// named import on Node below 24.14. `internal.spec.ts` pins the shape and
+// explains why.
+const enforce_module_boundaries_1 = tslib_1.__importDefault(require("./src/rules/enforce-module-boundaries"));
+// Keep the annotation: the inferred type names RuleModule via a pnpm store path (TS2883).
+exports.enforceModuleBoundaries = enforce_module_boundaries_1.default;

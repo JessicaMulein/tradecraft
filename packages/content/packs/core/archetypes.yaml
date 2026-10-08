@@ -256,6 +256,7 @@
 
 - id: emigre-fixer
   role: contact
+  mobile: true
   allowedAllegiances: [neutral, station]
   tags: [role:contact]
   mice:

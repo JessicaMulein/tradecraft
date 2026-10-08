@@ -115,7 +115,16 @@ export type { MiceLever, AssetTask };
 export type CableRequest =
   | { readonly kind: 'trace'; readonly target: EntityId }
   | { readonly kind: 'funds'; readonly amount?: number }
-  | { readonly kind: 'report'; readonly body: string };
+  | {
+      readonly kind: 'report';
+      readonly body: string;
+      /**
+       * An identification report (plot-library Req 10.4). `quote` allows it
+       * only from the Case File evidence count. The acknowledgement is the
+       * same whether the named entity holds `roleTag`.
+       */
+      readonly identify?: { readonly entity: EntityId; readonly roleTag: string };
+    };
 
 /**
  * A composed Proposition the player authors for a feed (`feed`; design, "Feed
@@ -174,6 +183,7 @@ export type Action =
   | ArrestAction
   | TurnAgentAction
   | FeedAction
+  | AttendDutyAction
   | WaitAction;
 
 /** A kind tag of an {@link Action}. */
@@ -345,6 +355,12 @@ export interface FeedAction {
   readonly asset: NpcId;
   readonly items: readonly FeedItem[];
   readonly label?: 'credibility' | 'deceive';
+}
+
+/** Keep a cover-duty slot at its location. */
+export interface AttendDutyAction {
+  readonly kind: 'attend-duty';
+  readonly duty: string;
 }
 
 /** Let time pass for 1–4 phases. */

@@ -90,9 +90,7 @@ export function buildOutcomeRecord(
   void truth;
 
   const endedAt = final.ended?.at ?? final.time;
-
-  return {
-    schema: OUTCOME_RECORD_SCHEMA_VERSION,
+  const base = {
     outcome: outcomeTagOf(final),
     endedAt,
     seed: final.meta.seed,
@@ -109,6 +107,21 @@ export function buildOutcomeRecord(
     hostileMemory: buildHostileMemory(final),
     budgetRemaining: balance(final.station.ledger),
   };
+  if (final.plots !== undefined && final.meta.selection !== undefined) {
+    return {
+      ...base,
+      schema: 2,
+      plots: final.plots.map((plot) => ({
+        templateId: plot.templateId,
+        variantKey: plot.variantKey,
+        archetype: plot.archetype,
+        role: plot.role,
+        outcome: plot.resolution?.result ?? 'unresolved',
+      })),
+      selection: { historyHash: final.meta.selection.historyHash },
+    };
+  }
+  return { ...base, schema: OUTCOME_RECORD_SCHEMA_VERSION };
 }
 
 /**

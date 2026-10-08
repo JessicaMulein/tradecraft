@@ -9,12 +9,7 @@
  */
 
 import { z } from 'zod';
-import {
-  ContentIdSchema,
-  ContentRefSchema,
-  SemverRangeSchema,
-  SemverSchema,
-} from './common.js';
+import { ContentIdSchema, SemverRangeSchema, SemverSchema } from './common.js';
 
 /**
  * The highest schema generation this build understands. The loader accepts a
@@ -76,7 +71,14 @@ export const PackManifestSchema = z
      */
     role: PackRoleSchema.optional(),
     requires: z.array(PackRequirementSchema).default([]),
-    overrides: z.array(ContentRefSchema).default([]),
+    overrides: z
+      .array(
+        z.string().regex(
+          /^(?:[a-z0-9]+(?:-[a-z0-9]+)*\/)?(?:[a-z0-9]+(?:-[a-z0-9]+)*|[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*)$/,
+          'an override must be a content id or an UPPER_SNAKE_CASE predicate id',
+        ),
+      )
+      .default([]),
   })
   .strict();
 export type PackManifest = z.infer<typeof PackManifestSchema>;

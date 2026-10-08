@@ -1,0 +1,616 @@
+# City events. Each category has two exogenous and two reactive templates.
+# A stage lasts at least two days, so the opening effect is visible before it eases.
+
+- id: labour-1
+  category: labour
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  name: "Dock strike"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.08 }
+        - { op: crowd-modifier, at: { query: [function:port] }, factor: 1.4 }
+        - { op: news-development, story: strike, beat: announced }
+        - { op: spawn-thread, tags: [labour] }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.04 }
+        - { op: news-development, story: strike, beat: resolved }
+
+- id: labour-2
+  category: labour
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Tram walkout"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.06 }
+        - { op: crowd-modifier, at: { query: [function:transit-hub] }, factor: 0.6 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.03 }
+
+- id: labour-3
+  category: labour
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  name: "Print-shop stoppage"
+  durationDays: [2, 5]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.05 }
+        - { op: observation-modifier, at: { query: [function:newspaper-outlet] }, factor: 1.3 }
+        - { op: post-notice, template: strike-call, at: { query: [function:newspaper-outlet] } }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.02 }
+
+- id: labour-4
+  category: labour
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Warehouse slowdown"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.07 }
+        - { op: crowd-modifier, at: { query: [function:warehouse] }, factor: 0.7 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.03 }
+
+- id: festival-1
+  category: festival
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  name: "Harvest fair"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.1 }
+        - { op: crowd-modifier, at: { query: [function:park] }, factor: 1.8 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.05 }
+
+- id: festival-2
+  category: festival
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Saints' day procession"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.08 }
+        - { op: crowd-modifier, at: { query: [function:cafe] }, factor: 1.5 }
+        - { op: npc-schedule-override, who: { roleTitle: waiter }, at: { query: [function:cafe] }, phases: [evening] }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.04 }
+
+- id: festival-3
+  category: festival
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  name: "River regatta"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.06 }
+        - { op: crowd-modifier, at: { query: [function:port] }, factor: 1.4 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.03 }
+
+- id: festival-4
+  category: festival
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Cinema premiere week"
+  durationDays: [2, 5]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.05 }
+        - { op: crowd-modifier, at: { query: [function:cinema] }, factor: 1.3 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.02 }
+
+- id: election-1
+  category: election
+  class: exogenous
+  weight: 3
+  cooldownDays: 21
+  name: "Municipal poll"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.06 }
+        - { op: metric-delta, metric: unrest, delta: 0.04 }
+        - { op: crowd-modifier, at: { query: [function:meeting-spot] }, factor: 1.3 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.03 }
+
+- id: election-2
+  category: election
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Opposition rally"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.08 }
+        - { op: crowd-modifier, at: { query: [function:park] }, factor: 1.6 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.04 }
+
+- id: election-3
+  category: election
+  class: exogenous
+  weight: 2
+  cooldownDays: 28
+  name: "Government majority"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.04 }
+        - { op: metric-delta, metric: police, delta: 0.03 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: police, delta: -0.02 }
+
+- id: election-4
+  category: election
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Recount rumour"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.07 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.03 }
+
+- id: crackdown-1
+  category: crackdown
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  exclusive: [crackdown]
+  name: "Night curfew"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: police, delta: 0.08 }
+        - { op: curfew, phases: [evening, night] }
+        - { op: post-notice, template: curfew-order, at: { query: [function:cafe] } }
+        - { op: news-development, story: curfew, beat: announced }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: police, delta: -0.04 }
+        - { op: news-development, story: curfew, beat: resolved }
+
+- id: crackdown-2
+  category: crackdown
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  exclusive: [crackdown]
+  name: "Papers check"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: police, delta: 0.06 }
+        - { op: detection-modifier, at: { query: [function:transit-hub] }, factor: 1.4 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: police, delta: -0.03 }
+
+- id: crackdown-3
+  category: crackdown
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  exclusive: [crackdown]
+  name: "Cafe sweep"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: police, delta: 0.05 }
+        - { op: observation-modifier, at: { query: [function:cafe] }, factor: 1.5 }
+        - { op: detain-npc, who: { roleTitle: waiter }, days: 1 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: police, delta: -0.02 }
+
+- id: crackdown-4
+  category: crackdown
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  exclusive: [crackdown]
+  name: "Press raid"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: police, delta: 0.07 }
+        - { op: observation-modifier, at: { query: [function:newspaper-outlet] }, factor: 1.4 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: police, delta: -0.03 }
+
+- id: weather-1
+  category: weather
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  when:
+    season: [winter]
+    weather: [snow, sleet]
+  name: "Hard frost"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: shortage, delta: 0.05 }
+        - { op: crowd-modifier, at: { query: [venue:market] }, factor: 0.6 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: shortage, delta: -0.02 }
+
+- id: weather-2
+  category: weather
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  when:
+    weather: [fog]
+  name: "River fog"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.04 }
+        - { op: observation-modifier, at: { query: [function:port] }, factor: 0.7 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.02 }
+
+- id: weather-3
+  category: weather
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  when:
+    weather: [rain]
+  name: "Thaw flood"
+  durationDays: [2, 5]
+  fallback:
+    op: crowd-modifier
+    at: { query: [function:park] }
+    factor: 0.7
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: shortage, delta: 0.06 }
+        - { op: crowd-modifier, at: { query: [function:park] }, factor: 0.5 }
+        - { op: location-status, at: { query: [function:park] }, status: closed-temporarily, days: 2 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: shortage, delta: -0.03 }
+
+- id: weather-4
+  category: weather
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  when:
+    weather: [overcast, snow]
+  name: "Coal shortage"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: shortage, delta: 0.08 }
+        - { op: news-development, story: shortage, beat: announced }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: shortage, delta: -0.04 }
+        - { op: news-development, story: shortage, beat: resolved }
+
+- id: border-1
+  category: border
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  name: "Sector checkpoint"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.07 }
+        - { op: detection-modifier, at: { query: [function:transit] }, factor: 1.5 }
+        - { op: route-checkpoint, route: { query: [sector:international] }, detection: 0.4, coverRisk: 0.2 }
+        - { op: news-development, story: checkpoint, beat: announced }
+        - { op: post-notice, template: checkpoint-order, at: { query: [function:transit-hub] } }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.03 }
+        - { op: news-development, story: checkpoint, beat: resolved }
+
+- id: border-2
+  category: border
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Visa freeze"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.05 }
+        - { op: metric-delta, metric: police, delta: 0.04 }
+        - { op: route-closure, route: { query: [sector:international] } }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.02 }
+
+- id: border-3
+  category: border
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  name: "Train search"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.06 }
+        - { op: detection-modifier, at: { query: [function:transit-hub] }, factor: 1.3 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.03 }
+
+- id: border-4
+  category: border
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Diplomatic note"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.03 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.01 }
+
+- id: economic-1
+  category: economic
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  name: "Bread queue"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: shortage, delta: 0.08 }
+        - { op: crowd-modifier, at: { query: [venue:market] }, factor: 1.5 }
+        - { op: post-notice, template: bread-queue, at: { query: [venue:market] } }
+        - { op: news-development, story: shortage, beat: announced }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: shortage, delta: -0.04 }
+
+- id: economic-2
+  category: economic
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Rent rise"
+  durationDays: [2, 5]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.05 }
+        - { op: metric-delta, metric: shortage, delta: 0.04 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.02 }
+
+- id: economic-3
+  category: economic
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  name: "Black-market butter"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: shortage, delta: 0.03 }
+        - { op: metric-delta, metric: tension, delta: 0.02 }
+        - { op: crowd-modifier, at: { query: [venue:market] }, factor: 1.2 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: shortage, delta: -0.01 }
+
+- id: economic-4
+  category: economic
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Factory overtime"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: unrest, delta: 0.04 }
+        - { op: metric-delta, metric: shortage, delta: -0.03 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: unrest, delta: -0.02 }
+
+- id: cultural-1
+  category: cultural
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  name: "State opera gala"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.07 }
+        - { op: crowd-modifier, at: { query: [function:hotel-bar] }, factor: 1.4 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.03 }
+
+- id: cultural-2
+  category: cultural
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Book fair"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.05 }
+        - { op: crowd-modifier, at: { query: [function:bookshop] }, factor: 1.3 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.02 }
+
+- id: cultural-3
+  category: cultural
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  name: "Football derby"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.08 }
+        - { op: metric-delta, metric: tension, delta: 0.04 }
+        - { op: crowd-modifier, at: { query: [function:park] }, factor: 1.6 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.04 }
+
+- id: cultural-4
+  category: cultural
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Church concert"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: festivity, delta: 0.04 }
+        - { op: crowd-modifier, at: { query: [function:cafe] }, factor: 1.2 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: festivity, delta: -0.02 }
+
+- id: accident-1
+  category: accident
+  class: exogenous
+  weight: 3
+  cooldownDays: 14
+  name: "Tram collision"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.08 }
+        - { op: crowd-modifier, at: { query: [function:transit] }, factor: 0.5 }
+        - { op: ambient-hook, hook: cover-suspicion-delta, amount: 0.02 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.04 }
+
+- id: accident-2
+  category: accident
+  class: reactive
+  weight: 2
+  cooldownDays: 21
+  name: "Warehouse fire"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.07 }
+        - { op: metric-delta, metric: shortage, delta: 0.04 }
+        - { op: crowd-modifier, at: { query: [function:warehouse] }, factor: 1.4 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.03 }
+
+- id: accident-3
+  category: accident
+  class: exogenous
+  weight: 2
+  cooldownDays: 21
+  name: "Scaffold collapse"
+  durationDays: [2, 3]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.06 }
+        - { op: crowd-modifier, at: { query: [function:cafe] }, factor: 0.7 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.03 }
+
+- id: accident-4
+  category: accident
+  class: reactive
+  weight: 1
+  cooldownDays: 28
+  name: "Gas leak"
+  durationDays: [2, 4]
+  stages:
+    - day: 0
+      ops:
+        - { op: metric-delta, metric: tension, delta: 0.05 }
+        - { op: crowd-modifier, at: { query: [function:hotel-bar] }, factor: 0.4 }
+    - day: last
+      ops:
+        - { op: metric-delta, metric: tension, delta: -0.02 }

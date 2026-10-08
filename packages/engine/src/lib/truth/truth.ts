@@ -121,6 +121,11 @@ export interface EvaluationContext {
   resolveUnk(unk: UnkId): NpcId | undefined;
   /** Does `p` hold at `at`? Lets a transitive evaluator reuse the dispatch. */
   holds(p: Proposition, at: GameTime): boolean;
+  /**
+   * The entity that holds `item` before any handover, when the instantiator
+   * recorded one. Absent, a `custody-chain` query with no prior handover is false.
+   */
+  itemOrigin?(item: EntityId): EntityId | undefined;
 }
 
 /**
@@ -286,11 +291,86 @@ const membershipTransitiveEvaluator: Evaluator = (p, at, ctx) => {
  * means adding an entry here and to `EVALUATOR_KINDS` in the content package —
  * the only content rule that needs code (Requirement 32.4).
  */
+/**
+ * HOLDS(holder, item) at `t`: the latest HANDS_OVER of `item` at or before `t`
+ * names `holder` as recipient, or `holder` is the origin when nothing precedes
+ * `t` (plot-library Req 11.2).
+ */
+export function custodyHolds(
+  facts: readonly Proposition[],
+  holder: EntityId,
+  item: EntityId,
+  at: GameTime,
+  origin: EntityId,
+): boolean {
+  const handovers = facts
+    .filter(
+      (fact) =>
+        fact.predicate.endsWith('HANDS_OVER') &&
+        fact.instrument === item &&
+        fact.window !== undefined &&
+        compareTime(fact.window.from, at) <= 0,
+    )
+    .sort((a, b) => {
+      const byTime = compareTime(a.window?.from ?? at, b.window?.from ?? at);
+      if (byTime !== 0) {
+        return byTime;
+      }
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    });
+  if (handovers.length === 0) {
+    return origin === holder;
+  }
+  return handovers[handovers.length - 1]?.object === holder;
+}
+
+/** The entity that holds `item` at `at`, or the origin when nothing has been handed over. */
+export function currentHolder(
+  facts: readonly Proposition[],
+  item: EntityId,
+  at: GameTime,
+  origin: EntityId | undefined,
+): EntityId | undefined {
+  const handovers = facts
+    .filter(
+      (fact) =>
+        fact.predicate.endsWith('HANDS_OVER') &&
+        fact.instrument === item &&
+        fact.window !== undefined &&
+        compareTime(fact.window.from, at) <= 0,
+    )
+    .sort((a, b) => {
+      const byTime = compareTime(a.window?.from ?? at, b.window?.from ?? at);
+      if (byTime !== 0) {
+        return byTime;
+      }
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    });
+  if (handovers.length === 0) {
+    return origin;
+  }
+  const recipient = handovers[handovers.length - 1]?.object;
+  return typeof recipient === 'string' ? recipient : origin;
+}
+
+const custodyChainEvaluator: Evaluator = (p, at, ctx) => {
+  if (typeof p.object !== 'string') {
+    return false;
+  }
+  const item = p.object;
+  const origin = ctx.itemOrigin?.(item);
+  if (origin === undefined) {
+    return false;
+  }
+  return custodyHolds(ctx.facts(), p.subject, item, at, origin);
+};
+
 export const EVALUATORS: Readonly<Record<EvaluatorKind, Evaluator>> = {
   'fact-match': factMatchEvaluator,
   'fact-match-symmetric': factMatchSymmetricEvaluator,
   alias: aliasEvaluator,
   'membership-transitive': membershipTransitiveEvaluator,
+  'custody-chain': custodyChainEvaluator,
 };
 
 // ---------------------------------------------------------------------------
@@ -316,6 +396,8 @@ export interface TruthStoreData {
   readonly allegiances: ReadonlyMap<NpcId, Allegiance>;
   readonly identities: ReadonlyMap<UnkId, NpcId>;
   readonly claimTruths: readonly ClaimTruthRecord[];
+  /** Item id → the entity that holds it before any HANDS_OVER. */
+  readonly itemOrigins?: ReadonlyMap<string, EntityId>;
 }
 
 /**
@@ -362,6 +444,8 @@ export interface TruthReader {
   allegiance(npc: NpcId): Truth<Allegiance> | undefined;
   /** The NPC an Unidentified Subject id denotes, or `undefined` if unmapped. */
   identityOf(unk: UnkId): Truth<NpcId> | undefined;
+  /** Who held `item` before any handover, when the instantiator recorded one. */
+  itemOrigin(item: EntityId): EntityId | undefined;
   /** Every recorded Claim-truth, each branded {@link Truth}. A fresh copy. */
   claimTruths(): ReadonlyArray<Truth<ClaimTruthRecord>>;
 }
@@ -395,6 +479,8 @@ export interface HoldsSource {
   facts(): readonly Proposition[];
   /** The NPC an `unk:` id stands for, or `undefined` if it is unmapped. */
   resolveUnk(unk: UnkId): NpcId | undefined;
+  /** Who held `item` before any handover, when the instantiator recorded one. */
+  itemOrigin?(item: EntityId): EntityId | undefined;
 }
 
 /**
@@ -412,6 +498,7 @@ export function holdsIn(source: HoldsSource, p: Proposition, at: GameTime): bool
     facts: () => source.facts(),
     resolveUnk: (unk) => source.resolveUnk(unk),
     holds: (q, t) => holdsIn(source, q, t),
+    ...(source.itemOrigin === undefined ? {} : { itemOrigin: (item) => source.itemOrigin?.(item) }),
   };
   return EVALUATORS[kind](resolveProposition(p, source), at, context);
 }
@@ -461,6 +548,7 @@ export class TruthStore implements TruthAccess {
   private readonly allegiances: Map<NpcId, Allegiance>;
   private readonly identities: Map<UnkId, NpcId>;
   private claimTruthList: ClaimTruthRecord[];
+  private readonly itemOrigins: Map<string, EntityId>;
 
   private constructor(
     predicates: PredicateEvaluatorLookup,
@@ -471,6 +559,7 @@ export class TruthStore implements TruthAccess {
     this.allegiances = new Map(data.allegiances);
     this.identities = new Map(data.identities);
     this.claimTruthList = [...data.claimTruths];
+    this.itemOrigins = new Map(data.itemOrigins ?? []);
   }
 
   /**
@@ -535,6 +624,11 @@ export class TruthStore implements TruthAccess {
     return npc === undefined ? undefined : asTruth(npc);
   }
 
+  /** The entity that holds `item` before any handover, when one was recorded. */
+  itemOrigin(item: EntityId): EntityId | undefined {
+    return this.itemOrigins.get(item);
+  }
+
   /** Every recorded Claim-truth, each branded {@link Truth}. A fresh copy. */
   claimTruths(): ReadonlyArray<Truth<ClaimTruthRecord>> {
     return this.claimTruthList.map((record) => asTruth(record));
@@ -547,6 +641,7 @@ export class TruthStore implements TruthAccess {
       allegiances: new Map(this.allegiances),
       identities: new Map(this.identities),
       claimTruths: [...this.claimTruthList],
+      ...(this.itemOrigins.size === 0 ? {} : { itemOrigins: new Map(this.itemOrigins) }),
     };
   }
 
@@ -632,6 +727,7 @@ export class TruthStore implements TruthAccess {
       predicates: this.predicates,
       facts: () => this.factList,
       resolveUnk: (unk) => this.identities.get(unk),
+      itemOrigin: (item) => this.itemOrigins.get(item),
     };
   }
 }

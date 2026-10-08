@@ -1,0 +1,32 @@
+# A miss ruins standing with the employer. The suspicion drip stays small so a
+# season of missed shifts cannot, by itself, reach the tail-start floor: a
+# player who never works the street should lose to the operation, not to a
+# tail that their day job started.
+- id: office-hours
+  name: "Office hours"
+  phases: [morning]
+  standing: 0.05
+  suspicion: 0.01
+  mandatory: true
+  identities: ["*"]
+- id: desk-work
+  name: "Desk work"
+  phases: [morning]
+  standing: 0.04
+  suspicion: 0.01
+  mandatory: true
+  identities: ["*"]
+- id: errand
+  name: "An errand for the office"
+  phases: [midday]
+  standing: 0.03
+  suspicion: 0.005
+  mandatory: false
+  identities: ["*"]
+- id: briefing
+  name: "A morning briefing"
+  phases: [morning, midday]
+  standing: 0.06
+  suspicion: 0.015
+  mandatory: true
+  identities: ["*"]

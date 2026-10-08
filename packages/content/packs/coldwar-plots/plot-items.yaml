@@ -1,0 +1,20 @@
+- id: explosive-charge
+  pool: materiel
+  tags:
+    - materiel:explosive
+  description: A demolition charge small enough to hide in a toolbox.
+- id: document-pouch
+  pool: documents
+  tags:
+    - materiel:document
+  description: A sealed pouch of photographed papers.
+- id: currency-plates
+  pool: plates
+  tags:
+    - materiel:plates
+  description: A set of engraved currency plates.
+- id: listening-device
+  pool: devices
+  tags:
+    - materiel:device
+  description: A microphone small enough to hide in a lamp.

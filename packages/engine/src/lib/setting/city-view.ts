@@ -155,10 +155,9 @@ function localOrgTags(
  *
  * Locations come from the generated city, with Effective Tags read from their
  * Location Type's Tags. Local organisations come from the city bundle (none for
- * the Core City). Technology items (`item`) come from the Content Set's
- * registered `item`-tagged kinds; the slice Content Set ships none, so `item`
- * is empty until the Era Pack's technology catalogue is wired through a
- * registered tagged kind. Archetypes and Location Types read the whole Content
+ * the Core City). Items (`item`) are the Content Set's plot items, tagged with
+ * the materiel queries plot templates bind. A set that loaded no plot items
+ * has an empty item list. Archetypes and Location Types read the whole Content
  * Set, since they are not instantiated per city.
  */
 export function cityView(
@@ -193,6 +192,13 @@ export function cityView(
     [...orgTags.entries()].map(([id, tags]) => ({ id: id as EntityId, tags })),
   );
 
+  const plotItems: TaggedEntity[] = byId(
+    [...(set.plotItems?.entries() ?? [])].map(([id, item]) => ({
+      id: id as EntityId,
+      tags: item.tags,
+    })),
+  );
+
   const entitiesByKind = (kind: BindableKind): TaggedEntity[] => {
     switch (kind) {
       case 'loc':
@@ -202,11 +208,7 @@ export function cityView(
       case 'org':
         return orgEntities;
       case 'item':
-        // The slice Content Set ships no registered `item`-tagged kind; the Era
-        // Pack's technology catalogue is read by the Cipher Engine, not through
-        // the view, so `item` is empty here. A follow-on spec that registers a
-        // tagged `item` kind would extend this.
-        return [];
+        return plotItems;
       default:
         return [];
     }

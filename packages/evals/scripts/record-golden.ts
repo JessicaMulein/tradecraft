@@ -175,7 +175,7 @@ async function recordSession(id: string, manifest: SessionManifest): Promise<voi
   // Replay once through the Composition Root, under the preset the session was
   // recorded under, and freeze the reproduced artifact as the golden expectation.
   const session = loadSession(id);
-  const inputs = buildInputs(manifest.preset ?? 'standard');
+  const inputs = buildInputs(manifest.preset ?? 'standard', manifest.ambient);
   const artifact = JSON.parse(
     JSON.stringify(await replayGoldenSession(session, inputs, REPO_ROOT)),
   ) as Awaited<ReturnType<typeof replayGoldenSession>>;
@@ -184,12 +184,40 @@ async function recordSession(id: string, manifest: SessionManifest): Promise<voi
   console.log(`recorded golden fixture ${id} (stateHash ${artifact.stateHash})`);
 }
 
+const AMBIENT_WEEK: { id: string; manifest: SessionManifest } = {
+  id: '05-ambient-week',
+  manifest: {
+    seed: 'ambient-golden-seven',
+    preset: 'standard',
+    ambient: { enabled: true, density: 'standard' },
+    plan: [
+      { kind: 'wait', phases: 4 },
+      { kind: 'wait', phases: 4 },
+      { kind: 'wait', phases: 4 },
+      { kind: 'wait', phases: 4 },
+      { kind: 'wait', phases: 4 },
+      { kind: 'wait', phases: 4 },
+      { kind: 'wait', phases: 4 },
+    ],
+    modelsConfig: MODELS_CONFIG,
+  },
+};
+
 async function main(): Promise<void> {
+  const only = process.argv.slice(2);
+  const wanted = (id: string) => only.length === 0 || only.includes(id);
   for (const { id, manifest } of SLICE_SESSIONS) {
-    await recordSession(id, manifest);
+    if (wanted(id)) {
+      await recordSession(id, manifest);
+    }
   }
-  const fullGame = await buildFullGameSession();
-  await recordSession(fullGame.id, fullGame.manifest);
+  if (wanted(AMBIENT_WEEK.id)) {
+    await recordSession(AMBIENT_WEEK.id, AMBIENT_WEEK.manifest);
+  }
+  if (wanted(FULL_GAME_ID)) {
+    const fullGame = await buildFullGameSession();
+    await recordSession(fullGame.id, fullGame.manifest);
+  }
 }
 
 void main();

@@ -1,0 +1,173 @@
+- id: burnt-illegal
+  templateSchema: 2
+  kind: plot
+  displayName: Burnt illegal
+  archetype: exfiltration
+  era:
+    from: 1948
+    to: 1962
+  minPreset: easy
+  subOnly: false
+  selection:
+    weight: 1
+  concurrency:
+    tags:
+      - exfiltration
+    allowWith:
+      - sabotage
+      - kompromat
+      - smuggling
+      - document-theft
+      - forgery
+      - recruitment
+      - assassination
+      - mole-hunt
+      - abduction
+      - dangle
+      - border
+      - penetration
+  params:
+    venue:
+      kind: loc
+      query:
+        - function:cafe
+  roleSlots:
+    leader:
+      query:
+        - role:cell
+    courier:
+      query:
+        - role:cell
+  cells:
+    - id: action
+      roles:
+        - leader
+        - courier
+  cutouts: []
+  stages:
+    - id: blow
+      requires: []
+      deadline:
+        min: 12
+        max: 20
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A burned courier burns a letter in a saucer and does not look up.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+          text: A brief call says the courier is burned and the route is closed.
+      onDisrupted: &a2
+        delay: 0.5
+        reroute: 0.4
+        abort: 0.1
+    - id: confirm
+      requires:
+        - blow
+      deadline:
+        min: 6
+        max: 10
+      traces:
+        - kind: meeting
+          roles:
+            - leader
+            - courier
+          place:
+            query:
+              - function:cafe
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: A second meeting on the burnt illegal is kept short, and the two leave by different doors.
+        - kind: transmission
+          channel: radio
+          evidences:
+            - LOCATED_AT
+            - MEETS_AT
+          text: The follow-up call for the burnt illegal repeats the meeting and names both people.
+      onDisrupted: *a2
+    - branch: route
+      resolve: static
+      after: &a1
+        - confirm
+      alternatives:
+        - id: sea
+          weight: 1
+          stages:
+            - id: sea-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - leader
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A boatman takes a passenger who has no luggage and no name.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: The boat confirms it will lie off the point at the second hour.
+              onDisrupted: *a2
+        - id: land
+          weight: 1
+          stages:
+            - id: land-work
+              requires: *a1
+              deadline:
+                min: 14
+                max: 22
+              traces:
+                - kind: meeting
+                  roles:
+                    - courier
+                  place:
+                    query:
+                      - function:cafe
+                  evidences:
+                    - LOCATED_AT
+                    - MEETS_AT
+                  text: A truck stops short of the roadblock and a man climbs out on the blind side.
+                - kind: transmission
+                  channel: radio
+                  evidences:
+                    - LOCATED_AT
+                  text: A call names the truck and the kilometre where it should stop.
+              onDisrupted: *a2
+    - subplot:
+        template: border-crossing
+        as: exit
+        map:
+          traveller: courier
+  stageCount:
+    min: 2
+    max: 6
+  outcomes:
+    success:
+      - kind: arrest-role
+        role: courier
+    failure:
+      - kind: stage-completed
+        stage: sea-work
+      - kind: stage-completed
+        stage: land-work
+  secondary:
+    standingPenalty: 3
+    standingReward: 2
+    damageReport: Headquarters reports damage from a second operation.

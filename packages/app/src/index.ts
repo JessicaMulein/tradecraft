@@ -70,3 +70,22 @@ export {
 // The web shell launcher (`pnpm play:web`): same startup as `pnpm play`, then
 // the loopback web shell instead of the terminal UI.
 export { runWebLauncher, type WebLauncherIo } from './lib/web-launcher.js';
+
+// The neural player (`pnpm player:train`, `pnpm player:play`): a policy network
+// that scores Player View actions and plays each Difficulty Preset offline.
+export {
+  playEpisode,
+  summarizeEpisodes,
+  type DecisionSample,
+  type EpisodeResult,
+  type PlayOptions,
+  type PlayerOutcome,
+} from './lib/nn/episode.js';
+export {
+  defaultPresets,
+  loadPlayer,
+  trainPlayer,
+  type PresetReport,
+  type TrainOptions,
+  type TrainReport,
+} from './lib/nn/train.js';

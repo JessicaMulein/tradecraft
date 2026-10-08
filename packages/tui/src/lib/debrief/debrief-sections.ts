@@ -166,7 +166,7 @@ export function sectionItemCount(
     case 'allegiances':
       return view.allegiances.length;
     case 'timeline':
-      return view.timeline.length;
+      return view.timeline.length + (view.plots?.length ?? 0);
     case 'lies':
       return view.lies.length;
     case 'noise-leads':

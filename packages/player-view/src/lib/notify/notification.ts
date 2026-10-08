@@ -86,6 +86,10 @@ export type Notification = NotificationBase &
     | { readonly kind: 'drop-unserviced'; readonly drop: DeadDropId }
     | { readonly kind: 'asset-silent'; readonly npc: NpcId; readonly days: number }
     | { readonly kind: 'retainer-due'; readonly npc: NpcId; readonly amount: number }
+    | { readonly kind: 'public-announcement'; readonly text: string }
+    | { readonly kind: 'cover-duty-due' | 'cover-duty-missed'; readonly duty: string }
+    | { readonly kind: 'cover-employer-message'; readonly text: string }
+    | { readonly kind: 'drop-disturbed'; readonly drop: DeadDropId }
   );
 
 /** The discriminant of a {@link Notification}. */

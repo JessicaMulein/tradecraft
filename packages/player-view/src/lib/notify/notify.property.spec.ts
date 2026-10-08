@@ -200,6 +200,14 @@ function eventOfKind(kind: SimEventKind, index: number): fc.Arbitrary<SimEvent> 
       return fc.tuple(npcArb, fc.integer({ min: 1, max: 5000 })).chain(([npc, amount]) => base({ npc, amount }));
     case 'custody-released':
       return npcArb.chain((npc) => base({ npc }));
+    case 'public-announcement':
+    case 'cover-employer-message':
+      return base({ text: 'The office is closed tomorrow.' });
+    case 'cover-duty-due':
+    case 'cover-duty-missed':
+      return base({ duty: 'Office hours' });
+    case 'drop-disturbed':
+      return base({ drop: DROP });
     // --- hidden --------------------------------------------------------
     case 'asset-detected':
     case 'asset-arrested':
@@ -217,11 +225,29 @@ function anyEventArb(index: number): fc.Arbitrary<SimEvent> {
   return fc.constantFrom(...SIM_EVENT_KINDS).chain((kind) => eventOfKind(kind, index));
 }
 
-/** A sequence of mixed events (0..12 of them). */
+/** Ambient event kinds the slice generator now always mixes into a sequence. */
+const AMBIENT_EVENT_KINDS = [
+  'public-announcement',
+  'cover-duty-due',
+  'cover-duty-missed',
+  'cover-employer-message',
+  'drop-disturbed',
+  'gossip',
+  'incident',
+  'life-event',
+  'ambient-hook',
+  'location-status',
+] as const satisfies readonly SimEventKind[];
+
+/** A sequence of mixed events (0..12 of them), plus one ambient event. */
 const eventSequenceArb: fc.Arbitrary<SimEvent[]> = fc
   .array(fc.integer(), { minLength: 0, maxLength: 12 })
   .chain((seeds) => fc.tuple(...seeds.map((_, i) => anyEventArb(i))))
-  .map((events) => [...events]);
+  .chain((events) =>
+    fc.constantFrom(...AMBIENT_EVENT_KINDS).chain((kind) =>
+      eventOfKind(kind, events.length).map((extra) => [...events, extra]),
+    ),
+  );
 
 /** A single hidden event (for the stability clause). */
 const hiddenEventArb: fc.Arbitrary<SimEvent> = fc

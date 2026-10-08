@@ -1,0 +1,3 @@
+import { type Tree } from '@nx/devkit';
+export default function useImportMetaDirname(tree: Tree): Promise<void>;
+export declare function rewriteDirname(source: string): string;
