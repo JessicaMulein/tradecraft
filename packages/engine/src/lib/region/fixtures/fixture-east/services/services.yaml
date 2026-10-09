@@ -1,0 +1,11 @@
+- id: watch
+  name: the east watch
+  kind: local-security
+  country: Eastland
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.6
+    deceptionAppetite: 0.2
+  years:
+    from: 1948
+    to: 1961

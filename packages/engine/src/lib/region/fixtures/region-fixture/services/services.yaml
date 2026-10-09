@@ -1,0 +1,27 @@
+# One service of every kind. Fictional names. The city packs' own watches are
+# the local-security services the cities reference; local-desk is the region's
+# shared local-security record so this pack itself carries every kind.
+- id: own-desk
+  name: the north desk
+  kind: own
+  country: Northland
+  years: { from: 1948, to: 1961 }
+- id: hostile-desk
+  name: the east directorate
+  kind: hostile
+  country: Eastland
+  doctrineBase:
+    riskTolerance: 0.6
+    securityConsciousness: 0.7
+    deceptionAppetite: 0.4
+  years: { from: 1948, to: 1961 }
+- id: local-desk
+  name: the south watch
+  kind: local-security
+  country: Southland
+  years: { from: 1948, to: 1961 }
+- id: liaison-desk
+  name: the west liaison
+  kind: liaison
+  country: Westland
+  years: { from: 1948, to: 1961 }

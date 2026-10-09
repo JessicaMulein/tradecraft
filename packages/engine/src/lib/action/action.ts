@@ -59,6 +59,15 @@ import { scheduledLocation } from '../city/npc.js';
 import type { ContentSet, LocationType } from '@tradecraft/content';
 import { attendDutyLocation, quoteAttendDuty, resolveAttendDuty } from '../ambient/cover.js';
 import { quoteTravel, resolveTravel } from './travel.js';
+import { carriageWaitLimit, quoteDepart, resolveDepart, terminalTravellers } from '../travel/depart.js';
+import { quotePapers, quoteVisa, resolvePapers, resolveVisa } from '../travel/papers.js';
+import {
+  quoteLiaisonRequest,
+  quoteLiaisonShare,
+  resolveLiaisonRequest,
+  resolveLiaisonShare,
+} from '../liaison/exchange.js';
+import { quoteExfiltrate, resolveExfiltrate } from '../region/remote.js';
 import { quoteRead, resolveRead } from './read.js';
 import {
   quoteSurveil,
@@ -154,6 +163,14 @@ export function actionLocation(state: WorldState, a: Action): LocId | undefined 
       return undefined;
     case 'attend-duty':
       return attendDutyLocation(state, a.duty);
+    case 'depart':
+    case 'request-papers':
+    case 'apply-visa':
+      return undefined;
+    case 'liaison-request':
+    case 'liaison-share':
+    case 'exfiltrate':
+      return undefined;
   }
 }
 
@@ -197,6 +214,12 @@ export function locationGate(
   content: ContentSet,
   a: Action,
 ): string | undefined {
+  if (
+    carriageWaitLimit(state) !== undefined &&
+    (a.kind === 'talk' || a.kind === 'approach' || a.kind === 'surveil' || a.kind === 'wait')
+  ) {
+    return undefined;
+  }
   const locId = actionLocation(state, a);
   if (locId === undefined) {
     return undefined;
@@ -540,10 +563,32 @@ function quoteKind(state: WorldState, a: Action, ctx: ResolverContext): ActionQu
       return quoteFeed(state, a, ctx);
     case 'arrest':
       return quoteArrest(state, a, ctx);
-    case 'wait':
-      return quoteWait(a);
     case 'attend-duty':
       return quoteAttendDuty(state, a.duty);
+    case 'depart':
+      return quoteDepart(state, a);
+    case 'request-papers':
+      return quotePapers(state, a);
+    case 'apply-visa':
+      return quoteVisa(state, a);
+    case 'liaison-request':
+      return quoteLiaisonRequest(state, a);
+    case 'liaison-share':
+      return quoteLiaisonShare(state, a);
+    case 'exfiltrate':
+      return quoteExfiltrate(state, a);
+    case 'wait': {
+      const remaining = carriageWaitLimit(state);
+      if (remaining !== undefined && a.phases > remaining) {
+        return {
+          allowed: false,
+          reason: 'a wait in the carriage cannot outlast the transit',
+          phases: 0,
+          money: 0,
+        };
+      }
+      return quoteWait(a);
+    }
     default:
       // `a` is `never` here (compile-time exhaustiveness). Only a value outside
       // the union reaches this at run time, and it is refused, not thrown on.
@@ -635,7 +680,7 @@ function resolveBody(
       return resolveRead(state, a, rng, (obs) =>
         renderFactLines(ctx.content, state, obs),
       );
-    case 'surveil':
+    case 'surveil': {
       // Surveil observes the NPCs at the watched Location (as `unk:` ids when
       // unidentified, so it needs the Truth Store), builds its own Observations
       // and `claimsAdded`, and leaves Fact Line rendering to this layer (so
@@ -644,7 +689,7 @@ function resolveBody(
       if (ctx.truth === undefined) {
         return { next: state, result: emptyResult(state) };
       }
-      return resolveSurveil(
+      const watched = resolveSurveil(
         state,
         a,
         rng,
@@ -652,6 +697,26 @@ function resolveBody(
         (rendered, obs) => renderFactLines(ctx.content, rendered, obs),
         ctx.events,
       );
+      if (state.region === undefined) {
+        return watched;
+      }
+      const names = terminalTravellers(watched.next, a.at);
+      if (names.length === 0) {
+        return watched;
+      }
+      const extra = names.map((name) => `${name} is at the terminal.`);
+      return {
+        next: watched.next,
+        result: {
+          ...watched.result,
+          factLines: [...watched.result.factLines, ...extra],
+          observations: [
+            ...watched.result.observations,
+            ...extra.map((line) => ({ kind: 'message' as const, line })),
+          ],
+        },
+      };
+    }
     case 'follow':
       // Follow steps the target's schedule and observes it, with the same unk
       // and render handling as surveil.
@@ -878,6 +943,18 @@ function resolveBody(
       };
       return { next: waited.next, result };
     }
+    case 'depart':
+      return resolveDepart(state, a, rng);
+    case 'request-papers':
+      return resolvePapers(state, a);
+    case 'apply-visa':
+      return resolveVisa(state, a, rng);
+    case 'liaison-request':
+      return resolveLiaisonRequest(state, a, rng, ctx.truth);
+    case 'liaison-share':
+      return resolveLiaisonShare(state, a);
+    case 'exfiltrate':
+      return resolveExfiltrate(state, a, rng);
     default:
       // `a` is `never` here (compile-time exhaustiveness). A value outside the
       // union was already refused by `quote` above, so this line is

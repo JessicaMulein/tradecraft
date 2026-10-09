@@ -208,6 +208,24 @@ function eventOfKind(kind: SimEventKind, index: number): fc.Arbitrary<SimEvent> 
       return base({ duty: 'Office hours' });
     case 'drop-disturbed':
       return base({ drop: DROP });
+    case 'departure-cancelled':
+      return base({ route: 'route:west' });
+    case 'border-outcome':
+      return base({ post: 'post:gate', outcome: 'passed' as const });
+    case 'papers-issued':
+      return base({ doc: 'paper:pass' });
+    case 'visa-decision':
+      return base({ country: 'Eastland', granted: true });
+    case 'liaison-report':
+      return base({ service: 'service:liaison' });
+    case 'outstation-report':
+      return base({ city: 'city:east' });
+    case 'courier-delivery':
+      return base({ handoff: 'handoff:parcel' });
+    case 'asset-arrived':
+      return npcArb.chain((npc) => base({ npc }));
+    case 'expelled':
+      return base({ country: 'Eastland' });
     // --- hidden --------------------------------------------------------
     case 'asset-detected':
     case 'asset-arrested':

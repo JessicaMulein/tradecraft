@@ -120,6 +120,7 @@ import {
 } from '../endings/end-conditions.js';
 import type { ActionQuote, ActionResult, Observation, ResolverContext } from './result.js';
 import type { ArrestAction } from './types.js';
+import { jurisdictionAllows, jurisdictionReason, observedCities } from '../region/jurisdiction.js';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -330,7 +331,9 @@ export function carriesStageMateriel(plot: PlotState, npc: NpcId): boolean {
  * {@link ARREST_PHASE_COST} phases and no money. An arrest is a request the
  * Station's officers carry out, not an action at the player's Location, so it
  * has no `actionLocation` and the shared Location gate in `./action.ts` does
- * not apply: these two checks are the whole gate, as the design states.
+ * not apply. In a slice game these two checks are the whole gate. In a region
+ * the published jurisdiction map must also name the station's own service, or
+ * a liaison service whose trust meets the preset threshold.
  */
 export function quoteArrest(
   state: WorldState,
@@ -351,6 +354,14 @@ export function quoteArrest(
     return {
       allowed: false,
       reason: `an arrest needs ${threshold} corroborated implicating Claims; you hold ${evidence}`,
+      phases: 0,
+      money: 0,
+    };
+  }
+  if (!jurisdictionAllows(state)) {
+    return {
+      allowed: false,
+      reason: jurisdictionReason(observedCities(state, ctx.claims, a.npc)),
       phases: 0,
       money: 0,
     };

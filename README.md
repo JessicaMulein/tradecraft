@@ -21,11 +21,11 @@ The vertical slice is playable end to end through `pnpm play`: the Turn Pipeline
 
 Follow-on specs that were on the roadmap are in the repo and **off by default**. `content-expansion`, `plot-library`, `ambient-world` and `campaign-career` are implemented. Shipped `config/scenario.yaml` still loads only the `core` pack. Plot library and ambient city stay off unless a scenario sets `plotSelection.enabled` or `ambient.enabled`. Campaign is a separate career loop, not the default `pnpm play` path. `generatorVersion` stays `0.7.0`.
 
-`pnpm run check` is not currently green: engine typecheck has a handful of pre-existing errors, dependency-cruiser still reports four content-tools lint-rule cycles (unchanged since the initial commit), and evals golden replays 01–05 fail on a core-pack content-hash drift plus new ambient gate witnesses. Those goldens are not being re-recorded.
+`pnpm run check` still fails before the test suite: engine typecheck has a handful of pre-existing errors, and dependency-cruiser still reports four content-tools lint-rule cycles (unchanged since the initial commit). The tests themselves pass, including the golden replays and the release lint.
 
 The developer playtest (slice-integration task 20) is still to do: full campaigns through `pnpm play` with live models, and an evals run to set the active model profile.
 
-Plot library and ambient are **not** both ready for shipped play. The plot library now holds the CI bands (expert 100% / 97% / 83%). Ambient holds on easy and standard and fails on hard. Do not turn either flag on in `config/scenario.yaml`. Multi-city stays unstarted until hard ambient is inside the bands.
+Plot library and ambient both hold the CI bands on the 30/15 sample, including hard ambient (87%) and both-on (83%). Do not turn either flag on in `config/scenario.yaml`. Multi-city tasks 1–15 are done. Single-city play stays the shipped path. A regional posting is `pnpm play --scenario config/scenario-region.yaml` (Vienna, Berlin, and Trieste, 1953).
 
 ## Requirements
 
@@ -55,7 +55,7 @@ pnpm repl --seed vienna-alpha   # scripted first live session, recorded to packa
 
 | Command | What it does |
 | --- | --- |
-| `pnpm play [--seed <s>] [--profile <name>]` | Launch the game: validate the configs, start the Model Manager (connect, preflight, load the active profile), then open the App Shell. `--seed` pre-fills the start screen; `--profile` overrides the active profile in `config/models.yaml` |
+| `pnpm play [--seed <s>] [--profile <name>] [--scenario <file>]` | Launch the game: validate the configs, start the Model Manager (connect, preflight, load the active profile), then open the App Shell. `--seed` pre-fills the start screen; `--profile` overrides the active profile in `config/models.yaml`. `--scenario` is a file under the repo root; the default is `config/scenario.yaml`. `config/scenario-region.yaml` starts the 1953 region. |
 | `pnpm play:web [--profile <name>]` | Same startup as `pnpm play`, then serve the game to your browser on 127.0.0.1 only, with the soundtrack. See `docs/web-shell.md` |
 | `pnpm evals [--profile <name>] [--out <dir>]` | Run the model evaluation harness and write a Markdown + CSV comparison report (default `logs/evals/`). With `--profile <name>` it runs that one profile; with none it compares every profile, unloading each before loading the next |
 | `pnpm run check` | Typecheck, lint, dependency-cruiser boundary rules and all tests |
@@ -158,11 +158,11 @@ Packs on disk, beyond `core`:
 | Pack | Role | Loaded by shipped play? |
 | --- | --- | --- |
 | `core` | Predicates, the core city, archetypes, difficulty presets, slice plots | Yes |
-| `ambient` | Civic orgs, cover duties, events, incidents, life, outlets, regard | No. The engine catalogue reads `packages/content/packs/ambient/*.yaml` from disk when `ambient.enabled`. Do not add this pack to `packs.load` — those kinds are not registered on the composition-root loader. |
+| `ambient` | Civic orgs, cover duties, events, incidents, life, outlets, regard | No on the shipped scenario. `config/scenario-region.yaml` loads it and sets `ambient.enabled`. Regional content loading registers those kinds. Do not add the pack to `config/scenario.yaml`. |
 | `coldwar-plots` | Template-schema-v2 plots and side threads | No. Loaded only when a scenario lists it and sets `plotSelection.enabled`. |
 | `era-cold-war-early` | Era profile | No |
 | `lib-western`, `lib-russian`, `lib-iberian`, `lib-eastern-mediterranean`, `lib-central-europe`, `lib-descriptors`, `lib-archetypes` | Shared name and flavour libraries | No |
-| `city-vienna`, `city-berlin`, `city-istanbul`, `city-lisbon`, `city-trieste` | Authored cities | No. `generate()` can take a city bundle; the `pnpm play` launcher does not resolve `setting.city`. |
+| `city-vienna`, `city-berlin`, `city-istanbul`, `city-lisbon`, `city-trieste` | Authored cities | No. `generate()` can take a city bundle. The launcher resolves `setting.city` when that pack is loaded. |
 
 A Plot or Side Thread stage's traces bind to Locations by **function tag** (a Tag Query like `[function:cafe]`), not by a specific Location Type id. A city satisfies a plot's observable events by tagging *some* public Location for each function the plot needs; the lint's CE-PLOTBIND rule fails a release build whose city cannot, rather than letting it fall over at generation. One upshot: the shipped cities still carry a few Location-Type ids kept from an earlier id-matched binding (e.g. a café typed `core/kaffeehaus`). These are harmless — tag-binding resolves them correctly — so they are left as-is; if you revisit those packs, you can rename them to local-flavor ids in the same pass (it needs a `GENERATOR_VERSION` bump and a golden re-record, so it is not worth doing on its own).
 
@@ -171,11 +171,11 @@ A Plot or Side Thread stage's traces bind to Locations by **function tag** (a Ta
 Follow-on order: content-expansion → plot-library → ambient-world → campaign-career → multi-city. Single-city mode stays unchanged. Debrief stays at eight sections.
 
 1. **slice-integration** — assembled the slice into a playable game. Remaining: the developer playtest (task 20 / slice task 24).
-2. **content-expansion** — done. Content Kind Registry, Era and Library packs, five authored city packs, authoring tools. Shipped play still loads `core` only; the launcher does not resolve `setting.city`.
+2. **content-expansion** — done. Content Kind Registry, Era and Library packs, five authored city packs, authoring tools. Shipped play still loads `core` only. The launcher resolves a loaded `setting.city`; a city that was not loaded still fails.
 3. **plot-library** — done, opt-in (`plotSelection.enabled`). Template schema v2, `coldwar-plots`, Plot Lab. The 30/15 sample holds (expert 100% / 97% / 83%). Leave it off in the shipped scenario.
 4. **ambient-world** — done, opt-in (`ambient.enabled`). Living city, duties, gossip, news, couplings. Catalogue reads the `ambient` pack from disk. `attend-duty` is in the action catalogue. The 30/15 sample holds (expert 100% / 93% / 87%), and both-on holds with it (100% / 93% / 83%). Leave it off in the shipped scenario.
 5. **campaign-career** — done. HQ, postings, Review Board, carry-over and arcs. Separate from the default slice loop.
-6. **multi-city** — next, not started. Task 5.1 (the ambient-world contract) is done; tasks 1–4 and 6–15 are open. The calibration hold is lifted: ambient and both-on sit inside the bands. 1.1 is the next start. Leave the flags off in the shipped scenario.
+6. **multi-city** — done. Tasks 1–15 are done: regional content loads, the region world types and streams are in place, `generateRegion` builds a verified region from a template, the region clock advances every city's spine before applying tiered ambient couplings, departures, border checks and travel papers resolve inside a region, services share beliefs, expel a persona non grata, and answer liaison requests, remote tasking, courier reception and handoffs run only when a region is set, an arrest quote in a region also requires jurisdiction, notices from another city wait out the communication latency, save version 4 round-trips the regional world (version 3 still loads in slice mode), and outcome schema 2 carries an optional region block. The player view shows the region map, departures, papers and each person's last known city, the case file filters by city, and the status bar names the city or the transit. The narrator scene descriptor carries the city name and style sheet, and the TUI has a region map, departures board, papers panel and carriage scene. Generation, coarse and full advance, and reconciliation are written to the metrics log. The evals bench measures the fixture four-city region against the Req 19 budgets, with thresholds scaled in CI. Regional eval fixtures cover a border inspection, a liaison meeting and a carriage conversation, and one golden replay is checked in per fixture starter region. The suite passed at the final checkpoint. `pnpm play --scenario config/scenario-region.yaml` starts that region. The turn clock draws each city's spine, runs the service day, and holds remote notices. When that scenario sets `ambient.enabled`, the player's city takes one ambient phase per turn and the other cities take a coarse step. The opening cable names a cell member and a meeting. A note at the meeting and orders elsewhere confirm the leader and the plan; the cable alone does not. People keep a weekly schedule. The note at the meeting names where the orders are, so the case file points at the next city. `pnpm player:train` records the slice plus a short ambient game and a short regional game, and `pnpm player:play --scenario slice|ambient|region` plays saved weights on that game. Slice `generate` is unchanged when `region` is unset. Leave ambient and plot selection off in the shipped scenario. `generatorVersion` stays `0.7.0`.
 
 Later specs that already have `requirements.md` / `design.md` / `tasks.md` (none of these are started):
 
@@ -194,9 +194,9 @@ Specs live in `.kiro/specs/<name>/` as `requirements.md`, `design.md` and `tasks
 | `slice-integration` | Assembled. Playtest (task 20) still open. |
 | `content-expansion` | Implemented. Shipped play path still core-only. |
 | `plot-library` | Implemented, opt-in. 30/15 sample holds. |
-| `ambient-world` | Implemented, opt-in. Easy and standard hold. Hard does not. |
+| `ambient-world` | Implemented, opt-in. 30/15 sample holds, including hard. |
 | `campaign-career` | Implemented. |
-| `multi-city` | Next. 5.1 done; the rest open. |
+| `multi-city` | Implemented. Shipped play stays single-city. `config/scenario-region.yaml` starts central-1953. |
 | `web-shell` | Spec only (launcher command exists). |
 | `street-ops` | Spec only. |
 | `setting-generalization` | Spec only. |

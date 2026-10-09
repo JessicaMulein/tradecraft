@@ -1,0 +1,12 @@
+- id: austria-germany
+  era: { from: 1948, to: 1954 }
+  between: { kind: countries, a: Austria, b: Germany }
+- id: austria-territory
+  era: { from: 1948, to: 1954 }
+  between: { kind: countries, a: Austria, b: "Free Territory of Trieste" }
+- id: berlin-line
+  era: { from: 1948, to: 1954 }
+  between: { kind: sector-line, line: berlin-sectors }
+- id: trieste-line
+  era: { from: 1948, to: 1954 }
+  between: { kind: sector-line, line: trieste-zones }

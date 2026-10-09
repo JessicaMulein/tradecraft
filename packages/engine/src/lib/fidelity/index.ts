@@ -9,6 +9,18 @@ export { AmbientContractError, runAmbientContract, type AmbientContract } from '
 export { referenceCity, referenceSimulator, referenceSpine, type RefCity } from './reference.js';
 export { sliceAmbient, sliceCity, sliceSpine, type SliceCity } from './slice-ambient.js';
 export {
+  advanceRegion,
+  arrivalFactLines,
+  arrive,
+  assignTiers,
+  initialRegionClock,
+  serviceTickOrder,
+  spineProjection,
+  spineTick,
+  type RegionClockOptions,
+  type RegionClockState,
+} from './clock.js';
+export {
   AMBIENT_COUPLING_KINDS,
   exampleCouplings,
   type AmbientCoupling,

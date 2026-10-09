@@ -138,6 +138,8 @@ export const CityDefinitionSchema = z
   .object({
     id: ContentIdSchema,
     name: z.string().min(1),
+    /** Narrator voice for this city. Omitted until a pack authors one. */
+    styleSheet: z.string().min(1).optional(),
     country: z.string().min(1),
     climate: TagIdSchema,
     period: YearRangeSchema,

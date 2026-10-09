@@ -13,6 +13,8 @@ button:focus-visible,input:focus-visible,pre:focus-visible{outline:2px solid var
 #actions li{margin:.25rem 0}
 #actions button[aria-disabled=true]{color:var(--dim)}
 .reason{color:var(--dim);margin-left:.5rem}
+#tutorial{margin:.75rem 0;padding:.4rem .7rem;border-left:3px solid var(--acc);color:var(--fg)}
+#actions button.suggested{border-color:var(--acc);color:var(--acc)}
 #feed p{margin:.4rem 0}.flavour{font-style:italic;color:#bdb7a5}.speech b{color:var(--acc)}
 #aid{white-space:pre-wrap;background:#1c1b16;padding:.5rem;max-height:20rem;overflow:auto}
 [hidden]{display:none!important}

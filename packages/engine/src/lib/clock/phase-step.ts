@@ -256,7 +256,9 @@ export function phaseStep(
   apply(stepRetainers(state, from, to));
   apply(stepConsequences(state, to));
   apply(stepCustody(state, to));
-  apply(ambientPhase(state));
+  if (state.region === undefined) {
+    apply(ambientPhase(state));
+  }
 
   return meetings.openScene === undefined
     ? { state, events }

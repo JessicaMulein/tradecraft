@@ -59,7 +59,9 @@ import type {
   KeySubmission,
   NewGameOptions,
   TurnStream,
+  CaseFileFilter,
 } from '@tradecraft/player-view';
+import { TALK_TUTORIAL, tutorialSuggestion } from '@tradecraft/player-view';
 
 /**
  * The engine action a turn is taken on. `player-view` re-exports the action
@@ -78,7 +80,18 @@ import { ActionMenu } from '../here/action-menu.js';
 import { CaseFileBrowser } from '../casefile/case-file-browser.js';
 import { DocumentsPane } from '../documents/documents.js';
 import { Workbench } from '../workbench/workbench.js';
-import { CityPane, DutiesPane, JournalPane, MapPane, PeoplePane, StoriesPane } from '../views/index.js';
+import {
+  CarriagePane,
+  CityPane,
+  DeparturesPane,
+  DutiesPane,
+  JournalPane,
+  MapPane,
+  PapersPane,
+  PeoplePane,
+  RegionMapPane,
+  StoriesPane,
+} from '../views/index.js';
 import { FeedComposer } from '../feed/feed-composer.js';
 import type { ComposeOptions } from '../feed/feed.js';
 import { SaveLoadScreen } from '../save-load/save-load-screen.js';
@@ -86,12 +99,12 @@ import { EndpointErrorScreen } from '../endpoint-error/endpoint-error-screen.js'
 import { GameOverScreen } from '../game-over/game-over-screen.js';
 import { Debrief } from '../debrief/debrief.js';
 import { HelpOverlay } from '../overlay/help-overlay.js';
-import type { AdmiraltyGrade, ClaimId, EntityId } from '../casefile/case-file.js';
-import {
-  initialShellState,
-  reduceShell,
-  type ShellState,
-} from './shell.js';
+import type {
+  AdmiraltyGrade,
+  ClaimId,
+  EntityId,
+} from '../casefile/case-file.js';
+import { initialShellState, reduceShell, type ShellState } from './shell.js';
 import type { InterceptId, Screen } from './screen.js';
 
 /** The start defaults the launcher threads in (design `AppShell({ defaults })`). */
@@ -217,7 +230,9 @@ export function AppShell({ api, defaults }: AppShellProps): ReactElement {
 
   const say = useCallback(
     (text: string, offer?: number): void => {
-      void consume(() => api.say(text, offer === undefined ? undefined : { offer }));
+      void consume(() =>
+        api.say(text, offer === undefined ? undefined : { offer }),
+      );
     },
     [api, consume],
   );
@@ -442,14 +457,7 @@ function ScreenView({
       );
 
     case 'case-file':
-      return (
-        <CaseFileBrowser
-          claims={api.caseFile.list({})}
-          onGrade={(id: ClaimId, grade: AdmiraltyGrade) => api.caseFile.grade(id, grade)}
-          onLink={(a: ClaimId, b: ClaimId) => api.caseFile.link(a, b)}
-          onUnlink={(a: ClaimId, b: ClaimId) => api.caseFile.unlink(a, b)}
-        />
-      );
+      return <RegionalCaseFile api={api} />;
 
     case 'documents': {
       const list = api.views.documents();
@@ -460,7 +468,9 @@ function ScreenView({
           : list.documents.findIndex((entry) => entry.id === openId);
       const document: DocumentView | undefined =
         openId === undefined ? undefined : api.views.document(openId);
-      return <DocumentsPane view={list} selected={selected} document={document} />;
+      return (
+        <DocumentsPane view={list} selected={selected} document={document} />
+      );
     }
 
     case 'workbench': {
@@ -501,6 +511,18 @@ function ScreenView({
     case 'people':
       return <PeoplePane view={api.views.people()} selected={-1} />;
 
+    case 'region':
+      return <RegionMapPane view={api.views.region()} />;
+
+    case 'departures':
+      return <DeparturesPane view={api.views.departures()} />;
+
+    case 'papers':
+      return <PapersPane papers={api.views.papers()} />;
+
+    case 'carriage':
+      return <CarriagePane view={api.views.carriage()} />;
+
     case 'feed':
       return (
         <FeedComposer
@@ -508,7 +530,11 @@ function ScreenView({
           options={composeOptions(api)}
           validateFeed={(items: readonly FeedItem[]) => api.validateFeed(items)}
           onSubmit={(items: readonly FeedItem[]) =>
-            onAct({ kind: 'feed', asset: screen.asset, items: [...items] } as Action)
+            onAct({
+              kind: 'feed',
+              asset: screen.asset,
+              items: [...items],
+            } as Action)
           }
         />
       );
@@ -563,6 +589,21 @@ function ScreenView({
   }
 }
 
+function RegionalCaseFile({ api }: { readonly api: EngineApi }): ReactElement {
+  const [filter, setFilter] = useState<CaseFileFilter>({});
+  const cities = (api.views.region()?.cities ?? []).map((city) => city.id);
+  return (
+    <CaseFileBrowser
+      claims={api.caseFile.list(filter)}
+      cities={cities}
+      onFilter={setFilter}
+      onGrade={(id: ClaimId, grade: AdmiraltyGrade) => api.caseFile.grade(id, grade)}
+      onLink={(a: ClaimId, b: ClaimId) => api.caseFile.link(a, b)}
+      onUnlink={(a: ClaimId, b: ClaimId) => api.caseFile.unlink(a, b)}
+    />
+  );
+}
+
 /** Props for the scene screen (the main gameplay view). */
 interface SceneScreenProps {
   readonly api: EngineApi;
@@ -587,6 +628,8 @@ function SceneScreen({
   onAct,
 }: SceneScreenProps): ReactElement {
   const options: readonly ActionOption[] = menuOpen ? api.actions() : [];
+  const suggestion =
+    talkNpc !== null ? TALK_TUTORIAL : tutorialSuggestion(api)?.text;
   const latestAlert = state.alerts.at(-1);
   const dutyAlert = [...state.alerts]
     .reverse()
@@ -612,6 +655,11 @@ function SceneScreen({
           <HerePane here={api.views.here()} />
         </Box>
       </Box>
+      {suggestion !== undefined && (
+        <Box marginTop={1}>
+          <Text color="yellow">{suggestion}</Text>
+        </Box>
+      )}
       {talkNpc !== null && (
         <Box marginTop={1} flexDirection="column">
           <Text>
@@ -619,7 +667,9 @@ function SceneScreen({
             {line}
             {state.streaming ? '' : '_'}
           </Text>
-          <Text dimColor>Type a line, Enter to say it · Esc to end the scene</Text>
+          <Text dimColor>
+            Type a line, Enter to say it · Esc to end the scene
+          </Text>
         </Box>
       )}
       {menuOpen && talkNpc === null && (

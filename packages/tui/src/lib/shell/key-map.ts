@@ -38,6 +38,10 @@ export type ShellKeyAction =
   | 'open-stories'
   | 'open-duties'
   | 'open-people'
+  | 'open-region'
+  | 'open-departures'
+  | 'open-papers'
+  | 'open-carriage'
   | 'open-feed'
   | 'save'
   | 'load'
@@ -71,6 +75,10 @@ export const KEY_MAP: readonly KeyBinding[] = [
   { key: 'r', action: 'open-stories', description: 'Stories' },
   { key: 'k', action: 'open-duties', description: 'Cover duties' },
   { key: 'p', action: 'open-people', description: 'People' },
+  { key: 'n', action: 'open-region', description: 'Region map' },
+  { key: 'b', action: 'open-departures', description: 'Departures' },
+  { key: 'a', action: 'open-papers', description: 'Papers' },
+  { key: 't', action: 'open-carriage', description: 'Carriage' },
   { key: 'f', action: 'open-feed', description: 'Feed composer for the selected turned Asset' },
   { key: 's', action: 'save', description: 'Save' },
   { key: 'l', action: 'load', description: 'Load' },

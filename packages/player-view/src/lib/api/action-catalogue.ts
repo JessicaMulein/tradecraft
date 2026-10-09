@@ -72,6 +72,7 @@ import {
 
 import type { ActionOption } from './types.js';
 import { isKnownLocation } from './views.js';
+import { departuresView } from '../region/views.js';
 
 /**
  * The arrest-evidence count for an entity, as the Case File computes it
@@ -204,6 +205,41 @@ export function buildActionCatalogue(
       continue;
     }
     add({ kind: 'attend-duty', duty: duty.id });
+  }
+
+  if (state.region !== undefined) {
+    for (const row of departuresView(state)) {
+      add({
+        kind: 'depart',
+        route: row.route as Extract<Action, { kind: 'depart' }>['route'],
+        at: row.at,
+        papers: row.papers as Extract<Action, { kind: 'depart' }>['papers'],
+      });
+    }
+    for (const kind of paperKinds(state)) {
+      add({ kind: 'request-papers', doc: kind, holder: 'player' });
+    }
+    for (const country of visaCountries(state)) {
+      add({ kind: 'apply-visa', country });
+    }
+    const about = knownEntities(state)[0];
+    for (const service of liaisonServices(state)) {
+      if (about !== undefined) {
+        add({ kind: 'liaison-request', service, about });
+      }
+      add({ kind: 'liaison-share', service, props: [] });
+    }
+    for (const asset of runningAssets(state)) {
+      for (const row of departuresView(state)) {
+        add({
+          kind: 'exfiltrate',
+          asset,
+          route: row.route as Extract<Action, { kind: 'exfiltrate' }>['route'],
+          at: row.at,
+          papers: row.papers as Extract<Action, { kind: 'exfiltrate' }>['papers'],
+        });
+      }
+    }
   }
 
   return options;
@@ -409,4 +445,37 @@ function isNpcId(id: EntityId): boolean {
 /** Order ids for a total, stable listing. */
 function compareIds(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
+}
+
+function paperKinds(state: WorldState): string[] {
+  const kinds = new Set<string>();
+  for (const post of Object.values(state.region?.borderPosts ?? {})) {
+    for (const kind of post.documents) {
+      kinds.add(kind);
+    }
+  }
+  return [...kinds].sort(compareIds);
+}
+
+function visaCountries(state: WorldState): string[] {
+  const here = state.player.city;
+  const current = here === undefined || here === null ? undefined : state.region?.cities[here]?.country;
+  const countries = new Set<string>();
+  for (const id of state.region?.order ?? []) {
+    const country = state.region?.cities[id]?.country;
+    if (country !== undefined && country !== current) {
+      countries.add(country);
+    }
+  }
+  return [...countries].sort(compareIds);
+}
+
+function liaisonServices(state: WorldState): Extract<Action, { kind: 'liaison-request' }>['service'][] {
+  const ids: Extract<Action, { kind: 'liaison-request' }>['service'][] = [];
+  for (const service of Object.values(state.services ?? {})) {
+    if (service.liaison !== undefined) {
+      ids.push(service.id);
+    }
+  }
+  return ids.sort(compareIds);
 }

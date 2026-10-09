@@ -71,6 +71,7 @@ import type { CityData } from '@tradecraft/content';
 import type { AliasResolver, CaseFile, Claim } from '../casefile/casefile.js';
 import { isAliasPredicate } from '../casefile/casefile.js';
 import { knownLocationStatus } from '../city/city-views.js';
+import { cityOfPlace } from '../region/views.js';
 
 function statusField(state: WorldState, loc: string): { readonly status: string } | Record<string, never> {
   const status = knownLocationStatus(state, loc);
@@ -179,6 +180,13 @@ export interface SceneView {
   readonly crowd: CrowdLevel;
   /** Visible persons by name-or-descriptor (design `visible: { label }`). */
   readonly visible: readonly PersonLabel[];
+  /**
+   * The current city and its style sheet. Absent in slice mode.
+   */
+  readonly city?: {
+    readonly name: string;
+    readonly styleSheet?: string;
+  };
 }
 
 /**
@@ -271,6 +279,49 @@ function locationPublicFacts(
   };
 }
 
+function sceneCity(state: WorldState): SceneView['city'] | undefined {
+  const id = state.player.city;
+  const region = state.region;
+  if (id === undefined || id === null || region === undefined) {
+    return undefined;
+  }
+  const city = region.cities[id];
+  if (city === undefined) {
+    return undefined;
+  }
+  const sheet = city.styleSheet?.trim();
+  return {
+    name: city.name ?? id,
+    ...(sheet === undefined || sheet.length === 0 ? {} : { styleSheet: sheet }),
+  };
+}
+
+function carriageLabels(state: WorldState): PersonLabel[] | undefined {
+  const placed = state.locationOf?.player;
+  if (placed === undefined || !('transit' in placed)) {
+    return undefined;
+  }
+  const transit = state.transits?.[placed.transit];
+  if (transit === undefined) {
+    return undefined;
+  }
+  const labels: PersonLabel[] = [];
+  for (const who of transit.travellers) {
+    if (who === 'player') {
+      continue;
+    }
+    const npc = who as NpcId;
+    if (state.npcs[npc] !== undefined) {
+      labels.push(personLabel(state, npc));
+    }
+  }
+  return labels;
+}
+
+function visibleHere(state: WorldState, loc: LocId): PersonLabel[] {
+  return carriageLabels(state) ?? visiblePersonLabels(state, loc);
+}
+
 /**
  * Build the {@link SceneView} for the player's current Location (or an explicit
  * Location, for a scene opened elsewhere). Composes the engine's
@@ -296,8 +347,14 @@ export function sceneView(
     time: state.time,
     weather: weatherNow(state, cityData).label,
     crowd: crowdNow(state, cityData, loc),
-    visible: visiblePersonLabels(state, loc),
+    visible: visibleHere(state, loc),
+    ...sceneCityField(state),
   };
+}
+
+function sceneCityField(state: WorldState): { readonly city: NonNullable<SceneView['city']> } | Record<string, never> {
+  const city = sceneCity(state);
+  return city === undefined ? {} : { city };
 }
 
 /** Build the {@link HereView} for the player's current Location. */
@@ -319,7 +376,7 @@ export function hereView(
     },
     crowd: crowdNow(state, cityData, loc),
     weather: weatherNow(state, cityData).label,
-    visible: visiblePersonLabels(state, loc),
+    visible: visibleHere(state, loc),
   };
 }
 
@@ -475,6 +532,8 @@ export interface CaseFileFilter {
   readonly source?: Claim['source']['kind'];
   /** Keep only Claims the player graded to this value. */
   readonly grade?: NonNullable<Claim['grade']>;
+  /** Keep only Claims whose place sits in this city. */
+  readonly city?: string;
 }
 
 /**
@@ -485,7 +544,11 @@ export interface CaseFileFilter {
  * `unk:` id the player has linked to him. Pure over the Case File's view-safe
  * Claims.
  */
-export function listClaims(cf: CaseFile, filter: CaseFileFilter = {}): ClaimView[] {
+export function listClaims(
+  cf: CaseFile,
+  filter: CaseFileFilter = {},
+  state?: WorldState,
+): ClaimView[] {
   const canon = cf.aliases();
   const target = filter.entity === undefined ? undefined : canon(filter.entity);
   return cf.list().filter((claim) => {
@@ -497,6 +560,12 @@ export function listClaims(cf: CaseFile, filter: CaseFileFilter = {}): ClaimView
     }
     if (target !== undefined && !concernsEntity(claim, target, canon)) {
       return false;
+    }
+    if (filter.city !== undefined) {
+      const found = state === undefined ? undefined : cityOfPlace(state, claim.prop.place);
+      if (found !== filter.city) {
+        return false;
+      }
     }
     return true;
   });
@@ -859,6 +928,8 @@ export interface PersonEntry {
   readonly claimsAsSubject: number;
   /** How many Case File Claims come from this person as a source. */
   readonly claimsAsSource: number;
+  /** The city the player last saw them in. Absent until a sighting names one. */
+  readonly lastKnownCity?: { readonly id: string; readonly name: string };
 }
 
 /** A known organisation on the People view (design: "a parallel list of known organisations"). */
@@ -1021,6 +1092,7 @@ export function peopleView(state: WorldState, caseFile: CaseFile): PeopleView {
     }
 
     const label = personLabel(state, npc);
+    const knownCity = lastKnownCity(state, npc, visibleNpcsAt(state, state.player.loc).includes(npc), concerning);
     return {
       id: label.id,
       identified: isIdentified(state, npc),
@@ -1032,6 +1104,7 @@ export function peopleView(state: WorldState, caseFile: CaseFile): PeopleView {
       rapport: rapportBandOf(relationshipTrust(state, npc)),
       claimsAsSubject,
       claimsAsSource,
+      ...(knownCity === undefined ? {} : { lastKnownCity: knownCity }),
     };
   });
 
@@ -1063,6 +1136,39 @@ export function peopleView(state: WorldState, caseFile: CaseFile): PeopleView {
     });
 
   return { people, orgs, items };
+}
+
+function lastKnownCity(
+  state: WorldState,
+  _npc: NpcId,
+  visibleNow: boolean,
+  claims: readonly Claim[],
+): { readonly id: string; readonly name: string } | undefined {
+  const region = state.region;
+  if (region === undefined) {
+    return undefined;
+  }
+  const named = (id: string): { readonly id: string; readonly name: string } => {
+    const city = region.cities[id as keyof typeof region.cities];
+    return { id, name: city?.name ?? id };
+  };
+  if (visibleNow && state.player.city !== undefined && state.player.city !== null) {
+    return named(state.player.city);
+  }
+  let latest: { readonly at: GameTime; readonly id: string } | undefined;
+  for (const claim of claims) {
+    const id = cityOfPlace(state, claim.prop.place);
+    if (id === undefined) {
+      continue;
+    }
+    if (latest === undefined || compareTimeDesc(claim.observedAt, latest.at) > 0) {
+      latest = { at: claim.observedAt, id };
+    }
+  }
+  if (latest === undefined) {
+    return undefined;
+  }
+  return named(latest.id);
 }
 
 /**

@@ -79,6 +79,7 @@ import {
   type LeakContext,
 } from '../leak-guard/leak-guard.js';
 import type { SpecificsContext } from '../specifics-guard/specifics-guard.js';
+import { knownCityNames } from '../narrator/city-names.js';
 import {
   specificsPhaseFromOrdinal,
   streamNarration,
@@ -488,13 +489,14 @@ export function buildNarrateSeam(gateway: Gateway, deps: LiveSeamDeps): NarrateS
     const registry = registryFromWorld(state);
     const leak: LeakContext = { registry, allowed: knownEntities(state) };
     const labels = ambientEventLabels(state);
+    const allowed = [...labels, ...knownCityNames(state)];
     const specifics: SpecificsContext = {
       factLines: result.factLines,
       sceneDescriptor: [describeScene(state), ...labels].join(' '),
       // The Specifics Guard's `phase` is the time-of-day *word*, not the engine
       // ordinal; convert through the dialogue helper.
       phase: specificsPhaseFromOrdinal(state.time.phase),
-      ...(labels.length > 0 ? { allowedWords: labels } : {}),
+      ...(allowed.length > 0 ? { allowedWords: allowed } : {}),
     };
 
     const narration = await streamNarration(
@@ -695,11 +697,21 @@ function ambientEventLabels(state: WorldState): readonly string[] {
 function describeScene(state: WorldState): string {
   const place = state.city.locations[state.player.loc];
   const labels = ambientEventLabels(state);
-  const base = `${place?.name ?? state.player.loc}. It is ${timePhrase(state.time)}.`;
+  const city = currentCityName(state);
+  const where = city === undefined ? (place?.name ?? state.player.loc) : `${city}, ${place?.name ?? state.player.loc}`;
+  const base = `${where}. It is ${timePhrase(state.time)}.`;
   if (labels.length === 0) {
     return base;
   }
   return `${base} ${labels.join(', ')}.`;
+}
+
+function currentCityName(state: WorldState): string | undefined {
+  const id = state.player.city;
+  if (id === undefined || id === null) {
+    return undefined;
+  }
+  return state.region?.cities[id]?.name;
 }
 
 /** An empty Knowledge Slice, used when the NPC's slice is not yet projected. */
@@ -808,12 +820,21 @@ function voicePromptInput(
 /** Build the Narrator model's messages from a committed action's Fact Lines. */
 function narratorMessages(state: WorldState, result: ActionResult): CallInput {
   const place = state.city.locations[state.player.loc];
+  const cityName = currentCityName(state);
+  const cityId = state.player.city;
+  const sheet =
+    cityId === undefined || cityId === null ? undefined : state.region?.cities[cityId]?.styleSheet?.trim();
+  const placeLine =
+    cityName === undefined
+      ? `You are at ${place?.name ?? state.player.loc}, in the ${timePhrase(state.time)}.`
+      : `You are in ${cityName}, at ${place?.name ?? state.player.loc}, in the ${timePhrase(state.time)}.`;
+  const styleLine = sheet === undefined || sheet.length === 0 ? '' : `\n${sheet}`;
   const frame = [
     'You are the narrator of a Cold War espionage drama. Describe the scene in',
     'the second person, present tense, in at most three sentences of sensory',
     'texture. Add no events beyond the facts. Name nothing not already named.',
     'Use no numbers, days of the week, dates or clock times.',
-    `You are at ${place?.name ?? state.player.loc}, in the ${timePhrase(state.time)}.`,
+    `${placeLine}${styleLine}`,
   ].join('\n');
   const facts =
     result.factLines.length === 0

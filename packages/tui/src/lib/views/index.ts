@@ -12,6 +12,8 @@ export { MapPane, type MapPaneProps } from './map-view.js';
 
 export { CityPane, DutiesPane, NoticeLines, StoriesPane } from './city-views.js';
 
+export { CarriagePane, DeparturesPane, PapersPane, RegionMapPane } from './region-panes.js';
+
 export {
   PeopleList,
   PeoplePane,

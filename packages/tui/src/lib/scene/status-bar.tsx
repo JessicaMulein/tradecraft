@@ -52,7 +52,20 @@ export interface StatusBarProps {
   readonly dutyAlert?: string;
 }
 
-/** The highlighted action's cost summary, e.g. "surveil: 1 phase, 20". */
+function whereLabel(status: StatusView): string {
+  if (status.transit !== undefined) {
+    const arrives = formatTime(status.transit.arrives);
+    return `In transit → ${status.transit.destination.name} (arrives ${arrives})`;
+  }
+  return status.location.name;
+}
+
+function cityPrefix(status: StatusView): string {
+  if (status.city === undefined || status.transit !== undefined) {
+    return '';
+  }
+  return `${status.city.name} · `;
+}
 function costLabel(option: ActionOption): string {
   const { action, quote } = option;
   const phases = `${quote.phases} ${quote.phases === 1 ? 'phase' : 'phases'}`;
@@ -76,7 +89,8 @@ export function StatusBar({
     <Box flexDirection="column">
       <Box>
         <Text>
-          {formatTime(status.time)} · {status.location.name} · Budget{' '}
+          {cityPrefix(status)}
+          {formatTime(status.time)} · {whereLabel(status)} · Budget{' '}
           {status.budget} · Standing {status.standing}
         </Text>
       </Box>

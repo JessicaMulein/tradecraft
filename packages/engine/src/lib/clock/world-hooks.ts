@@ -83,6 +83,7 @@ import { publicTextLocations } from '../docs/public-text.js';
 import type { NamerContext } from '../docs/namer.js';
 import { projectFullTick, applyFullTick } from '../hostile/project.js';
 import { publishOutletEditions, retirePreviousEditions } from '../ambient/news.js';
+import { publishCityEditions } from '../region/notices.js';
 import { ambientDayBoundary } from '../ambient/tick.js';
 import { informantReportsForTick } from '../ambient/hooks.js';
 import { dailyTickFull } from '../hostile/hostile.js';
@@ -843,9 +844,16 @@ const newspaperHook: WorldHook = (draft, ctx) => {
     ? withOutlets
     : retirePreviousEditions(withOutlets, ctx.time.day);
 
+  if (published.region === undefined) {
+    return {
+      state: published,
+      events: [event],
+    };
+  }
+  const regional = publishCityEditions(published, ctx.time, obtainableAt);
   return {
-    state: published,
-    events: [event],
+    state: regional.state,
+    events: [event, ...regional.events],
   };
 };
 

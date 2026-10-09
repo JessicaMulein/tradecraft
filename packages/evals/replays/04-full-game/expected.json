@@ -10,7 +10,7 @@
           {
             "id": "core",
             "version": "1.0.0",
-            "hash": "02fe241d4483c8a6cb8abefbe8aa6d76d1bff51aac021f14170ece490f7a59f3"
+            "hash": "781f677ec5b63615ccf61ae7fadfa6a8e5473eff11c212d3e664451bb8cce17f"
           }
         ]
       },
@@ -9030,7 +9030,7 @@
       "cause": "leader-arrested"
     }
   },
-  "stateHash": "e2f45d7f41a86fe177787e45351f951906ed7791989bd91c315d582f92975e36",
+  "stateHash": "2911d7a473ec310da84ca5d3392d6e89c2bb3b79a60cca322e46b1c88bf030c7",
   "actionLog": [
     {
       "seq": 0,

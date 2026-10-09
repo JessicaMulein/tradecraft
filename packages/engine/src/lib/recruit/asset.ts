@@ -196,6 +196,8 @@ export interface Relationship {
    * 36.7). Absent means the NPC is at liberty.
    */
   readonly custody?: Custody;
+  /** Set when an exfiltration resettles the Asset. Detection no longer tracks them. */
+  readonly resettled?: boolean;
 }
 
 /**

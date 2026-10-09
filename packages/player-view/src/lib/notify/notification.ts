@@ -24,13 +24,17 @@
  */
 
 import type {
+  CityId,
   DeadDropId,
   DirectiveId,
   DocId,
   GameTime,
+  HandoffId,
   MeetingId,
   NotificationId,
   NpcId,
+  ServiceId,
+  TravelDocId,
 } from '@tradecraft/engine';
 
 /**
@@ -90,6 +94,15 @@ export type Notification = NotificationBase &
     | { readonly kind: 'cover-duty-due' | 'cover-duty-missed'; readonly duty: string }
     | { readonly kind: 'cover-employer-message'; readonly text: string }
     | { readonly kind: 'drop-disturbed'; readonly drop: DeadDropId }
+    | { readonly kind: 'departure-cancelled'; readonly route: string }
+    | { readonly kind: 'border-outcome'; readonly post: string; readonly outcome: string }
+    | { readonly kind: 'papers-issued'; readonly doc: TravelDocId }
+    | { readonly kind: 'visa-decision'; readonly country: string; readonly granted: boolean }
+    | { readonly kind: 'liaison-report'; readonly service: ServiceId }
+    | { readonly kind: 'outstation-report'; readonly city: CityId }
+    | { readonly kind: 'courier-delivery'; readonly handoff: HandoffId }
+    | { readonly kind: 'asset-arrived'; readonly npc: NpcId }
+    | { readonly kind: 'expelled'; readonly country: string }
   );
 
 /** The discriminant of a {@link Notification}. */

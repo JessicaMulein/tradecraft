@@ -33,6 +33,9 @@
 
 import { asTruth, revealTruth, type LocId } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
+import { borderCheck, borderFactLine } from '../border/check.js';
+import { projectActiveCity } from '../region/play-clock.js';
+import type { SectorLine } from '../region/world.js';
 import { applyRecogniserPass, npcsAt } from '../carry/recognise.js';
 import { MADE_FACT_LINE } from './surveil.js';
 import { travelCost } from '../city/city.js';
@@ -146,12 +149,25 @@ export function quoteTravel(state: WorldState, a: TravelAction): ActionQuote {
  * to a risky place), each taken from `rng`.
  */
 export function resolveTravel(
-  state: WorldState,
+  incoming: WorldState,
   a: TravelAction,
   rng: Prng,
 ): { next: WorldState; result: ActionResult } {
+  let state = projectActiveCity(incoming);
   const to = a.to;
   const dest = state.city.locations[to];
+  const crossing = sectorCrossing(state, state.player.loc, to);
+  let borderLine: string | undefined;
+  if (crossing !== undefined) {
+    const checked = inspectSector(state, crossing, rng);
+    if (checked.blocked) {
+      return { next: checked.state, result: checked.result };
+    }
+    state = checked.state;
+    if (checked.line.length > 0) {
+      borderLine = checked.line;
+    }
+  }
 
   const tailed = revealTruth(state.player.tailed);
 
@@ -228,8 +244,107 @@ export function resolveTravel(
     state.time,
     to,
   );
-  const result = travelResult(recognised.next, to, suspicionDelta, recognised);
+  const arrivedResult = travelResult(recognised.next, to, suspicionDelta, recognised);
+  const result = borderLine === undefined
+    ? arrivedResult
+    : { ...arrivedResult, factLines: [borderLine, ...arrivedResult.factLines] };
   return { next: recognised.next, result };
+}
+
+function sectorCrossing(state: WorldState, from: LocId, to: LocId): SectorLine | undefined {
+  const region = state.region;
+  const cityId = state.player.city;
+  if (region === undefined || cityId === undefined || cityId === null || from === to) {
+    return undefined;
+  }
+  const city = region.cities[cityId];
+  const origin = state.city.locations[from];
+  const dest = state.city.locations[to];
+  if (city === undefined || origin === undefined || dest === undefined) {
+    return undefined;
+  }
+  return city.sectorLines.find(
+    (line) =>
+      (line.a === origin.district && line.b === dest.district) ||
+      (line.b === origin.district && line.a === dest.district),
+  );
+}
+
+function inspectSector(
+  state: WorldState,
+  line: SectorLine,
+  rng: Prng,
+): {
+  readonly blocked: boolean;
+  readonly state: WorldState;
+  readonly result: ActionResult;
+  readonly line: string;
+} {
+  const region = state.region;
+  const post = region?.borderPosts[line.post];
+  const rules = region?.rules;
+  if (post === undefined || rules === undefined) {
+    return {
+      blocked: false,
+      state,
+      line: '',
+      result: {
+        observations: [],
+        factLines: [],
+        scene: sceneDescriptorAt(state, state.player.loc),
+        events: [],
+        claimsAdded: [],
+      },
+    };
+  }
+  const papers = selectedTravelPapers(state);
+  const checked = borderCheck(
+    {
+      post: { id: post.id, name: post.id, strictness: post.strictness, documents: post.documents },
+      at: state.time,
+      traveller: { identity: 'player', descriptor: state.player.cover.title },
+      papers,
+      items: [],
+      watch: asTruth({ persons: [], descriptors: [] }),
+      rules: {
+        watchListSensitivity: rules.watchListSensitivity,
+        detentionPhases: rules.detentionPhases,
+        contrabandCashThreshold: rules.contrabandCashThreshold,
+      },
+    },
+    rng,
+  );
+  const lineText = borderFactLine(checked.outcome, post.id);
+  const suspicion = revealTruth(state.player.coverSuspicion) + checked.suspicionDelta;
+  const stayed: WorldState = {
+    ...state,
+    player: { ...state.player, coverSuspicion: asTruth(suspicion) },
+  };
+  const blocked = checked.outcome === 'refused' || checked.outcome === 'detained';
+  return {
+    blocked,
+    state: stayed,
+    line: lineText,
+    result: {
+      observations: [{ kind: 'message', line: lineText }],
+      factLines: [lineText],
+      scene: sceneDescriptorAt(stayed, stayed.player.loc),
+      events: [],
+      claimsAdded: [],
+    },
+  };
+}
+
+function selectedTravelPapers(state: WorldState) {
+  const docs = state.travelDocs ?? {};
+  const papers = [];
+  for (const id of state.player.papers ?? []) {
+    const paper = docs[id];
+    if (paper !== undefined) {
+      papers.push(paper);
+    }
+  }
+  return papers;
 }
 
 /**

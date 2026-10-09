@@ -68,9 +68,9 @@ const C3: AdmiraltyGrade = { reliability: 'C', credibility: 3 };
 // ---------------------------------------------------------------------------
 
 describe('ClaimSource', () => {
-  it('covers exactly the four source kinds', () => {
+  it('covers exactly the source kinds', () => {
     expect([...CLAIM_SOURCE_KINDS].sort()).toEqual(
-      ['document', 'intercept', 'npc', 'surveillance'].sort(),
+      ['document', 'intercept', 'liaison', 'npc', 'surveillance'].sort(),
     );
   });
 
@@ -81,8 +81,9 @@ describe('ClaimSource', () => {
       sourceKey({ kind: 'intercept', id: 'int:7' }),
       sourceKey({ kind: 'surveillance', loc: 'loc:pier' }),
       sourceKey({ kind: 'document', id: 'doc:cable-1' }),
+      sourceKey({ kind: 'liaison', service: 'service:atlantic' }),
     ]);
-    expect(keys.size).toBe(5);
+    expect(keys.size).toBe(6);
   });
 
   it('separates an npc source from an intercept with a colliding local id', () => {
@@ -92,13 +93,18 @@ describe('ClaimSource', () => {
     expect(a).not.toBe(b);
   });
 
-  it('records a Claim from each of the four source kinds', () => {
+  it('records a Claim from each source kind', () => {
     const cf = new CaseFile();
     const inputs: ClaimInput[] = [
       { source: { kind: 'npc', npc: 'npc:ana' }, prop: prop('npc:x', 'MEMBER_OF', 'org:cell'), observedAt: T0 },
       { source: { kind: 'intercept', id: 'int:1' }, prop: prop('npc:x', 'MEETS_AT', 'npc:y'), observedAt: T0 },
       { source: { kind: 'surveillance', loc: 'loc:cafe' }, prop: prop('npc:x', 'LOCATED_AT', 'loc:cafe'), observedAt: T0 },
       { source: { kind: 'document', id: 'doc:news-1' }, prop: prop('npc:x', 'TRAVELS_TO', 'loc:port'), observedAt: T0 },
+      {
+        source: { kind: 'liaison', service: 'service:atlantic' },
+        prop: prop('npc:x', 'MEMBER_OF', 'org:desk'),
+        observedAt: T0,
+      },
     ];
     for (const input of inputs) {
       cf.add(input);

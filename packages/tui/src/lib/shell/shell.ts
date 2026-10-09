@@ -150,6 +150,14 @@ function applyKeyAction(state: ShellState, action: ShellKeyAction): ShellState {
       return { ...state, screen: { kind: 'duties' }, overlay: undefined };
     case 'open-people':
       return { ...state, screen: { kind: 'people' }, overlay: undefined };
+    case 'open-region':
+      return { ...state, screen: { kind: 'region' }, overlay: undefined };
+    case 'open-departures':
+      return { ...state, screen: { kind: 'departures' }, overlay: undefined };
+    case 'open-papers':
+      return { ...state, screen: { kind: 'papers' }, overlay: undefined };
+    case 'open-carriage':
+      return { ...state, screen: { kind: 'carriage' }, overlay: undefined };
     case 'open-feed':
       // The feed composer needs a selected turned Asset; the component supplies
       // it with an explicit `navigate`. The global `f` key is a no-op here when

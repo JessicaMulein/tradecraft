@@ -1,0 +1,14 @@
+- id: deliver
+  era:
+    from: 1948
+    to: 1961
+  city: B
+  handoff:
+    from: acquire
+    carrier: courier-line
+    modes:
+      - rail
+  cityRoles:
+    A:
+      not: hub
+    B: {}

@@ -133,6 +133,12 @@ export {
 } from './lib/aids/help.js';
 
 export {
+  tutorialSuggestion,
+  TALK_TUTORIAL,
+  type TutorialSuggestion,
+} from './lib/aids/tutorial.js';
+
+export {
   HintStore,
   type HintView,
   // The view-side hint trigger definitions (slice-integration task 8.4): the
@@ -236,9 +242,7 @@ export {
   type JournalSnapshot,
 } from './lib/journal/journal.js';
 
-export {
-  type NotificationStoreSnapshot,
-} from './lib/notify/store.js';
+export { type NotificationStoreSnapshot } from './lib/notify/store.js';
 
 export {
   type ActionLogSnapshot,
@@ -358,3 +362,17 @@ export {
   type KnownEnemyView,
   type OfficerView,
 } from './lib/campaign/api.js';
+export { paperViews, type PaperView } from './lib/region/papers.js';
+export { liaisonViews, type LiaisonServiceView, type TrustBand } from './lib/region/liaison.js';
+export {
+  carriageView,
+  cityOfPlace,
+  departuresView,
+  papersView,
+  regionMapView,
+  type CarriageView,
+  type DepartureView,
+  type RegionCityView,
+  type RegionMapView,
+  type RegionRouteView,
+} from './lib/region/views.js';

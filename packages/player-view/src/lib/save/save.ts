@@ -13,11 +13,17 @@
  * top level too, as the design's `SaveSnapshot` writes it, so a reader can list
  * a save's Budget without walking the whole world.
  *
+ * ## Version 4 (multi-city)
+ *
+ * `SAVE_VERSION` is `4`. The world may carry a region: every city's state and
+ * fidelity tier, the per-city streams, transits, service beliefs and pending
+ * handoffs. A version 3 save has no region and still loads in slice mode.
+ * This build writes 4.
+ *
  * ## Version 3 (ambient-world)
  *
- * `SAVE_VERSION` is `3`. The world may carry `ambient`. A save whose world has
- * no `ambient` field loads with ambient disabled. Version 2 remains the
- * slice-integration shape described below; this build writes 3.
+ * Version 3 may carry `ambient`. A save whose world has no `ambient` field
+ * loads with ambient disabled.
  *
  * ## Version 2 (slice-integration task 9.3)
  *
@@ -59,8 +65,8 @@
  * {@link LoadError} (the facade's own vocabulary) rather than throwing:
  *
  *   - **version** — the save's `version` is not the one this build writes
- *     (`SAVE_VERSION`, currently 3). A save from a newer or older format — an
- *     older version-1 save included — is not silently reinterpreted;
+ *     (`SAVE_VERSION`, currently 4). A version 3 save still loads. Any other
+ *     version is not silently reinterpreted;
  *     {@link parseAndLoad} reports a `version` error before its strict schema
  *     could reject the different shape as `corrupt` (slice task 9.3, Req 13.5).
  *   - **manifest-mismatch** — the save's Content Manifest differs from the
@@ -128,7 +134,12 @@ import type { LoadError } from '../api/types.js';
  * read; {@link loadSnapshot} refuses any other version with a `version`
  * {@link LoadError} rather than guessing (Requirement 17.1).
  */
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
+
+/** Versions this build restores. Version 3 is a slice or ambient save. */
+export function readableSaveVersion(version: number): boolean {
+  return version === 3 || version === SAVE_VERSION;
+}
 
 // ---------------------------------------------------------------------------
 // The Flavour-cache snapshot shape
@@ -724,7 +735,7 @@ export function loadSnapshot(
   snapshot: SaveSnapshot,
   loadedManifest: ContentManifest,
 ): LoadResult {
-  if (snapshot.version !== SAVE_VERSION) {
+  if (!readableSaveVersion(snapshot.version)) {
     return {
       ok: false,
       error: { kind: 'version', saved: snapshot.version, supported: SAVE_VERSION },
@@ -768,7 +779,7 @@ export function parseAndLoad(value: unknown, loadedManifest: ContentManifest): L
   // readable numeric `version` is genuinely malformed and falls through to the
   // schema's `corrupt` path.
   const version = readVersion(value);
-  if (version !== undefined && version !== SAVE_VERSION) {
+  if (version !== undefined && !readableSaveVersion(version)) {
     return {
       ok: false,
       error: { kind: 'version', saved: version, supported: SAVE_VERSION },

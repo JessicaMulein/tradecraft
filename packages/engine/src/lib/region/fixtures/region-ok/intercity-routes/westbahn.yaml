@@ -1,0 +1,11 @@
+- id: westbahn
+  era:
+    from: 1948
+    to: 1961
+  mode: rail
+  terminals:
+    - city-vienna/kaffeehaus
+    - city-vienna/cafe-mohnblume
+  timetable: morning
+  duration: 4
+  fare: 12

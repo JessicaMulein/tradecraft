@@ -306,7 +306,7 @@ function moveEvent(to: LocId, at: GameTime, npc: NpcId, from: LocId, id: string)
 /** A generated event: a meeting of 2–3 NPCs, or a single-NPC move, at a phase offset. */
 type GenEvent =
   | { readonly tag: 'meeting'; readonly who: readonly number[]; readonly phaseOffset: number }
-  | { readonly tag: 'move'; readonly who: number; readonly phaseOffset: number };
+  | { readonly tag: 'move' | 'terminal' | 'carriage'; readonly who: number; readonly phaseOffset: number };
 
 function genEventArb(npcCount: number): fc.Arbitrary<GenEvent> {
   const idx = fc.integer({ min: 0, max: npcCount - 1 });
@@ -320,7 +320,7 @@ function genEventArb(npcCount: number): fc.Arbitrary<GenEvent> {
       }),
     );
   const move = fc.record({
-    tag: fc.constant('move' as const),
+    tag: fc.constantFrom('move' as const, 'terminal' as const, 'carriage' as const),
     who: idx,
     phaseOffset: fc.integer({ min: 0, max: 1 }),
   });

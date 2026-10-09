@@ -1,0 +1,11 @@
+- id: bloc-rivalry
+  era: { from: 1948, to: 1954 }
+  edges:
+    - from: era-cold-war-early/hostile-foreign-directorate
+      to: era-cold-war-early/hostile-security-apparat
+      share: true
+      delayPhases: 2
+    - from: era-cold-war-early/hostile-foreign-directorate
+      to: era-cold-war-early/own-service
+      share: false
+      delayPhases: 1

@@ -77,12 +77,14 @@ describe('reduceCaseFile filter axis focus', () => {
     s = reduceCaseFile(s, { type: 'axis-next' });
     expect(s.axis).toBe('entity');
     s = reduceCaseFile(s, { type: 'axis-next' });
+    expect(s.axis).toBe('city');
+    s = reduceCaseFile(s, { type: 'axis-next' });
     expect(s.axis).toBe('source');
   });
 
   it('walks backward and wraps', () => {
     const s = reduceCaseFile(initialCaseFileState(), { type: 'axis-prev' });
-    expect(s.axis).toBe('entity');
+    expect(s.axis).toBe('city');
   });
 });
 
@@ -100,13 +102,14 @@ describe('reduceCaseFile source filter (Req 13.3)', () => {
       'intercept',
       'surveillance',
       'document',
+      'liaison',
       undefined,
     ]);
   });
 
   it('cycles the source axis backward from all to the last kind', () => {
     const s = reduceCaseFile(initialCaseFileState(), { type: 'filter-prev' });
-    expect(s.filter.source).toBe('document');
+    expect(s.filter.source).toBe('liaison');
   });
 
   it('omits the source key entirely when back on "all"', () => {

@@ -1,0 +1,12 @@
+- id: north-frontier
+  era: { from: 1948, to: 1961 }
+  between: { kind: countries, a: Northland, b: Eastland }
+- id: east-frontier
+  era: { from: 1948, to: 1961 }
+  between: { kind: countries, a: Eastland, b: Southland }
+- id: south-line-border
+  era: { from: 1948, to: 1961 }
+  between: { kind: sector-line, line: south-line }
+- id: west-coast
+  era: { from: 1948, to: 1961 }
+  between: { kind: countries, a: Westland, b: Northland }

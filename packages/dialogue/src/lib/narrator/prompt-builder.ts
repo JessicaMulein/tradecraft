@@ -108,12 +108,14 @@ const NARRATOR_FRAME = [
 // ---------------------------------------------------------------------------
 
 /** The city style-sheet block (block 2), or `undefined` when no style is given. */
-function renderStyle(style: NarratorStyle | undefined): string | undefined {
+function renderStyle(style: NarratorStyle | undefined, scene: SceneDescriptor): string | undefined {
+  const fromScene = scene.city?.styleSheet?.trim();
   const sheet = style?.styleSheet.trim();
-  if (sheet === undefined || sheet.length === 0) {
+  const text = sheet === undefined || sheet.length === 0 ? fromScene : sheet;
+  if (text === undefined || text.length === 0) {
     return undefined;
   }
-  return `# Style\n${sheet}`;
+  return `# Style\n${text}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,7 +131,11 @@ function renderStyle(style: NarratorStyle | undefined): string | undefined {
  */
 function renderLocation(scene: SceneDescriptor): string {
   const { location } = scene;
-  const lines = [`You are at ${location.name}.`];
+  const lines = [
+    scene.city === undefined
+      ? `You are at ${location.name}.`
+      : `You are in ${scene.city.name}, at ${location.name}.`,
+  ];
   const description = location.description.trim();
   if (description.length > 0) {
     lines.push(description);
@@ -251,7 +257,7 @@ export function buildNarratorPrompt(
 ): BuiltNarratorPrompt {
   const frame: Block = { kind: 'frame', text: NARRATOR_FRAME };
 
-  const styleText = renderStyle(input.style);
+  const styleText = renderStyle(input.style, input.scene);
   const style: Block[] =
     styleText === undefined ? [] : [{ kind: 'style', text: styleText }];
 

@@ -16,6 +16,7 @@
  * Usage:
  *   pnpm play
  *   pnpm play --seed vienna-alpha --profile gemma-voice
+ *   pnpm play --scenario config/scenario-region.yaml
  */
 
 import { readFileSync } from 'node:fs';

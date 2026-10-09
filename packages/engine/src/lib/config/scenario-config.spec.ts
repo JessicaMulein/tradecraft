@@ -17,6 +17,8 @@ import { dirname, resolve } from 'node:path';
 import type { DifficultyPreset } from '@tradecraft/content';
 import { describe, expect, it } from 'vitest';
 
+import type { RegionalPreset } from '../region/content.js';
+
 import {
   formatConfigIssues,
   parseScenarioConfig,
@@ -65,6 +67,33 @@ const CONTEXT: ScenarioResolutionContext = {
   availablePackIds: new Set(['core']),
 };
 
+/** A Regional Preset keyed to the standard Difficulty Preset (Req 20.2). */
+const REGIONAL: RegionalPreset = {
+  id: 'central-standard',
+  era: { from: 1948, to: 1954 },
+  preset: 'standard',
+  cityCount: { min: 2, max: 3 },
+  borderStrictness: { min: 0.2, max: 0.5 },
+  watchListSensitivity: 0.4,
+  detentionPhases: 2,
+  contrabandCashThreshold: 40,
+  papersDelay: 1,
+  papersCost: 15,
+  communicationLatency: { sameCountry: 1, crossBorder: 2, acrossCurtain: 4 },
+  liaisonReliability: { min: 0.4, max: 0.7 },
+  liaisonTrustThreshold: 0.5,
+  penetrationProbability: 0.2,
+  rivalryIntensity: 0.4,
+  verifierAttemptLimit: 3,
+};
+
+/** Standard preset plus one region template and its regional preset. */
+const REGION_CONTEXT: ScenarioResolutionContext = {
+  ...CONTEXT,
+  regionTemplates: new Set(['central-1953']),
+  regionalPresets: new Map([['standard', REGIONAL]]),
+};
+
 /**
  * A resolution context that also loads one City Pack (Vienna, start-date window
  * 1948..1950) and an Era Pack (Period Window 1945..1965), used to exercise the
@@ -109,6 +138,9 @@ describe('the shipped config/scenario.yaml', () => {
 
     // With no overrides the resolved preset is the named preset verbatim.
     expect(result.value.preset).toEqual(STANDARD);
+    // No region section: slice mode, no regional preset.
+    expect(result.value.scenario.region).toBeUndefined();
+    expect(result.value.regionalPreset).toBeUndefined();
   });
 
   it('carries the starting recruitment weights through', () => {
@@ -404,6 +436,117 @@ recruitment:
     expect(bad.ok).toBe(false);
     if (!bad.ok) {
       expect(bad.issues.some((issue) => issue.path.includes('ambient.density'))).toBe(true);
+    }
+  });
+});
+
+// --- region section (multi-city Req 20.1, 20.3) ----------------------------
+
+const REGION_BLOCK = `
+region:
+  template: central-1953
+`;
+
+describe('region section', () => {
+  it('defaults the station model and deep-merges overrides onto the difficulty preset', () => {
+    const text = `
+${MINIMAL}
+region:
+  template: central-1953
+  overrides:
+    detentionPhases: 6
+    borderStrictness: { min: 0.3, max: 0.6 }
+`;
+    const result = parseScenarioConfig(text, 'region.yaml', REGION_CONTEXT);
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.value.scenario.region).toEqual({
+      template: 'central-1953',
+      stationModel: 'regional',
+      overrides: {
+        detentionPhases: 6,
+        borderStrictness: { min: 0.3, max: 0.6 },
+      },
+    });
+    expect(result.value.regionalPreset?.detentionPhases).toBe(6);
+    expect(result.value.regionalPreset?.borderStrictness).toEqual({ min: 0.3, max: 0.6 });
+    expect(result.value.regionalPreset?.verifierAttemptLimit).toBe(3);
+    expect(result.value.regionalPreset?.preset).toBe('standard');
+    expect(result.value.preset).toEqual(STANDARD);
+  });
+
+  it('accepts a per-city station model', () => {
+    const text = `${MINIMAL}${REGION_BLOCK}  stationModel: per-city\n`;
+    const result = parseScenarioConfig(text, 'region.yaml', REGION_CONTEXT);
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.value.scenario.region?.stationModel).toBe('per-city');
+  });
+
+  it('reports a bad station model, a missing template and an unknown override field', () => {
+    const station = parseScenarioConfig(
+      `${MINIMAL}${REGION_BLOCK}  stationModel: sideways\n`,
+      'region.yaml',
+      REGION_CONTEXT,
+    );
+    expect(station.ok).toBe(false);
+    if (!station.ok) {
+      expect(station.issues.some((issue) => issue.file === 'region.yaml' && issue.path === 'region.stationModel')).toBe(
+        true,
+      );
+    }
+
+    const missing = parseScenarioConfig(`${MINIMAL}region: {}\n`, 'region.yaml', REGION_CONTEXT);
+    expect(missing.ok).toBe(false);
+    if (!missing.ok) {
+      expect(missing.issues.some((issue) => issue.path === 'region.template')).toBe(true);
+    }
+
+    const unknownField = parseScenarioConfig(
+      `${MINIMAL}${REGION_BLOCK}  overrides:\n    bogusKnob: 1\n`,
+      'region.yaml',
+      REGION_CONTEXT,
+    );
+    expect(unknownField.ok).toBe(false);
+    if (!unknownField.ok) {
+      expect(unknownField.issues.some((issue) => issue.path.startsWith('region.overrides'))).toBe(true);
+    }
+  });
+
+  it('reports an unknown template, a missing regional preset and an invalid override', () => {
+    const unknown = parseScenarioConfig(
+      `${MINIMAL}region:\n  template: no-such\n`,
+      'region.yaml',
+      REGION_CONTEXT,
+    );
+    expect(unknown.ok).toBe(false);
+    if (!unknown.ok) {
+      expect(
+        unknown.issues.some((issue) => issue.path === 'region.template' && issue.message.includes('no-such')),
+      ).toBe(true);
+    }
+
+    const noPreset = parseScenarioConfig(`${MINIMAL}${REGION_BLOCK}`, 'region.yaml', {
+      ...REGION_CONTEXT,
+      regionalPresets: new Map(),
+    });
+    expect(noPreset.ok).toBe(false);
+    if (!noPreset.ok) {
+      expect(noPreset.issues.some((issue) => issue.path === 'region' && issue.file === 'region.yaml')).toBe(true);
+    }
+
+    const invalid = parseScenarioConfig(
+      `${MINIMAL}${REGION_BLOCK}  overrides:\n    verifierAttemptLimit: 0\n`,
+      'region.yaml',
+      REGION_CONTEXT,
+    );
+    expect(invalid.ok).toBe(false);
+    if (!invalid.ok) {
+      expect(invalid.issues.some((issue) => issue.path.includes('verifierAttemptLimit'))).toBe(true);
     }
   });
 });

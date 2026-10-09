@@ -39,6 +39,15 @@ import {
   coverDutyMissedFactLine,
   coverEmployerMessageFactLine,
   dropDisturbedFactLine,
+  departureCancelledFactLine,
+  borderOutcomeFactLine,
+  papersIssuedFactLine,
+  visaDecisionFactLine,
+  liaisonReportFactLine,
+  outstationReportFactLine,
+  courierDeliveryFactLine,
+  assetArrivedFactLine,
+  expelledFactLine,
   newspaperFactLine,
   publicAnnouncementFactLine,
   retainerDueFactLine,
@@ -165,6 +174,71 @@ function notificationForEvent(
         kind: 'drop-disturbed',
         drop: event.drop,
         factLine: dropDisturbedFactLine(namer, event.drop),
+      };
+    case 'departure-cancelled':
+      return {
+        ...base,
+        kind: 'departure-cancelled',
+        route: event.route,
+        factLine: departureCancelledFactLine(event.route),
+      };
+    case 'border-outcome':
+      return {
+        ...base,
+        kind: 'border-outcome',
+        post: event.post,
+        outcome: event.outcome,
+        factLine: borderOutcomeFactLine(event.post, event.outcome),
+      };
+    case 'papers-issued':
+      return {
+        ...base,
+        kind: 'papers-issued',
+        doc: event.doc,
+        factLine: papersIssuedFactLine(),
+      };
+    case 'visa-decision':
+      return {
+        ...base,
+        kind: 'visa-decision',
+        country: event.country,
+        granted: event.granted,
+        factLine: visaDecisionFactLine(event.country, event.granted),
+      };
+    case 'liaison-report':
+      return {
+        ...base,
+        kind: 'liaison-report',
+        service: event.service,
+        factLine: liaisonReportFactLine(event.service),
+      };
+    case 'outstation-report':
+      return {
+        ...base,
+        kind: 'outstation-report',
+        city: event.city ?? 'city:hub',
+        factLine: outstationReportFactLine(event.city ?? 'city:hub'),
+      };
+    case 'courier-delivery':
+      return {
+        ...base,
+        kind: 'courier-delivery',
+        handoff: event.handoff,
+        factLine: courierDeliveryFactLine(),
+      };
+    case 'asset-arrived':
+      return {
+        ...base,
+        kind: 'asset-arrived',
+        npc: event.npc,
+        factLine: assetArrivedFactLine(namer, event.npc),
+      };
+    case 'expelled':
+      return {
+        ...base,
+        kind: 'expelled',
+        country: event.country,
+        factLine: expelledFactLine(event.country),
       };
     // Player-visible kinds that carry no status-bar Notification.
     case 'day-start':

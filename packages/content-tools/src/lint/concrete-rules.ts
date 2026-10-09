@@ -444,10 +444,12 @@ function isBlocklistFile(relPath: string): boolean {
 
 /**
  * Read and compile the Real-Person Blocklist from the parsed packs. A
- * `familyOnly` entry matches on its last token (the family name) alone; every
- * other entry matches on its full folded token sequence (design, blocklist;
- * Req 12.4). Reading from the parsed packs means the rule still runs when the
- * load otherwise failed (Req 13.1).
+ * `familyOnly` entry matches on its family name alone: the last
+ * whitespace-separated word, the same token the namer stores. A hyphen stays
+ * inside that word, so "Douglas-Home" is the surname and the English word
+ * "home" is not. Every other entry matches on its full folded token sequence
+ * (design, blocklist; Req 12.4). Reading from the parsed packs means the rule
+ * still runs when the load otherwise failed (Req 13.1).
  */
 function blocklistOf(packs: readonly ParsedPack[]): BlockEntry[] {
   const entries: BlockEntry[] = [];
@@ -469,8 +471,10 @@ function blocklistOf(packs: readonly ParsedPack[]): BlockEntry[] {
           continue;
         }
         const familyOnly = record.familyOnly === true;
+        const words = record.name.trim().split(/\s+/u);
+        const family = tokenise(words[words.length - 1] ?? record.name);
         entries.push({
-          tokens: familyOnly ? [tokens[tokens.length - 1]] : tokens,
+          tokens: familyOnly && family.length > 0 ? family : tokens,
           familyOnly,
           display: record.name,
         });

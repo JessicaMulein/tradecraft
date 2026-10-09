@@ -32,6 +32,12 @@ export interface ActionQuote {
   readonly reason?: string;
   readonly phases: number;
   readonly money: number;
+  /** Phases spent waiting for the departure, when the action is `depart`. */
+  readonly wait?: number;
+  /** Quoted transit length, before a border extension. */
+  readonly duration?: number;
+  /** Border posts the departure crosses. */
+  readonly borders?: readonly string[];
 }
 
 /**

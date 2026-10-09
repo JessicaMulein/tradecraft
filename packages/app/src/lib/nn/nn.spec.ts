@@ -38,6 +38,18 @@ describe('teacher ranking', () => {
     expect(arrest).toBeGreaterThan(read);
   });
 
+  it('rides toward a city that holds a lead, and gets papers before it wanders', () => {
+    const state = baseState();
+    const depart = teacherPriority(
+      state,
+      baseAction('depart', { destClaimWeight: 1 }),
+    );
+    const papers = teacherPriority(state, baseAction('request-papers'));
+    const idle = teacherPriority(state, baseAction('travel'));
+    expect(depart).toBeGreaterThan(papers);
+    expect(papers).toBeGreaterThan(idle);
+  });
+
   it('reads unread documents before it waits', () => {
     const state = baseState({ unread: 2 });
     expect(

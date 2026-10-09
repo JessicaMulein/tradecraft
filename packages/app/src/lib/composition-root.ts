@@ -46,11 +46,16 @@ import {
 } from '@tradecraft/content';
 import {
   generateGame,
+  generateRegion,
+  loadRegionContent,
+  regionCatalog,
+  regionSources,
+  regionTruth,
+  TruthStore,
   type AdvanceWorldDeps,
   type GenerateInputs,
   type PostingContext,
   type ScenarioConfig,
-  type TruthStore,
   type WorldState,
 } from '@tradecraft/engine';
 import {
@@ -199,7 +204,9 @@ function loadContentSet(
   const dirs = scenario.packs.dirs.map((dir) => join(repoRoot, dir));
   const load = scenario.packs.load;
 
-  const content = loadContent(dirs, load);
+  const content = scenario.region?.template === undefined
+    ? loadContent(dirs, load)
+    : loadRegionContent(dirs, load);
   if (!content.ok) {
     throw new Error(
       `failed to load Content Packs [${load.join(', ')}]: ${describeFirstIssue(content.errors)}`,
@@ -376,6 +383,7 @@ function buildGameFactory(
   content: ContentSet,
   inputsBase: Omit<GenerateInputs, 'preset' | 'scenario'>,
   scenario: ScenarioConfig,
+  repoRoot: string,
   posting?: PostingContext,
 ): GameFactory {
   return {
@@ -385,10 +393,64 @@ function buildGameFactory(
         preset: resolvePreset(content, opts.preset),
         scenario: { ...scenario, mole: opts.mole, narration: opts.narration },
       };
-      const { world, truth } = generateGame(seed, inputs, {}, posting);
+      const { world, truth } = generateForScenario(seed, inputs, content, repoRoot, posting);
       return { inputs, world, truth };
     },
   };
+}
+
+function generateForScenario(
+  seed: string,
+  inputs: GenerateInputs,
+  content: ContentSet,
+  repoRoot: string,
+  posting?: PostingContext,
+): { readonly world: WorldState; readonly truth: TruthStore } {
+  const template = inputs.scenario.region?.template;
+  if (template === undefined) {
+    return generateGame(seed, inputs, {}, posting);
+  }
+  const dirs = inputs.scenario.packs.dirs.map((dir) => join(repoRoot, dir));
+  const ids = new Set(inputs.scenario.packs.load);
+  for (const pack of content.manifest.packs) {
+    ids.add(pack.id);
+  }
+  const read = regionSources(dirs, ids);
+  if (read.errors.length > 0) {
+    const first = read.errors[0];
+    throw new Error(
+      first === undefined
+        ? 'regional content failed to load'
+        : `${first.pack}/${first.file}: ${first.message}`,
+    );
+  }
+  const catalog = regionCatalog(read.sources);
+  const regionalPreset = regionalPresetFor(catalog, inputs.scenario.difficulty.preset);
+  const world = generateRegion({
+    seed,
+    content,
+    catalog,
+    preset: inputs.preset,
+    regionalPreset,
+    scenario: inputs.scenario,
+  });
+  return { world, truth: regionTruth(content, world) };
+}
+
+function regionalPresetFor(
+  catalog: ReturnType<typeof regionCatalog>,
+  presetId: string,
+) {
+  for (const value of catalog.presets.values()) {
+    if (value.preset === presetId) {
+      return value;
+    }
+  }
+  const first = [...catalog.presets.values()][0];
+  if (first === undefined) {
+    throw new Error(`no regional preset for ${presetId}`);
+  }
+  return first;
 }
 
 /**
@@ -551,9 +613,9 @@ export function createGame(options: CreateGameOptions): Game {
 
   // Step 5: the GameFactory and the facade. The facade starts game-less with the
   // placeholder stores; `newGame`/`load` replace every store in one swap.
-  const gameFactory = buildGameFactory(content, inputsBase, scenario, options.posting);
+  const gameFactory = buildGameFactory(content, inputsBase, scenario, repoRoot, options.posting);
   const engine = new PlayerViewEngine({
-    state: emptyWorld(content, inputsBase, scenario),
+    state: emptyWorld(content, inputsBase, scenario, repoRoot),
     caseFile: new CaseFile(),
     journal: new Journal(),
     cityData: inputsBase.cityData,
@@ -608,10 +670,11 @@ function emptyWorld(
   content: ContentSet,
   inputsBase: Omit<GenerateInputs, 'preset' | 'scenario'>,
   scenario: ScenarioConfig,
+  repoRoot: string,
 ): WorldState {
   const preset = firstPreset(content);
   const inputs: GenerateInputs = { ...inputsBase, preset, scenario };
-  return generateGame('composition-root-init', inputs).world;
+  return generateForScenario('composition-root-init', inputs, content, repoRoot).world;
 }
 
 /** The first Difficulty Preset in the Content Set, for the placeholder world. */

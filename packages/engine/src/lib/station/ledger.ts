@@ -46,6 +46,8 @@ import { GameTimeSchema, type GameTime } from '../model/core.js';
  * - `bribe`      — a one-off bribe.
  * - `rental`     — safehouse (or other) rental.
  * - `task`       — a task expense.
+ * - `fare`       — an intercity Departure.
+ * - `fare-refund`— a cancelled Departure's fare returned.
  * - `funds-grant`— a Station funds grant arriving by Cable (a credit).
  * - `starting`   — the opening Budget credit from the Starting Brief.
  */
@@ -56,6 +58,8 @@ export const LEDGER_REASONS = [
   'bribe',
   'rental',
   'task',
+  'fare',
+  'fare-refund',
   'funds-grant',
   'starting',
 ] as const;

@@ -255,6 +255,16 @@ describe('CE-REALPERSON — Real-Person Blocklist match', () => {
     ]);
   });
 
+  it('matches a hyphenated familyOnly surname and not the piece after the hyphen', () => {
+    const packs = [blocklistPack([{ name: 'Alec Douglas-Home', familyOnly: true, note: 'x' }])];
+    const surname = [hit({ value: 'a cable from Douglas-Home' })];
+    expect(run(realPersonRule, surname, packs)).toEqual([
+      'CE-REALPERSON personas.yaml:items[0].backgrounds[0]',
+    ]);
+    const noun = [hit({ value: 'the cousin will not write home' })];
+    expect(run(realPersonRule, noun, packs)).toEqual([]);
+  });
+
   it('does not report the blocklist entry against its own listing', () => {
     const packs = [blocklistPack([{ name: 'Konrad Adenauer', note: 'x' }])];
     const hits = [

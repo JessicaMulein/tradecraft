@@ -56,6 +56,13 @@ describe('sceneDescriptorFromView — the Player-View projection', () => {
     expect(descriptor.location).not.toHaveProperty('risk');
   });
 
+  it('keeps the city name and style sheet on a regional scene', () => {
+    const descriptor = sceneDescriptorFromView(
+      view({ city: { name: 'Northport', styleSheet: 'Salt and coal smoke.' } }),
+    );
+    expect(descriptor.city).toEqual({ name: 'Northport', styleSheet: 'Salt and coal smoke.' });
+  });
+
   it('defaults the scene kind to scene-open', () => {
     expect(sceneDescriptorFromView(view()).kind).toBe('scene-open');
   });

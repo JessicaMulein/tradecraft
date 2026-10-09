@@ -457,6 +457,12 @@ function nonsenseActions(state: WorldState): readonly Action[] {
     'turn-agent': { kind: 'turn-agent', npc: 'npc:nobody', lever: 'money', offer: Number.NaN },
     feed: { kind: 'feed', asset: 'npc:nobody', items: [] },
     'attend-duty': { kind: 'attend-duty', duty: 'duty:none' },
+    depart: { kind: 'depart', route: 'route:none', at: state.time, papers: [] },
+    'request-papers': { kind: 'request-papers', doc: 'passport', holder: 'player' },
+    'apply-visa': { kind: 'apply-visa', country: 'nowhere' },
+    'liaison-request': { kind: 'liaison-request', service: 'service:none', about: 'npc:nobody' },
+    'liaison-share': { kind: 'liaison-share', service: 'service:none', props: [] },
+    exfiltrate: { kind: 'exfiltrate', asset: 'npc:none', route: 'route:none', at: { day: 0, phase: 'morning' }, papers: [] },
     wait: { kind: 'wait', phases: 1 },
   };
   return Object.values(sample);

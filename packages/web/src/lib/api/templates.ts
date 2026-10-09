@@ -138,6 +138,12 @@ export const TEMPLATES: TemplateTable = {
   }),
   wait: null,
   'attend-duty': null,
+  depart: null,
+  'request-papers': null,
+  'apply-visa': null,
+  'liaison-request': null,
+  'liaison-share': null,
+  exfiltrate: null,
 };
 
 /** The template an Offered Action carries, or undefined when it needs no input. */

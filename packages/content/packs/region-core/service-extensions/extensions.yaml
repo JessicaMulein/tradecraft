@@ -1,0 +1,45 @@
+# Extensions over the content-expansion service definitions: the era's own,
+# hostile and liaison services, plus each city's local-security service.
+- id: own-residency
+  era: { from: 1948, to: 1954 }
+  service: era-cold-war-early/own-service
+  residency: [city-vienna/vienna, city-berlin/berlin, city-trieste/trieste]
+  naming: [a resident, a desk officer]
+- id: hostile-directorate-residency
+  era: { from: 1948, to: 1954 }
+  service: era-cold-war-early/hostile-foreign-directorate
+  residency: [city-vienna/vienna, city-berlin/berlin]
+  doctrine:
+    riskTolerance: 0.5
+    securityConsciousness: 0.75
+    deceptionAppetite: 0.4
+  naming: [a resident director]
+- id: hostile-apparat-residency
+  era: { from: 1948, to: 1954 }
+  service: era-cold-war-early/hostile-security-apparat
+  residency: [city-berlin/berlin]
+  naming: [a sector officer]
+- id: liaison-residency
+  era: { from: 1948, to: 1954 }
+  service: era-cold-war-early/liaison-atlantic-agency
+  residency: [city-vienna/vienna, city-berlin/berlin, city-trieste/trieste]
+  naming: [a liaison officer]
+  liaisonAgenda:
+    conceal: [a source]
+    promote: [a meeting]
+    obtain: [a paper]
+- id: vienna-security-residency
+  era: { from: 1948, to: 1954 }
+  service: city-vienna/city-security-directorate
+  residency: [city-vienna/vienna]
+  naming: [a safety inspector]
+- id: berlin-security-residency
+  era: { from: 1948, to: 1954 }
+  service: city-berlin/city-public-order-office
+  residency: [city-berlin/berlin]
+  naming: [a sector policeman]
+- id: trieste-security-residency
+  era: { from: 1948, to: 1954 }
+  service: city-trieste/zone-security-office
+  residency: [city-trieste/trieste]
+  naming: [a zone policeman]

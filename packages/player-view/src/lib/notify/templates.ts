@@ -145,3 +145,39 @@ export function retainerDueFactLine(
 ): string {
   return `A retainer of ${amount} is due to ${namer(npc)}.`;
 }
+
+export function departureCancelledFactLine(route: string): string {
+  return `The departure on ${route} is cancelled.`;
+}
+
+export function borderOutcomeFactLine(post: string, outcome: string): string {
+  return `The border at ${post} reports ${outcome}.`;
+}
+
+export function papersIssuedFactLine(): string {
+  return 'Travel papers have been issued.';
+}
+
+export function visaDecisionFactLine(country: string, granted: boolean): string {
+  return granted ? `A visa for ${country} is granted.` : `A visa for ${country} is refused.`;
+}
+
+export function liaisonReportFactLine(service: string): string {
+  return `A report arrives from ${service}.`;
+}
+
+export function outstationReportFactLine(city: string): string {
+  return `The outstation in ${city} reports in.`;
+}
+
+export function courierDeliveryFactLine(): string {
+  return 'A courier delivery has arrived.';
+}
+
+export function assetArrivedFactLine(namer: NotifyNamer, npc: string): string {
+  return `${namer(npc)} has arrived.`;
+}
+
+export function expelledFactLine(country: string): string {
+  return `You are expelled from ${country}.`;
+}

@@ -1,0 +1,5 @@
+- id: bloc-rivalry
+  era: { from: 1948, to: 1961 }
+  edges:
+    - { from: hostile-desk, to: own-desk, share: false, delayPhases: 2 }
+    - { from: hostile-desk, to: liaison-desk, share: true, delayPhases: 1 }

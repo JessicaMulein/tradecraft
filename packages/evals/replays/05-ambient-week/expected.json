@@ -10,7 +10,7 @@
           {
             "id": "core",
             "version": "1.0.0",
-            "hash": "02fe241d4483c8a6cb8abefbe8aa6d76d1bff51aac021f14170ece490f7a59f3"
+            "hash": "781f677ec5b63615ccf61ae7fadfa6a8e5473eff11c212d3e664451bb8cce17f"
           }
         ]
       },
@@ -5450,16 +5450,12 @@
         },
         "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\nThe city at large. Our correspondent reports from the the city that The day stood quiet over the city; the markets and the ring trams kept their usual hours. drew notice this week. The day stood quiet over the city; the markets and the ring trams kept their usual hours. The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.",
         "asserts": [],
-        "obtainableAt": [
-          "loc:antiquariat-lindner-0",
-          "loc:bezirksbucherei-alsergrund-7",
-          "loc:tabak-trafik-pichler-13"
-        ]
+        "obtainableAt": []
       },
       "doc:newspaper/outlet-gazette-1": {
         "id": "doc:newspaper/outlet-gazette-1",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 1,
           "phase": 0
@@ -5468,7 +5464,8 @@
         "asserts": [
           "prop:story:story:evt:labour-3-0:announced",
           "prop:story:story:thread:2:announced"
-        ]
+        ],
+        "obtainableAt": []
       },
       "doc:newspaper/edition-2": {
         "id": "doc:newspaper/edition-2",
@@ -5480,16 +5477,12 @@
         },
         "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\nThe city at large. Our correspondent reports from the the city that The day stood quiet over the city; the markets and the ring trams kept their usual hours. drew notice this week. The day stood quiet over the city; the markets and the ring trams kept their usual hours. The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.",
         "asserts": [],
-        "obtainableAt": [
-          "loc:antiquariat-lindner-0",
-          "loc:bezirksbucherei-alsergrund-7",
-          "loc:tabak-trafik-pichler-13"
-        ]
+        "obtainableAt": []
       },
       "doc:newspaper/outlet-gazette-2": {
         "id": "doc:newspaper/outlet-gazette-2",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 2,
           "phase": 0
@@ -5499,7 +5492,8 @@
           "prop:story:story:thread:2:announced",
           "prop:story:story:evt:election-1-1:announced",
           "prop:story:story:evt:labour-3-0:announced"
-        ]
+        ],
+        "obtainableAt": []
       },
       "doc:newspaper/edition-3": {
         "id": "doc:newspaper/edition-3",
@@ -5513,16 +5507,12 @@
         "asserts": [
           "prop:hostile-plant/npc:anton-aichinger-1@3"
         ],
-        "obtainableAt": [
-          "loc:antiquariat-lindner-0",
-          "loc:bezirksbucherei-alsergrund-7",
-          "loc:tabak-trafik-pichler-13"
-        ]
+        "obtainableAt": []
       },
       "doc:newspaper/outlet-gazette-3": {
         "id": "doc:newspaper/outlet-gazette-3",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 3,
           "phase": 0
@@ -5534,7 +5524,8 @@
           "prop:story:story:evt:labour-1-2:announced",
           "prop:story:story:strike:announced",
           "prop:story:story:evt:election-1-1:announced~distort"
-        ]
+        ],
+        "obtainableAt": []
       },
       "doc:notice/bread-queue-3-loc-naschmarkt-8": {
         "id": "doc:notice/bread-queue-3-loc-naschmarkt-8",
@@ -5564,16 +5555,12 @@
         "asserts": [
           "prop:hostile-plant/npc:anton-aichinger-1@4"
         ],
-        "obtainableAt": [
-          "loc:antiquariat-lindner-0",
-          "loc:bezirksbucherei-alsergrund-7",
-          "loc:tabak-trafik-pichler-13"
-        ]
+        "obtainableAt": []
       },
       "doc:newspaper/outlet-gazette-4": {
         "id": "doc:newspaper/outlet-gazette-4",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 4,
           "phase": 0
@@ -5584,7 +5571,8 @@
           "prop:story:story:thread:3:announced",
           "prop:story:story:strike:resolved",
           "prop:story:story:evt:labour-1-2:announced"
-        ]
+        ],
+        "obtainableAt": []
       },
       "doc:notice/curfew-order-4-loc-cafe-rautenberg-6": {
         "id": "doc:notice/curfew-order-4-loc-cafe-rautenberg-6",
@@ -5612,16 +5600,12 @@
         },
         "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\nThe city at large. Our correspondent reports from the the city that The day stood quiet over the city; the markets and the ring trams kept their usual hours. drew notice this week. The day stood quiet over the city; the markets and the ring trams kept their usual hours. The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.",
         "asserts": [],
-        "obtainableAt": [
-          "loc:antiquariat-lindner-0",
-          "loc:bezirksbucherei-alsergrund-7",
-          "loc:tabak-trafik-pichler-13"
-        ]
+        "obtainableAt": []
       },
       "doc:newspaper/outlet-gazette-5": {
         "id": "doc:newspaper/outlet-gazette-5",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 5,
           "phase": 0
@@ -5633,7 +5617,8 @@
           "prop:story:story:thread:3:announced",
           "prop:story:story:curfew:announced",
           "prop:story:story:evt:crackdown-1-4:announced"
-        ]
+        ],
+        "obtainableAt": []
       },
       "doc:newspaper/edition-6": {
         "id": "doc:newspaper/edition-6",
@@ -5645,28 +5630,25 @@
         },
         "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\nThe city at large. Our correspondent reports from the the city that The day stood quiet over the city; the markets and the ring trams kept their usual hours. drew notice this week. The day stood quiet over the city; the markets and the ring trams kept their usual hours. The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.",
         "asserts": [],
-        "obtainableAt": [
-          "loc:antiquariat-lindner-0",
-          "loc:bezirksbucherei-alsergrund-7",
-          "loc:tabak-trafik-pichler-13"
-        ]
+        "obtainableAt": []
       },
       "doc:newspaper/outlet-gazette-6": {
         "id": "doc:newspaper/outlet-gazette-6",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 6,
           "phase": 0
         },
-        "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\ncity. Our correspondent reports from the the city that announced drew notice this week. announced The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.\n\ncurfew. announced\n\ncity. announced\n\nblackmailer. announced\n\ncity. announced",
+        "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\ncity. Our correspondent reports from the the city that announced drew notice this week. announced The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.\n\ncurfew. After announced, resolved.\n\ncity. announced\n\nblackmailer. announced\n\ncity. announced",
         "asserts": [
           "prop:story:story:evt:economic-1-3:announced",
-          "prop:story:story:curfew:announced",
+          "prop:story:story:curfew:resolved",
           "prop:story:story:evt:accident-3-5:announced",
           "prop:story:story:thread:3:announced",
           "prop:story:story:evt:crackdown-1-4:announced"
-        ]
+        ],
+        "obtainableAt": []
       },
       "doc:newspaper/edition-7": {
         "id": "doc:newspaper/edition-7",
@@ -5689,16 +5671,21 @@
       "doc:newspaper/outlet-gazette-7": {
         "id": "doc:newspaper/outlet-gazette-7",
         "kind": "newspaper",
-        "title": "gazette",
+        "title": "The Evening Gazette",
         "date": {
           "day": 7,
           "phase": 0
         },
-        "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\ncity. Our correspondent reports from the the city that announced drew notice this week. announced The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.\n\nThe city at large. The day stood quiet over the city; the markets and the ring trams kept their usual hours.\n\ncurfew. announced\n\ncity. announced",
+        "body": "newspaper-wiener-tagblatt-city. Daily edition. Price twenty groschen. Published daily except Sundays in the four sectors of the city.\n\ncity. Our correspondent reports from the the city that announced drew notice this week. announced The matter is said to rest, for now, with the the sector authority.\n\nAround the city: the trams ran to schedule on the ring lines; the markets opened at the usual hour; and the weather over the Danube held fair enough for the barges. Readers are reminded that papers must be shown on request at any sector checkpoint.\n\nThe city at large. The day stood quiet over the city; the markets and the ring trams kept their usual hours.\n\ncurfew. After announced, resolved.\n\ncity. announced",
         "asserts": [
           "prop:story:story:evt:crackdown-1-4:announced",
-          "prop:story:story:curfew:announced",
+          "prop:story:story:curfew:resolved",
           "prop:story:story:evt:election-3-6:announced"
+        ],
+        "obtainableAt": [
+          "loc:antiquariat-lindner-0",
+          "loc:bezirksbucherei-alsergrund-7",
+          "loc:tabak-trafik-pichler-13"
         ]
       }
     },
@@ -5950,6 +5937,15 @@
         "object": {
           "kind": "text",
           "value": "announced"
+        }
+      },
+      "prop:story:story:curfew:resolved": {
+        "id": "prop:story:story:curfew:resolved",
+        "subject": "npc:viktor-hofbauer-0",
+        "predicate": "HAS_STATUS",
+        "object": {
+          "kind": "text",
+          "value": "resolved"
         }
       },
       "prop:story:story:evt:accident-3-5:announced": {
@@ -6292,7 +6288,7 @@
           "elsewhere": 0.22
         }
       },
-      "coverSuspicion": 0.07,
+      "coverSuspicion": 0.035,
       "tailed": false,
       "known": {
         "entities": [
@@ -10687,7 +10683,8 @@
           "key": "shortage",
           "source": "shortage",
           "chain": [
-            "announced"
+            "announced",
+            "resolved"
           ],
           "beats": [
             {
@@ -10723,18 +10720,24 @@
           "key": "curfew",
           "source": "curfew",
           "chain": [
-            "announced"
+            "announced",
+            "resolved"
           ],
           "beats": [
             {
               "beat": "announced",
               "day": 4,
               "props": []
+            },
+            {
+              "beat": "resolved",
+              "day": 5,
+              "props": []
             }
           ],
-          "lastDevelopment": 4,
+          "lastDevelopment": 5,
           "status": "active",
-          "priority": 1
+          "priority": 2
         },
         "story:evt:accident-3-5": {
           "id": "story:evt:accident-3-5",
@@ -10792,7 +10795,7 @@
           "phases": 1,
           "mandatory": true,
           "standingGain": 0.04,
-          "suspicionDelta": 0.02,
+          "suspicionDelta": 0.01,
           "attendees": [
             "npc:antonina-marchenko-9",
             "npc:berta-gruber-10",
@@ -10811,7 +10814,7 @@
           "phases": 2,
           "mandatory": true,
           "standingGain": 0.06,
-          "suspicionDelta": 0.03,
+          "suspicionDelta": 0.015,
           "attendees": [
             "npc:antonina-marchenko-9",
             "npc:berta-gruber-10",
@@ -10830,7 +10833,7 @@
           "phases": 1,
           "mandatory": true,
           "standingGain": 0.05,
-          "suspicionDelta": 0.02,
+          "suspicionDelta": 0.01,
           "attendees": [
             "npc:antonina-marchenko-9",
             "npc:berta-gruber-10",
@@ -10844,17 +10847,17 @@
         {
           "kind": "cover-suspicion-delta",
           "day": 1,
-          "detail": "0.02"
+          "detail": "0.01"
         },
         {
           "kind": "cover-suspicion-delta",
           "day": 1,
-          "detail": "0.02"
+          "detail": "0.01"
         },
         {
           "kind": "cover-suspicion-delta",
           "day": 4,
-          "detail": "0.03"
+          "detail": "0.015"
         }
       ],
       "ambientDelayDays": 0,
@@ -10894,7 +10897,75 @@
           "npc:viktor-hofbauer-0|4|3|loc:the-kellerbar-at-pension-goldenes-kreuz-5",
           "npc:viktor-hofbauer-0|6|1|loc:rathauspark-9"
         ],
-        "slowRunsToday": 0
+        "slowRunsToday": 0,
+        "witnesses": [
+          {
+            "key": "mole",
+            "human": {
+              "edge": "meeting",
+              "node": "npc:fyodor-travkin-4"
+            },
+            "signal": {
+              "edge": "intercept",
+              "node": "chan:station/signal"
+            }
+          },
+          {
+            "key": "npc:anton-aichinger-1|CARRIES|lit:the operation materiel|",
+            "human": {
+              "edge": "meeting",
+              "node": "npc:anton-aichinger-1"
+            },
+            "signal": {
+              "edge": "intercept",
+              "node": "chan:grete-kolar-2/signal"
+            }
+          },
+          {
+            "key": "npc:anton-aichinger-1|USES_CHANNEL|lit:chan:anton-aichinger-1/courier|",
+            "human": {
+              "edge": "meeting",
+              "node": "npc:anton-aichinger-1"
+            },
+            "signal": {
+              "edge": "intercept",
+              "node": "chan:grete-kolar-2/signal"
+            }
+          },
+          {
+            "key": "npc:grete-kolar-2|USES_CHANNEL|lit:chan:grete-kolar-2/signal|",
+            "human": {
+              "edge": "meeting",
+              "node": "npc:anton-aichinger-1"
+            },
+            "signal": {
+              "edge": "intercept",
+              "node": "chan:grete-kolar-2/signal"
+            }
+          },
+          {
+            "key": "npc:viktor-hofbauer-0|MEETS_AT|npc:anton-aichinger-1|loc:antiquariat-lindner-0",
+            "human": {
+              "edge": "meeting",
+              "node": "npc:anton-aichinger-1"
+            },
+            "signal": {
+              "edge": "intercept",
+              "node": "chan:grete-kolar-2/signal"
+            }
+          },
+          {
+            "key": "npc:viktor-hofbauer-0|TARGETS|loc:bezirksbucherei-alsergrund-7|",
+            "human": {
+              "edge": "meeting",
+              "node": "npc:viktor-hofbauer-0"
+            },
+            "signal": {
+              "edge": "surveillance",
+              "node": "loc:cafe-rautenberg-6"
+            }
+          }
+        ]
       },
       "counters": {
         "starts": 1,
@@ -12448,18 +12519,18 @@
               "asserts": []
             },
             {
-              "id": "story/gazette/story:curfew/announced",
+              "id": "story/gazette/story:curfew/resolved",
               "source": "city-event",
               "headline": "curfew",
-              "summary": "announced",
+              "summary": "After announced, resolved.",
               "asserts": [
                 {
-                  "id": "prop:story:story:curfew:announced",
+                  "id": "prop:story:story:curfew:resolved",
                   "subject": "npc:viktor-hofbauer-0",
                   "predicate": "HAS_STATUS",
                   "object": {
                     "kind": "text",
-                    "value": "announced"
+                    "value": "resolved"
                   }
                 }
               ]
@@ -12558,6 +12629,10 @@
           "holds": false,
           "distorted": true
         },
+        "prop:story:story:curfew:resolved": {
+          "holds": true,
+          "distorted": false
+        },
         "prop:story:story:evt:accident-3-5:announced": {
           "holds": true,
           "distorted": false
@@ -12581,7 +12656,7 @@
       ]
     }
   },
-  "stateHash": "255eb476a151d51168a007bd17277b3c975d9026e818338d6ecda3d6761f459d",
+  "stateHash": "a66f6398ba9495bd0b87f06d80e738c3aef5291676d0edf291062099e8fe981c",
   "actionLog": [
     {
       "seq": 0,

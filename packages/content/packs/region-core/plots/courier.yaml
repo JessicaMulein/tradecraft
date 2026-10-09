@@ -1,0 +1,36 @@
+- id: courier-line
+  templateSchema: 2
+  kind: plot
+  displayName: courier line
+  archetype: courier
+  era: { from: 1948, to: 1954 }
+  stageCount: { min: 2, max: 2 }
+  cells:
+    - { id: cell, roles: [courier] }
+  roleSlots:
+    courier:
+      query: ["role:cell"]
+      mandatory: true
+      shareable: false
+  cityRoles:
+    A: { not: hub }
+    B: {}
+    C: {}
+  stages:
+    - id: collect
+      cell: cell
+      city: A
+    - id: hand-over
+      cell: cell
+      city: B
+      requires: [collect]
+      handoff:
+        from: collect
+        carrier: courier-line
+        modes: [rail, road]
+      fallback: collect
+  outcomes:
+    success:
+      - { kind: abort }
+    failure:
+      - { kind: abort }

@@ -48,6 +48,7 @@
 import type { EntityId, LocId, NpcId, UnkId } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import { DEFAULT_CABLE_DELAY_PHASES, submitCable } from '../station/cables.js';
+import { cableLatency } from '../region/notices.js';
 import {
   arrestEvidenceOf,
   arrestThresholdOf,
@@ -125,7 +126,8 @@ export function isKnownTraceTarget(
  */
 export function cableReplyDelayPhases(state: WorldState): number {
   const raw = state.meta.preset.traceRequestDelayPhases;
-  return Number.isFinite(raw) && raw >= 0 ? raw : DEFAULT_CABLE_DELAY_PHASES;
+  const slice = Number.isFinite(raw) && raw >= 0 ? raw : DEFAULT_CABLE_DELAY_PHASES;
+  return cableLatency(state, slice);
 }
 
 /** The allowed quote every accepted Cable gets: one phase, no money. */

@@ -113,6 +113,11 @@ export function recordObservationClaims(
         ids.push(claim.id);
         break;
       }
+      case 'liaison': {
+        const claim = caseFile.add({ source, prop, observedAt: at });
+        ids.push(claim.id);
+        break;
+      }
       default: {
         // Every `ObservationSource` kind is handled above; this exhaustiveness
         // check turns a new, unhandled source kind into a compile error rather

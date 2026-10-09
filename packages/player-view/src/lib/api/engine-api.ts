@@ -85,6 +85,12 @@ import {
   type HereView,
   type SceneView,
 } from './views.js';
+import {
+  carriageView,
+  departuresView,
+  papersView,
+  regionMapView,
+} from '../region/views.js';
 import { interceptListView, workbenchView } from './workbench-views.js';
 import { buildActionCatalogue } from './action-catalogue.js';
 import { feedView } from './feed-view.js';
@@ -644,6 +650,7 @@ export class PlayerViewEngine implements EngineApi {
       budget: balanceOf(state),
       standing: state.station.standing,
       ended: state.ended !== undefined,
+      ...statusPlace(state),
     };
   }
 
@@ -724,6 +731,72 @@ export class PlayerViewEngine implements EngineApi {
     return this.runTurn({ kind: 'retry' });
   }
 
+  depart(
+    route: Extract<Action, { kind: 'depart' }>['route'],
+    at: Extract<Action, { kind: 'depart' }>['at'],
+    papers: Extract<Action, { kind: 'depart' }>['papers'],
+  ): TurnStream {
+    return this.act({ kind: 'depart', route, at, papers });
+  }
+
+  requestPapers(
+    doc: Extract<Action, { kind: 'request-papers' }>['doc'],
+    holder: Extract<Action, { kind: 'request-papers' }>['holder'],
+  ): TurnStream {
+    return this.act({ kind: 'request-papers', doc, holder });
+  }
+
+  applyVisa(country: Extract<Action, { kind: 'apply-visa' }>['country']): TurnStream {
+    return this.act({ kind: 'apply-visa', country });
+  }
+
+  liaisonRequest(
+    service: Extract<Action, { kind: 'liaison-request' }>['service'],
+    about: Extract<Action, { kind: 'liaison-request' }>['about'],
+    records?: boolean,
+  ): TurnStream {
+    return this.act({
+      kind: 'liaison-request',
+      service,
+      about,
+      ...(records === undefined ? {} : { records }),
+    });
+  }
+
+  liaisonShare(
+    service: Extract<Action, { kind: 'liaison-share' }>['service'],
+    props: Extract<Action, { kind: 'liaison-share' }>['props'],
+  ): TurnStream {
+    return this.act({ kind: 'liaison-share', service, props });
+  }
+
+  exfiltrate(
+    asset: Extract<Action, { kind: 'exfiltrate' }>['asset'],
+    route: Extract<Action, { kind: 'exfiltrate' }>['route'],
+    at: Extract<Action, { kind: 'exfiltrate' }>['at'],
+    papers: Extract<Action, { kind: 'exfiltrate' }>['papers'],
+  ): TurnStream {
+    return this.act({ kind: 'exfiltrate', asset, route, at, papers });
+  }
+
+  /**
+   * Forward a {@link TurnIntent} to the Turn Pipeline driver (task 16.8). Until
+   * a driver is wired, this throws a clear error — the projection surface this
+   * task owns does not need the pipeline, and failing loudly is better than a
+   * silent no-op stream.
+   */
+  private quotedDepartures(): ReturnType<EngineApi['views']['departures']> {
+    return departuresView(this.deps.state).map((row) => ({
+      ...row,
+      quote: this.quote({
+        kind: 'depart',
+        route: row.route as Extract<Action, { kind: 'depart' }>['route'],
+        at: row.at,
+        papers: row.papers as Extract<Action, { kind: 'depart' }>['papers'],
+      }),
+    }));
+  }
+
   /**
    * Forward a {@link TurnIntent} to the Turn Pipeline driver (task 16.8). Until
    * a driver is wired, this throws a clear error — the projection surface this
@@ -764,7 +837,7 @@ export class PlayerViewEngine implements EngineApi {
   // -------------------------------------------------------------------------
 
   readonly caseFile = {
-    list: (f: CaseFileFilter = {}): ClaimView[] => listClaims(this.deps.caseFile, f),
+    list: (f: CaseFileFilter = {}): ClaimView[] => listClaims(this.deps.caseFile, f, this.deps.state),
     grade: (id: ClaimId, g: AdmiraltyGrade): void => {
       this.deps.caseFile.grade(id, g);
     },
@@ -843,6 +916,16 @@ export class PlayerViewEngine implements EngineApi {
       }
       return buildDebrief(state, truth, this.deps.caseFile, this.deps.feeds ?? []);
     },
+    region: () => {
+      const map = regionMapView(this.deps.state);
+      if (map === undefined) {
+        return undefined;
+      }
+      return { ...map, departures: this.quotedDepartures() };
+    },
+    departures: () => this.quotedDepartures(),
+    papers: () => papersView(this.deps.state),
+    carriage: () => carriageView(this.deps.state),
   };
 
   // -------------------------------------------------------------------------
@@ -1085,3 +1168,32 @@ const EMPTY_DOCUMENT_VIEW: DocumentView = {
   body: '',
   read: false,
 };
+
+function statusPlace(state: WorldState): Pick<StatusView, 'city' | 'transit'> | Record<string, never> {
+  const region = state.region;
+  if (region === undefined) {
+    return {};
+  }
+  const placed = state.locationOf?.player;
+  if (placed !== undefined && 'transit' in placed) {
+    const transit = state.transits?.[placed.transit];
+    const route = transit === undefined ? undefined : region.intercity[transit.route];
+    const dest = route?.toCity;
+    if (dest === undefined || transit?.arrivesAt === undefined) {
+      return {};
+    }
+    const city = region.cities[dest];
+    return {
+      transit: {
+        destination: { id: dest, name: city?.name ?? dest },
+        arrives: transit.arrivesAt,
+      },
+    };
+  }
+  const id = state.player.city;
+  if (id === undefined || id === null) {
+    return {};
+  }
+  const city = region.cities[id];
+  return { city: { id, name: city?.name ?? id } };
+}

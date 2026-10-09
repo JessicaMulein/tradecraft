@@ -56,6 +56,7 @@ import { isDeepStrictEqual } from 'node:util';
 
 import { loadContent, type PredicateRegistry } from '@tradecraft/content';
 import {
+  loadRegionContent,
   revealedSpec,
   type Action,
   type DocId,
@@ -131,7 +132,9 @@ function loadPredicates(scenario: ScenarioConfig): PredicateRegistry {
   const dirs = scenario.packs.dirs.map((dir) =>
     resolvePath(WALK_REPO_ROOT, dir),
   );
-  const content = loadContent(dirs, [...scenario.packs.load]);
+  const content = scenario.region?.template === undefined
+    ? loadContent(dirs, [...scenario.packs.load])
+    : loadRegionContent(dirs, [...scenario.packs.load]);
   if (!content.ok) {
     throw new Error('the Scripted Full Games could not load the Content Packs');
   }

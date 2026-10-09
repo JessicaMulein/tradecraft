@@ -8,6 +8,9 @@
  * out from the Workbench. The cipher spec is never read.
  *
  *   pnpm player:train [--preset all] [--games 8] [--eval 4] [--rl 4] [--max-turns 140]
+ *
+ * Each preset's teacher games include the slice, then a short ambient city
+ * and a short regional posting, so the cloned weights have seen all three.
  */
 import { dirname, join } from 'node:path';
 import { parseArgs } from 'node:util';

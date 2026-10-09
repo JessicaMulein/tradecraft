@@ -1,0 +1,12 @@
+- id: north-post
+  era: { from: 1948, to: 1961 }
+  border: north-frontier
+  service: fixture-north/watch
+  strictness: 0.4
+  documents: [passport]
+- id: south-post
+  era: { from: 1948, to: 1961 }
+  border: south-line-border
+  service: fixture-south/watch
+  strictness: 0.7
+  documents: [laissez-passer]

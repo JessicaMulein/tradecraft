@@ -1,0 +1,40 @@
+# Terminals are location types or locations the three city packs already ship.
+- id: westbahn
+  era: { from: 1948, to: 1954 }
+  mode: rail
+  terminals: [city-vienna/bahnhof, city-berlin/s-bahn-station]
+  timetable: morning
+  duration: 8
+  fare: 18
+  borders: [austria-germany]
+  cancellingWeather: [snow]
+- id: air-corridor
+  era: { from: 1948, to: 1954 }
+  mode: air
+  terminals: [city-berlin/airfield-perimeter-cafe, city-vienna/cafe-mohnblume]
+  timetable:
+    - { weekday: monday, phase: midday }
+    - { weekday: wednesday, phase: midday }
+    - { weekday: friday, phase: midday }
+  duration: 2
+  fare: 45
+  borders: [austria-germany]
+  cancellingWeather: [fog]
+- id: adriatic-road
+  era: { from: 1948, to: 1954 }
+  mode: road
+  terminals: [city-vienna/haltestelle, city-trieste/tram-stop]
+  timetable: afternoon
+  duration: 6
+  fare: 12
+  borders: [austria-territory]
+  cancellingWeather: [snow]
+- id: adriatic-sea
+  era: { from: 1948, to: 1954 }
+  mode: sea
+  terminals: [city-vienna/donauhafen, city-trieste/danube-port]
+  timetable: evening
+  duration: 8
+  fare: 20
+  borders: [austria-territory]
+  cancellingWeather: [storm]

@@ -68,6 +68,19 @@ export {
 } from './views.js';
 
 export {
+  carriageView,
+  cityOfPlace,
+  departuresView,
+  papersView,
+  regionMapView,
+  type CarriageView,
+  type DepartureView,
+  type RegionCityView,
+  type RegionMapView,
+  type RegionRouteView,
+} from '../region/views.js';
+
+export {
   // Intercepts list and Workbench projections (task 22.5; Req 9.5, 9.6, 25.3):
   // view-safe shapes and the pure functions that build them — the frequency
   // table, the caesar shift preview and the per-Intercept Workbench, none of

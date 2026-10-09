@@ -95,6 +95,10 @@ export type Screen =
   | { readonly kind: 'stories' }
   | { readonly kind: 'duties' }
   | { readonly kind: 'people' }
+  | { readonly kind: 'region' }
+  | { readonly kind: 'departures' }
+  | { readonly kind: 'papers' }
+  | { readonly kind: 'carriage' }
   | { readonly kind: 'feed'; readonly asset: NpcId }
   | { readonly kind: 'save-load'; readonly mode: 'save' | 'load' }
   | { readonly kind: 'endpoint-error'; readonly error: PausedError }

@@ -68,7 +68,7 @@ describe('CaseFileBrowser snapshot', () => {
     expect(plain(lastFrame())).toMatchInlineSnapshot(`
       "Case File
 
-      Filter [source]: source=all · grade=all · entity=all
+      Filter [source]: source=all · grade=all · entity=all · city=all
 
       >   npc npc:viktor · npc:viktor core/meets npc:lena @ loc:cafe · grade B2 · corroborated
           intercept int:7 · npc:lena core/carries a sealed envelope (hedged) · grade ungraded · —
@@ -83,7 +83,7 @@ describe('CaseFileBrowser snapshot', () => {
     expect(plain(lastFrame())).toMatchInlineSnapshot(`
       "Case File
 
-      Filter [source]: source=all · grade=all · entity=all
+      Filter [source]: source=all · grade=all · entity=all · city=all
 
       No Claims match the filter.
 

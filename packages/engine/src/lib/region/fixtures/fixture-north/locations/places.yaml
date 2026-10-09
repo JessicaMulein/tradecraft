@@ -1,0 +1,129 @@
+- id: station
+  name: the station office
+  type: halt
+  district: old-town
+  public: false
+  description: the station office in Northport.
+  city: north
+  tags: ["venue:station-office", "function:station", "access:private", "setting:institutional", "function:materiel-store"]
+  basis: fictional
+
+- id: safehouse
+  name: a safe flat
+  type: halt
+  district: old-town
+  public: false
+  description: a safe flat in Northport.
+  city: north
+  tags: ["function:safehouse", "access:private", "function:dead-drop-site"]
+  basis: fictional
+
+- id: warehouse
+  name: a warehouse
+  type: halt
+  district: fringe
+  public: false
+  description: a warehouse in Northport.
+  city: north
+  tags: ["function:warehouse", "access:private", "function:materiel-store", "function:dead-drop-site"]
+  basis: fictional
+
+- id: embassy
+  name: a legation
+  type: halt
+  district: old-town
+  public: false
+  description: a legation in Northport.
+  city: north
+  tags: ["function:embassy", "setting:diplomatic", "access:private"]
+  basis: fictional
+
+- id: cafe
+  name: a cafe
+  type: halt
+  district: old-town
+  public: true
+  description: a cafe in Northport.
+  city: north
+  tags: ["function:cafe", "function:meeting-spot", "access:public", "function:newspaper-outlet"]
+  basis: fictional
+
+- id: park
+  name: a park
+  type: halt
+  district: old-town
+  public: true
+  description: a park in Northport.
+  city: north
+  tags: ["function:park", "function:meeting-spot", "access:public", "function:dead-drop-site"]
+  basis: fictional
+
+- id: hotel
+  name: a hotel bar
+  type: halt
+  district: old-town
+  public: true
+  description: a hotel bar in Northport.
+  city: north
+  tags: ["function:hotel-bar", "function:meeting-spot", "access:public", "function:newspaper-outlet"]
+  basis: fictional
+
+- id: kiosk
+  name: a kiosk
+  type: halt
+  district: old-town
+  public: true
+  description: a kiosk in Northport.
+  city: north
+  tags: ["function:kiosk", "function:meeting-spot", "access:public", "function:newspaper-outlet", "function:public-text-source"]
+  basis: fictional
+
+- id: bookshop
+  name: a bookshop
+  type: halt
+  district: old-town
+  public: true
+  description: a bookshop in Northport.
+  city: north
+  tags: ["function:bookshop", "function:meeting-spot", "access:public", "function:public-text-source", "function:dead-drop-site"]
+  basis: fictional
+
+- id: library
+  name: a reading room
+  type: halt
+  district: old-town
+  public: true
+  description: a reading room in Northport.
+  city: north
+  tags: ["function:library", "function:meeting-spot", "access:public", "function:public-text-source"]
+  basis: fictional
+
+- id: cinema
+  name: a picture house
+  type: halt
+  district: fringe
+  public: true
+  description: a picture house in Northport.
+  city: north
+  tags: ["function:cinema", "function:dead-drop-site", "access:public"]
+  basis: fictional
+
+- id: port
+  name: a wharf
+  type: halt
+  district: fringe
+  public: true
+  description: a wharf in Northport.
+  city: north
+  tags: ["function:port", "function:transit", "function:transit-hub", "access:public"]
+  basis: fictional
+
+- id: halt
+  name: the town halt
+  type: halt
+  district: fringe
+  public: true
+  description: the town halt in Northport.
+  city: north
+  tags: ["function:transit", "function:transit-hub", "access:public"]
+  basis: fictional

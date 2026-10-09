@@ -77,6 +77,12 @@ const BASE_PHASE_COST: Readonly<Record<ActionKind, number>> = {
   'turn-agent': 1,
   feed: 0,
   'attend-duty': 1,
+  depart: 1,
+  'request-papers': 1,
+  'apply-visa': 1,
+  'liaison-request': 1,
+  'liaison-share': 0,
+  exfiltrate: 1,
   wait: 1,
 };
 

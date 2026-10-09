@@ -1,0 +1,7 @@
+id: region-fixture
+version: 1.0.0
+contentSchema: 2
+role: extension
+requires:
+  - id: city-vienna
+    range: "^1.0.0"

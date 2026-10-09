@@ -1,0 +1,5 @@
+- a: old-town
+  b: fringe
+  cost: 1
+  tags: ["access:checkpoint"]
+  years: { from: 1948, to: 1961 }

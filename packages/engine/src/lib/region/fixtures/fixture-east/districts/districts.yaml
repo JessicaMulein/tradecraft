@@ -1,0 +1,16 @@
+- id: old-town
+  city: east
+  name: Old Town
+  description: The old town of Eastport, a commercial quarter.
+  tags: ["setting:commercial", "sector:soviet"]
+  sector:
+    power: Soviet
+    years: { from: 1948, to: 1961 }
+- id: fringe
+  city: east
+  name: The Fringe
+  description: The industrial fringe of Eastport.
+  tags: ["setting:industrial", "sector:american"]
+  sector:
+    power: American
+    years: { from: 1948, to: 1961 }

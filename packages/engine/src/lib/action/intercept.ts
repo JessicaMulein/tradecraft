@@ -230,13 +230,31 @@ export function audibleChannels(
  * considered (not just known ones): a courier interception is a chance encounter
  * on a route, not a sweep of known traffic.
  */
+/** A radio Channel is heard only in its reception set. Numbers are heard in every city. */
+function heardInCity(channel: Channel, city: string | undefined): boolean {
+  if (city === undefined || channel.kind === 'numbers') {
+    return true;
+  }
+  if (channel.reception === undefined || channel.reception.length === 0) {
+    return true;
+  }
+  return channel.reception.includes(city);
+}
+
+/** The player is aboard a carriage when their placement is a transit. */
+function playerInCarriage(state: WorldState): boolean {
+  const placed = state.locationOf?.player;
+  return placed !== undefined && 'transit' in placed;
+}
+
 export function courierHereNow(
   state: WorldState,
   narrowTo?: ChannelId,
 ): Channel | undefined {
   const here = state.player.loc;
+  const inCarriage = playerInCarriage(state);
   const candidates = (Object.values(state.channels) as Channel[])
-    .filter((c) => c.kind === 'courier' && c.route === here)
+    .filter((c) => c.kind === 'courier' && (c.route === here || inCarriage))
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   for (const channel of candidates) {
     if (narrowTo !== undefined && channel.id !== narrowTo) {
@@ -296,6 +314,10 @@ export function stationCollection(
       continue;
     }
     if (state.intercepts[tx.intercept.id] !== undefined) {
+      continue;
+    }
+    const channel = state.channels[tx.channel];
+    if (channel !== undefined && !heardInCity(channel, state.player.city ?? undefined)) {
       continue;
     }
     out.push(tx);

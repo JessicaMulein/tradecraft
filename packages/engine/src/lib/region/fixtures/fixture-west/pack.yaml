@@ -1,0 +1,16 @@
+# Synthetic city for the multi-city fixture (task 1.3).
+# A city pack holds one city.yaml, so the four fixture cities are four packs.
+# region-fixture requires them. They are not shipped city packs: the release
+# quantity gate counts every city pack under packages/content/packs.
+id: fixture-west
+version: 1.0.0
+contentSchema: 2
+role: city
+requires:
+  - id: core
+    range: '^1.0.0'
+  - id: era-cold-war-early
+    range: '^1.0.0'
+  - id: lib-central-europe
+    range: '^1.0.0'
+overrides: []

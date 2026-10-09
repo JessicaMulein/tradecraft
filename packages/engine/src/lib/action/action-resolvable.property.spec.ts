@@ -417,6 +417,12 @@ const BUILDERS: ActionBuilders = {
     return { kind: 'feed', asset: real ? a ?? p.npc : 'npc:nobody', items };
   },
   'attend-duty': () => ({ kind: 'attend-duty', duty: 'duty:none' }),
+  depart: (s) => ({ kind: 'depart', route: 'route:none', at: s.time, papers: [] }),
+  'request-papers': () => ({ kind: 'request-papers', doc: 'passport', holder: 'player' }),
+  'apply-visa': () => ({ kind: 'apply-visa', country: 'nowhere' }),
+  'liaison-request': () => ({ kind: 'liaison-request', service: 'service:none', about: 'npc:nobody' }),
+  'liaison-share': () => ({ kind: 'liaison-share', service: 'service:none', props: [] }),
+  exfiltrate: () => ({ kind: 'exfiltrate', asset: 'npc:none', route: 'route:none', at: { day: 0, phase: 'morning' }, papers: [] }),
   wait: () => ({ kind: 'wait', phases: 1 }),
 };
 

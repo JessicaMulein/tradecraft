@@ -1,7 +1,7 @@
 /**
  * `pnpm player:play` — play saved neural-player weights against a preset.
  *
- *   pnpm player:play [--preset all] [--seed nn-eval-easy-0] [--games 1] [--max-turns 160]
+ *   pnpm player:play [--preset all] [--scenario slice|ambient|region|all] [--seed nn-eval-easy-0] [--games 1] [--max-turns 160]
  */
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -14,6 +14,7 @@ import {
   summarizeEpisodes,
   type EpisodeResult,
 } from '../src/lib/nn/episode.js';
+import { playModes, scenarioForMode, type PlayMode } from '../src/lib/nn/modes.js';
 import { defaultPresets, loadPlayer } from '../src/lib/nn/train.js';
 import type { ScriptedPreset } from '../src/lib/scripted-games.js';
 
@@ -25,6 +26,7 @@ const REPO_ROOT = join(
 );
 
 async function playPreset(
+  mode: PlayMode,
   preset: ScriptedPreset,
   games: number,
   maxTurns: number,
@@ -41,10 +43,12 @@ async function playPreset(
       games === 1 && seedPrefix !== ''
         ? seedPrefix
         : `${seedPrefix || 'nn-play'}-${preset}-${i}`;
+    const scenario = scenarioForMode(mode);
     const result = await playEpisode({
       seed,
       preset,
       maxTurns,
+      ...(scenario === undefined ? {} : { scenario }),
       choose: (obs) =>
         argmax(
           policy.probs(
@@ -54,11 +58,11 @@ async function playPreset(
         ),
     });
     console.log(
-      `${preset} ${result.seed} ${result.outcome} day ${result.day} turns ${result.turns} evidence ${result.evidence.toFixed(1)}`,
+      `${mode} ${preset} ${result.seed} ${result.outcome} day ${result.day} turns ${result.turns} evidence ${result.evidence.toFixed(1)}`,
     );
     results.push(result);
   }
-  console.log(`${preset}: ${summarizeEpisodes(results)}`);
+  console.log(`${mode} ${preset}: ${summarizeEpisodes(results)}`);
   return results;
 }
 
@@ -66,16 +70,20 @@ async function main(): Promise<void> {
   const { values } = parseArgs({
     options: {
       preset: { type: 'string', default: 'all' },
+      scenario: { type: 'string', default: 'slice' },
       seed: { type: 'string', default: '' },
       games: { type: 'string', default: '1' },
       'max-turns': { type: 'string', default: '160' },
     },
   });
   const presets = defaultPresets(values.preset);
+  const modes = playModes(values.scenario ?? 'slice');
   const games = Number(values.games);
   const maxTurns = Number(values['max-turns']);
-  for (const preset of presets) {
-    await playPreset(preset, games, maxTurns, values.seed ?? '');
+  for (const mode of modes) {
+    for (const preset of presets) {
+      await playPreset(mode, preset, games, maxTurns, values.seed ?? '');
+    }
   }
 }
 

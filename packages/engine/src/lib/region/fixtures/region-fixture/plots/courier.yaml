@@ -1,0 +1,38 @@
+# Schema-2 plot that carries the same cross-city hook fields. The region
+# template's plots list points here. Prose stays free of proper nouns so the
+# plot-library noun check accepts it.
+- id: courier-line
+  templateSchema: 2
+  kind: plot
+  displayName: courier line
+  archetype: courier
+  era: { from: 1948, to: 1961 }
+  stageCount: { min: 2, max: 2 }
+  cells:
+    - { id: cell, roles: [courier] }
+  roleSlots:
+    courier:
+      query: ["role:cell"]
+      mandatory: true
+      shareable: false
+  cityRoles:
+    A: { not: hub }
+    B: {}
+  stages:
+    - id: collect
+      cell: cell
+      city: A
+    - id: hand-over
+      cell: cell
+      city: B
+      requires: [collect]
+      handoff:
+        from: collect
+        carrier: courier-line
+        modes: [rail]
+      fallback: collect
+  outcomes:
+    success:
+      - { kind: abort }
+    failure:
+      - { kind: abort }

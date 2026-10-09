@@ -442,7 +442,9 @@
 
 - id: nylon-stockings
   name: nylon stockings
-  aliases: [nylons, stockings]
+  # Bare "stockings" is silk hosiery, in use long before nylon. The distinctive
+  # surface is "nylons" (and the name "nylon stockings").
+  aliases: [nylons]
   category: everyday
   introduced: 1946
 
@@ -472,7 +474,9 @@
 
 - id: television-set
   name: television set
-  aliases: [television, the set, TV set]
+  # "the set" is ordinary English ("a set of papers"), not a distinctive name
+  # for a television. "television" and "TV set" are the surfaces that mean one.
+  aliases: [television, TV set]
   category: everyday
   introduced: 1950
 

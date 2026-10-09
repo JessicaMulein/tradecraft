@@ -49,6 +49,7 @@
 import {
   revealTruth,
   type DeadDropId,
+  type GameTime,
   type LocId,
   type NpcId,
   type Proposition,
@@ -100,12 +101,20 @@ export interface PlantTask {
   readonly at?: LocId;
 }
 
+/** Send the Asset across a border on a departure. The action layer runs the border checks. */
+export interface TravelTask {
+  readonly kind: 'travel';
+  readonly route: `route:${string}`;
+  readonly at: GameTime;
+  readonly papers: readonly `paper:${string}`[];
+}
+
 /**
  * A task handed to an Asset (design: `AssetTask`; Req 10.3). The four kinds the
  * design names: collect on a target, introduce another NPC, service a dead drop,
  * or plant information.
  */
-export type AssetTask = CollectTask | IntroduceTask | ServiceTask | PlantTask;
+export type AssetTask = CollectTask | IntroduceTask | ServiceTask | PlantTask | TravelTask;
 
 // ---------------------------------------------------------------------------
 // Tuning constants
@@ -185,12 +194,19 @@ export interface PlantResult {
   readonly placed: boolean;
 }
 
+/** A `travel` result. The border outcome is decided by the action layer. */
+export interface TravelResult {
+  readonly kind: 'travel';
+  readonly outcome: 'arrived' | 'refused' | 'detained' | 'seizure';
+}
+
 /** The result of resolving one {@link AssetTask} (design, "Recruitment"). */
 export type AssetTaskResult =
   | CollectResult
   | IntroduceResult
   | ServiceResult
-  | PlantResult;
+  | PlantResult
+  | TravelResult;
 
 // ---------------------------------------------------------------------------
 // The inputs a task reads
@@ -254,6 +270,8 @@ export function runAssetTask(
       return resolveService(task, ctx.dropContents ?? [], profile, isMemberOfOrg, rng);
     case 'plant':
       return resolvePlant(task, profile, rng);
+    case 'travel':
+      return { kind: 'travel', outcome: 'refused' };
   }
 }
 

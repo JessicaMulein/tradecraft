@@ -21,6 +21,8 @@
 import { DifficultyPresetSchema } from '@tradecraft/content';
 import { z } from 'zod';
 
+import { RegionalPresetSchema } from '../region/content.js';
+
 /**
  * A fixed-key weight bag: an object whose named keys all map to numbers and
  * nothing else. The recruitment, pressure and exposure formulae each take a
@@ -88,6 +90,31 @@ function deepPartial(schema: z.ZodTypeAny): z.ZodTypeAny {
 export const DifficultyOverridesSchema = deepPartial(
   DifficultyPresetSchema,
 ) as z.ZodTypeAny;
+
+/**
+ * A deep-partial of a Regional Preset, used for `region.overrides`. The merged
+ * result is re-validated against {@link RegionalPresetSchema}, so a partial
+ * block may name any subset of the Req 20.2 fields.
+ */
+export const RegionalPresetOverridesSchema = deepPartial(RegionalPresetSchema) as z.ZodTypeAny;
+
+/** Where the Station sits: one regional Station, or one Station per City. */
+export const STATION_MODELS = ['regional', 'per-city'] as const;
+export const StationModelSchema = z.enum(STATION_MODELS);
+export type StationModel = (typeof STATION_MODELS)[number];
+
+/**
+ * The optional `region` section (multi-city Req 20.1). Absent, the scenario
+ * stays in slice mode. `overrides` deep-merge onto the Regional Preset keyed
+ * by the selected Difficulty Preset id.
+ */
+export const RegionConfigSchema = z
+  .object({
+    template: z.string().min(1, 'region.template must name a region template'),
+    stationModel: StationModelSchema.default('regional'),
+    overrides: RegionalPresetOverridesSchema.default({}),
+  })
+  .strict();
 
 /**
  * The difficulty selection: a named preset plus optional field overrides. The
@@ -255,6 +282,12 @@ export const ScenarioConfigSchema = z
       })
       .strict()
       .optional(),
+    /**
+     * Multi-city region selection. Absent, play stays the slice (one city,
+     * no regional preset). `template` names a region template; `overrides`
+     * deep-merge onto the Regional Preset for the selected Difficulty Preset.
+     */
+    region: RegionConfigSchema.optional(),
   })
   .strict();
 

@@ -1,0 +1,36 @@
+- id: north-rail
+  era: { from: 1948, to: 1961 }
+  mode: rail
+  terminals: [fixture-north/halt, fixture-east/halt]
+  timetable: morning
+  duration: 6
+  fare: 12
+  borders: [north-frontier]
+  cancellingWeather: [snow]
+- id: east-air
+  era: { from: 1948, to: 1961 }
+  mode: air
+  terminals: [fixture-east/halt, fixture-south/halt]
+  timetable: midday
+  duration: 2
+  fare: 40
+  borders: [east-frontier]
+  cancellingWeather: [fog]
+- id: south-road
+  era: { from: 1948, to: 1961 }
+  mode: road
+  terminals: [fixture-south/halt, fixture-west/halt]
+  timetable: afternoon
+  duration: 8
+  fare: 8
+  borders: [south-line-border]
+  cancellingWeather: [snow]
+- id: west-sea
+  era: { from: 1948, to: 1961 }
+  mode: sea
+  terminals: [fixture-west/halt, fixture-north/halt]
+  timetable: evening
+  duration: 8
+  fare: 15
+  borders: [west-coast]
+  cancellingWeather: [storm]

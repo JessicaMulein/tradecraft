@@ -1,0 +1,16 @@
+- id: old-town
+  city: west
+  name: Old Town
+  description: The old town of Westport, a commercial quarter.
+  tags: ["setting:commercial", "sector:french"]
+  sector:
+    power: French
+    years: { from: 1948, to: 1961 }
+- id: fringe
+  city: west
+  name: The Fringe
+  description: The industrial fringe of Westport.
+  tags: ["setting:industrial", "sector:american"]
+  sector:
+    power: American
+    years: { from: 1948, to: 1961 }

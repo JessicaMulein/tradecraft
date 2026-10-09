@@ -1,0 +1,15 @@
+- id: central-1953
+  era:
+    from: 1948
+    to: 1961
+  eraDate: "1953-06-01"
+  cities:
+    - { city: city-vienna/vienna, hub: true }
+    - { city: city-vienna/vienna }
+  countries:
+    - Austria
+  jurisdiction:
+    - { place: city-vienna/vienna, service: city-vienna/city-security-directorate }
+    - { place: city-vienna/innere-stadt, service: city-vienna/city-security-directorate }
+  services:
+    - city-vienna/city-security-directorate

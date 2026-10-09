@@ -2,9 +2,9 @@
  * The Case File: the player's own record of what sources have asserted
  * (Glossary; Requirements 7.4, 8.1, 8.2).
  *
- * A {@link Claim} is a {@link Proposition} asserted to the player by one of four
- * kinds of source — an NPC in conversation, a decrypted Intercept, a
- * surveillance observation, or a Document the player read. The Case File holds
+ * A {@link Claim} is a {@link Proposition} asserted to the player by a source —
+ * an NPC in conversation, a decrypted Intercept, a surveillance observation, a
+ * Document the player read, or a liaison service. The Case File holds
  * those Claims, the player's Admiralty Grades, the links the player draws
  * between Claims, and the corroboration/conflict relation the engine computes
  * from the Claims alone.
@@ -57,22 +57,25 @@ import {
 // ---------------------------------------------------------------------------
 
 /**
- * The four kinds of source a Claim can come from (Glossary: "a Proposition
- * asserted to the player by a source — an NPC, an Intercept, surveillance or a
- * document"). Each carries the id of the originating thing, which is what the
- * per-source history groups on.
+ * The kinds of source a Claim can come from (Glossary: "a Proposition
+ * asserted to the player by a source — an NPC, an Intercept, surveillance, a
+ * document, or a liaison service"). Each carries the id of the originating
+ * thing, which is what the per-source history groups on.
  *
  * - `npc` — something an NPC said, extracted into a Claim by the Claim
  *   Extractor.
  * - `intercept` — a Proposition decoded from a broken Intercept.
  * - `surveillance` — a Proposition the player observed directly at a Location.
  * - `document` — a Proposition asserted by a Document the player read.
+ * - `liaison` — a Proposition a liaison Service reported. It is that service's
+ *   account, not ground truth.
  */
 export type ClaimSource =
   | { readonly kind: 'npc'; readonly npc: NpcId }
   | { readonly kind: 'intercept'; readonly id: InterceptId }
   | { readonly kind: 'surveillance'; readonly loc: LocId }
-  | { readonly kind: 'document'; readonly id: DocId };
+  | { readonly kind: 'document'; readonly id: DocId }
+  | { readonly kind: 'liaison'; readonly service: `service:${string}` };
 
 /** The source-kind discriminant alone. */
 export type ClaimSourceKind = ClaimSource['kind'];
@@ -83,6 +86,7 @@ export const CLAIM_SOURCE_KINDS = [
   'intercept',
   'surveillance',
   'document',
+  'liaison',
 ] as const;
 
 /**
@@ -446,6 +450,8 @@ export function sourceKey(source: ClaimSource): SourceKey {
       return `surveillance:${source.loc}`;
     case 'document':
       return `document:${source.id}`;
+    case 'liaison':
+      return `liaison:${source.service}`;
   }
 }
 

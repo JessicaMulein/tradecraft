@@ -108,6 +108,23 @@ describe('recordObservationClaims (Req 8.4, 10.3)', () => {
     expect(caseFile.sourceHistory({ kind: 'npc', npc })?.claims).toHaveLength(1);
   });
 
+  it('files a liaison Observation under the liaison service', () => {
+    const caseFile = new CaseFile();
+    const service = 'service:atlantic' as const;
+    const ids = recordObservationClaims(caseFile, [
+      {
+        kind: 'proposition',
+        prop: prop('p:l'),
+        at: AT,
+        source: { kind: 'liaison', service },
+      },
+    ]);
+
+    expect(ids).toHaveLength(1);
+    expect(caseFile.get(ids[0])?.source).toEqual({ kind: 'liaison', service });
+    expect(caseFile.sourceHistory({ kind: 'liaison', service })?.claims).toHaveLength(1);
+  });
+
   it('records a mixed batch in order and returns the recorded Claim ids', () => {
     const caseFile = new CaseFile();
     const loc = 'loc:cafe' as LocId;

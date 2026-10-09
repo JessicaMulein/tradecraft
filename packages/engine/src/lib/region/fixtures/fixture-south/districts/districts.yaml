@@ -1,0 +1,16 @@
+- id: old-town
+  city: south
+  name: Old Town
+  description: The old town of Southport, a commercial quarter.
+  tags: ["setting:commercial", "sector:allied"]
+  sector:
+    power: Allied
+    years: { from: 1948, to: 1961 }
+- id: fringe
+  city: south
+  name: The Fringe
+  description: The industrial fringe of Southport.
+  tags: ["setting:industrial", "sector:yugoslav"]
+  sector:
+    power: Yugoslav
+    years: { from: 1948, to: 1961 }

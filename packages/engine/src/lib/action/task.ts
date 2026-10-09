@@ -126,6 +126,8 @@ import { addContactChannel } from './talk.js';
 import { identify } from './identify.js';
 import type { ActionQuote, ActionResult, Observation, ResolverContext } from './result.js';
 import type { ObservationSource, TaskAction } from './types.js';
+import { assetCity, quoteExfiltrate, remoteLatency, resolveTravelTask } from '../region/remote.js';
+import { addPhases } from '../clock/clock.js';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -489,7 +491,17 @@ export function quoteTask(state: WorldState, a: TaskAction): ActionQuote {
   if (!rel.channel) {
     return { allowed: false, reason: NO_CHANNEL_REASON, phases: 0, money: 0 };
   }
-  return { allowed: true, phases: TASK_PHASE_COST, money: TASK_MONEY_COST };
+  if (a.task.kind === 'travel') {
+    const travel = quoteExfiltrate(state, {
+      kind: 'exfiltrate',
+      asset: a.asset,
+      route: a.task.route,
+      at: a.task.at,
+      papers: a.task.papers,
+    });
+    return travel;
+  }
+  return { allowed: true, phases: TASK_PHASE_COST + remoteLatency(state, a.asset), money: TASK_MONEY_COST };
 }
 
 // ---------------------------------------------------------------------------
@@ -552,6 +564,9 @@ export function resolveTask(
       },
     };
   }
+  if (a.task.kind === 'travel') {
+    return resolveTravelTask(state, { ...a, task: a.task }, rng);
+  }
 
   const task = a.task;
   const isMemberOfOrg = membershipLookup(ctx.truth, state.time);
@@ -601,14 +616,30 @@ export function resolveTask(
     relationships: { ...applied.next.relationships, [a.asset]: exposed },
   };
 
+  const latency = remoteLatency(state, a.asset);
+  const delivered = latency === 0
+    ? next
+    : {
+        ...next,
+        scheduled: [
+          ...next.scheduled,
+          {
+            id: `remote-${a.asset}-${next.time.day}`,
+            at: addPhases(next.time, latency),
+            visibility: 'player' as const,
+            kind: 'outstation-report' as const,
+            city: assetCity(state, a.asset) ?? state.player.city ?? 'city:hub',
+          },
+        ],
+      };
   return {
-    next,
+    next: delivered,
     result: {
-      observations: applied.observations,
-      factLines: render(next, applied.observations),
+      observations: latency === 0 ? applied.observations : [],
+      factLines: latency === 0 ? render(next, applied.observations) : ['The report is on its way.'],
       scene: sceneDescriptorAt(next, next.player.loc),
       events: applied.events,
-      claimsAdded: applied.claimsAdded,
+      claimsAdded: latency === 0 ? applied.claimsAdded : [],
     },
   };
 }
@@ -685,6 +716,14 @@ function applyOutcome(
       return applyService(state, asset, rel, outcome);
     case 'plant':
       return applyPlant(state, asset, rel, outcome);
+    case 'travel':
+      return {
+        next: state,
+        asset: rel,
+        observations: [],
+        claimsAdded: [],
+        events: [],
+      };
   }
 }
 

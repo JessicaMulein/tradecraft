@@ -83,6 +83,8 @@ export interface Directive {
   readonly deadline: GameTime;
   /** The Standing moved on success (+) or failure (−). */
   readonly reward: number;
+  /** The city the objective names, when the Chief assigns it outside the hub. */
+  readonly city?: `city:${string}`;
   /** The lifecycle status. */
   readonly status: DirectiveStatus;
 }

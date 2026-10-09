@@ -1,0 +1,16 @@
+- id: old-town
+  city: north
+  name: Old Town
+  description: The old town of Northport, a commercial quarter.
+  tags: ["setting:commercial", "sector:british"]
+  sector:
+    power: British
+    years: { from: 1948, to: 1961 }
+- id: fringe
+  city: north
+  name: The Fringe
+  description: The industrial fringe of Northport.
+  tags: ["setting:industrial", "sector:soviet"]
+  sector:
+    power: Soviet
+    years: { from: 1948, to: 1961 }

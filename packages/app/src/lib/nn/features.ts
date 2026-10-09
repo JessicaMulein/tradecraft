@@ -34,6 +34,10 @@ export const CATALOGUE_KINDS = [
   'turn-agent',
   'feed',
   'attend-duty',
+  'depart',
+  'request-papers',
+  'apply-visa',
+  'liaison-request',
   'wait',
 ] as const;
 

@@ -26,6 +26,7 @@ import {
 import {
   encodeAction,
   encodeState,
+  CATALOGUE_KINDS,
   SAY_INTENTS,
   type ActionContext,
   type CrowdName,
@@ -105,6 +106,8 @@ const SKIPPED = new Set([
   'service-drop',
   'arrange-meeting',
   'confront',
+  'liaison-share',
+  'exfiltrate',
 ]);
 
 function isStation(type: string): boolean {
@@ -361,6 +364,7 @@ export function observe(
       if (!option.quote.allowed) continue;
       const action = option.action;
       if (SKIPPED.has(action.kind)) continue;
+      if (!(CATALOGUE_KINDS as readonly string[]).includes(action.kind)) continue;
       if (action.kind === 'cable' && action.body.kind === 'report') continue;
       if (action.kind === 'wait' && action.phases !== 1) continue;
       const submission =
@@ -386,6 +390,7 @@ export function observe(
             ? action.at
             : undefined;
       const place = dest === undefined ? undefined : places.get(dest);
+      const departClaim = action.kind === 'depart' ? departClaimWeight(engine, action.route, weight) : 0;
       const destRisk =
         place?.risk ?? (dest === undefined ? here.location.risk : 0.5);
       const context: ActionContext = {
@@ -396,7 +401,7 @@ export function observe(
           action.kind === 'travel' && action.countersurveillance,
         destRisk,
         destStation: place?.station ?? false,
-        destClaimWeight: dest === undefined ? 0 : weight(dest),
+        destClaimWeight: dest === undefined ? departClaim : weight(dest),
         destSurveilledRecently:
           dest !== undefined && recently(memory, dest, ordinal),
         targetEvidence: target === undefined ? 0 : ev(target),
@@ -431,6 +436,26 @@ export function observe(
   }
 
   return { state, stateVec: encodeState(state), actions };
+}
+
+/** How much of the case file sits in the city a departure is headed for. */
+function departClaimWeight(
+  engine: PlayerViewEngine,
+  routeId: string,
+  weight: (id: string) => number,
+): number {
+  const region = engine.state.region;
+  const route = region?.intercity[routeId as keyof typeof region.intercity];
+  const cityId = route?.toCity;
+  if (region === undefined || cityId === undefined) return 0;
+  const city = region.cities[cityId];
+  if (city === undefined) return 0;
+  let best = 0;
+  for (const id of Object.keys(city.locations)) {
+    const next = weight(id);
+    if (next > best) best = next;
+  }
+  return best;
 }
 
 /** Break whatever the Workbench now gives up, and count the solved captures. */

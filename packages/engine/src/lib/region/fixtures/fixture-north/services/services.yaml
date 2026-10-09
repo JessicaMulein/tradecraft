@@ -1,0 +1,11 @@
+- id: watch
+  name: the north watch
+  kind: local-security
+  country: Northland
+  doctrineBase:
+    riskTolerance: 0.4
+    securityConsciousness: 0.6
+    deceptionAppetite: 0.2
+  years:
+    from: 1948
+    to: 1961

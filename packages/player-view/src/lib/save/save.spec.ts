@@ -352,10 +352,10 @@ describe('SaveSnapshot — schema and JSON round-trip', () => {
     expect(snapshot.ledger).toEqual(w.station.ledger);
   });
 
-  it('writes version 3 and keeps the v2 parts (Req 13.8)', () => {
+  it('writes version 4 and keeps the v2 parts (Req 13.8)', () => {
     const snapshot = saveSnapshot(sources());
-    expect(snapshot.version).toBe(3);
-    expect(SAVE_VERSION).toBe(3);
+    expect(snapshot.version).toBe(4);
+    expect(SAVE_VERSION).toBe(4);
     expect(snapshot.world.ambient).toBeUndefined();
     // The Case File, Truth Store, view state and pipeline counters are present.
     expect(snapshot.caseFile.claims).toHaveLength(2);
@@ -586,6 +586,17 @@ describe('loadSnapshot — refuses an unsupported format version (Req 17.1, 13.5
       return;
     }
     expect(result.error).toEqual({ kind: 'version', saved: 1, supported: SAVE_VERSION });
+  });
+
+  it('loads a version 3 slice save in slice mode', () => {
+    const w = world();
+    const snapshot = { ...saveSnapshot(sources(w)), version: 3 as const };
+    const result = loadSnapshot(JSON.parse(JSON.stringify(snapshot)), loadedManifest(w));
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.session.world.region).toBeUndefined();
   });
 });
 

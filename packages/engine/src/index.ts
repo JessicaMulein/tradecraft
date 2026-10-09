@@ -266,7 +266,12 @@ export {
   RecruitmentWeightsSchema,
   RetriesConfigSchema,
   MetricsConfigSchema,
+  RegionConfigSchema,
+  RegionalPresetOverridesSchema,
+  StationModelSchema,
+  STATION_MODELS,
   type NarrationMode,
+  type StationModel,
   // ScenarioConfig type is re-exported from the state module above.
 } from './lib/config/scenario-config.js';
 
@@ -1023,6 +1028,7 @@ export {
   MAX_SETTING_ATTEMPTS,
   NOISE_STREAM_BASE,
   HOSTILE_STREAM_BASE,
+  REGION_STREAM_BASE,
   // DAILY_STREAM_BASE is already exported from the city module above; the
   // generator re-exports it only to document the stream registry in one place,
   // so it is not re-exported again here to avoid a duplicate export.
@@ -2091,6 +2097,142 @@ export {
   EventTemplateSchema,
   ambientJsonSchema,
 } from './lib/ambient/content.js';
+export {
+  REGION_KINDS,
+  TRAVEL_MODES,
+  BorderPostSchema,
+  BorderSchema,
+  CrossCityStageHookSchema,
+  IntercityRouteTemplateSchema,
+  RegionalPresetSchema,
+  RegionTemplateSchema,
+  RivalryTableSchema,
+  ServiceExtensionSchema,
+  TravelDocumentKindSchema,
+  regionJsonSchema,
+} from './lib/region/content.js';
+export { checkRegionContent, regionRefs } from './lib/region/check.js';
+export { loadRegionContent, regionSources } from './lib/region/load.js';
+export { regionCatalog, type RegionCatalog } from './lib/region/catalog.js';
+export { generateRegion, type GenerateRegionInputs } from './lib/region/generate.js';
+export { regionTruth } from './lib/region/mystery.js';
+export {
+  flushRegionMetrics,
+  recordRegionTiming,
+  setRegionMetricsSink,
+  type RegionMetricsSink,
+  type RegionMetricsTarget,
+  type RegionTimingInput,
+  type RegionTimingPurpose,
+  type RegionTimingRecord,
+} from './lib/region/metrics-log.js';
+export { borderCheck, borderFactLine, BORDER_OUTCOMES, BORDER_OUTCOME_RANK } from './lib/border/check.js';
+export type { BorderOutcome, BorderInput, BorderResult } from './lib/border/check.js';
+export { quoteDepart, resolveDepart } from './lib/travel/depart.js';
+export { decideVisa, quotePapers, quoteVisa, resolvePapers, resolveVisa } from './lib/travel/papers.js';
+export { serviceDay, leakageBounded, visibleToPosting } from './lib/region/service-day.js';
+export {
+  assetCity,
+  channelDelay,
+  communicationLatency,
+  exposureByService,
+  quoteExfiltrate,
+  remoteLatency,
+  resolveExfiltrate,
+  resolveTravelTask,
+  resultReadyAt,
+} from './lib/region/remote.js';
+export {
+  arriveHandoff,
+  boardHandoff,
+  chooseReroute,
+  courierSeized,
+  deadlineHolds,
+  handoffDeadline,
+  handoffTraces,
+  recordHandoffDisruption,
+  regionalArrest,
+  stageReady,
+} from './lib/region/handoff.js';
+export {
+  cableLatency,
+  enqueueNotices,
+  noticeRelease,
+  noticeRoute,
+  playerInTransit,
+  publishCityEditions,
+  releaseNotices,
+} from './lib/region/notices.js';
+export type { NoticeRoute } from './lib/region/notices.js';
+export {
+  controllingService,
+  jurisdictionAllows,
+  jurisdictionReason,
+  observedCities,
+  servicePermitsArrest,
+} from './lib/region/jurisdiction.js';
+export {
+  crossingRecords,
+  fallTrust,
+  liaisonAnswer,
+  liaisonShare,
+  reportIsGrounded,
+} from './lib/liaison/exchange.js';
+export { moveOnSpine, phasesBetween, placementsMatch } from './lib/travel/move.js';
+export {
+  cityAmbientSeed,
+  cityCoreSeed,
+  cityDailySeed,
+  cityNoiseRetrySeed,
+  cityNoiseSeed,
+  citySpineSeed,
+  initialCityStreams,
+  REGION_STREAM_END,
+  regionRetrySeed,
+  regionSeed,
+  type SavedCityStreams,
+} from './lib/region/streams.js';
+export {
+  SERVICE_KINDS,
+  SLICE_HOSTILE_SERVICE,
+  sliceService,
+  sliceServices,
+  type LiaisonAgenda,
+  type Penetration,
+  type Residency,
+  type RivalryEdge,
+  type ServiceBeliefs,
+  type ServiceKind,
+  type ServiceState,
+  type WatchList,
+} from './lib/region/services.js';
+export {
+  CITY_TIERS,
+  type AmbientCityState,
+  type BorderPost,
+  type BorderPostId,
+  type CityState,
+  type CityTier,
+  type DocumentIssuer,
+  type Handoff,
+  type HandoffId,
+  type HandoffStatus,
+  type IntercityRoute,
+  type LocationOf,
+  type Outstation,
+  type Placement,
+  type RegionWorld,
+  type RouteDuration,
+  type SectorLine,
+  type StationHub,
+  type Stations,
+  type Transit,
+  type TransitId,
+  type TransitStatus,
+  type TravelDocId,
+  type TravelDocument,
+  type TravelMode,
+} from './lib/region/world.js';
 export { ambientPreset, type AmbientPresetValues } from './lib/ambient/preset.js';
 export {
   checkAmbientPredicate,
@@ -2233,9 +2375,17 @@ export {
   referenceSimulator,
   referenceSpine,
   runAmbientContract,
+  advanceRegion,
+  arrivalFactLines,
+  arrive,
+  assignTiers,
+  initialRegionClock,
+  serviceTickOrder,
   sliceAmbient,
   sliceCity,
   sliceSpine,
+  spineProjection,
+  spineTick,
   type AmbientContract,
   type AmbientCoupling,
   type AmbientOriginEvent,
@@ -2246,6 +2396,8 @@ export {
   type GossipRef,
   type IRouteId,
   type RefCity,
+  type RegionClockOptions,
+  type RegionClockState,
   type SliceCity,
   type SpineView,
   type Window as CouplingWindow,

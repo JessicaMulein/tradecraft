@@ -65,6 +65,8 @@ export interface CaseFileBrowserProps {
    * facade. Empty when there are none.
    */
   readonly entities?: readonly EntityId[];
+  /** Cities the city filter can cycle through. */
+  readonly cities?: readonly string[];
   /** A starting filter, if the browser is opened pre-filtered. */
   readonly initialFilter?: CaseFileFilter;
   /** Signalled with the new filter whenever the player changes a filter axis. */
@@ -162,6 +164,7 @@ function filterSummary(filter: CaseFileFilter): string {
   parts.push(`source=${filter.source ?? 'all'}`);
   parts.push(`grade=${filter.grade === undefined ? 'all' : formatGrade(filter.grade)}`);
   parts.push(`entity=${filter.entity ?? 'all'}`);
+  parts.push(`city=${filter.city ?? 'all'}`);
   return parts.join(' · ');
 }
 
@@ -173,6 +176,7 @@ function filterSummary(filter: CaseFileFilter): string {
 export function CaseFileBrowser({
   claims,
   entities = [],
+  cities = [],
   initialFilter,
   onFilter,
   onGrade,
@@ -196,8 +200,8 @@ export function CaseFileBrowser({
   const cycleFilter = (step: 1 | -1): void => {
     const action =
       step === 1
-        ? ({ type: 'filter-next', entities } as const)
-        : ({ type: 'filter-prev', entities } as const);
+        ? ({ type: 'filter-next', entities, cities } as const)
+        : ({ type: 'filter-prev', entities, cities } as const);
     const next = reduceCaseFile(state, action);
     dispatch(action);
     onFilter?.(next.filter);

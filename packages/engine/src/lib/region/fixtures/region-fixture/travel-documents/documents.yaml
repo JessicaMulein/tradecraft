@@ -1,0 +1,21 @@
+- id: passport
+  era: { from: 1948, to: 1961 }
+  issuers: [consulate]
+  validityDays: 365
+  baseQuality: 0.8
+  cost: 20
+  obtainableBy: consulate
+- id: laissez-passer
+  era: { from: 1948, to: 1961 }
+  issuers: [station]
+  validityDays: 30
+  baseQuality: 0.6
+  cost: 5
+  obtainableBy: station
+- id: service-pass
+  era: { from: 1948, to: 1961 }
+  issuers: [service]
+  validityDays: 90
+  baseQuality: 0.9
+  cost: 0
+  obtainableBy: none

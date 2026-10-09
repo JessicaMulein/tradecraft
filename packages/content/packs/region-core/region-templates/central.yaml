@@ -1,0 +1,37 @@
+# central-1953. Era date 1953-06-01 is inside every referenced city's period:
+# Vienna 1945-1955, Berlin 1948-1961, Trieste 1947-1954. The template era is
+# the overlap of those windows. Vienna is the single hub.
+- id: central-1953
+  era:
+    from: 1948
+    to: 1954
+  eraDate: '1953-06-01'
+  cities:
+    - { city: city-vienna/vienna, hub: true }
+    - { city: city-berlin/berlin, hub: false }
+    - { city: city-trieste/trieste, hub: false }
+  countries: [Austria, Germany, "Free Territory of Trieste"]
+  sectorLines:
+    - { id: berlin-sectors, a: Soviet, b: American }
+    - { id: trieste-zones, a: "Zone A — Allied Military Government", b: "Zone B — Yugoslav Military Government" }
+  jurisdiction:
+    - { place: city-vienna/vienna, service: city-vienna/city-security-directorate }
+    - { place: city-vienna/innere-stadt, service: city-vienna/city-security-directorate }
+    - { place: city-berlin/mitte, service: city-berlin/city-public-order-office }
+    - { place: city-trieste/borgo-teresiano, service: city-trieste/zone-security-office }
+  services:
+    - era-cold-war-early/own-service
+    - era-cold-war-early/hostile-foreign-directorate
+    - era-cold-war-early/hostile-security-apparat
+    - era-cold-war-early/liaison-atlantic-agency
+    - city-vienna/city-security-directorate
+    - city-berlin/city-public-order-office
+    - city-trieste/zone-security-office
+  rivalry: bloc-rivalry
+  routes:
+    - westbahn
+    - air-corridor
+    - adriatic-road
+    - adriatic-sea
+  plots:
+    - courier-line

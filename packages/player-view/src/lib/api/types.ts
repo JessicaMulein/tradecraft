@@ -38,6 +38,8 @@ import type {
 // Re-exported so the facade surface keeps naming `FeedError` from one place.
 export type { FeedError } from '@tradecraft/engine';
 
+import type { PaperView } from '../region/papers.js';
+import type { CarriageView, DepartureView, RegionMapView } from '../region/views.js';
 import type {
   CaseFileFilter,
   ClaimView,
@@ -339,6 +341,13 @@ export interface StatusView {
   readonly budget: number;
   readonly standing: number;
   readonly ended: boolean;
+  /** The city the player is in. Absent in slice mode and while in transit. */
+  readonly city?: { readonly id: string; readonly name: string };
+  /** Set while the player is riding a departure. */
+  readonly transit?: {
+    readonly destination: { readonly id: string; readonly name: string };
+    readonly arrives: GameTime;
+  };
 }
 
 /** An action with its quote, as `actions()` lists them (design `ActionOption`). */
@@ -488,6 +497,32 @@ export interface EngineApi {
   /** Re-run a paused turn. */
   retry(): TurnStream;
 
+  depart(
+    route: Extract<Action, { kind: 'depart' }>['route'],
+    at: GameTime,
+    papers: Extract<Action, { kind: 'depart' }>['papers'],
+  ): TurnStream;
+  requestPapers(
+    doc: Extract<Action, { kind: 'request-papers' }>['doc'],
+    holder: Extract<Action, { kind: 'request-papers' }>['holder'],
+  ): TurnStream;
+  applyVisa(country: Extract<Action, { kind: 'apply-visa' }>['country']): TurnStream;
+  liaisonRequest(
+    service: Extract<Action, { kind: 'liaison-request' }>['service'],
+    about: Extract<Action, { kind: 'liaison-request' }>['about'],
+    records?: boolean,
+  ): TurnStream;
+  liaisonShare(
+    service: Extract<Action, { kind: 'liaison-share' }>['service'],
+    props: Extract<Action, { kind: 'liaison-share' }>['props'],
+  ): TurnStream;
+  exfiltrate(
+    asset: Extract<Action, { kind: 'exfiltrate' }>['asset'],
+    route: Extract<Action, { kind: 'exfiltrate' }>['route'],
+    at: GameTime,
+    papers: Extract<Action, { kind: 'exfiltrate' }>['papers'],
+  ): TurnStream;
+
   validateFeed(items: readonly FeedItem[]): Result<void, FeedError[]>;
 
   readonly caseFile: {
@@ -518,6 +553,10 @@ export interface EngineApi {
     workbench(id: InterceptId): WorkbenchView;
     help(): HelpView;
     debrief(): DebriefView | null;
+    region(): RegionMapView | undefined;
+    departures(): readonly DepartureView[];
+    papers(): readonly PaperView[];
+    carriage(): CarriageView | undefined;
   };
 
   readonly notifications: {

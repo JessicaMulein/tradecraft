@@ -176,6 +176,15 @@ export interface HostileMemory {
  * `../model/state.ts`; `WorldState.ended.outcome` reads only its `outcome` tag,
  * via the state module's re-export.
  */
+export interface OutcomeRegion {
+  readonly template: string;
+  readonly cities: readonly { readonly id: string; readonly tier: string }[];
+  readonly coverSuspicion: readonly { readonly service: string; readonly coverSuspicion: number }[];
+  readonly png: readonly string[];
+  readonly liaisonTrust: readonly { readonly service: string; readonly trust: number }[];
+  readonly assetCities: readonly { readonly npc: string; readonly city: string }[];
+}
+
 export interface OutcomePlotRecord {
   readonly templateId: string;
   readonly variantKey: string;
@@ -219,6 +228,8 @@ export interface OutcomeRecord {
   readonly hostileMemory: HostileMemory;
   /** The Budget remaining at game end. */
   readonly budgetRemaining: number;
+  /** Regional end state. Present only on schema 2, and only for a regional game. */
+  readonly region?: OutcomeRegion;
 }
 
 // ---------------------------------------------------------------------------
@@ -321,6 +332,17 @@ const OutcomePlotRecordSchema = z
   })
   .meta({ id: 'OutcomePlotRecord' });
 
+const OutcomeRegionSchema = z
+  .strictObject({
+    template: z.string(),
+    cities: z.array(z.strictObject({ id: z.string(), tier: z.string() })),
+    coverSuspicion: z.array(z.strictObject({ service: z.string(), coverSuspicion: z.number() })),
+    png: z.array(z.string()),
+    liaisonTrust: z.array(z.strictObject({ service: z.string(), trust: z.number() })),
+    assetCities: z.array(z.strictObject({ npc: z.string(), city: z.string() })),
+  })
+  .meta({ id: 'OutcomeRegion' });
+
 export const OutcomeRecordSchema: z.ZodType<OutcomeRecord> = z.union([
   z.strictObject({ schema: z.literal(OUTCOME_RECORD_SCHEMA_VERSION), ...outcomeRecordFields }),
   z.strictObject({
@@ -328,6 +350,7 @@ export const OutcomeRecordSchema: z.ZodType<OutcomeRecord> = z.union([
     ...outcomeRecordFields,
     plots: z.array(OutcomePlotRecordSchema),
     selection: z.strictObject({ historyHash: z.string() }),
+    region: OutcomeRegionSchema.optional(),
   }),
 ]) as unknown as z.ZodType<OutcomeRecord>;
 

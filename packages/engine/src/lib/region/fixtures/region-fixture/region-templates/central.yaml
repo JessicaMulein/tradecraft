@@ -1,0 +1,35 @@
+# Four synthetic cities. Northport is the hub. Era date 1953-06-01 sits inside
+# every city's 1948-1961 period.
+- id: central-1953
+  era:
+    from: 1948
+    to: 1961
+  eraDate: '1953-06-01'
+  cities:
+    - { city: fixture-north/north, hub: true }
+    - { city: fixture-east/east, hub: false }
+    - { city: fixture-south/south, hub: false }
+    - { city: fixture-west/west, hub: false }
+  countries: [Northland, Eastland, Southland, Westland]
+  sectorLines:
+    - { id: north-line, a: Northland, b: Eastland }
+    - { id: south-line, a: Southland, b: Westland }
+  jurisdiction:
+    - { place: fixture-north/north, service: fixture-north/watch }
+    - { place: fixture-north/old-town, service: fixture-north/watch }
+    - { place: fixture-east/fringe, service: fixture-east/watch }
+    - { place: fixture-south/old-town, service: fixture-south/watch }
+    - { place: fixture-west/west, service: fixture-west/watch }
+  services:
+    - own-desk
+    - hostile-desk
+    - local-desk
+    - liaison-desk
+  rivalry: bloc-rivalry
+  routes:
+    - north-rail
+    - east-air
+    - south-road
+    - west-sea
+  plots:
+    - courier-line

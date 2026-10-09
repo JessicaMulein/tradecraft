@@ -27,6 +27,7 @@ import type {
   UnkId,
 } from '../model/core.js';
 import type { KeySubmission } from '../cipher/spec.js';
+import type { IRouteId, ServiceId } from '../fidelity/types.js';
 
 // ---------------------------------------------------------------------------
 // Small shared shapes (kept local to avoid a state.ts import cycle)
@@ -64,15 +65,18 @@ export type ClaimId = string;
  * - `document`: Document `id` asserts it (`read`, and a hostile drop's `copy`).
  * - `intercept`: it was recovered from the broken Intercept `id` (`decrypt`).
  * - `npc`: the NPC `npc` reported it (an Asset's `collect` task).
+ * - `liaison`: Service `service` reported it. A liaison claim is what that
+ *   service told the player, not ground truth.
  *
- * Declared here, beside the Action union, because it needs only core ids; the
+ * Declared here, beside the Action union, because it needs only id types; the
  * Observation shape in `./result.ts` imports it.
  */
 export type ObservationSource =
   | { readonly kind: 'surveillance'; readonly loc: LocId }
   | { readonly kind: 'document'; readonly id: DocId }
   | { readonly kind: 'intercept'; readonly id: InterceptId }
-  | { readonly kind: 'npc'; readonly npc: NpcId };
+  | { readonly kind: 'npc'; readonly npc: NpcId }
+  | { readonly kind: 'liaison'; readonly service: ServiceId };
 
 // ---------------------------------------------------------------------------
 // Per-action payload placeholders (owned by later tasks)
@@ -184,7 +188,13 @@ export type Action =
   | TurnAgentAction
   | FeedAction
   | AttendDutyAction
-  | WaitAction;
+  | WaitAction
+  | DepartAction
+  | RequestPapersAction
+  | ApplyVisaAction
+  | LiaisonRequestAction
+  | LiaisonShareAction
+  | ExfiltrateAction;
 
 /** A kind tag of an {@link Action}. */
 export type ActionKind = Action['kind'];
@@ -361,6 +371,50 @@ export interface FeedAction {
 export interface AttendDutyAction {
   readonly kind: 'attend-duty';
   readonly duty: string;
+}
+
+/** Book an intercity departure. */
+export interface DepartAction {
+  readonly kind: 'depart';
+  readonly route: `route:${string}`;
+  readonly at: GameTime;
+  readonly papers: readonly `paper:${string}`[];
+}
+
+/** Ask the station to issue a travel document. */
+export interface RequestPapersAction {
+  readonly kind: 'request-papers';
+  readonly doc: string;
+  readonly holder: 'player' | NpcId;
+}
+
+/** Apply for a visa at a consulate. */
+export interface ApplyVisaAction {
+  readonly kind: 'apply-visa';
+  readonly country: string;
+}
+
+/** Ask a liaison service about a known entity, or for border crossing records. */
+export interface LiaisonRequestAction {
+  readonly kind: 'liaison-request';
+  readonly service: ServiceId;
+  readonly about: EntityId;
+  readonly records?: boolean;
+}
+
+/** Give a liaison service propositions from the case file. */
+export interface LiaisonShareAction {
+  readonly kind: 'liaison-share';
+  readonly service: ServiceId;
+  readonly props: readonly Proposition[];
+}
+
+export interface ExfiltrateAction {
+  readonly kind: 'exfiltrate';
+  readonly asset: NpcId;
+  readonly route: IRouteId;
+  readonly at: GameTime;
+  readonly papers: readonly `paper:${string}`[];
 }
 
 /** Let time pass for 1–4 phases. */

@@ -218,6 +218,11 @@ export interface Channel {
   readonly schedule: ChannelSchedule;
   /** For a `courier` Channel, the Location its run passes through. */
   readonly route?: LocId;
+  /**
+   * Cities that can hear a radio Channel. Absent means every city (slice play).
+   * Numbers broadcasts ignore this and are receivable everywhere in the region.
+   */
+  readonly reception?: readonly string[];
 }
 
 // ---------------------------------------------------------------------------

@@ -73,13 +73,14 @@ export const CLAIM_SOURCE_KINDS = [
   'intercept',
   'surveillance',
   'document',
+  'liaison',
 ] as const;
 
 /**
  * Which filter axis the player is currently editing. The browser cycles the
  * focused axis with left/right; the axis itself is chosen with a key per axis.
  */
-export const FILTER_AXES = ['source', 'grade', 'entity'] as const;
+export const FILTER_AXES = ['source', 'grade', 'entity', 'city'] as const;
 
 /** One filter axis the browser can narrow the shown list on. */
 export type FilterAxis = (typeof FILTER_AXES)[number];
@@ -119,6 +120,8 @@ export interface CaseFileInit {
   readonly count?: number;
   /** The entities the entity filter can cycle through. */
   readonly entities?: readonly EntityId[];
+  /** The cities the city filter can cycle through. */
+  readonly cities?: readonly string[];
   /** A starting filter, if the screen opened the browser pre-filtered. */
   readonly filter?: CaseFileFilter;
 }
@@ -152,8 +155,8 @@ export type CaseFileAction =
   | { readonly type: 'axis-next' }
   | { readonly type: 'axis-prev' }
   /** Cycle the focused axis's value forward/back (wrapping through "all"). */
-  | { readonly type: 'filter-next'; readonly entities?: readonly EntityId[] }
-  | { readonly type: 'filter-prev'; readonly entities?: readonly EntityId[] }
+  | { readonly type: 'filter-next'; readonly entities?: readonly EntityId[]; readonly cities?: readonly string[] }
+  | { readonly type: 'filter-prev'; readonly entities?: readonly EntityId[]; readonly cities?: readonly string[] }
   /** Clear every filter axis back to "all". */
   | { readonly type: 'filter-clear' }
   /** Adjust the grade cursor's reliability letter / credibility digit. */
@@ -216,16 +219,18 @@ function gradeEq(a: AdmiraltyGrade, b: AdmiraltyGrade): boolean {
 function withAxis(
   filter: CaseFileFilter,
   axis: FilterAxis,
-  value: EntityId | ClaimSourceKind | AdmiraltyGrade | undefined,
+  value: EntityId | ClaimSourceKind | AdmiraltyGrade | string | undefined,
 ): CaseFileFilter {
   const next: {
     entity?: EntityId;
     source?: ClaimSourceKind;
     grade?: AdmiraltyGrade;
+    city?: string;
   } = {
     ...(filter.entity === undefined ? {} : { entity: filter.entity }),
     ...(filter.source === undefined ? {} : { source: filter.source }),
     ...(filter.grade === undefined ? {} : { grade: filter.grade }),
+    ...(filter.city === undefined ? {} : { city: filter.city }),
   };
   if (value === undefined) {
     delete next[axis];
@@ -241,6 +246,7 @@ function cycleFilter(
   state: CaseFileState,
   step: number,
   entities: readonly EntityId[],
+  cities: readonly string[],
 ): CaseFileFilter {
   switch (state.axis) {
     case 'source':
@@ -260,6 +266,12 @@ function cycleFilter(
         state.filter,
         'entity',
         cycleWithAll(entities, state.filter.entity, step),
+      );
+    case 'city':
+      return withAxis(
+        state.filter,
+        'city',
+        cycleWithAll(cities, state.filter.city, step),
       );
     default:
       return state.filter;
@@ -310,12 +322,12 @@ export function reduceCaseFile(
     case 'filter-next':
       return {
         ...state,
-        filter: cycleFilter(state, 1, action.entities ?? []),
+        filter: cycleFilter(state, 1, action.entities ?? [], action.cities ?? []),
       };
     case 'filter-prev':
       return {
         ...state,
-        filter: cycleFilter(state, -1, action.entities ?? []),
+        filter: cycleFilter(state, -1, action.entities ?? [], action.cities ?? []),
       };
     case 'filter-clear':
       return { ...state, filter: {} };

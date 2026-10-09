@@ -1,0 +1,11 @@
+- id: halt
+  public: true
+  allowedActions: [travel, talk, wait]
+  baseRisk: 0.2
+  allowsDeadDrops: true
+  namePatterns:
+    - the halt
+  descriptionPool:
+    - A halt where trains, coaches and boats set down.
+  atmosphereTags: [public, busy]
+  tags: ["access:public", "function:transit-hub"]

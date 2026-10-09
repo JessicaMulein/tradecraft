@@ -301,7 +301,7 @@ const savedAtArb = fc
 /** A version number that is never the supported one. */
 const wrongVersionArb = fc
   .integer({ min: 1, max: 20 })
-  .filter((v) => v !== SAVE_VERSION);
+  .filter((v) => v !== SAVE_VERSION && v !== 3);
 
 /** A valid semver string distinct from any real pack version (always 10+.x.y). */
 const altSemverArb = fc

@@ -1,0 +1,28 @@
+- id: own-residency
+  era: { from: 1948, to: 1961 }
+  service: own-desk
+  residency: [fixture-north/north, fixture-west/west]
+  naming: [a resident, a desk officer]
+- id: hostile-residency
+  era: { from: 1948, to: 1961 }
+  service: hostile-desk
+  residency: [fixture-east/east, fixture-south/south]
+  doctrine:
+    riskTolerance: 0.55
+    securityConsciousness: 0.7
+    deceptionAppetite: 0.35
+  naming: [a resident director]
+- id: local-residency
+  era: { from: 1948, to: 1961 }
+  service: local-desk
+  residency: [fixture-south/south]
+  naming: [a local inspector]
+- id: liaison-residency
+  era: { from: 1948, to: 1961 }
+  service: liaison-desk
+  residency: [fixture-west/west, fixture-north/north]
+  naming: [a liaison officer]
+  liaisonAgenda:
+    conceal: [a source]
+    promote: [a meeting]
+    obtain: [a paper]

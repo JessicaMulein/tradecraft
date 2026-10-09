@@ -40,6 +40,7 @@ import {
   type HostileMemory,
   type OutcomeCover,
   type OutcomeRecord,
+  type OutcomeRegion,
   type OutcomeTag,
   type SurvivingAsset,
 } from './outcome-record.js';
@@ -107,18 +108,20 @@ export function buildOutcomeRecord(
     hostileMemory: buildHostileMemory(final),
     budgetRemaining: balance(final.station.ledger),
   };
-  if (final.plots !== undefined && final.meta.selection !== undefined) {
+  const region = regionBlock(final);
+  if ((final.plots !== undefined && final.meta.selection !== undefined) || region !== undefined) {
     return {
       ...base,
       schema: 2,
-      plots: final.plots.map((plot) => ({
+      plots: (final.plots ?? []).map((plot) => ({
         templateId: plot.templateId,
         variantKey: plot.variantKey,
         archetype: plot.archetype,
         role: plot.role,
         outcome: plot.resolution?.result ?? 'unresolved',
       })),
-      selection: { historyHash: final.meta.selection.historyHash },
+      selection: { historyHash: final.meta.selection?.historyHash ?? final.meta.seed },
+      ...(region === undefined ? {} : { region }),
     };
   }
   return { ...base, schema: OUTCOME_RECORD_SCHEMA_VERSION };
@@ -140,6 +143,42 @@ export function outcomeTagOf(final: WorldState): OutcomeTag {
     return 'success';
   }
   return ended.cause === 'burned' ? 'failure-burned' : 'failure-plot';
+}
+
+function regionBlock(final: WorldState): OutcomeRegion | undefined {
+  const region = final.region;
+  if (region === undefined) {
+    return undefined;
+  }
+  const cities = region.order.map((id) => ({
+    id,
+    tier: region.cities[id]?.tier ?? 'coarse',
+  }));
+  const services = Object.values(final.services ?? {});
+  const coverSuspicion = services
+    .map((service) => ({ service: service.id, coverSuspicion: service.beliefs.coverSuspicion }))
+    .sort((a, b) => a.service.localeCompare(b.service));
+  const liaisonTrust = services
+    .filter((service) => service.liaison !== undefined)
+    .map((service) => ({ service: service.id, trust: service.liaison?.trust ?? 0 }))
+    .sort((a, b) => a.service.localeCompare(b.service));
+  const assetCities = Object.values(final.relationships)
+    .filter((rel) => rel.recruited)
+    .map((rel) => {
+      const placed = final.locationOf?.[rel.npc];
+      const city = placed !== undefined && 'city' in placed ? placed.city : '';
+      return { npc: rel.npc, city };
+    })
+    .filter((row) => row.city !== '')
+    .sort((a, b) => a.npc.localeCompare(b.npc));
+  return {
+    template: region.template,
+    cities,
+    coverSuspicion,
+    png: [...(final.player.png ?? [])].sort((a, b) => a.localeCompare(b)),
+    liaisonTrust,
+    assetCities,
+  };
 }
 
 /**

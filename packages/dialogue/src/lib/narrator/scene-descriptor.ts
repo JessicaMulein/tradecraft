@@ -71,6 +71,14 @@ export interface SceneDescriptor {
   readonly visible: readonly VisibleLabel[];
   readonly kind: NarratorSceneKind;
   /**
+   * The current city. Absent on a slice scene, so an existing descriptor stays
+   * byte-identical.
+   */
+  readonly city?: {
+    readonly name: string;
+    readonly styleSheet?: string;
+  };
+  /**
    * Public city texture. Absent when ambient is off, so an existing descriptor
    * stays byte-identical.
    */
@@ -98,6 +106,10 @@ export interface SceneViewInput {
   readonly weather: string;
   readonly crowd: CrowdLevel;
   readonly visible: readonly { readonly label: string }[];
+  readonly city?: {
+    readonly name: string;
+    readonly styleSheet?: string;
+  };
   readonly ambient?: {
     readonly events: readonly string[];
     readonly status?: string;
@@ -138,6 +150,14 @@ export function sceneDescriptorFromView(
     crowd: view.crowd,
     visible: view.visible.map((p) => ({ label: p.label })),
     kind,
+    ...(view.city === undefined
+      ? {}
+      : {
+          city: {
+            name: view.city.name,
+            ...(view.city.styleSheet === undefined ? {} : { styleSheet: view.city.styleSheet }),
+          },
+        }),
     ...(view.ambient === undefined
       ? {}
       : {

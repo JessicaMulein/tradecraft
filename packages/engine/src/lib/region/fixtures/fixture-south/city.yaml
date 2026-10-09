@@ -1,0 +1,25 @@
+# Synthetic Southport. Period 1948-1961 contains the fixture era date 1953-06-01.
+id: south
+name: Southport
+styleSheet: A river city. Wet stone, market noise, and long looks.
+country: Southland
+climate: "climate:temperate"
+period:
+  from: 1948
+  to: 1961
+startDates:
+  from: '1948-01-01'
+  to: '1953-12-31'
+currency:
+  name: mark
+  symbol: M
+  subunit: pfennig
+  format: '{symbol}{major}'
+  rounding: 1
+  budgetScale: 1
+languages:
+  - { id: de, name: German, share: 1 }
+cultureWeights:
+  - { group: lib-central-europe/austrian-german, weight: 1 }
+services:
+  - watch

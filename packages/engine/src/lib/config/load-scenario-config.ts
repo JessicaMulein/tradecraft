@@ -30,6 +30,7 @@ import {
 import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { z } from 'zod';
 
+import { RegionalPresetSchema, type RegionalPreset } from '../region/content.js';
 import {
   ScenarioConfigSchema,
   type ScenarioConfig,
@@ -65,6 +66,12 @@ export interface ResolvedScenario {
   readonly scenario: ScenarioConfig;
   /** The named preset deep-merged with overrides and re-validated. */
   readonly preset: DifficultyPreset;
+  /**
+   * The Regional Preset for the selected Difficulty Preset, deep-merged with
+   * `region.overrides`. Absent when the scenario has no `region` section, so
+   * slice mode stays a difficulty preset and nothing else.
+   */
+  readonly regionalPreset?: RegionalPreset;
 }
 
 /**
@@ -98,6 +105,17 @@ export interface ScenarioResolutionContext {
    * the era bound is not applied.
    */
   readonly eraPeriod?: { readonly from: number; readonly to: number };
+  /**
+   * Region template ids the Content Set loaded. Required when the scenario
+   * names a `region` section: an id that is not here is a field error on
+   * `region.template`.
+   */
+  readonly regionTemplates?: ReadonlySet<string>;
+  /**
+   * Regional Presets keyed by Difficulty Preset id (`preset`). The loader
+   * picks the entry for `difficulty.preset` and deep-merges `region.overrides`.
+   */
+  readonly regionalPresets?: ReadonlyMap<string, RegionalPreset>;
 }
 
 /**
@@ -225,6 +243,56 @@ function resolveDifficulty(
 }
 
 /**
+ * Resolve `region` when the scenario names one (multi-city Req 20.1, 20.3).
+ * The Regional Preset is the one whose `preset` id equals the selected
+ * Difficulty Preset. Overrides deep-merge onto it and the result is
+ * re-validated. An unknown template, a missing preset, or a merged preset
+ * that fails the schema is a located field error. A scenario with no
+ * `region` section resolves to slice mode.
+ */
+function resolveRegion(
+  scenario: ScenarioConfig,
+  context: ScenarioResolutionContext,
+  file: string,
+): LoadResult<RegionalPreset | undefined> {
+  const region = scenario.region;
+  if (region === undefined) {
+    return { ok: true, value: undefined };
+  }
+
+  const issues: ConfigIssue[] = [];
+  const templates = context.regionTemplates ?? new Set<string>();
+  if (!templates.has(region.template)) {
+    issues.push({
+      file,
+      path: 'region.template',
+      message: `unknown region template "${region.template}"`,
+    });
+  }
+
+  const base = context.regionalPresets?.get(scenario.difficulty.preset);
+  if (base === undefined) {
+    issues.push({
+      file,
+      path: 'region',
+      message: `no regional preset for difficulty preset "${scenario.difficulty.preset}"`,
+    });
+    return { ok: false, issues };
+  }
+
+  const merged = deepMerge(base, region.overrides);
+  const result = RegionalPresetSchema.safeParse(merged);
+  if (!result.success) {
+    issues.push(...issuesFromZod(file, result.error, ['region', 'overrides']));
+    return { ok: false, issues };
+  }
+  if (issues.length > 0) {
+    return { ok: false, issues };
+  }
+  return { ok: true, value: result.data };
+}
+
+/**
  * Check the setting selection against the Content Set (content-expansion Req
  * 9.1). Two field-located checks run after schema validation:
  *
@@ -317,16 +385,24 @@ export function parseScenarioConfig(
   const settingIssues = resolveSetting(parsed.data, context, file);
 
   const resolved = resolveDifficulty(parsed.data, context, file);
-  if (!resolved.ok) {
-    return { ok: false, issues: [...settingIssues, ...resolved.issues] };
-  }
-  if (settingIssues.length > 0) {
-    return { ok: false, issues: settingIssues };
+  const region = resolveRegion(parsed.data, context, file);
+  const issues = [
+    ...settingIssues,
+    ...(resolved.ok ? [] : resolved.issues),
+    ...(region.ok ? [] : region.issues),
+  ];
+  if (!resolved.ok || !region.ok || issues.length > 0) {
+    return { ok: false, issues };
   }
 
+  const regionalPreset = region.value;
   return {
     ok: true,
-    value: { scenario: parsed.data, preset: resolved.value },
+    value: {
+      scenario: parsed.data,
+      preset: resolved.value,
+      ...(regionalPreset === undefined ? {} : { regionalPreset }),
+    },
   };
 }
 

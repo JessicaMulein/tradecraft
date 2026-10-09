@@ -65,6 +65,7 @@ import type {
 } from '../model/state.js';
 import { derive, type Prng } from '../prng/prng.js';
 import type { TalkSceneRequest } from '../action/result.js';
+import { foldRegionNotices, stepRegionPhase } from '../region/play-clock.js';
 import { addPhases, isDayStart, DAY_BOUNDARY_HOOK_ORDER } from './clock.js';
 import type { DocumentTemplate } from '@tradecraft/content';
 import { advanceLibrary, projectLibraryFacts, renderDamageCable, syncPrimaryStages } from '../plotgen/library.js';
@@ -169,6 +170,20 @@ export function advanceWorld(
       }
     }
 
+    if (state.region !== undefined) {
+      const regional = stepRegionPhase(state, t, isDayStart(t));
+      state = regional.state;
+      if (regional.events.length > 0) {
+        push(regional.events);
+      }
+      if (regional.ended !== undefined) {
+        ended = regional.ended;
+        state = writeEnded(state, regional.ended);
+        current = t;
+        break;
+      }
+    }
+
     // The Phase Step for `t`, on the state the hooks (if any) left.
     const stepResult = phaseStep(state, current, t, rng, deps);
     state = stepResult.state;
@@ -233,10 +248,11 @@ export function advanceWorld(
 
   // Thread the runtime stream's final state back into the Draft, as the
   // pipeline records at commit (design step 7).
-  const flushed = takeCarryLines({ ...state, time: current, rng: rng.state() });
+  const noticed = foldRegionNotices({ ...state, time: current }, minted);
+  const flushed = takeCarryLines({ ...noticed.state, rng: rng.state() });
   return {
     state: flushed.state,
-    events: minted,
+    events: noticed.events,
     phasesSpent,
     ...(openScene !== undefined ? { openScene } : {}),
     ...(flushed.lines.length === 0 ? {} : { lines: flushed.lines }),

@@ -34,7 +34,7 @@ export const WALK_REPO_ROOT = resolvePath(
 
 /**
  * The scenario fields a harness may change from the core defaults: which packs
- * to load, the city, and the opt-in plot-library and ambient-world features. A
+ * to load, the city, a region template, and the opt-in plot-library and ambient-world features. A
  * calibration run passes these to measure the balance with those features on.
  */
 export interface ScenarioOverrides {
@@ -42,6 +42,10 @@ export interface ScenarioOverrides {
   readonly setting?: { readonly city: string; readonly startDate?: string };
   readonly plotSelection?: { readonly enabled: boolean };
   readonly ambient?: { readonly enabled: boolean; readonly density?: 'sparse' | 'standard' | 'rich' };
+  readonly region?: {
+    readonly template: string;
+    readonly stationModel?: 'regional' | 'per-city';
+  };
   readonly mole?: boolean;
 }
 

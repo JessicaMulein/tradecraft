@@ -262,10 +262,15 @@ function withChannels(base: WorldState): { state: WorldState; palette: ChannelPa
     start: { day: 0, phase: 0 as Phase },
     phase: 0 as Phase,
   };
-  const mk = (id: string, kind: ChannelKind): Channel =>
-    kind === 'courier'
-      ? { id: id as ChannelId, kind, owner, route: base.player.loc, schedule }
-      : { id: id as ChannelId, kind, owner, schedule };
+  const mk = (id: string, kind: ChannelKind): Channel => {
+    if (kind === 'courier') {
+      return { id: id as ChannelId, kind, owner, route: base.player.loc, schedule };
+    }
+    if (kind === 'radio') {
+      return { id: id as ChannelId, kind, owner, schedule, reception: ['city:home'] };
+    }
+    return { id: id as ChannelId, kind, owner, schedule };
+  };
 
   const palette: ChannelPalette = {
     radio: mk('chan:test/radio', 'radio'),
@@ -566,5 +571,20 @@ describe('Property 18: interception completeness (Req 25.3)', () => {
         },
       ),
     );
+  });
+
+  it('an outstation hears numbers everywhere and radio only inside its reception set', () => {
+    const at = { day: 1, phase: 'morning' as Phase };
+    const seeded = seed(BASE.state, BASE.palette, [
+      { key: 'radio', day: at.day, phase: at.phase },
+      { key: 'numbers', day: at.day, phase: at.phase },
+    ]);
+    const away: WorldState = { ...seeded, time: at, player: { ...seeded.player, city: 'city:away' } };
+    const heard = stationCollection(away).map((tx) => tx.channel);
+    expect(heard).toContain(BASE.palette.numbers.id);
+    expect(heard).not.toContain(BASE.palette.radio.id);
+    const home: WorldState = { ...seeded, time: at, player: { ...seeded.player, city: 'city:home' } };
+    const atHome = stationCollection(home).map((tx) => tx.channel);
+    expect(atHome).toContain(BASE.palette.radio.id);
   });
 });

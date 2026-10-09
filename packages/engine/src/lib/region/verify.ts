@@ -52,6 +52,16 @@ export interface RegionGraph {
   readonly success: readonly RegionalSuccess[];
   readonly handoffAt: readonly string[];
   readonly abortRoutes: readonly string[];
+  /**
+   * The Starting Brief the graph was built from. Present on a graph the region
+   * generator just verified (Requirement 14.5).
+   */
+  readonly brief?: {
+    readonly papers: readonly string[];
+    readonly cities: readonly string[];
+    readonly routes: readonly string[];
+    readonly liaisons: readonly string[];
+  };
 }
 
 export interface RegionalVerification {

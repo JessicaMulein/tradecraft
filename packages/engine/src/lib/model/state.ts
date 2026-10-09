@@ -50,7 +50,22 @@ import type { Document as DocumentModel } from '../docs/document.js';
 import type { Npc as NpcModel, Org as OrgModel } from '../city/npc.js';
 import type { Relationship as RelationshipModel } from '../recruit/asset.js';
 import type { SceneKind } from '../recruit/intent.js';
+import type { CityId, IRouteId, ServiceId } from '../fidelity/types.js';
 import type { HostileServiceState as HostileServiceStateModel } from '../hostile/service-state.js';
+import type { RivalryEdge, ServiceState } from '../region/services.js';
+import type { SavedCityStreams } from '../region/streams.js';
+import type {
+  BorderPostId,
+  HandoffId,
+  LocationOf,
+  RegionWorld,
+  Stations,
+  Transit,
+  TransitId,
+  TravelDocId,
+  TravelDocument,
+  Handoff,
+} from '../region/world.js';
 import type {
   PlotState as PlotStateModel,
   StageId as StageIdModel,
@@ -571,6 +586,13 @@ export const SIM_EVENT_KINDS = [
   'drop-raided',
   'promotion',
   'officer-recognised',
+  'transit-started',
+  'transit-arrived',
+  'border-check',
+  'handoff-moved',
+  'belief-shared',
+  'penetration-relay',
+  'rival-exposure',
   // player-visible
   'day-start',
   'newspaper',
@@ -590,6 +612,15 @@ export const SIM_EVENT_KINDS = [
   'cover-duty-missed',
   'cover-employer-message',
   'drop-disturbed',
+  'departure-cancelled',
+  'border-outcome',
+  'papers-issued',
+  'visa-decision',
+  'liaison-report',
+  'outstation-report',
+  'courier-delivery',
+  'asset-arrived',
+  'expelled',
 ] as const;
 
 /** The discriminant of a {@link SimEvent}. */
@@ -637,6 +668,13 @@ export const SIM_EVENT_VISIBILITY: Readonly<Record<SimEventKind, EventVisibility
   'drop-raided': 'hidden',
   promotion: 'hidden',
   'officer-recognised': 'hidden',
+  'transit-started': 'hidden',
+  'transit-arrived': 'hidden',
+  'border-check': 'hidden',
+  'handoff-moved': 'hidden',
+  'belief-shared': 'hidden',
+  'penetration-relay': 'hidden',
+  'rival-exposure': 'hidden',
   // player-visible: addressed to the player or the Station
   'day-start': 'player',
   newspaper: 'player',
@@ -656,6 +694,15 @@ export const SIM_EVENT_VISIBILITY: Readonly<Record<SimEventKind, EventVisibility
   'cover-duty-missed': 'player',
   'cover-employer-message': 'player',
   'drop-disturbed': 'player',
+  'departure-cancelled': 'player',
+  'border-outcome': 'player',
+  'papers-issued': 'player',
+  'visa-decision': 'player',
+  'liaison-report': 'player',
+  'outstation-report': 'player',
+  'courier-delivery': 'player',
+  'asset-arrived': 'player',
+  'expelled': 'player',
 };
 
 /** The fixed visibility of an event kind (Requirement 39.1). */
@@ -673,6 +720,11 @@ export interface SimEventBase {
   readonly id: EventId;
   readonly at: GameTime;
   readonly visibility: EventVisibility;
+  /**
+   * The city this event belongs to. Absent on a slice event, when `region` is
+   * unset. `null` is a regional event with no city, such as one raised in transit.
+   */
+  readonly city?: CityId | null;
 }
 
 /**
@@ -743,6 +795,12 @@ export type SimEvent = SimEventBase &
     | { readonly kind: 'location-status'; readonly loc: LocId; readonly status: string }
     | { readonly kind: 'drop-raided'; readonly drop: DeadDropId }
     | { readonly kind: 'officer-recognised'; readonly npc: NpcId; readonly loc: LocId }
+    | { readonly kind: 'transit-started' | 'transit-arrived'; readonly transit: TransitId }
+    | { readonly kind: 'border-check'; readonly post: BorderPostId }
+    | { readonly kind: 'handoff-moved'; readonly handoff: HandoffId }
+    | { readonly kind: 'belief-shared'; readonly from: ServiceId; readonly to: ServiceId }
+    | { readonly kind: 'penetration-relay'; readonly service: ServiceId }
+    | { readonly kind: 'rival-exposure'; readonly npc: NpcId; readonly service: ServiceId }
     // --- player-visible (no Truth fields) --------------------------------
     | { readonly kind: 'day-start'; readonly weather: Weather }
     | { readonly kind: 'newspaper'; readonly doc: DocId }
@@ -765,7 +823,29 @@ export type SimEvent = SimEventBase &
     | { readonly kind: 'public-announcement' | 'cover-employer-message'; readonly text: string }
     | { readonly kind: 'cover-duty-due' | 'cover-duty-missed'; readonly duty: string }
     | { readonly kind: 'drop-disturbed'; readonly drop: DeadDropId }
+    | { readonly kind: 'departure-cancelled'; readonly route: IRouteId }
+    | {
+        readonly kind: 'border-outcome';
+        readonly post: BorderPostId;
+        readonly outcome: 'passed' | 'refused' | 'detained';
+      }
+    | { readonly kind: 'papers-issued'; readonly doc: TravelDocId }
+    | { readonly kind: 'visa-decision'; readonly country: string; readonly granted: boolean }
+    | { readonly kind: 'liaison-report'; readonly service: ServiceId }
+    | { readonly kind: 'outstation-report'; readonly city: CityId }
+    | { readonly kind: 'courier-delivery'; readonly handoff: HandoffId }
+    | { readonly kind: 'asset-arrived'; readonly npc: NpcId }
+    | { readonly kind: 'expelled'; readonly country: string }
   );
+
+/**
+ * A player-visible regional event held until its release time (Requirement 12.4).
+ * Absent on a slice world.
+ */
+export interface PendingNotice {
+  readonly event: SimEvent;
+  readonly releaseAt: GameTime;
+}
 
 /**
  * Daily weather, as carried by a `day-start` event. Owned by task 5.1; the
@@ -936,7 +1016,14 @@ export interface WorldState {
     readonly selection?: LibrarySelection;
   };
   readonly time: GameTime;
+  /** The runtime PRNG. Slice play keeps this single state. Regional spine and ambient states live on {@link cityStreams}. */
   readonly rng: PrngState;
+
+  /**
+   * Saved per-city spine and ambient PRNG states. Absent when `region` is unset,
+   * so slice replay keeps drawing from {@link rng} alone.
+   */
+  readonly cityStreams?: SavedCityStreams;
 
   readonly city: City;
   readonly orgs: Record<OrgId, Org>;
@@ -1107,6 +1194,14 @@ export interface WorldState {
      * before, so reading it again adds no new Claims (Property 22, idempotence).
      */
     readonly readDocuments: readonly DocId[];
+    /**
+     * Where the player is, which papers they hold, and which countries have
+     * declared them persona non grata. Absent on a slice world: slice placement
+     * stays `loc`.
+     */
+    readonly city?: CityId | null;
+    readonly papers?: readonly TravelDocId[];
+    readonly png?: readonly string[];
   };
 
   /** Future events, ordered by time (the design's `scheduled`). */
@@ -1117,6 +1212,34 @@ export interface WorldState {
    * the shipped default, so a slice world stays a slice world.
    */
   readonly ambient?: AmbientState;
+
+  /**
+   * Regional play. Every field below is absent when `region` is unset, so a
+   * slice world stays a slice world: one city, one hostile service, one station,
+   * and no second placement record.
+   */
+  readonly region?: RegionWorld;
+  /** The only placement record in region mode (Requirement 12.1). */
+  readonly locationOf?: LocationOf;
+  readonly transits?: Readonly<Record<TransitId, Transit>>;
+  readonly handoffs?: Readonly<Record<HandoffId, Handoff>>;
+  readonly travelDocs?: Readonly<Record<TravelDocId, TravelDocument>>;
+  readonly stations?: Stations;
+  readonly pendingNotices?: readonly PendingNotice[];
+  /**
+   * Belief shares waiting out a rivalry delay. Absent on a slice world.
+   * The service day drains this list.
+   */
+  readonly queuedShares?: readonly {
+    readonly from: ServiceId;
+    readonly to: ServiceId;
+    readonly prop: Proposition;
+    readonly queuedAt: number;
+    readonly delay: number;
+  }[];
+  /** Regional services. A slice world leaves this unset and keeps `hostile`. */
+  readonly services?: Readonly<Record<ServiceId, ServiceState>>;
+  readonly rivalry?: readonly RivalryEdge[];
 
   /**
    * Carry-in for a posting: placements, recognisers and the campaign unk map.

@@ -46,6 +46,7 @@ import {
   type DifficultyPreset,
 } from '@tradecraft/content';
 import {
+  loadRegionContent,
   parseScenarioConfig,
   formatConfigIssues as formatScenarioIssues,
   ScenarioConfigSchema,
@@ -137,6 +138,8 @@ interface LauncherArgs {
   readonly seed?: string;
   /** A profile name that overrides the models config's `active`. */
   readonly profile?: string;
+  /** A scenario file relative to the repo root. Defaults to `config/scenario.yaml`. */
+  readonly scenario?: string;
 }
 
 /**
@@ -148,6 +151,7 @@ interface LauncherArgs {
 function parseArgs(argv: readonly string[]): LauncherArgs {
   let seed: string | undefined;
   let profile: string | undefined;
+  let scenario: string | undefined;
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -156,6 +160,8 @@ function parseArgs(argv: readonly string[]): LauncherArgs {
       seed = inlineValue ?? argv[(i += 1)];
     } else if (flag === '--profile') {
       profile = inlineValue ?? argv[(i += 1)];
+    } else if (flag === '--scenario') {
+      scenario = inlineValue ?? argv[(i += 1)];
     }
     // Unknown flags are ignored so the launcher stays forgiving of extra args
     // (e.g. a `--` passed by the package manager). Only the two known flags
@@ -165,6 +171,7 @@ function parseArgs(argv: readonly string[]): LauncherArgs {
   return {
     ...(seed !== undefined ? { seed } : {}),
     ...(profile !== undefined ? { profile } : {}),
+    ...(scenario !== undefined ? { scenario } : {}),
   };
 }
 
@@ -186,6 +193,7 @@ function splitFlag(arg: string): readonly [string, string | undefined] {
  */
 function loadContentSet(
   io: LauncherIo,
+  scenarioFile: string,
 ): { ok: true; content: ContentSet } | { ok: false; message: string } {
   // Read the scenario only enough to know which pack dirs/ids to load. The full
   // validation and resolution happens after the Content Set is available (it
@@ -197,12 +205,12 @@ function loadContentSet(
   // document whose shape fails the schema falls back to the shipped defaults so
   // the Content Set still loads and the full validation below reports every
   // scenario issue against its field path.
-  const scenarioPath = join(io.repoRoot, SCENARIO_CONFIG);
+  const scenarioPath = join(io.repoRoot, scenarioFile);
   const probed = probePacks(io, scenarioPath);
   const dirs = probed.dirs.map((d) => join(io.repoRoot, d));
   const load = probed.load;
 
-  const content = loadContent(dirs, load);
+  const content = probed.regional ? loadRegionContent(dirs, load) : loadContent(dirs, load);
   if (!content.ok) {
     const first = content.errors[0] as
       | { path?: string; message?: string }
@@ -236,26 +244,27 @@ const DEFAULT_PACK_LOAD = ['core'];
 function probePacks(
   io: LauncherIo,
   scenarioPath: string,
-): { dirs: readonly string[]; load: string[] } {
+): { dirs: readonly string[]; load: string[]; regional: boolean } {
   let text: string;
   try {
     text = io.readFile(scenarioPath);
   } catch {
-    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD] };
+    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD], regional: false };
   }
   let doc: unknown;
   try {
     doc = parseYaml(text);
   } catch {
-    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD] };
+    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD], regional: false };
   }
   const parsed = ScenarioConfigSchema.safeParse(doc);
   if (!parsed.success) {
-    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD] };
+    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD], regional: false };
   }
   return {
     dirs: [...parsed.data.packs.dirs],
     load: [...parsed.data.packs.load],
+    regional: parsed.data.region?.template !== undefined,
   };
 }
 
@@ -306,6 +315,7 @@ function resolutionContext(content: ContentSet): ScenarioResolutionContext {
 export function loadConfigs(
   io: LauncherIo,
   profileOverride: string | undefined,
+  scenarioFile: string = SCENARIO_CONFIG,
 ):
   | {
       ok: true;
@@ -314,14 +324,14 @@ export function loadConfigs(
       models: ModelsConfig;
     }
   | { ok: false } {
-  const contentResult = loadContentSet(io);
+  const contentResult = loadContentSet(io, scenarioFile);
   if (!contentResult.ok) {
     io.err(contentResult.message);
     return { ok: false };
   }
   const content = contentResult.content;
 
-  const scenarioPath = join(io.repoRoot, SCENARIO_CONFIG);
+  const scenarioPath = join(io.repoRoot, scenarioFile);
   const modelsPath = join(io.repoRoot, MODELS_CONFIG);
 
   // Scenario: validate and resolve against the loaded Content Set.
@@ -451,7 +461,7 @@ export async function runLauncher(
   const args = parseArgs(argv);
 
   // Steps 1–2: load and validate both configs (Req 20.2, 22.3).
-  const configs = loadConfigs(io, args.profile);
+  const configs = loadConfigs(io, args.profile, args.scenario ?? SCENARIO_CONFIG);
   if (!configs.ok) {
     return 1;
   }

@@ -46,6 +46,10 @@ describe('reduceShell key routing', () => {
     expect(reduceShell(base, { type: 'key', key: 'r' }).screen).toEqual({ kind: 'stories' });
     expect(reduceShell(base, { type: 'key', key: 'k' }).screen).toEqual({ kind: 'duties' });
     expect(reduceShell(base, { type: 'key', key: 'p' }).screen).toEqual({ kind: 'people' });
+    expect(reduceShell(base, { type: 'key', key: 'n' }).screen).toEqual({ kind: 'region' });
+    expect(reduceShell(base, { type: 'key', key: 'b' }).screen).toEqual({ kind: 'departures' });
+    expect(reduceShell(base, { type: 'key', key: 'a' }).screen).toEqual({ kind: 'papers' });
+    expect(reduceShell(base, { type: 'key', key: 't' }).screen).toEqual({ kind: 'carriage' });
   });
 
   it('opens the save and load screens with the right mode', () => {

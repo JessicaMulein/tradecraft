@@ -67,6 +67,17 @@ describe('buildNarratorPrompt — assembly', () => {
     expect(text).toContain('Atmosphere: smoky, murmuring.');
   });
 
+  it('uses the scene city name and style sheet when no separate style is passed', () => {
+    const { text } = buildNarratorPrompt(
+      input({
+        style: undefined,
+        scene: scene('scene-open', { city: { name: 'Northport', styleSheet: 'Salt and coal smoke.' } }),
+      }),
+    );
+    expect(text).toContain('You are in Northport, at Café Mozart.');
+    expect(text).toContain('Salt and coal smoke.');
+  });
+
   it('renders the dynamic block: time, weather, crowd, visible persons and facts', () => {
     const { text } = buildNarratorPrompt(input());
     expect(text).toContain('It is morning on day 2.');

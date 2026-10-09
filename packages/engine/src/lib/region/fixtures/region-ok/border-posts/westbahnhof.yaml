@@ -1,0 +1,9 @@
+- id: westbahnhof-post
+  era:
+    from: 1948
+    to: 1961
+  border: frontier
+  service: city-vienna/city-security-directorate
+  strictness: 0.4
+  documents:
+    - passport

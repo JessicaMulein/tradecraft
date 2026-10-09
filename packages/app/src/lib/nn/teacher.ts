@@ -104,6 +104,19 @@ export function teacherPriority(
   )
     return 60;
   if (action.kind === 'travel') return travelScore(state, action);
+  if (action.kind === 'depart') {
+    if (action.destClaimWeight <= 0) return 8;
+    return 48 + 10 * action.destClaimWeight;
+  }
+  if (action.kind === 'request-papers') return 42;
+  if (action.kind === 'apply-visa') return 40;
+  if (
+    action.kind === 'liaison-request' &&
+    state.maxEvidence > 0 &&
+    state.maxEvidence < state.arrestThreshold
+  ) {
+    return 36;
+  }
   if (
     action.kind === 'cable' &&
     action.cableFunds &&

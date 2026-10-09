@@ -59,6 +59,13 @@ const HIDDEN_KINDS: readonly SimEventKind[] = [
   'drop-raided',
   'promotion',
   'officer-recognised',
+  'transit-started',
+  'transit-arrived',
+  'border-check',
+  'handoff-moved',
+  'belief-shared',
+  'penetration-relay',
+  'rival-exposure',
 ];
 
 const PLAYER_VISIBLE_KINDS: readonly SimEventKind[] = [
@@ -80,6 +87,15 @@ const PLAYER_VISIBLE_KINDS: readonly SimEventKind[] = [
   'cover-duty-missed',
   'cover-employer-message',
   'drop-disturbed',
+  'departure-cancelled',
+  'border-outcome',
+  'papers-issued',
+  'visa-decision',
+  'liaison-report',
+  'outstation-report',
+  'courier-delivery',
+  'asset-arrived',
+  'expelled',
 ];
 
 const kindArb: fc.Arbitrary<SimEventKind> = fc.constantFrom(...SIM_EVENT_KINDS);

@@ -114,6 +114,9 @@ export function PersonDetail({ person }: PersonDetailProps): ReactElement {
       <Text>Affiliation: {affiliation}</Text>
       <Text>Aliases: {aliases}</Text>
       <Text>Last seen: {sighting}</Text>
+      {person.lastKnownCity === undefined ? null : (
+        <Text>Last city: {person.lastKnownCity.name}</Text>
+      )}
       <Text>Asset: {person.asset ? 'yes' : 'no'}</Text>
       <Text>Rapport: {person.rapport}</Text>
       <Text>

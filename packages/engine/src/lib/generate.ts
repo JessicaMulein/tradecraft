@@ -237,6 +237,15 @@ export const HOSTILE_STREAM_BASE = 0x686f7374;
 export { DAILY_STREAM_BASE };
 
 /**
+ * The **region** PRNG stream (multi-city design, stream table): `derive(seed,
+ * 0x70000)`. The block `0x70000`–`0x7FFFF` is reserved on the game seed. Per-city
+ * core, noise, daily, spine and ambient streams derive from that region seed.
+ * `generate` does not draw it, so a slice world is unchanged and
+ * `generatorVersion` stays put.
+ */
+export { REGION_STREAM_BASE } from './region/streams.js';
+
+/**
  * The generator version string, part of the determinism key (Requirement 1.2:
  * "same (seed, generatorVersion, ContentManifest, DifficultyPreset) ⇒ identical
  * WorldState"). It is bumped whenever a change to the generator would produce a
@@ -347,7 +356,7 @@ export class GeneratorError extends Error {
    * naming the seed, so a caller can tell the failures apart and reroll
    * accordingly.
    */
-  readonly phase: 'core' | 'noise' | 'setting' | 'ambient' | 'carry';
+  readonly phase: 'core' | 'noise' | 'setting' | 'ambient' | 'carry' | 'region';
   /**
    * The city the game was placed in when generation failed (content-expansion
    * Req 9.9: `GeneratorError { seed, city }`). `'core'` for the Core City or a
@@ -360,7 +369,7 @@ export class GeneratorError extends Error {
     seed: string,
     attempts: number,
     lastFailure?: FailedTarget,
-    phase: 'core' | 'noise' | 'setting' | 'ambient' | 'carry' = 'core',
+    phase: 'core' | 'noise' | 'setting' | 'ambient' | 'carry' | 'region' = 'core',
     city?: string,
   ) {
     const reason =

@@ -1,0 +1,13 @@
+# Reference cross-city plot template. City roles bind later; A is not the hub.
+- id: courier-line
+  era: { from: 1948, to: 1954 }
+  city: B
+  handoff:
+    from: collect
+    carrier: courier-line
+    modes: [rail, road]
+  cityRoles:
+    A: { not: hub }
+    B: {}
+    C: {}
+  fallback: collect

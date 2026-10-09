@@ -19,6 +19,8 @@ import {
   type EpisodeResult,
 } from './episode.js';
 import { mulberry32 } from './mlp.js';
+import { regionalScenario, AMBIENT_SCENARIO } from './modes.js';
+import type { Observation } from './observe.js';
 import {
   clipAndStep,
   createPlayer,
@@ -223,6 +225,29 @@ async function trainPreset(
           obs.state,
           obs.actions.map((action) => action.context),
         ),
+      sink: samples,
+    });
+    teacher.push(result);
+    log(
+      `  teacher ${seed} ${result.outcome} day ${result.day} turns ${result.turns} evidence ${result.evidence.toFixed(1)}`,
+    );
+  }
+  const chooseTeacher = (obs: Observation): number =>
+    teacherChoice(
+      obs.state,
+      obs.actions.map((action) => action.context),
+    );
+  for (const extra of [
+    { name: 'ambient', scenario: AMBIENT_SCENARIO },
+    { name: 'region', scenario: regionalScenario() },
+  ]) {
+    const seed = `nn-train-${preset}-${extra.name}`;
+    const result = await playEpisode({
+      seed,
+      preset,
+      maxTurns: Math.min(40, options.maxTurns),
+      scenario: extra.scenario,
+      choose: chooseTeacher,
       sink: samples,
     });
     teacher.push(result);
