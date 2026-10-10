@@ -52,6 +52,38 @@ export function withOccupation(
 }
 
 /**
+ * Vienna sat inside the Soviet zone of Lower Austria. The sentence is the map's
+ * reminder. It is not a fact about a person, and it is not drawn.
+ */
+export const VIENNA_SURROUND =
+  'The city sits inside the Soviet zone of Lower Austria. Every road out crosses a Soviet checkpoint.';
+
+/** The map note for an occupied Vienna, and nothing for any other city. */
+export function viennaSurround(displayName: string): string | undefined {
+  if (displayName !== 'Vienna') {
+    return undefined;
+  }
+  return VIENNA_SURROUND;
+}
+
+/**
+ * The fact line for arriving in Mariahilf, where the west road and the
+ * Westbahn leave the city and keep running through the Soviet zone.
+ */
+export function westRoadLine(
+  displayName: string,
+  districtId: string | undefined,
+): string | undefined {
+  if (displayName !== 'Vienna' || districtId === undefined) {
+    return undefined;
+  }
+  if (!districtId.endsWith('mariahilf')) {
+    return undefined;
+  }
+  return 'West of here the road and the railway leave the city and run on through the Soviet zone.';
+}
+
+/**
  * The fact line for crossing into or out of the Soviet sector inside the city.
  * Daytime papers are glanced at. After evening the pole stays down, and the
  * car at the line is the close call. Leaving reminds you that the roads out of

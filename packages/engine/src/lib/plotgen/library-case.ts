@@ -5,10 +5,12 @@
  * Station's brief and the Cell's radio were written for the core plot. A
  * meeting the player watches then says something the radio never said, and the
  * brief names a plan the leader on the street is not carrying out. One source
- * is never enough to arrest. This module files one shared case: the library
- * leader belongs to the Cell, is planning the operation, and meets another
- * Cell member at a place a stage actually uses. The brief states it, the
- * radio carries it, and the meeting is there to be watched.
+ * is never enough to arrest, and two messages on the same radio are one voice.
+ * This module files one shared case: the library leader belongs to the Cell,
+ * is planning the operation, and is targeting the operation's target. The
+ * brief states those, and the radio carries the same facts, so a single break
+ * confirms them. When another Cell member can be met at a place a stage
+ * actually uses, the brief states that meeting too.
  */
 
 import { CELL_ORG_ID } from '../city/principals.js';
@@ -48,23 +50,29 @@ export function buildLibraryCase(
   const leader = revealTruth(world.plot.leader);
   const members = cellMembers(world.npcs);
   const partner = partnerFor(leader, members, existing);
-  if (partner === undefined) {
-    return undefined;
+  const meet =
+    partner === undefined
+      ? undefined
+      : meetingFact(leader, partner, venueOf(world.plot), existing);
+  const brief = [
+    membershipFact(leader, existing),
+    planFact(leader, existing),
+    targetFact(leader, world.plot, existing),
+  ];
+  if (partner !== undefined) {
+    brief.push(membershipFact(partner, existing));
   }
-  const venue = venueOf(world.plot);
-  const meet = meetingFact(leader, partner, venue, existing);
-  if (meet === undefined) {
-    return undefined;
+  if (meet !== undefined) {
+    brief.push(meet.prop);
   }
-  const membership = membershipFact(leader, existing);
-  const partnerMembership = membershipFact(partner, existing);
-  const plan = planFact(leader, existing);
-  const brief = [membership, partnerMembership, plan, meet.prop];
   const extra = brief.filter((prop) => !existing.some((held) => held.id === prop.id));
   return {
     brief,
     extra,
-    plot: alignMeeting(world.plot, leader, partner, meet.place),
+    plot:
+      meet === undefined || partner === undefined
+        ? world.plot
+        : alignMeeting(world.plot, leader, partner, meet.place),
   };
 }
 
@@ -216,6 +224,20 @@ function planFact(leader: NpcId, existing: readonly Proposition[]): Proposition 
     return held;
   }
   return fact(leader, 'plan', leader, 'PLANS', { kind: 'text', value: 'the operation' });
+}
+
+/**
+ * The operation's target, reused when the Cell already names one for this
+ * leader. A second target would contradict the first and wipe both. The brief
+ * has to state this same fact: the radio repeats it, but every message on one
+ * channel is a single voice and cannot confirm itself.
+ */
+function targetFact(leader: NpcId, plot: PlotState, existing: readonly Proposition[]): Proposition {
+  const held = existing.find((prop) => prop.predicate === 'TARGETS' && prop.subject === leader);
+  if (held !== undefined) {
+    return held;
+  }
+  return fact(leader, 'target', leader, 'TARGETS', revealTruth(plot.target));
 }
 
 function fact(

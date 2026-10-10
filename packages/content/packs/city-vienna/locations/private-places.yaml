@@ -105,7 +105,8 @@
   description: >-
     The player's own Station behind an unmarked door in the Inner City: steel
     cabinets, a cipher room, blackout curtains and a teleprinter chattering out
-    the overnight traffic while a clerk spikes the sheets by priority.
+    the overnight traffic while a clerk spikes the sheets by priority. The city
+    sits inside the Soviet zone, and every road out of it crosses a checkpoint.
   atmosphere: [an unmarked door, carbon paper and cold tea, the teleprinter never quite stops]
   city: vienna
   tags: [access:private]

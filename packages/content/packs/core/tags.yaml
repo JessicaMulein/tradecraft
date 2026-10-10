@@ -82,6 +82,7 @@ tags:
   - { id: "function:newspaper-outlet",  description: "A place today's newspaper edition can be obtained" }
   - { id: "function:public-text-source", description: "A source of public texts (almanacs, directories, timetables) for book ciphers" }
   - { id: "function:materiel-store",    description: "A place materiel can be stored or handed over" }
+  - { id: "function:fixed-landmark",   description: "A real place kept whenever its district is in the city, outside the random fill" }
 
   # access: whether a place is open to the public or private, and (on a Route)
   # whether a crossing passes a sector checkpoint.

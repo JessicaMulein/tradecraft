@@ -138,6 +138,7 @@ export function MapPane({ map, streets = [] }: MapPaneProps): ReactElement {
     return (
       <Box flexDirection="column">
         <Text bold>Map</Text>
+        {map.note !== undefined && map.note !== '' && <Text>{map.note}</Text>}
         <Text dimColor>No known Locations yet.</Text>
         {streets.map((line, index) => (
           <Text key={`${index}:${line}`}>{line}</Text>
@@ -148,6 +149,7 @@ export function MapPane({ map, streets = [] }: MapPaneProps): ReactElement {
   return (
     <Box flexDirection="column">
       <Text bold>Map</Text>
+      {map.note !== undefined && map.note !== '' && <Text>{map.note}</Text>}
       {map.districts.map((district) => (
         <DistrictBlock key={district.id} district={district} here={map.here} />
       ))}

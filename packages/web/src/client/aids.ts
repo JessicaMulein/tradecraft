@@ -73,6 +73,7 @@ export function journal(j: Journal, names: Names, onNote: (text: string) => void
 interface MapLoc { id: string; name: string; type: string; risk: number; hours: Record<string, boolean>; crowd: string; deadDrops: { id: string }[]; travelCost: number; lastVisit?: Time; status?: string }
 interface MapV {
   here: string;
+  note?: string;
   districts: { id: string; name: string; sector: string; locations: MapLoc[]; routes: { toName: string; cost: number }[] }[];
 }
 
@@ -85,6 +86,9 @@ function openHours(h: Record<string, boolean>): string {
 
 export function map(m: MapV): HTMLElement {
   const root = el('div');
+  if (m.note !== undefined && m.note !== '') {
+    root.append(el('p', '', m.note));
+  }
   for (const d of m.districts) {
     const sector = d.sector === '' ? '' : ` · ${d.sector.charAt(0).toUpperCase()}${d.sector.slice(1)} sector`;
     root.append(el('h3', '', d.name, el('span', 'dim', sector)));

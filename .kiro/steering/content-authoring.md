@@ -43,7 +43,7 @@ A setting is a set of packs, not new code:
 - Model-written files carry a Provenance Record (`provenance: { generated: true, model, promptHash, generatedAt }`). The loader refuses them until `reviewedBy` and `reviewedAt` are set, and it never reads `content-drafts/`.
 - Do not remove or rename ids in a released pack without a major version bump (checked with `--baseline`).
 - New content kinds go through the Content Kind Registry as a spec task. Never drop in a file of an unregistered kind.
-- The shipped `config/scenario.yaml` loads `core` and `coldwar-plots`, with plot selection on. Ambient, street ops, and authored cities stay out of that file. Try other new content with a separate scenario file, as `config/scenario-region.yaml` does.
+- The shipped `config/scenario.yaml` loads the authored Vienna (`city-vienna` with its era and name libraries), `coldwar-plots` with plot selection on, and `ambient` with city life on. Street ops and the multi-city region stay out of that file. Try those with `config/scenario-region.yaml` or a street scenario, not by adding them here.
 - Changes that alter generated worlds for existing seeds need a `GENERATOR_VERSION` bump and a golden re-record. Avoid them, and stop and ask the owner if one is unavoidable.
 
 ## The pipeline

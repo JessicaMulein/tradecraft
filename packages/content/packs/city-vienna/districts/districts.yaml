@@ -83,8 +83,9 @@
     - { text: the Sixth District, distinctive: false }
   description: >-
     The long shopping street and its side alleys, crowds that thin to nothing
-    once the shutters come down, and picture houses lit against the dusk. Held
-    by the French power.
+    once the shutters come down, and picture houses lit against the dusk. Past
+    the last shops the west road and the railway leave the city and run on
+    through the Soviet zone. Held by the French power.
   atmosphere: [commercial, crowded-by-day, shuttered-by-night]
   tags: [setting:commercial, sector:french]
   sector:

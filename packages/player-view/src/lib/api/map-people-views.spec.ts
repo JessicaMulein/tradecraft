@@ -225,6 +225,7 @@ describe('mapView — known Locations by District (Req 33.3, 33.5)', () => {
       expect(entry.risk).toBe(loc.risk);
       expect(['empty', 'sparse', 'busy', 'packed']).toContain(entry.crowd);
     }
+    expect(view.note).toContain('Soviet zone');
   });
 
   it("lists the player's own Station, which is not public", () => {

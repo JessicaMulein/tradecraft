@@ -41,7 +41,12 @@ import type { SectorLine } from '../region/world.js';
 import { applyRecogniserPass, npcsAt } from '../carry/recognise.js';
 import { MADE_FACT_LINE } from './surveil.js';
 import { travelCost } from '../city/city.js';
-import { districtSector, sectorCheckpointLine, withOccupation } from '../city/occupation.js';
+import {
+  districtSector,
+  sectorCheckpointLine,
+  westRoadLine,
+  withOccupation,
+} from '../city/occupation.js';
 import { withOrdinaryLife } from '../city/ordinary-life.js';
 import { effectiveRoutes, observeLocation } from '../ambient/locations.js';
 import { scaleHighRiskSuspicion } from '../ambient/cover.js';
@@ -257,7 +262,15 @@ export function resolveTravel(
     state.time,
     to,
   );
-  const arrivedResult = travelResult(recognised.next, to, suspicionDelta, recognised, checkpoint);
+  const west = westRoadLine(state.city.displayName, dest?.district);
+  const arrivedResult = travelResult(
+    recognised.next,
+    to,
+    suspicionDelta,
+    recognised,
+    checkpoint,
+    west,
+  );
   const result = borderLine === undefined
     ? arrivedResult
     : { ...arrivedResult, factLines: [borderLine, ...arrivedResult.factLines] };
@@ -379,6 +392,7 @@ function travelResult(
   suspicionDelta: number,
   recognised: ReturnType<typeof applyRecogniserPass>,
   checkpoint?: string,
+  west?: string,
 ): ActionResult {
   const loc = next.city.locations[to];
   const name = loc?.name ?? to;
@@ -394,6 +408,7 @@ function travelResult(
   ];
   const factLines = [
     ...(checkpoint === undefined ? [] : [checkpoint]),
+    ...(west === undefined ? [] : [west]),
     line,
     ...(greeting === undefined ? [] : [greeting]),
     ...notices,

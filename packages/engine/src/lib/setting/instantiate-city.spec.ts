@@ -215,6 +215,26 @@ function gridCity(): CityBundle {
 // --- unit tests ------------------------------------------------------------
 
 describe('instantiateCity (Req 9.4, 4.6, 9.9)', () => {
+  it('keeps a fixed landmark without changing the rest of the draw', () => {
+    const plain = gridCity();
+    const pinned = gridCity();
+    pinned.locations.push(
+      location('d1-imperial', 'd1', { tags: ['function:fixed-landmark'] }),
+    );
+    const vocab = vocabulary([]);
+    const seed = settingStreamSeed('pin', 0);
+    const without = instantiateCity(plain, 1950, vocab, createPrng(seed)) as InstantiatedCity;
+    const withLandmark = instantiateCity(
+      pinned,
+      1950,
+      vocab,
+      createPrng(seed),
+    ) as InstantiatedCity;
+    const extra = locationEntityId('d1-imperial');
+    expect(withLandmark.locations).toContain(extra);
+    expect(withLandmark.locations.filter((id) => id !== extra)).toEqual(without.locations);
+  });
+
   it('selects Districts and Locations within the default bounds', () => {
     const city = gridCity();
     const vocab = vocabulary([]);

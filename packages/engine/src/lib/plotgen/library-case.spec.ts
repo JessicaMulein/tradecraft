@@ -181,7 +181,50 @@ describe('library case', () => {
       return prop === undefined ? [] : [prop.predicate];
     });
     expect(filed).toContain('PLANS');
+    expect(filed).toContain('TARGETS');
     expect(filed).toContain('MEETS_AT');
     expect(filed).toContain('MEMBER_OF');
+  });
+
+  it('still states the plan and the target when nobody can be met', () => {
+    const alone = plot();
+    const built = buildLibraryCase(
+      {
+        plots: [{ id: 'plot:sample' } as never],
+        plot: {
+          ...alone,
+          stages: alone.stages.map((stage) => ({
+            ...stage,
+            traces: stage.traces.map((trace) => ({ ...trace, place: undefined })),
+          })),
+        },
+        npcs: { [LEADER]: npc(LEADER) },
+      },
+      [],
+    );
+    expect(built).toBeDefined();
+    if (built === undefined) {
+      return;
+    }
+    expect(built.brief.map((prop) => prop.predicate)).toEqual(['MEMBER_OF', 'PLANS', 'TARGETS']);
+    expect(built.brief.find((prop) => prop.predicate === 'TARGETS')?.object).toBe('org:cell');
+    expect(built.plot.stages[0]?.traces[0]?.evidences).not.toContain('MEETS_AT');
+  });
+
+  it('reuses the target the cell already named', () => {
+    const held: Proposition = {
+      id: 'prop:know/cell/target' as never,
+      subject: LEADER,
+      predicate: 'TARGETS',
+      object: 'loc:cafe' as never,
+    };
+    const built = buildLibraryCase(world(), [held]);
+    expect(built).toBeDefined();
+    if (built === undefined) {
+      return;
+    }
+    const target = built.brief.find((prop) => prop.predicate === 'TARGETS');
+    expect(target?.id).toBe(held.id);
+    expect(built.extra.some((prop) => prop.predicate === 'TARGETS')).toBe(false);
   });
 });

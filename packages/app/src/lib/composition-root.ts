@@ -53,6 +53,7 @@ import {
   streetRates,
   navigationAidActive,
   withStreetPack,
+  AMBIENT_KINDS,
   STREET_OPS_KINDS,
   regionCatalog,
   regionSources,
@@ -216,11 +217,23 @@ function loadContentSet(
     dirs = streetPlayDirs(repoRoot, dirs);
     load = [...withStreetPack(load, dirs)];
   }
-  const kinds = street ? [...STREET_OPS_KINDS] : undefined;
+  const streetKinds = street ? [...STREET_OPS_KINDS] : [];
+  // A regional load already registers the ambient kinds. A single-city game
+  // has to pass them itself, or the ambient pack's files have no schema.
+  const singleCityKinds = [
+    ...streetKinds,
+    ...(scenario.ambient?.enabled === true || load.includes('ambient')
+      ? [...AMBIENT_KINDS]
+      : []),
+  ];
 
   const content = scenario.region?.template === undefined
-    ? loadContent(dirs, load, kinds === undefined ? undefined : { kinds })
-    : loadRegionContent(dirs, load, kinds);
+    ? loadContent(
+        dirs,
+        load,
+        singleCityKinds.length === 0 ? undefined : { kinds: singleCityKinds },
+      )
+    : loadRegionContent(dirs, load, streetKinds.length === 0 ? undefined : streetKinds);
   if (!content.ok) {
     throw new Error(
       `failed to load Content Packs [${load.join(', ')}]: ${describeFirstIssue(content.errors)}`,

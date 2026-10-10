@@ -8,11 +8,12 @@
 # the Content Set, deep-merges `difficulty.overrides` on top, and re-validates
 # the result (Req 41.1).
 #
-# The defaults below ship the standard game: the `standard` difficulty preset,
-# the `core` pack plus the plot library, full narration, and the starting
-# balance weights. Edit any field here — the loader reports an unknown preset
-# or pack, or a bad value, as a `<file>: <field path>: <message>` line and
-# refuses to start (Req 41.2).
+# The defaults below ship the standard game: the authored Vienna, the plot
+# library, and ambient city life, on the `standard` difficulty preset, with
+# full narration. Street driving and the multi-city posting stay off. Edit
+# any field here — the loader reports an unknown preset or pack, or a bad
+# value, as a `<file>: <field path>: <message>` line and refuses to start
+# (Req 41.2).
 
 difficulty:
   # The named preset from a loaded pack's difficulty.yaml. `overrides` is a
@@ -25,19 +26,38 @@ mole: false
 
 packs:
   # Where to discover packs, and which pack ids to load (merged in dependency
-  # order). The core pack ships the predicates, city, archetypes and presets.
-  # Each entry is a pack directory: the folder that holds its pack.yaml.
+  # order). Each entry is a pack directory: the folder that holds its pack.yaml.
+  # Vienna pulls its era and name libraries; the plot library and ambient city
+  # life are loaded beside it.
   dirs:
     - packages/content/packs/core
+    - packages/content/packs/era-cold-war-early
+    - packages/content/packs/lib-central-europe
+    - packages/content/packs/lib-russian
+    - packages/content/packs/city-vienna
     - packages/content/packs/coldwar-plots
+    - packages/content/packs/ambient
   load:
     - core
+    - era-cold-war-early
+    - lib-central-europe
+    - lib-russian
+    - city-vienna
     - coldwar-plots
+    - ambient
 
-# Every new game draws its operation from the plot library. Ambient city life
-# stays off.
+# The authored city. Places stay in their real districts.
+setting:
+  city: city-vienna/vienna
+
+# Every new game draws its operation from the plot library.
 plotSelection:
   enabled: true
+
+# Cover shifts, city events, gossip and the paper's ordinary life.
+ambient:
+  enabled: true
+  density: standard
 
 # Narrator mode: full | brief | off. `brief` caps Flavour at one sentence;
 # `off` skips the Narrator and shows Fact Lines only.

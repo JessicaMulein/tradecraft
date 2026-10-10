@@ -56,6 +56,7 @@ import { isDeepStrictEqual } from 'node:util';
 
 import { loadContent, type PredicateRegistry } from '@tradecraft/content';
 import {
+  AMBIENT_KINDS,
   loadRegionContent,
   revealedSpec,
   type Action,
@@ -132,9 +133,16 @@ function loadPredicates(scenario: ScenarioConfig): PredicateRegistry {
   const dirs = scenario.packs.dirs.map((dir) =>
     resolvePath(WALK_REPO_ROOT, dir),
   );
-  const content = scenario.region?.template === undefined
-    ? loadContent(dirs, [...scenario.packs.load])
-    : loadRegionContent(dirs, [...scenario.packs.load]);
+  const load = [...scenario.packs.load];
+  // A regional load already registers ambient's files. A single-city game has
+  // to pass them, or the ambient pack has no schema and the seams cannot load.
+  const ambient =
+    scenario.region?.template === undefined &&
+    (scenario.ambient?.enabled === true || load.includes('ambient'));
+  const content =
+    scenario.region?.template === undefined
+      ? loadContent(dirs, load, ambient ? { kinds: [...AMBIENT_KINDS] } : undefined)
+      : loadRegionContent(dirs, load);
   if (!content.ok) {
     throw new Error('the Scripted Full Games could not load the Content Packs');
   }

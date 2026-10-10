@@ -399,17 +399,20 @@ function plotTransmissionSources(
  * (drawn from the next unexecuted stage's key facts, {@link stagePropositions},
  * excluding the intent facts `PLANS`/`TARGETS`), signed with the sender's
  * membership. On the day before a step executes, and on the day itself, the
- * traffic also carries the go-order: the leader's `PLANS`/`TARGETS`. A Cell
- * running an operation talks; this
- * is the traffic the Station's antenna hears and the Workbench breaks. Its
- * content follows the operation, so signal evidence builds up as the Plot
- * advances rather than being on the air from day one. Nothing is sent once the
- * Plot has stopped running.
+ * traffic also carries the go-order: the leader's `PLANS`/`TARGETS` and the
+ * leader's own membership. From the second half of the operation the same
+ * order is repeated on every routine message, so a case officer who is across
+ * the city on the one day the order first goes out can still collect it.
+ * A Cell running an operation talks; this is the traffic the Station's antenna
+ * hears and the Workbench breaks. Its content follows the operation, so signal
+ * evidence builds up as the Plot advances rather than being on the air from
+ * day one. Nothing is sent once the Plot has stopped running.
  */
 /**
  * The intent a step's orders carry: the plan (`PLANS`) always, and the target
- * (`TARGETS`) only from the operation's midpoint stage on. Early steps are
- * preparation; the Cell names its target once it commits to it.
+ * (`TARGETS`) from the stage after the opening preparation. The Cell names its
+ * target once the operation is underway, early enough that a confirmed case
+ * can still be served before the last day.
  */
 function intentFor(
   pool: readonly Proposition[],
@@ -418,7 +421,7 @@ function intentFor(
 ): Proposition[] {
   const ordered = [...stages].sort((a, b) => compareTime(a.deadline, b.deadline));
   const index = ordered.findIndex((s) => s.id === stage.id);
-  const committed = index >= Math.floor(ordered.length / 2);
+  const committed = index >= Math.max(0, Math.floor(ordered.length / 2) - 1);
   return pool.filter(
     (p) => p.predicate === 'PLANS' || (committed && p.predicate === 'TARGETS'),
   );
@@ -426,6 +429,17 @@ function intentFor(
 
 /** How many days before a stage executes the Cell sends its go-order. */
 const GO_ORDER_LEAD_DAYS = 1;
+
+/**
+ * Whether `stage` is in the second half of the operation, deadline order.
+ * Routine traffic repeats the go-order from here, so the plan, the target and
+ * the leader's membership are not a single two-day burst.
+ */
+function repeatsTheOrder(stages: readonly StageState[], stage: StageState): boolean {
+  const ordered = [...stages].sort((a, b) => compareTime(a.deadline, b.deadline));
+  const index = ordered.findIndex((s) => s.id === stage.id);
+  return index >= Math.floor(ordered.length / 2);
+}
 
 function routineCellTraffic(draft: WorldState, ctx: WorldHookContext): InterceptSource[] {
   if (draft.plot.status !== 'running') {
@@ -455,8 +469,7 @@ function routineCellTraffic(draft: WorldState, ctx: WorldHookContext): Intercept
     const at: GameTime = { day, phase };
     const sender = membershipOnTheAir(pool, channel.owner);
     // One detail of the next step per message, drawn on the runtime stream.
-    // The operation's intent (PLANS/TARGETS) is never in routine traffic: it
-    // goes out only in the stage transmission that sets a step in motion.
+    // The plan and the target ride in the go-order below, not as this detail.
     // Membership rides only as the signature above, so a second cell does not
     // sneak out as the day's detail.
     const details = stagePropositions(pool, next).filter(
@@ -467,19 +480,27 @@ function routineCellTraffic(draft: WorldState, ctx: WorldHookContext): Intercept
         p.predicate !== 'MEMBER_OF',
     );
     const detail = details.length === 0 ? [] : [details[ctx.rng.int(0, details.length - 1)]];
-    // The go-order: on the day before a step executes (or that day), the
-    // traffic also carries the leader's intent.
-    const goOrder =
-      next.deadline.day - day <= GO_ORDER_LEAD_DAYS
-        ? intentFor(pool, draft.plot.stages, next)
-        : [];
+    // The go-order: on the day before a step executes (or that day), and on
+    // every routine message once the operation is in its second half. The
+    // operator's own signature does not name the leader, so the order carries
+    // the leader's membership too. Without it the plan is confirmed and the
+    // cell is not. Repeating it matters: the first burst is two days, and a
+    // recording only stays at the Station for two days after that.
+    const repeating = repeatsTheOrder(draft.plot.stages, next);
+    const ordering = repeating || next.deadline.day - day <= GO_ORDER_LEAD_DAYS;
+    const intent = ordering ? intentFor(pool, draft.plot.stages, next) : [];
+    const leaderSigned = ordering
+      ? membershipOnTheAir(pool, revealTruth(draft.plot.leader)).filter(
+          (prop) => !sender.includes(prop) && !intent.includes(prop),
+        )
+      : [];
     out.push({
       id: cellTrafficTransmissionId(channel.id, at),
       channel: channel.id,
       at,
       ownerKind: 'cell',
       origin: 'plot',
-      propositions: [...sender, ...detail, ...goOrder],
+      propositions: [...sender, ...detail, ...intent, ...leaderSigned],
     });
   }
   return out;

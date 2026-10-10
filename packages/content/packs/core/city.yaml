@@ -42,8 +42,9 @@ sectors:
     power: soviet
     label: Soviet Sector
     note: >-
-      Papers are checked more often here and strangers are remembered; the
-      sector presses up against the city's eastern and northern edges.
+      The city sits inside the Soviet zone of Lower Austria, so every road
+      out crosses a Soviet checkpoint. Papers are checked more often in this
+      sector, and strangers are remembered.
 
 # --- Districts -------------------------------------------------------------
 # A representative spread of the city's numbered Bezirke, each tagged with the

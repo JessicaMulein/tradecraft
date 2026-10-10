@@ -64,7 +64,19 @@ const STANDARD: DifficultyPreset = {
 /** A resolution context that knows the standard preset and the shipped packs. */
 const CONTEXT: ScenarioResolutionContext = {
   presets: new Map([['standard', STANDARD]]),
-  availablePackIds: new Set(['core', 'coldwar-plots']),
+  availablePackIds: new Set([
+    'core',
+    'coldwar-plots',
+    'era-cold-war-early',
+    'lib-central-europe',
+    'lib-russian',
+    'city-vienna',
+    'ambient',
+  ]),
+  cities: new Map([
+    ['city-vienna/vienna', { startDates: { from: '1948-01-01', to: '1953-12-31' } }],
+  ]),
+  eraPeriod: { from: 1945, to: 1965 },
 };
 
 /** A Regional Preset keyed to the standard Difficulty Preset (Req 20.2). */
@@ -130,10 +142,20 @@ describe('the shipped config/scenario.yaml', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
 
-    // It selects standard, loads core plus the plot library, and runs full narration.
+    // It selects standard, the authored Vienna, the plot library and ambient city life.
     expect(result.value.scenario.difficulty.preset).toBe('standard');
-    expect(result.value.scenario.packs.load).toEqual(['core', 'coldwar-plots']);
+    expect(result.value.scenario.packs.load).toEqual([
+      'core',
+      'era-cold-war-early',
+      'lib-central-europe',
+      'lib-russian',
+      'city-vienna',
+      'coldwar-plots',
+      'ambient',
+    ]);
+    expect(result.value.scenario.setting.city).toBe('city-vienna/vienna');
     expect(result.value.scenario.plotSelection?.enabled).toBe(true);
+    expect(result.value.scenario.ambient?.enabled).toBe(true);
     expect(result.value.scenario.narration).toBe('full');
     expect(result.value.scenario.mole).toBe(false);
 

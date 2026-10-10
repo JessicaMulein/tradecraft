@@ -117,13 +117,17 @@ async function tryPlay(
   return true;
 }
 
-async function readUnread(game: ScriptedGame): Promise<boolean> {
+async function readUnread(game: ScriptedGame, max?: number): Promise<boolean> {
   const unread = game.api.views.documents().documents.filter((d) => !d.read);
-  let any = false;
+  let played = 0;
   for (const doc of unread) {
-    if (await tryPlay(game, (a) => a.kind === 'read' && a.doc === doc.id)) any = true;
+    if (max !== undefined && played >= max) break;
+    if (await tryPlay(game, (a) => a.kind === 'read' && a.doc === doc.id)) {
+      played += 1;
+      if (game.over) break;
+    }
   }
-  return any;
+  return played > 0;
 }
 
 /**
@@ -138,9 +142,10 @@ function breakable(game: ScriptedGame, id: string): boolean {
 }
 
 /** Break every collected Intercept a human could, through the catalogue's decrypt. */
-async function decryptAll(game: ScriptedGame, done: Set<string>): Promise<boolean> {
-  let any = false;
+async function decryptAll(game: ScriptedGame, done: Set<string>, max?: number): Promise<boolean> {
+  let played = 0;
   for (const option of game.api.actions()) {
+    if (max !== undefined && played >= max) break;
     const a = option.action;
     if (!option.quote.allowed || a.kind !== 'decrypt' || done.has(a.intercept)) continue;
     done.add(a.intercept);
@@ -149,10 +154,10 @@ async function decryptAll(game: ScriptedGame, done: Set<string>): Promise<boolea
     await game.play(option, (t) =>
       t.kind === 'decrypt' ? { ...t, submission: solution } : t,
     );
-    any = true;
+    played += 1;
     if (game.over) break;
   }
-  return any;
+  return played > 0;
 }
 
 function stationId(game: ScriptedGame): LocId | undefined {
@@ -515,28 +520,36 @@ export async function probeSeed(
 
     while (!game.over && game.turns.length < MAX_PROBE_TURNS) {
       if (options.calibrate === true) record();
-      await readUnread(game);
-      if (game.over) break;
-      await decryptAll(game, decrypted);
-      if (game.over) break;
-      if (await keepCover(game)) continue;
 
       const state = world(game);
       const handles = leaderHandles(state);
 
-      // Arrest the leader the moment the gate opens (never in calibration mode).
-      // Once the case is strong enough, wait a phase at a time until the leader
-      // is outside the Soviet sector, which is the only place the police will act.
+      // Arrest the leader the moment the police will take them (never in
+      // calibration mode). Once the case is ready, read one paper and look up:
+      // the leader is only out a few times a week, and a pile of papers would
+      // burn that window. The papers still get read.
       if (options.calibrate !== true) {
         if (await tryPlay(game, (a) => a.kind === 'arrest' && handles.has(a.npc))) {
           break;
         }
         const ready =
           game.api.caseFile.evidence(leaderOf(state)) >= state.meta.preset.arrest.threshold;
-        if (ready && (await tryPlay(game, (a) => a.kind === 'wait' && a.phases === 1))) {
-          continue;
+        if (ready) {
+          const readOne = await readUnread(game, 1);
+          if (game.over) break;
+          if (readOne) continue;
+          const broke = await decryptAll(game, decrypted, 1);
+          if (game.over) break;
+          if (broke) continue;
+          if (await tryPlay(game, (a) => a.kind === 'wait' && a.phases === 1)) continue;
         }
       }
+
+      await readUnread(game);
+      if (game.over) break;
+      await decryptAll(game, decrypted);
+      if (game.over) break;
+      if (await keepCover(game)) continue;
 
       // Once the leader is a known entity, ask HQ for its file once.
       if (!traced && state.player.known.entities.includes(leaderOf(state))) {
@@ -568,7 +581,7 @@ export async function probeSeed(
       }
 
       // Collect traffic at the Station on a fixed rhythm.
-      const now = ordinal(state.time);
+      const now = ordinal(world(game).time);
       if (now - lastSweep >= SWEEP_EVERY_PHASES) {
         const station = stationId(game);
         if (station !== undefined && (await travel(game, station))) {

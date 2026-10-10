@@ -46,6 +46,7 @@ import {
   type DifficultyPreset,
 } from '@tradecraft/content';
 import {
+  AMBIENT_KINDS,
   loadRegionContent,
   parseScenarioConfig,
   formatConfigIssues as formatScenarioIssues,
@@ -210,7 +211,11 @@ function loadContentSet(
   const dirs = probed.dirs.map((d) => join(io.repoRoot, d));
   const load = probed.load;
 
-  const content = probed.regional ? loadRegionContent(dirs, load) : loadContent(dirs, load);
+  const kinds =
+    probed.regional || !probed.ambient ? undefined : { kinds: [...AMBIENT_KINDS] };
+  const content = probed.regional
+    ? loadRegionContent(dirs, load)
+    : loadContent(dirs, load, kinds);
   if (!content.ok) {
     const first = content.errors[0] as
       | { path?: string; message?: string }
@@ -244,27 +249,44 @@ const DEFAULT_PACK_LOAD = ['core'];
 function probePacks(
   io: LauncherIo,
   scenarioPath: string,
-): { dirs: readonly string[]; load: string[]; regional: boolean } {
+): { dirs: readonly string[]; load: string[]; regional: boolean; ambient: boolean } {
   let text: string;
   try {
     text = io.readFile(scenarioPath);
   } catch {
-    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD], regional: false };
+    return {
+      dirs: DEFAULT_PACK_DIRS,
+      load: [...DEFAULT_PACK_LOAD],
+      regional: false,
+      ambient: false,
+    };
   }
   let doc: unknown;
   try {
     doc = parseYaml(text);
   } catch {
-    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD], regional: false };
+    return {
+      dirs: DEFAULT_PACK_DIRS,
+      load: [...DEFAULT_PACK_LOAD],
+      regional: false,
+      ambient: false,
+    };
   }
   const parsed = ScenarioConfigSchema.safeParse(doc);
   if (!parsed.success) {
-    return { dirs: DEFAULT_PACK_DIRS, load: [...DEFAULT_PACK_LOAD], regional: false };
+    return {
+      dirs: DEFAULT_PACK_DIRS,
+      load: [...DEFAULT_PACK_LOAD],
+      regional: false,
+      ambient: false,
+    };
   }
+  const load = [...parsed.data.packs.load];
   return {
     dirs: [...parsed.data.packs.dirs],
-    load: [...parsed.data.packs.load],
+    load,
     regional: parsed.data.region?.template !== undefined,
+    ambient: parsed.data.ambient?.enabled === true || load.includes('ambient'),
   };
 }
 

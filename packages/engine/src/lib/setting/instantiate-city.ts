@@ -112,6 +112,13 @@ function effectiveTagsOf(
   return tags;
 }
 
+const FIXED_LANDMARK = 'function:fixed-landmark';
+
+/** A landmark kept whenever its district is drawn, and left out of the random fill. */
+function isFixedLandmark(loc: CityLocation): boolean {
+  return loc.tags.includes(FIXED_LANDMARK);
+}
+
 /** The weighted-fill weight of a Location: its authored `weight`, defaulting to 1. */
 function weightOf(loc: CityLocation): number {
   return loc.weight ?? 1;
@@ -287,7 +294,7 @@ function attemptSelection(
   for (const rq of queriesInOrder) {
     const query = rq.query as readonly string[];
     const binders = bundle.locations
-      .filter((loc) => satisfiesQuery(tagsOf(loc), query))
+      .filter((loc) => !isFixedLandmark(loc) && satisfiesQuery(tagsOf(loc), query))
       .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 
     let have = binders.filter((loc) => selectedLocations.has(loc.id)).length;
@@ -472,7 +479,9 @@ export function instantiateCity(
   const fillPool = def.locations
     .filter(
       (loc) =>
-        selectedDistricts.has(loc.district) && !selectedLocations.has(loc.id),
+        selectedDistricts.has(loc.district) &&
+        !selectedLocations.has(loc.id) &&
+        !isFixedLandmark(loc),
     )
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const pool = [...fillPool];
@@ -481,6 +490,16 @@ export function instantiateCity(
     const index = weightedIndex(rng, weights);
     const chosen = pool.splice(index, 1)[0];
     selectedLocations.add(chosen.id);
+  }
+
+  // Fixed landmarks sit in the city whenever their district was drawn. They
+  // are not part of the random fill, so they do not change which other places
+  // a seed gets.
+  for (const loc of def.locations) {
+    if (!isFixedLandmark(loc)) continue;
+    if (selectedDistricts.has(loc.district)) {
+      selectedLocations.add(loc.id);
+    }
   }
 
   // Step 7: the Routes between selected Districts.

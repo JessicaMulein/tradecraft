@@ -332,6 +332,7 @@ export {
   publicHoliday,
   scheduleWeekdayIndex,
 } from './lib/city/calendar.js';
+export { viennaSurround, westRoadLine } from './lib/city/occupation.js';
 
 export {
   // Organisations and Principal NPCs: the real Org/Npc shapes (Req 1.1, 1.3,

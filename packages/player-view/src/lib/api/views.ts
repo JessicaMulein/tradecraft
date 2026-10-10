@@ -49,6 +49,7 @@ import {
   calendarLabel,
   recruitmentProgress,
   weatherForDay,
+  viennaSurround,
   STATION_LOCATION_TYPE,
   type AllegianceCategory,
   type CrowdLevel,
@@ -703,6 +704,11 @@ export interface MapView {
   readonly districts: readonly MapDistrict[];
   /** Every known Dead Drop, ordered by id. */
   readonly deadDrops: readonly MapDeadDrop[];
+  /**
+   * The occupation note for a city that sits inside a hostile zone. Absent
+   * for every other city.
+   */
+  readonly note?: string;
 }
 
 /**
@@ -851,7 +857,13 @@ export function mapView(state: WorldState, cityData: CityData): MapView {
     })
     .sort((a, b) => compareIds(a.id, b.id));
 
-  return { here, districts, deadDrops: allKnownDrops };
+  const note = viennaSurround(state.city.displayName);
+  return {
+    here,
+    districts,
+    deadDrops: allKnownDrops,
+    ...(note === undefined ? {} : { note }),
+  };
 }
 
 // ---------------------------------------------------------------------------

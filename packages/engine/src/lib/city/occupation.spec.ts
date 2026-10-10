@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { occupationSceneLine, sectorCheckpointLine, withOccupation } from './occupation.js';
+import {
+  occupationSceneLine,
+  sectorCheckpointLine,
+  viennaSurround,
+  westRoadLine,
+  withOccupation,
+} from './occupation.js';
 
 describe('occupation scenes', () => {
   it('keeps a western street as the place itself', () => {
@@ -22,5 +28,10 @@ describe('occupation scenes', () => {
     expect(sectorCheckpointLine('soviet', 'french', 1)).toContain('roads out of the city');
     expect(sectorCheckpointLine('american', 'british', 2)).toBeUndefined();
     expect(sectorCheckpointLine('soviet', 'soviet', 3)).toBeUndefined();
+    expect(viennaSurround('Vienna')).toContain('Soviet zone');
+    expect(viennaSurround('Trieste')).toBeUndefined();
+    expect(westRoadLine('Vienna', 'district:mariahilf')).toContain('Soviet zone');
+    expect(westRoadLine('Vienna', 'district:innere-stadt')).toBeUndefined();
+    expect(westRoadLine('Berlin', 'district:mariahilf')).toBeUndefined();
   });
 });

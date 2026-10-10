@@ -468,3 +468,31 @@
     - A crush of baskets and prams fills the lane between the stalls, and a word passed hand to hand is lost in the din.
   atmosphereTags: [bustling, pungent, crowded, public]
   tags: [venue:market, function:kiosk, function:meeting-spot, function:dead-drop-site, function:materiel-store, access:public]
+
+# --- Frontage (the pavement before a requisitioned building) --------------
+# The building itself is not open. The player stands on the public pavement.
+- id: frontage
+  public: true
+  allowedActions: [travel, talk, approach, surveil, follow, arrange-meeting, wait]
+  openingHours:
+    - { weekday: monday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: tuesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: wednesday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: thursday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: friday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: saturday, openPhase: early-morning, closePhase: late-night }
+    - { weekday: sunday, openPhase: early-morning, closePhase: late-night }
+  crowdCurve:
+    - { weekday: monday, phase: midday, level: 0.4 }
+  weatherModifiers:
+    - { weather: rain, crowdMultiplier: 0.5 }
+  baseRisk: 0.55
+  allowsDeadDrops: false
+  namePatterns:
+    - the Hotel Imperial
+    - the Justizpalast
+  descriptionPool:
+    - Sentries stand under the flags, and the pavement in front of the doors is as close as a stranger comes.
+    - Staff cars idle at the ramp. People on the Ring keep their eyes on the traffic and not on the steps.
+  atmosphereTags: [watched, official, public]
+  tags: [access:public]

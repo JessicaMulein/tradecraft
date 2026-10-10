@@ -233,8 +233,9 @@
   public: true
   description: >-
     The western terminus, a vaulted hall under a sooty glass roof where the
-    lines from the west come in; porters wheel trunks past the ticket windows
-    and the left-luggage lockers run a cold corridor's length.
+    lines from the west come in. Those lines cross the Soviet zone before they
+    reach the city. Porters wheel trunks past the ticket windows and the
+    left-luggage lockers run a cold corridor's length.
   atmosphere: [trunks wheeled past the windows, a cold left-luggage corridor, lines from the west]
   city: vienna
   tags: [function:meeting-spot, access:public]
@@ -399,6 +400,35 @@
   city: vienna
   tags: [function:meeting-spot, access:public]
   basis: fictional
+
+- id: hotel-imperial
+  name: the Hotel Imperial
+  type: frontage
+  district: innere-stadt
+  public: true
+  description: >-
+    The grand hotel on the Kärntner Ring, requisitioned as the Soviet command.
+    Sentries stand under the flags. The pavement is public. The doors are not.
+  atmosphere: [flags over the portico, sentries on the steps, the doors not for you]
+  city: vienna
+  tags: [function:fixed-landmark, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-imperial, src-four-power]
+
+- id: justizpalast
+  name: the Justizpalast
+  type: frontage
+  district: innere-stadt
+  public: true
+  description: >-
+    The palace of justice on the Ring, where the four powers sit as the
+    Inter-Allied Kommandatura. Staff cars wait on the ramp, and the steps are
+    watched from every side.
+  atmosphere: [staff cars on the ramp, four powers under one roof, steps watched from every side]
+  city: vienna
+  tags: [function:fixed-landmark, function:meeting-spot, access:public]
+  basis: real-landmark
+  sources: [src-justizpalast, src-four-power]
 
 # --- Leopoldstadt (Soviet sector) ------------------------------------------
 - id: cafe-praterstern
