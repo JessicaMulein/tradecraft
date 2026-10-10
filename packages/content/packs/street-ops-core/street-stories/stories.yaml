@@ -1,0 +1,11 @@
+items:
+  - { id: late-from-the-office, slots: [workplace], fits: [cover], followUps: [] }
+  - { id: visiting-a-cousin, slots: [relative], fits: [family], followUps: [late-from-the-office] }
+  - { id: collecting-a-parcel, slots: [shop], fits: [errand], followUps: [] }
+  - { id: the-tram-was-full, slots: [tram], fits: [delay], followUps: [] }
+  - { id: a-wrong-turning, slots: [street], fits: [lost], followUps: [the-tram-was-full] }
+  - { id: papers-in-the-other-coat, slots: [document], fits: [papers], followUps: [] }
+  - { id: meeting-a-journalist, slots: [person], fits: [work], followUps: [] }
+  - { id: the-garage-kept-the-car, slots: [garage], fits: [vehicle], followUps: [] }
+  - { id: bought-flowers, slots: [shop], fits: [errand], followUps: [visiting-a-cousin] }
+  - { id: looking-for-a-hotel, slots: [hotel], fits: [lost], followUps: [a-wrong-turning] }

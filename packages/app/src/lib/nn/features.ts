@@ -38,6 +38,19 @@ export const CATALOGUE_KINDS = [
   'request-papers',
   'apply-visa',
   'liaison-request',
+  'street-ops.drive',
+  'street-ops.turn',
+  'street-ops.park',
+  'street-ops.look',
+  'street-ops.maneuver',
+  'street-ops.pickup',
+  'street-ops.dropoff',
+  'street-ops.bluff',
+  'street-ops.read-map',
+  'street-ops.navigate',
+  'street-ops.hire',
+  'street-ops.return',
+  'street-ops.swap-plate',
   'wait',
 ] as const;
 
@@ -73,10 +86,10 @@ const KIND_INDEX = new Map<string, number>(
 );
 
 /** Scalar tails after the action-kind one-hot. Keep in lockstep with {@link encodeAction}. */
-const ACTION_SCALARS = 20;
+const ACTION_SCALARS = 22;
 
 /** Scalar tails after the preset and crowd one-hots. Keep in lockstep with {@link encodeState}. */
-const STATE_SCALARS = 26;
+const STATE_SCALARS = 29;
 
 export const STATE_DIM = PRESETS.length + CROWDS.length + STATE_SCALARS;
 export const ACTION_DIM = MOVE_KINDS.length + ACTION_SCALARS;
@@ -110,6 +123,12 @@ export interface StateContext {
   readonly phasesSinceIntercept: number;
   readonly topSuspectTraced: boolean;
   readonly approachesToday: number;
+  /** A contact's file has come back and a pitch is allowed. */
+  readonly pitchApproved: boolean;
+  /** A contact has been met often enough that the next cable is their trace. */
+  readonly recruitTrace: boolean;
+  /** The last arrival said you may have been followed. */
+  readonly followed: boolean;
 }
 
 /** One legal action, described the way the scorer sees it. */
@@ -136,6 +155,10 @@ export interface ActionContext {
   readonly cableFunds: boolean;
   readonly riskyDirectTravel: boolean;
   readonly waitPhases: number;
+  /** This cable asks headquarters for the file on a contact who is ready. */
+  readonly cableTraceRecruit: boolean;
+  /** This talk calls off an arranged meeting. */
+  readonly breakOff: boolean;
 }
 
 function bit(value: boolean): number {
@@ -178,6 +201,9 @@ export function baseState(patch: Partial<StateContext> = {}): StateContext {
     phasesSinceIntercept: 0,
     topSuspectTraced: false,
     approachesToday: 0,
+    pitchApproved: false,
+    recruitTrace: false,
+    followed: false,
     ...patch,
   };
 }
@@ -209,6 +235,8 @@ export function baseAction(
     cableFunds: false,
     riskyDirectTravel: false,
     waitPhases: kind === 'wait' ? 1 : 0,
+    cableTraceRecruit: false,
+    breakOff: false,
     ...patch,
   };
 }
@@ -245,6 +273,9 @@ export function encodeState(state: StateContext): Float64Array {
     bit(state.topSuspectTraced),
     clip(state.approachesToday / 3, 0, 2),
     clip(Math.max(0, state.arrestThreshold - state.maxEvidence) / 8, 0, 2),
+    bit(state.pitchApproved),
+    bit(state.recruitTrace),
+    bit(state.followed),
   );
   if (v.length !== STATE_DIM) {
     throw new Error(
@@ -280,6 +311,8 @@ export function encodeAction(action: ActionContext): Float64Array {
     bit(action.cableFunds),
     bit(action.riskyDirectTravel),
     bit(action.waitPhases === 1),
+    bit(action.cableTraceRecruit),
+    bit(action.breakOff),
   );
   if (v.length !== ACTION_DIM) {
     throw new Error(

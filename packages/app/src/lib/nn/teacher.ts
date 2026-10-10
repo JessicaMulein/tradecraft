@@ -12,7 +12,8 @@ import type { ActionContext, StateContext } from './features.js';
 function needsStation(state: StateContext): boolean {
   return (
     state.phasesSinceIntercept >= 8 ||
-    (state.maxEvidence > 0 && !state.topSuspectTraced)
+    (state.maxEvidence > 0 && !state.topSuspectTraced) ||
+    state.recruitTrace
   );
 }
 
@@ -39,25 +40,18 @@ export function teacherPriority(
     if (state.linesInScene >= 3 && action.kind === 'end-scene') return 90;
     if (
       action.kind === 'say-reassure' &&
-      action.targetRapport < 0.5 &&
+      !state.pitchApproved &&
       state.linesInScene < 3
     ) {
       return 80;
     }
     if (
-      action.kind === 'say-pitch-money' &&
-      state.budget >= 5 &&
+      state.pitchApproved &&
+      (action.kind === 'say-pitch-money' || action.kind === 'say-pitch-ideology') &&
       state.linesInScene >= 1 &&
       state.linesInScene < 3
     ) {
-      return 76;
-    }
-    if (
-      action.kind === 'say-pitch-ideology' &&
-      state.linesInScene >= 1 &&
-      state.linesInScene < 3
-    ) {
-      return 74;
+      return action.kind === 'say-pitch-money' && state.budget >= 5 ? 84 : 82;
     }
     if (action.kind === 'say-ask' && state.linesInScene === 0) return 70;
     if (action.kind === 'end-scene') return 30;
@@ -71,9 +65,20 @@ export function teacherPriority(
   ) {
     return 100;
   }
+  if (action.kind === 'talk' && action.breakOff) {
+    return state.followed ? 92 : 1;
+  }
   if (action.kind === 'read' && action.unreadRead) return 90;
   if (action.kind === 'decrypt' && action.breakableDecrypt) return 86;
   if (action.kind === 'attend-duty') return 75;
+  if (
+    action.kind === 'cable' &&
+    action.cableTraceRecruit &&
+    state.atStation &&
+    state.recruitTrace
+  ) {
+    return 78;
+  }
   if (
     action.kind === 'cable' &&
     action.cableTraceBest &&
@@ -135,6 +140,10 @@ export function teacherPriority(
     return 28;
   }
   if (action.kind === 'wait' && action.waitPhases === 1) return 12;
+  if (action.kind === 'street-ops.drive' && !state.atStation && !state.hereInClaims) return 20;
+  if (action.kind === 'street-ops.park') return 19;
+  if (action.kind === 'street-ops.turn') return 16;
+  if (action.kind.startsWith('street-ops.')) return 8;
   return 1;
 }
 

@@ -75,6 +75,7 @@ import {
   type DialogueTurnInput,
   type DialogueTurnResult,
 } from './dialogue-turn.js';
+import { standingAppointment } from './standing.js';
 
 // ---------------------------------------------------------------------------
 // Core-pack fixtures (mirrors task.spec.ts)
@@ -190,6 +191,23 @@ function sceneWith(
   return { npc, kind: 'routine', openedAt: BASE.time, via: 'talk', recent };
 }
 
+/** A relationship headquarters will already hear a pitch from. */
+function heard(
+  npc: NpcId,
+  rel?: Relationship,
+): { state: WorldState; scene: TalkScene } {
+  const base = rel ?? {
+    ...newRelationship(npc),
+    channel: BASE.player.contacts.includes(npc),
+  };
+  return staged(npc, {
+    ...base,
+    meetings: 3,
+    pitchApproved: true,
+    lastMeetingDay: BASE.time.day,
+  });
+}
+
 /** The base world with an open scene and, optionally, a Relationship for the NPC. */
 function staged(
   npc: NpcId,
@@ -236,6 +254,9 @@ const START: Relationship = {
   ...newRelationship(STRANGER),
   trust: 0.5,
   suspicion: 0.4,
+  meetings: 3,
+  pitchApproved: true,
+  lastMeetingDay: BASE.time.day,
 };
 
 /**
@@ -357,9 +378,11 @@ describe("applyDialogueTurn: each Intent's deltas (Req 15.5)", () => {
         createPrng('fresh'),
         WEIGHTS,
       );
-      expect(out.state.relationships[npc]).toEqual(
-        applyIntent({ ...newRelationship(npc), channel }, 'small-talk'),
-      );
+      expect(out.state.relationships[npc]).toEqual({
+        ...applyIntent({ ...newRelationship(npc), channel }, 'small-talk'),
+        meetings: 1,
+        lastMeetingDay: BASE.time.day,
+      });
     }
   });
 
@@ -390,6 +413,39 @@ describe("applyDialogueTurn: each Intent's deltas (Req 15.5)", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Development before a pitch
+// ---------------------------------------------------------------------------
+
+describe('applyDialogueTurn: a pitch waits for meetings and approval', () => {
+  it('does not draw, pay or recruit on the first meeting', () => {
+    const { state, scene } = staged(CONTACT);
+    const rng = createPrng('early');
+    const before = rng.state();
+    const out = applyDialogueTurn(state, scene, say('pitch-money', 40), rng, ACCEPT);
+    expect(out.pitch).toBeUndefined();
+    expect(out.state.relationships[CONTACT]?.recruited).toBe(false);
+    expect(out.state.relationships[CONTACT]?.pitchApproved).toBeUndefined();
+    expect(out.state.station.ledger).toBe(BASE.station.ledger);
+    expect(rng.state()).toEqual(before);
+  });
+
+  it('counts one meeting per day', () => {
+    const { state, scene } = staged(STRANGER, newRelationship(STRANGER));
+    const first = applyDialogueTurn(state, scene, say('reassure'), createPrng('m'), WEIGHTS);
+    expect(first.state.relationships[STRANGER]?.meetings).toBe(1);
+    const second = applyDialogueTurn(
+      first.state,
+      first.state.player.scene as TalkScene,
+      say('reassure'),
+      createPrng('m2'),
+      WEIGHTS,
+    );
+    expect(second.state.relationships[STRANGER]?.meetings).toBe(1);
+    expect(second.state.relationships[STRANGER]?.lastMeetingDay).toBe(BASE.time.day);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // The pitch coin (Req 15.6)
 // ---------------------------------------------------------------------------
 
@@ -397,7 +453,7 @@ describe('applyDialogueTurn: the pitch coin (Req 15.6)', () => {
   it.each(PITCH_INTENTS)(
     '%s is resolvePitch against the post-Intent Relationship, one draw on the passed PRNG',
     (intent) => {
-      const { state, scene } = staged(CONTACT);
+      const { state, scene } = heard(CONTACT);
       const rng = createPrng('one-coin');
       const out = applyDialogueTurn(state, scene, say(intent), rng, WEIGHTS);
       const probe = createPrng('one-coin');
@@ -424,7 +480,7 @@ describe('applyDialogueTurn: acceptance makes the NPC an Asset (Req 15.6)', () =
   it.each(PITCH_INTENTS)(
     '%s accepted sets recruited and mints the profile with assetProfileFor',
     (intent) => {
-      const { state, scene } = staged(CONTACT);
+      const { state, scene } = heard(CONTACT);
       const out = applyDialogueTurn(
         state,
         scene,
@@ -437,6 +493,7 @@ describe('applyDialogueTurn: acceptance makes the NPC an Asset (Req 15.6)', () =
         ...afterIntent(state, CONTACT, intent),
         recruited: true,
         asset: assetProfileFor(BASE.npcs[CONTACT], BASE.npcs),
+        standing: standingAppointment(CONTACT, state),
       });
       // An acceptance reports nothing.
       expect(out.state.hostile).toBe(BASE.hostile);
@@ -470,7 +527,7 @@ describe('applyDialogueTurn: acceptance makes the NPC an Asset (Req 15.6)', () =
   });
 
   it('opens a Contact Channel to a stranger recruited in a scene', () => {
-    const { state, scene } = staged(STRANGER);
+    const { state, scene } = heard(STRANGER);
     const out = applyDialogueTurn(
       state,
       scene,
@@ -519,7 +576,7 @@ describe('applyDialogueTurn: the money offer (Req 15.7)', () => {
   ])(
     'debits the offer, tagged pay with the NPC as ref, when the pitch is $outcome',
     ({ weights, seed, accepted, reported }) => {
-      const { state, scene } = staged(CONTACT);
+      const { state, scene } = heard(CONTACT);
       const out = applyDialogueTurn(
         state,
         scene,
@@ -539,7 +596,7 @@ describe('applyDialogueTurn: the money offer (Req 15.7)', () => {
 
   it('debits an offer the Budget exactly covers, leaving it at zero', () => {
     const all = balance(BASE.station.ledger);
-    const { state, scene } = staged(CONTACT);
+    const { state, scene } = heard(CONTACT);
     const out = applyDialogueTurn(
       state,
       scene,
@@ -552,7 +609,7 @@ describe('applyDialogueTurn: the money offer (Req 15.7)', () => {
 
   it('scales the money pitch by the offer', () => {
     const offer = 75;
-    const { state, scene } = staged(CONTACT);
+    const { state, scene } = heard(CONTACT);
     const out = applyDialogueTurn(
       state,
       scene,
@@ -574,7 +631,7 @@ describe('applyDialogueTurn: the money offer (Req 15.7)', () => {
 
   it('moves no money for a money pitch without an offer', () => {
     for (const offer of [undefined, 0]) {
-      const { state, scene } = staged(CONTACT);
+      const { state, scene } = heard(CONTACT);
       const out = applyDialogueTurn(
         state,
         scene,
@@ -623,7 +680,7 @@ describe('applyDialogueTurn: the money offer (Req 15.7)', () => {
 
 describe('applyDialogueTurn: a refusal and the report (Req 15.8)', () => {
   it('a quiet refusal adds suspicionDelta and reports nothing', () => {
-    const { state, scene } = staged(CONTACT);
+    const { state, scene } = heard(CONTACT);
     const out = applyDialogueTurn(
       state,
       scene,
@@ -647,7 +704,7 @@ describe('applyDialogueTurn: a refusal and the report (Req 15.8)', () => {
 
   it('a reported refusal adds suspicionDelta, records the approach and raises Cover Suspicion by 0.1', () => {
     expect(PITCH_REPORTED_COVER_SUSPICION).toBe(0.1);
-    const { state, scene } = staged(CONTACT);
+    const { state, scene } = heard(CONTACT);
     const out = applyDialogueTurn(
       state,
       scene,
@@ -692,7 +749,7 @@ describe('applyDialogueTurn: a refusal and the report (Req 15.8)', () => {
   });
 
   it('adds a reporter after the approaches already on file', () => {
-    const staging = staged(CONTACT);
+    const staging = heard(CONTACT);
     const beliefs = {
       ...BASE.hostile.beliefs,
       suspectedApproaches: [STRANGER],
@@ -721,7 +778,7 @@ describe('applyDialogueTurn: a refusal and the report (Req 15.8)', () => {
       channel: true,
       suspicion: 0.8,
     };
-    const staging = staged(CONTACT, wary);
+    const staging = heard(CONTACT, wary);
     const state: WorldState = {
       ...staging.state,
       player: { ...staging.state.player, coverSuspicion: asTruth(0.95) },

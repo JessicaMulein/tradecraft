@@ -1,0 +1,6 @@
+items:
+  - id: street-composure
+    rows:
+      - { tags: [calm], composure: 0.8 }
+      - { tags: [nervous], composure: 0.3 }
+      - { tags: [official], composure: 0.6 }

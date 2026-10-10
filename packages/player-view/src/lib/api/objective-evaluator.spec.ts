@@ -38,9 +38,11 @@ import {
   type PublicText,
 } from '@tradecraft/content';
 import {
+  emptyStreetOpsState,
   generateGame,
   newRelationship,
   ScenarioConfigSchema,
+  streetReplayHeader,
   type ChannelId,
   type DirectiveObjective,
   type EntityId,
@@ -316,6 +318,28 @@ describe('buildObjectiveEvaluator', () => {
       expect(after(intercept(channel), T)).toBe(true);
       // A different Channel's objective stays unmet.
       expect(after(intercept(otherChannel), T)).toBe(false);
+    });
+  });
+
+  describe('smuggle', () => {
+    it('is met when a street delivery names the person and the place', () => {
+      const world = game();
+      const npc = Object.keys(world.npcs)[0] as NpcId;
+      const loc = world.player.loc;
+      const caseFile = new CaseFile();
+      const objective: DirectiveObjective = { kind: 'smuggle', npc, to: loc };
+      expect(buildObjectiveEvaluator({ state: world, caseFile })(objective, T)).toBe(false);
+      const delivered: WorldState = {
+        ...world,
+        ext: {
+          ...world.ext,
+          streetOps: {
+            ...emptyStreetOpsState(streetReplayHeader()),
+            deliveries: [{ npc, loc, at: T }],
+          },
+        },
+      };
+      expect(buildObjectiveEvaluator({ state: delivered, caseFile })(objective, T)).toBe(true);
     });
   });
 

@@ -10,6 +10,8 @@ import { balance } from '../station/ledger.js';
 import { timeToPhases } from '../model/core.js';
 import { addPhases } from '../clock/clock.js';
 import { createPrng } from '../prng/prng.js';
+import { emptyStreetOpsState } from '../street-ops/state.js';
+import { streetReplayHeader } from '../street-ops/stream.js';
 import { quoteDepart, resolveDepart } from './depart.js';
 import { moveOnSpine, phasesBetween, placementsMatch } from './move.js';
 import { decideVisa } from './papers.js';
@@ -132,6 +134,81 @@ describe('intercity travel', () => {
     expect(resolved.result.factLines.some((line) => line.includes('cancelled'))).toBe(true);
     expect(balance(resolved.next.station.ledger)).toBe(balance(snowed.station.ledger));
     expect(resolved.next.player.loc).toBe(route.from);
+  });
+
+  it('checks a carried car at the border and closes the drive on arrival', () => {
+    const state = world('street-border');
+    const region = state.region;
+    if (region === undefined) throw new Error('expected a region');
+    const route = Object.values(region.intercity).find(
+      (item) => item.fromCity === state.player.city && item.borders.length > 0,
+    );
+    if (route === undefined || route.fromCity === undefined) throw new Error('expected a bordered route');
+    const posts = { ...region.borderPosts };
+    for (const id of route.borders) {
+      const post = posts[id];
+      if (post === undefined) continue;
+      posts[id] = { ...post, strictness: 0, documents: [] };
+    }
+    const openRoute = { ...route, departures: undefined, timetable: 'daily', cancellingWeather: [] };
+    const standing = {
+      ...state,
+      player: { ...state.player, loc: route.from },
+      locationOf: {
+        ...(state.locationOf ?? {}),
+        player: { city: route.fromCity, loc: route.from },
+      },
+      region: {
+        ...region,
+        borderPosts: posts,
+        intercity: { ...region.intercity, [route.id]: openRoute },
+      },
+    };
+    const car = emptyStreetOpsState(streetReplayHeader());
+    const withCar = {
+      ...standing,
+      ext: {
+        streetOps: {
+          ...car,
+          vehicles: [{ id: 'staff-saloon', def: 'staff-saloon', plate: 'W-BURNED', knownBurned: false }],
+          notedPlates: ['W-BURNED'],
+          session: {
+            sessionKey: 'open',
+            vehicle: 'staff-saloon',
+            at: { segment: 'court-lane', dir: 'fwd' as const, progress: 0 },
+            speed: 'normal' as const,
+            ticks: 0,
+            phasesCharged: 0,
+            path: [],
+            passengers: [],
+          },
+        },
+      },
+    };
+    const action = {
+      kind: 'depart' as const,
+      route: route.id,
+      at: withCar.time,
+      papers: withCar.player.papers ?? [],
+    };
+    const held = resolveDepart(withCar, action, createPrng('street-border-hold'));
+    expect(held.result.factLines.some((line) => line.includes('detains'))).toBe(true);
+    expect(held.next.player.loc).toBe(route.from);
+    expect(held.next.ext?.streetOps?.session).toBeTruthy();
+    const clear = {
+      ...withCar,
+      ext: {
+        streetOps: {
+          ...withCar.ext.streetOps,
+          notedPlates: [],
+        },
+      },
+    };
+    const gone = resolveDepart(clear, action, createPrng('street-border-go'));
+    expect(gone.result.factLines.some((line) => line.includes('detains') || line.includes('refuses'))).toBe(false);
+    expect(gone.next.player.city).toBe(route.toCity);
+    expect(gone.next.ext?.streetOps?.session).toBeUndefined();
+    expect(gone.next.ext?.streetOps?.vehicles.map((item) => item.plate)).toEqual(['W-BURNED']);
   });
 
   it('Property 5: Cross-City truth consistency', () => {

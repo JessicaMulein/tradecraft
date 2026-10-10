@@ -31,7 +31,7 @@
 
 import type { ReactElement } from 'react';
 import { Box, Text, useInput } from 'ink';
-import type { HelpActionEntry, HelpView } from '@tradecraft/player-view';
+import { describeCatalogueAction, type HelpActionEntry, type HelpView } from '@tradecraft/player-view';
 
 /** The key that toggles the help overlay. */
 export const HELP_TOGGLE_KEY = '?';
@@ -70,7 +70,7 @@ function ActionRow({ entry }: { readonly entry: HelpActionEntry }): ReactElement
   return (
     <Box>
       <Text dimColor={!entry.quote.allowed}>
-        {entry.kind} — {actionCost(entry)}
+        {describeCatalogueAction({ kind: entry.kind })} — {actionCost(entry)}
       </Text>
     </Box>
   );
@@ -117,6 +117,14 @@ export function HelpOverlay({
           ))
         )}
       </Box>
+      {help.credits !== undefined && help.credits.length > 0 && (
+        <Box marginTop={1} flexDirection="column">
+          <Text bold>Street data</Text>
+          {help.credits.map((line) => (
+            <Text key={line}>{line}</Text>
+          ))}
+        </Box>
+      )}
       {help.glossary.length > 0 && (
         <Box marginTop={1} flexDirection="column">
           <Text bold>Glossary</Text>

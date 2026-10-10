@@ -90,12 +90,12 @@ export interface SettingConfig {
 /**
  * The Start Date the Core City Path falls back to when a core-only load ships
  * no Era Pack to bound the window. The Core City carries no year-ranged content,
- * so `yearFilter` is a no-op for it and the exact date does not change
- * generation; a fixed, mid-period date keeps `drawSetting` total and
- * deterministic. 1 January 1950 sits in the middle of the early-Cold-War window
- * the shipped Era Pack covers.
+ * so `yearFilter` is a no-op for it. The date is still the calendar: weekdays,
+ * holidays and the weather month are counted from it. 1 December 1952 is a
+ * Monday in the last month of occupied Vienna's late season, so day 0 stays a
+ * workday and Christmas falls inside a month of play.
  */
-export const CORE_CITY_DEFAULT_START_DATE: IsoDate = '1950-01-01';
+export const CORE_CITY_DEFAULT_START_DATE: IsoDate = '1952-12-01';
 
 /**
  * Thrown when `drawSetting` cannot produce a Start Date: a fixed Start Date in

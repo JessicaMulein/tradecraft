@@ -54,6 +54,7 @@
  */
 
 import {
+  compareTime,
   quote as engineQuote,
   visibleNpcsAt,
   MICE_LEVERS,
@@ -68,6 +69,7 @@ import {
   type ResolverContext,
   type UnkId,
   type WorldState,
+  driveCandidates,
 } from '@tradecraft/engine';
 
 import type { ActionOption } from './types.js';
@@ -127,11 +129,29 @@ export function buildActionCatalogue(
     add({ kind: 'follow', target: handle });
   }
 
+  // A meeting with each person the player can already reach, tomorrow morning,
+  // at the place they are standing. The quote allows it when that place permits
+  // a meeting and the slot is still ahead.
+  const tomorrow = { day: state.time.day + 1, phase: 0 as const };
+  for (const npc of [...state.player.contacts].sort()) {
+    add({ kind: 'arrange-meeting', npc, at: here, slot: tomorrow });
+  }
+
+  // A meeting the player can still call off, after they were warned of a tail.
+  if (state.player.sensedFollowed === true) {
+    const upcoming = Object.values(state.meetings)
+      .filter(
+        (meeting) => meeting.status === 'accepted' && compareTime(meeting.slot, state.time) > 0,
+      )
+      .sort((a, b) => compareTime(a.slot, b.slot) || (a.id < b.id ? -1 : 1));
+    for (const meeting of upcoming) {
+      add({ kind: 'talk', npc: meeting.npc, breakOff: true });
+    }
+  }
+
   // arrest — each person the Case File holds evidence against, wherever they
-  // are (design: "arrest each person with evidence"). An arrest is a request
-  // the Station's officers carry out, not an action at the player's Location:
-  // the engine's arrest quote has no Location gate, and decides from the
-  // evidence count and the player's arrest authority alone.
+  // are. The request goes through the police liaison, and the quote refuses it
+  // when that person is in the Soviet sector.
   for (const target of arrestTargets(state, ctx)) {
     if (evidence(target) > 0) {
       add({ kind: 'arrest', npc: target });
@@ -240,6 +260,10 @@ export function buildActionCatalogue(
         });
       }
     }
+  }
+
+  for (const action of driveCandidates(state, ctx)) {
+    add(action as Action);
   }
 
   return options;

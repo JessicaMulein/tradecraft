@@ -411,7 +411,11 @@ describe('Property 55: dialogue effects precede the reply (task 12.10)', () => {
               const post = stateOf(harness.api);
               expect(post.relationships[npc]).toEqual(expected.rel);
               expect(balance(post.station.ledger)).toBe(expected.budget);
-              const moneyDebit = intent === 'pitch-money' ? (offer ?? 0) : 0;
+              const heard =
+                intent === 'pitch-money' &&
+                (pre.relationships[npc]?.meetings ?? 0) >= 3 &&
+                pre.relationships[npc]?.pitchApproved === true;
+              const moneyDebit = heard ? (offer ?? 0) : 0;
               expect(balance(post.station.ledger)).toBe(available - moneyDebit);
 
               // Every `speech` chunk is named by the namer's player-facing name

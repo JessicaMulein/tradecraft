@@ -19,14 +19,15 @@
 
 # --- base: core/newspaper-wiener-tagblatt-city ------------------------------
 # slots: masthead, weekday, date, edition, headline, district, subject, detail,
-#        official-office, notice
+#        official-office, notice, weather
 - id: v-core-newspaper-city
   base: core/newspaper-wiener-tagblatt-city
   scope: { city: vienna }
   template: >-
     {masthead} — {weekday}, {date}. {edition} edition. {headline}. From the
     {district} our correspondent reports that {subject} drew notice. {detail}
-    The matter rests for now with the {official-office}.
+    The matter rests for now with the {official-office}. Around the city the
+    weather was {weather}.
     {?notice}A notice to readers: {notice}{/notice}
 
 # --- base: core/newspaper-wiener-tagblatt-blotter ---------------------------
@@ -52,40 +53,45 @@
     the {district} and at the crossings into it. {detail}
 
 # --- base: core/dossier-hq-person -------------------------------------------
-# slots: subject, file-ref, alias, allegiance-apparent, last-seen-place,
-#        last-seen-date, association, assessment, source-grade
+# slots: subject, file-ref, cryptonym, alias, allegiance-apparent, description,
+#        birth, employer, history, last-seen-place, last-seen-date, association,
+#        assessment, source-grade
 - id: v-core-dossier-person
   base: core/dossier-hq-person
   scope: { city: vienna }
   template: >-
-    DOSSIER — {subject} (ref. {file-ref}). Apparent information held by the
-    Station; grade of source material: {source-grade}. Reported as {subject}.
-    {?alias}Also reported under the name {alias}.{/alias} Apparent allegiance on
-    file: {allegiance-apparent}. Last placed at {last-seen-place} on or about
-    {last-seen-date}.{?association} Reported in the company of {association}.
-    {/association} Station assessment: {assessment} Read as leads only.
+    DOSSIER — {subject} (ref. {file-ref}). Cryptonym {cryptonym}. Apparent
+    information held by the Station; grade of source material: {source-grade}.
+    Reported as {subject}. {?alias}Also reported under the name {alias}.{/alias}
+    Apparent allegiance on file: {allegiance-apparent}. Description on file:
+    {description}. Reported birth: {birth}. Reported employment: {employer}.
+    Earlier history, uncorroborated: {history}. Last placed at {last-seen-place}
+    on or about {last-seen-date}.{?association} Reported in the company of
+    {association}.{/association} Station assessment: {assessment} Read as leads
+    only.
 
 # --- base: core/cable-hq-directive ------------------------------------------
-# slots: cable-ref, priority, date, to-station, subject, instruction, deadline,
-#        budget-line
+# slots: cable-ref, priority, date, to-station, subject, cryptonym, instruction,
+#        deadline, deadline-no, budget-line, funds-no
 - id: v-core-cable-directive
   base: core/cable-hq-directive
   scope: { city: vienna }
   template: >-
-    FROM HEADQUARTERS STOP TO {to-station} STOP {date} STOP {priority} STOP REF
-    {cable-ref} STOP RE {subject} STOP {instruction} STOP
-    {?deadline}DEADLINE {deadline} STOP{/deadline}
-    {?budget-line}FUNDS {budget-line} STOP{/budget-line} ENDS STOP
+    FROM HEADQUARTERS. TO {to-station}. DATED {date}. PRECEDENCE {priority}.
+    REFERENCE {cable-ref}. 1. SUBJECT. {subject}.{?cryptonym} CRYPTONYM
+    {cryptonym}.{/cryptonym} {instruction}
+    {?deadline}{deadline-no}. DEADLINE. {deadline}.{/deadline}
+    {?budget-line}{funds-no}. FUNDS. {budget-line}.{/budget-line}
 
 # --- base: core/cable-field-report ------------------------------------------
-# slots: cable-ref, date, from-cover, subject, observation, request
+# slots: cable-ref, date, from-cover, subject, cryptonym, observation, request
 - id: v-core-cable-field
   base: core/cable-field-report
   scope: { city: vienna }
   template: >-
-    FROM {from-cover} STOP TO HEADQUARTERS STOP {date} STOP REF {cable-ref} STOP
-    RE {subject} STOP {observation} STOP
-    {?request}REQUEST {request} STOP{/request} AWAIT INSTRUCTION STOP ENDS STOP
+    FROM {from-cover}. TO HEADQUARTERS. DATED {date}. REFERENCE {cable-ref}.
+    1. SUBJECT. {subject}.{?cryptonym} CRYPTONYM {cryptonym}.{/cryptonym}
+    2. {observation}. {?request}3. REQUEST. {request}.{/request}
 
 # --- base: core/seized-handwritten-note -------------------------------------
 # slots: date, place, recovered-by, description, contents, condition, subject

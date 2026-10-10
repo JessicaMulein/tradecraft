@@ -13,7 +13,7 @@
  *   HQ false beliefs included; its body carries no Truth and names the subject
  *   through the player-perspective namer.
  * - **Cable is telegraphic (Req 27.4).** A composed HQ directive Cable renders in
- *   clipped upper-case with STOP separators, and asserts the leads it carries.
+ *   numbered upper-case paragraphs, and asserts the leads it carries.
  * - **Public texts are long enough and obtainable (Req 30.3, 30.5).** Each public
  *   text's body holds at least as many letters as a reasonable field message, and
  *   is obtainable at real library/bookshop/kiosk Locations.
@@ -231,6 +231,10 @@ describe('composeDossier — HQ file from the Station Knowledge Slice (Req 26.1)
     });
     expect(composed.document.body.length).toBeGreaterThan(0);
     expect(composed.document.body).toContain(npc.persona.name);
+    expect(composed.document.body).toContain(`QV`);
+    expect(composed.document.body).toContain(npc.descriptor.phrases[0] ?? npc.descriptor.summary);
+    expect(composed.document.body).toContain(npc.persona.background);
+    expect(composed.document.body).not.toContain('npc:');
     expect(composed.document.title).toContain(npc.persona.name);
   });
 
@@ -258,7 +262,7 @@ describe('composeDossier — HQ file from the Station Knowledge Slice (Req 26.1)
 describe('composeCable — period telegraphic style (Req 27.4)', () => {
   const g = gen('alpha');
 
-  it('renders telegraphic: upper-case with STOP separators', () => {
+  it('renders numbered paragraphs in upper case', () => {
     const composed = composeCable(
       CABLE_TEMPLATE,
       {
@@ -272,7 +276,11 @@ describe('composeCable — period telegraphic style (Req 27.4)', () => {
       { ...ctxOf(g), date: { day: 0, phase: 0 } },
     );
     expect(composed.document.kind).toBe('cable');
-    expect(composed.document.body).toContain('STOP');
+    expect(composed.document.body).toContain('1. SUBJECT.');
+    expect(composed.document.body).toContain('2. PROCEED TO STATION AND AWAIT BRIEF.');
+    expect(composed.document.body).toContain('3. DEADLINE. DAY 5.');
+    expect(composed.document.body).toContain('4. FUNDS. DRAWN ON STATION ACCOUNT.');
+    expect(composed.document.body).not.toContain('STOP');
     expect(composed.document.body).toContain('FROM HEADQUARTERS');
     // A cable is delivered, not obtained at a Location.
     expect(composed.document.obtainableAt).toBeUndefined();

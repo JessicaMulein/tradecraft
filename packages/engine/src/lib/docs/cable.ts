@@ -2,10 +2,9 @@
  * The Cable composer (design, "Document Generator"; Requirements 27.4, 26.1,
  * 26.4).
  *
- * A Cable is a short message between the field and HQ, written in **period
- * telegraphic style**: upper-case, clipped, with `STOP` as the separator the
- * core pack's `cable` templates spell out (design: "Cable. Brief, Directives,
- * replies, Standing changes"). Two uses matter at this task:
+ * A Cable is a short message between the field and HQ, written in numbered
+ * paragraphs. A person named in it also carries a cryptonym. Two uses matter
+ * at this task:
  *
  * - The **Starting Brief is delivered as a brief Cable** (Requirement 26.1,
  *   26.4): an HQ directive naming the operation, the player's instruction and
@@ -31,6 +30,7 @@ import {
   type TemplateBindings,
 } from '@tradecraft/content';
 import { type GameTime, type Proposition } from '../model/core.js';
+import { cryptonym } from './cryptonym.js';
 import {
   docId,
   type ComposedDocument,
@@ -55,6 +55,11 @@ export interface CableFields {
   readonly deadline?: string;
   /** An optional funds/budget line. */
   readonly budgetLine?: string;
+  /**
+   * The subject's cryptonym, when the cable names a person. Filled from
+   * {@link fields.subject} when that value is an `npc:` id and this is omitted.
+   */
+  readonly cryptonym?: string;
 }
 
 /** Inputs the Cable composer needs. */
@@ -74,9 +79,9 @@ export interface CableContext extends NamerContext {
  *
  * `template` must be a `cable`-kind template that declares the directive slots
  * (`cable-ref`, `priority`, `date`, `to-station`, `subject`, `instruction`,
- * `deadline`, `budget-line`) — the core pack's `cable-hq-directive`. The Cable
- * is rendered telegraphic (the template supplies the `STOP` separators) and
- * asserts the leads in `ctx.asserts`.
+ * `deadline`, `budget-line`) — the core pack's `cable-hq-directive`. The body
+ * is numbered paragraphs. A subject that is an `npc:` id also prints that
+ * person's cryptonym. The cable asserts the leads in `ctx.asserts`.
  */
 export function composeCable(
   template: DocumentTemplate,
@@ -86,15 +91,26 @@ export function composeCable(
   const namer = playerNamer(ctx);
   const asserted = ctx.asserts ?? [];
 
+  const named =
+    fields.cryptonym ?? (fields.subject.startsWith('npc:') ? cryptonym(fields.subject) : undefined);
+  const instruction = asParagraph(fields.instruction);
+  let next = highestParagraph(instruction) + 1;
+  const deadlineNo = fields.deadline !== undefined ? String(next++) : undefined;
+  const fundsNo = fields.budgetLine !== undefined ? String(next) : undefined;
   const bindings: TemplateBindings = {
     'cable-ref': fields.cableRef,
     priority: fields.priority ?? 'ROUTINE',
     date: formatDate(ctx.date),
     'to-station': fields.toStation ?? 'STATION',
     subject: fields.subject,
-    instruction: fields.instruction,
-    ...(fields.deadline !== undefined ? { deadline: fields.deadline } : {}),
-    ...(fields.budgetLine !== undefined ? { 'budget-line': fields.budgetLine } : {}),
+    instruction,
+    ...(named !== undefined ? { cryptonym: named } : {}),
+    ...(deadlineNo !== undefined && fields.deadline !== undefined
+      ? { 'deadline-no': deadlineNo, deadline: fields.deadline }
+      : {}),
+    ...(fundsNo !== undefined && fields.budgetLine !== undefined
+      ? { 'funds-no': fundsNo, 'budget-line': fields.budgetLine }
+      : {}),
   };
 
   const body = compileSections(template, bindings, namer);
@@ -110,4 +126,26 @@ export function composeCable(
   };
 
   return { document, propositions: asserted };
+}
+
+/** Keep an instruction that is already numbered. Otherwise make it paragraph 2. */
+function asParagraph(text: string): string {
+  const trimmed = text.trim().replace(/\s+/g, ' ');
+  if (/^\d+\./.test(trimmed)) {
+    return trimmed.endsWith('.') ? trimmed : `${trimmed}.`;
+  }
+  const clean = trimmed.replace(/\.+$/, '');
+  return `2. ${clean}.`;
+}
+
+/** The highest numbered paragraph already used, so the next line can follow it. */
+function highestParagraph(text: string): number {
+  let highest = 1;
+  for (const match of text.matchAll(/(?:^|\s)(\d+)\./g)) {
+    const n = Number(match[1]);
+    if (n > highest) {
+      highest = n;
+    }
+  }
+  return highest;
 }

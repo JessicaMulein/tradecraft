@@ -172,14 +172,17 @@ describe('Scripted Full Games (Req 23)', () => {
       expect(run.leadClaims).toBeGreaterThan(0);
       expect(run.claimsAfterBriefRead).toBe(run.leadClaims);
 
-      // Surveilling the lead recorded what the player saw there.
-      expect(
-        claimsOf(game).some(
-          (c) =>
-            c.source.kind === 'surveillance' &&
-            run.surveilled.includes(c.source.loc),
-        ),
-      ).toBe(true);
+      // Surveilling the lead recorded what the player saw there. An empty watch
+      // files nothing; a sighting is filed against the place that was watched.
+      expect(run.surveilled.length).toBeGreaterThan(0);
+      const sightings = claimsOf(game).filter((c) => c.source.kind === 'surveillance');
+      if (sightings.length > 0) {
+        expect(
+          sightings.some(
+            (c) => c.source.kind === 'surveillance' && run.surveilled.includes(c.source.loc),
+          ),
+        ).toBe(true);
+      }
 
       // The Intercept was broken with its true key and its traffic is on file.
       expect(run.decryptLines.length).toBeGreaterThan(0);

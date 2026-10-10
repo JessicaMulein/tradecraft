@@ -45,7 +45,7 @@ import {
 export interface StartScreenProps {
   /**
    * The initial field values. Pass a `seed` here to show a seed the Sim already
-   * generated (Req 1.6); the rest default to standard difficulty, mole on and
+   * generated (Req 1.6); the rest default to standard difficulty, mole off and
    * full narration.
    */
   readonly defaults?: Partial<Omit<StartState, 'focus'>>;

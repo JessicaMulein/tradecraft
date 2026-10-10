@@ -31,7 +31,7 @@ import type { ReactElement } from 'react';
 import { Box, Text } from 'ink';
 import type { SceneView } from '@tradecraft/player-view';
 
-import { formatTime } from './time.js';
+import { formatTime, phaseName } from './time.js';
 import type { TranscriptLine } from './transcript.js';
 
 /** Props for {@link ScenePane}. */
@@ -59,7 +59,7 @@ function SceneHeader({ scene }: { readonly scene: SceneView }): ReactElement {
       <Text>{scene.location.description}</Text>
       {atmosphere !== '' && <Text dimColor>{atmosphere}</Text>}
       <Text dimColor>
-        {formatTime(scene.time)} · {scene.weather} · {scene.crowd} · risk{' '}
+        {scene.date === undefined ? formatTime(scene.time) : `${scene.date}, ${phaseName(scene.time.phase)}`} · {scene.weather} · {scene.crowd} · risk{' '}
         {scene.location.risk}
       </Text>
       <Text dimColor>Here: {visible}</Text>

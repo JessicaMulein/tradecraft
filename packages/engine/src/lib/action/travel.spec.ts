@@ -194,6 +194,52 @@ describe('quoteTravel — cheapest-route cost (Req 21.3)', () => {
 // resolveTravel — movement and cost
 // ---------------------------------------------------------------------------
 
+function locOfSector(state: WorldState, sector: string): LocId {
+  for (const loc of Object.values(state.city.locations)) {
+    if (state.city.districts[loc.district]?.sector === sector) {
+      return loc.id;
+    }
+  }
+  throw new Error(`no ${sector} location`);
+}
+
+describe('resolveTravel — Soviet sector', () => {
+  it('reads the checkpoint and the street, and does not add cover suspicion', () => {
+    const base = allOpen(world());
+    const western = locOfSector(base, 'american');
+    const soviet = locOfSector(base, 'soviet');
+    const day: WorldState = {
+      ...base,
+      time: { ...base.time, phase: 0 },
+      player: { ...base.player, loc: western, coverSuspicion: asTruth(0.2) },
+    };
+    const entered = resolveTravel(
+      day,
+      { kind: 'travel', to: soviet, countersurveillance: false },
+      createPrng('sector'),
+    );
+    expect(entered.result.factLines[0]).toContain('waves you through');
+    expect(entered.result.scene.description).toContain('foot patrol');
+    expect(revealTruth(entered.next.player.coverSuspicion)).toBe(0.2);
+
+    const night: WorldState = { ...day, time: { ...day.time, phase: 3 } };
+    const late = resolveTravel(
+      night,
+      { kind: 'travel', to: soviet, countersurveillance: false },
+      createPrng('sector'),
+    );
+    expect(late.result.factLines[0]).toContain('engine running');
+    expect(late.result.scene.description).toContain('slows beside the pavement');
+
+    const left = resolveTravel(
+      { ...entered.next, time: { ...entered.next.time, phase: 1 } },
+      { kind: 'travel', to: western, countersurveillance: false },
+      createPrng('sector'),
+    );
+    expect(left.result.factLines[0]).toContain('roads out of the city');
+  });
+});
+
 describe('resolveTravel — movement (Req 21.3)', () => {
   it('moves the player to the destination', () => {
     const state = allOpen(world());
@@ -237,6 +283,7 @@ describe('resolveTravel — arrival Cover Suspicion (Req 21.4)', () => {
       risk * COVER_SUSPICION_RISK_FACTOR,
       10,
     );
+    expect(next.player.sensedFollowed).toBe(risk > 0);
   });
 
   it('does not change Cover Suspicion when the player is not tailed', () => {
@@ -252,6 +299,7 @@ describe('resolveTravel — arrival Cover Suspicion (Req 21.4)', () => {
       createPrng('cs'),
     );
     expect(revealTruth(next.player.coverSuspicion)).toBe(0.25);
+    expect(next.player.sensedFollowed).toBe(false);
   });
 });
 

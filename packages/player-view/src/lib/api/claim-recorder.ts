@@ -98,6 +98,7 @@ export function recordObservationClaims(
       case 'intercept': {
         const [claim] = addInterceptClaims(caseFile, {
           interceptId: source.id,
+          channel: source.channel,
           propositions: [prop],
           observedAt: at,
         });

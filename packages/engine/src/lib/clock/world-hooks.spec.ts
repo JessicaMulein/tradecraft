@@ -45,6 +45,7 @@ import { worldCipherKeyLookup } from '../cipher/world-intercepts.js';
 import type { TruthStore } from '../truth/truth.js';
 import { newDayScratch, type AdvanceWorldDeps, type WorldHookContext } from './world-types.js';
 import { buildWorldHooks, worldAbortCheck } from './world-hooks.js';
+import { visibleNpcsAt } from '../action/action.js';
 
 // ---------------------------------------------------------------------------
 // Core-pack fixtures (mirrors phase-step.spec.ts)
@@ -195,35 +196,47 @@ describe('plot hook', () => {
 
   it('mints a fresh Transmission and Intercept for a transmission trace past the seeded horizon (Req 2.3)', () => {
     // World assembly seeds the opening traffic, so the hook only mints a trace
-    // the Draft does not already carry. The `ready-the-snatch` stage of this
-    // world's Plot has a `transmission` trace (index 0) due on day 27, and
-    // generation seeds its Transmission into `BASE.transmissions`. To exercise a
-    // genuinely *fresh* mint — a trace executing past the seeded horizon — the
-    // Draft here forces that stage due (its prerequisite stages marked executed,
-    // the clock at the stage's deadline) and removes exactly that stage's seeded
-    // Transmission. The hook then re-mints it on the runtime stream, as the
-    // design describes for a trace beyond the seeded horizon.
-    const DUE = 'stage:emigre-abduction/ready-the-snatch';
-    const PREREQS = new Set([
-      'stage:emigre-abduction/spot-the-emigre',
-      'stage:emigre-abduction/suborn-the-lure',
-    ]);
-    const txId = plotTransmissionId(DUE, 0);
+    // the Draft does not already carry. Find a stage whose transmission trace
+    // was seeded, force that stage due (its prerequisite stages marked
+    // executed, the clock at the stage's deadline) and remove exactly that
+    // seeded Transmission. The hook then re-mints it. Which plot the seed drew
+    // is not fixed: office schedules and the station draw shift the world.
+    const dueStage = BASE.plot.stages.find((stage) => {
+      const index = stage.traces.findIndex((trace) => trace.kind === 'transmission');
+      if (index < 0) {
+        return false;
+      }
+      const id = plotTransmissionId(stage.id, index);
+      return BASE.transmissions.some((tx) => tx.id === id);
+    });
+    expect(dueStage).toBeDefined();
+    if (dueStage === undefined) {
+      return;
+    }
+    const traceIndex = dueStage.traces.findIndex((trace) => trace.kind === 'transmission');
+    const txId = plotTransmissionId(dueStage.id, traceIndex);
+    const produced = new Set(dueStage.requires);
+    const prereqs = new Set(
+      BASE.plot.stages
+        .filter((stage) => stage.produces.some((prop) => produced.has(prop)))
+        .map((stage) => stage.id),
+    );
 
     // Sanity: generation seeded this stage's Transmission, so the mint below is
     // not vacuous — it is re-adding one we deliberately removed.
     expect(BASE.transmissions.some((tx) => tx.id === txId)).toBe(true);
 
-    // Force the stage due on its own deadline day (read from the Plot so the
-    // test tracks the generated world rather than a hard-coded day — the setting
-    // step's `generatorVersion` bump shifts the deadline).
-    const dueStage = BASE.plot.stages.find((s) => s.id === DUE);
-    expect(dueStage).toBeDefined();
-    const dueDay = dueStage?.deadline.day ?? 0;
+    const dueDay = dueStage.deadline.day;
 
-    const stages = BASE.plot.stages.map((s) =>
-      PREREQS.has(s.id) ? { ...s, status: 'executed' as const } : s,
-    );
+    const stages = BASE.plot.stages.map((s) => {
+      if (s.id === dueStage.id) {
+        return s;
+      }
+      if (prereqs.has(s.id)) {
+        return { ...s, status: 'executed' as const };
+      }
+      return { ...s, deadline: { day: dueDay + 1, phase: 0 as const } };
+    });
     const draft: WorldState = {
       ...BASE,
       time: { day: dueDay, phase: 0 },
@@ -336,6 +349,18 @@ describe('schedules hook', () => {
     expect(state.player.contacts).toContain(npc);
     expect(state.relationships[npc]).toBeDefined();
     expect(state.relationships[npc]?.channel).toBe(true);
+
+    // They are not a colleague, and they spend the day at the Station, where
+    // the player can talk to them.
+    const staff = new Set<string>([BASE.station.chief, ...BASE.station.staff]);
+    expect(staff.has(npc)).toBe(false);
+    expect(['contact', 'civilian', 'hostile-officer']).toContain(state.npcs[npc]?.role);
+    const calling = state.relationships[npc]?.callingAt;
+    expect(calling?.day).toBe(day);
+    expect(calling).toBeDefined();
+    if (calling !== undefined) {
+      expect(visibleNpcsAt(state, calling.loc)).toContain(npc);
+    }
   });
 
   it('is deterministic and does not mutate the Draft', () => {
@@ -469,6 +494,63 @@ describe('newspaper hook', () => {
     // … and its full Proposition rode into the Document's Propositions, so a
     // reader seeds the Case File with the planted Claim.
     expect(state.documentPropositions[prop.id]).toEqual(prop);
+  });
+
+  it('prints the paper name, the weekday, the day weather, and a stage that ran today', () => {
+    const base = atDay(BASE, 1);
+    const stage = base.plot.stages[0];
+    expect(stage).toBeDefined();
+    if (stage === undefined) {
+      return;
+    }
+    const armed = {
+      ...base,
+      plot: {
+        ...base.plot,
+        stages: base.plot.stages.map((item, index) =>
+          index === 0
+            ? { ...item, status: 'executed' as const, deadline: { day: 1, phase: 0 as const } }
+            : item,
+        ),
+      },
+    };
+    const { state } = HOOKS.newspaper(armed, ctx(1));
+    const edition = state.documents[state.newspapers[1]];
+    expect(edition).toBeDefined();
+    if (edition === undefined) {
+      return;
+    }
+    expect(edition.title).toContain('Wiener Tagblatt');
+    expect(edition.title).toMatch(/Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday/);
+    expect(edition.title).not.toContain('newspaper-');
+    expect(edition.body).not.toContain('the the');
+    expect(edition.body).not.toContain('held fair');
+    expect(edition.body).toContain('WIENER TAGESBLATT');
+    expect(edition.body).toMatch(/weather was (?!quiet)/);
+    expect(edition.title).toContain('1952');
+  });
+
+  it('prints no news on Sunday or Christmas, and shuts the office on Christmas', () => {
+    const sunday = HOOKS.newspaper(atDay(BASE, 6), ctx(6)).state;
+    const sundayEdition = sunday.documents[sunday.newspapers[6]];
+    expect(sundayEdition).toBeDefined();
+    expect(sundayEdition?.body).toContain('does not publish on Sunday');
+
+    const christmas = HOOKS.newspaper(atDay(BASE, 24), ctx(24)).state;
+    const christmasEdition = christmas.documents[christmas.newspapers[24]];
+    expect(christmasEdition?.body).toContain('Christmas');
+    expect(christmasEdition?.title).toContain('Thursday');
+
+    const chief = BASE.station.chief;
+    const office = BASE.npcs[chief]?.schedule.entries.find(
+      (entry) => entry.weekday === 3 && entry.phase === 0,
+    );
+    expect(office).toBeDefined();
+    if (office === undefined) {
+      return;
+    }
+    expect(visibleNpcsAt(atDay(BASE, 3), office.loc)).toContain(chief);
+    expect(visibleNpcsAt(atDay(BASE, 24), office.loc)).not.toContain(chief);
   });
 
   it('is deterministic and does not mutate the Draft', () => {

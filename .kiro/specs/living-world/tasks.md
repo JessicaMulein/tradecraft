@@ -1,0 +1,365 @@
+# Implementation Plan: Living World
+
+## Overview
+
+The build order is the safety order:
+
+1. Foundations, where nothing reaches a player.
+2. Fact Sheets and ledgers, where the truth boundary is proved before any model writes a word.
+3. The writer and every gate, proved against fakes and an adversarial suite.
+4. Then the surfaces, one phase at a time.
+5. Proposals.
+6. Content at scale.
+7. Measurement and release.
+
+Each later group plugs into interfaces an earlier group finished. Every property test is a required task, as in the slice. Property numbers refer to this spec's design.
+
+Dependencies, as interface assumptions:
+
+- content-expansion's Content Kind Registry, Template Variants, era data and Authoring Aid are in place (content-expansion Req 8, 12, 16).
+- plot-library's Plot Lab and libraries are in place.
+- ambient-world's Stories, Outlets, Emergent_Threads, Life_Events, Townsfolk, City_Events, Local_Incidents and Solvability Gate are in place (ambient-world Req 5, 9, 11, 14, 16, 19).
+- natural-language-commands is not required.
+- The audit's plain-sentence renderer is task 1.1 here. The audit's other Priority 1 fixes are recommended first but are not prerequisites.
+
+## Rules for every task
+
+- The Living_World stays off unless a scenario sets `living.enabled`. Nothing in this plan adds `living` to the shipped `config/scenario.yaml`.
+- `generatorVersion` stays `0.7.0`. Existing golden replays stay byte-identical. New living fixtures are new files under `packages/evals/replays/living-*`. No existing golden is re-recorded. The one exception is task 1.12, the stream-overlap fix, which needs the owner's approval and lands as its own change.
+- Living randomness draws only from `LIVING_STREAM_BASE` (`0x90000`).
+- `player-view` never imports `living`, `dialogue` or `llm`. Models are reached only through ports the Composition Root wires.
+- CI uses fakes only. Live-model runs are owner runs on the Reference Machine.
+- Marked *(asks you first)*: stop and ask the owner before doing it, as `AGENTS.md` requires.
+
+## Tasks
+
+- [ ] 1. Foundations
+  - [ ] 1.1 Build the plain-sentence renderer
+    - In `player-view/living/sentences`, render every Proposition and Claim as a plain English sentence. It uses names or descriptors and no predicate codes or ids, and gives a source attribution for Claims ("HQ's cable says …").
+    - Add an optional `sentence` template to the predicate schema (content minor version), with a built-in table fallback.
+    - Adopt it in Fact Lines, the Journal, the terminal Case File and the web Case File in the same change. Snapshot-test the rendered rows.
+    - _Requirements: 3.6_
+  - [ ] 1.2 Add the `living` scenario block
+    - In `engine/config/scenario-config.ts`, add the optional `living` block from the design's Data Models, with no Zod defaults.
+    - The launcher reports errors as `<file>: <path>: <message>`.
+    - Add the new-game choice (`off`, `prose`, `prose and proposals`) to both shells' start screens, and store it on the World State meta so saves carry it. The field is absent when the Living_World is off, so existing saves and goldens do not change.
+    - _Requirements: 1.1, 1.2, 1.4, 1.5, 1.6, 1.7_
+  - [ ] 1.3 Add the `writer`, `critic` and `proposer` roles
+    - Extend `MODEL_ROLES` and make the new roles optional in `ProfileSchema`. Derive absent roles as the design says.
+    - Keep `requiredModels` de-duplicating, so the resident set is unchanged for every shipped profile.
+    - Under `quality: strict`, reject a config whose critic model equals its writer model. Under `standard`, warn.
+    - _Requirements: 8.3, 14.1, 14.2, 14.3_
+  - [ ] 1.4 Write the property test for critic independence
+    - **Property 22: Critic independence**
+    - **Validates: Requirements 8.3**
+  - [ ] 1.5 Add the background priority band
+    - Add `CallPriority.Background = 4` in `llm/gateway/resilience/priority.ts`. Living calls submit as preemptible jobs, and a preempted job re-queues with its attempt count unchanged.
+    - _Requirements: 5.3_
+  - [ ] 1.6 Add the living stream family and a stream-registry test
+    - Add `engine/living/streams.ts` with `LIVING_STREAM_BASE = 0x90000` and the ambient-style keyed derive.
+    - Add `engine/prng/registry.ts`, which lists every stream base the engine uses (core retries, noise, daily, brief, hostile, setting, cipher, plot select, ambient, carry, arc, campaign, region, street, living) with its block. Add a test that imports the real constants and fails if any two blocks overlap.
+    - The test allows exactly one overlap, `SETTING_STREAM_BASE` / `CIPHER_STREAM_BASE` at `0x30000`, by name, and fails on any other. Do not change either constant in this task.
+    - In the PRNG stream registry table in `.kiro/specs/tradecraft/design.md`, add the missing street-ops row (`0x80000`), the living row (`0x90000`–`0x9FFFF`) and a note under the table naming the known overlap and task 1.12.
+    - _Requirements: 10.7, 10.8_
+  - [ ] 1.7 Write the property test for background preemption
+    - **Property 21: Background never blocks interactive**
+    - **Validates: Requirements 5.3**
+  - [ ] 1.8 Scaffold `packages/living` and the boundary rules
+    - Create the package with `fakes/`, `gates/`, `surfaces/`, `proposer/` and `rubrics.ts` stubs.
+    - Add the design's dependency-cruiser rules, so `living` is wired and never imported by runtime packages, and `living` never imports `content-tools`, `plot-lab`, `app`, `tui` or `web`.
+    - _Requirements: 14.7, 19.2_
+  - [ ] 1.9 Write the property test for living stream isolation
+    - **Property 24: Living stream isolation**
+    - **Validates: Requirements 10.7, 1.3**
+  - [ ] 1.10 Write the property test that the disabled Living_World is inert
+    - **Property 3: Disabled is inert**
+    - **Validates: Requirements 1.1, 1.3**
+  - [ ] 1.13 Show the player's line in conversations
+    - In the turn pipeline, yield a `player` chunk with the trimmed line before the NPC's `speech` chunks. Render it in the Page feed and the Terminal shell as the player's line, styled apart from the NPC's.
+    - This is not behind the `living` switch and changes no state, action log or golden replay. Update the web-shell parity test for the new chunk kind.
+    - _Requirements: 20.1, 20.2_
+  - [ ] 1.14 Write the property test that the player's line is shown
+    - **Property 25: The player's line is shown**
+    - **Validates: Requirements 20.1, 20.2**
+  - [ ] 1.11 Checkpoint: foundations hold
+    - `pnpm run check` adds no new failures. Every existing golden replay passes unchanged. The calibration sample is unchanged.
+
+  - [ ] 1.12 Fix the setting/cipher stream overlap *(asks you first: every generated game changes)*
+    - This task lands as its own change, separate from all living work. It can land at any point, and is best bundled with the next generator bump the owner plans.
+    - Move `CIPHER_STREAM_BASE` in `cipher/world-intercepts.ts` from `0x30000` to `0x40000`. Leave the setting stream where it is. Claim `0x40000`–`0x40FFF` for the slice's cipher stream in the registry table, and remove the known-overlap note.
+    - Make the registry test from task 1.6 strict, with no allowed overlaps.
+    - Bump `GENERATOR_VERSION`; the owner picks the number. Re-record the five slice golden replays (`01`–`05`) and the app's golden campaign replay. Run `pnpm seeds:vet` to rebuild `config/featured-seeds.json`. Run the calibration sample and confirm every metric is still inside its existing band. Do not change any band.
+    - Before re-recording, confirm with engine source (not `dist`) that the only failing checks are the goldens listed here. The region golden replay must still pass unchanged.
+    - _Requirements: 10.8, 10.9_
+- [ ] 2. Fact Sheets, ledgers and display
+  - [ ] 2.1 Define Fact Sheets
+    - In `player-view/living/fact-sheet`, add the `FactSheet` types, `hashSheet` (canonical JSON, then sha256) and `assertSheetSafe`.
+    - `assertSheetSafe` checks that every allowed entity is known to the player or public (or in the debrief's revealed set for `case-history`), and that no value carries a Truth brand.
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
+  - [ ] 2.2 Write the Fact Sheet builders
+    - Write one builder per surface, as listed in the design's `FactSheetBuilders`. Each reads only Player View data and the Document or event it is about.
+    - Allowed specifics are exactly the names, numbers, dates and places in the facts and the context.
+    - _Requirements: 3.1, 3.3, 4.1, 4.8_
+  - [ ] 2.3 Write the property test for Fact Sheet truth isolation
+    - **Property 4: Fact Sheet truth isolation**
+    - **Validates: Requirements 3.1, 3.4**
+  - [ ] 2.4 Write the property test for Fact Sheet determinism
+    - **Property 5: Fact Sheet determinism**
+    - **Validates: Requirements 3.5**
+  - [ ] 2.5 Add the ports and pipeline submission points
+    - Add `ProseSeam` and `ProposeSeam` in `player-view/living/ports`, and optional `prose` and `propose` fields on `TurnPipelineConfig`.
+    - Submit deferred jobs only after the Turn Transaction commits (Slice Req 42.2). Cancel all jobs on session close.
+    - With both seams absent, the pipeline is unchanged.
+    - _Requirements: 5.2, 5.7, 2.6_
+  - [ ] 2.6 Build the ledgers and the display rule
+    - Add the Prose_Ledger, Seen_Text_Index (5-word shingles, fixed formulae excluded), Texture_Ledger (capped at 6 per entity) and `LivingDisplay`.
+    - `LivingDisplay` returns the released text or the fallback, stamps `shownAt`, and freezes the choice.
+    - Reuse the ledger entry for a known sheet hash without a call.
+    - _Requirements: 5.4, 5.5, 5.6, 10.1, 10.3, 10.4, 10.5, 11.1_
+  - [ ] 2.7 Write the property test that shown text is final
+    - **Property 11: Shown text is final**
+    - **Validates: Requirements 5.5, 5.6, 11.4**
+  - [ ] 2.8 Add save version 5
+    - Add the optional `living` block to `SaveSnapshot`. A save with the block is written as version 5; a save without it is written exactly as version 4 today. `readableSaveVersion` accepts 3, 4 and 5. Older saves load with the Living_World off.
+    - A corrupt `living` block refuses the load with a `corrupt` LoadError.
+    - _Requirements: 11.3, 11.4_
+  - [ ] 2.9 Write the property test for the living save round-trip
+    - **Property 14: Living save round-trip**
+    - **Validates: Requirements 11.1, 11.3, 11.4**
+  - [ ] 2.10 Write the property test that Claims are text-independent
+    - **Property 2: Claims are text-independent**
+    - **Validates: Requirements 2.2, 2.3**
+  - [ ] 2.11 Checkpoint: the truth boundary is proved
+    - Properties 2, 4, 5, 11 and 14 pass. With the Living_World off, every golden replay is unchanged.
+
+- [ ] 3. The writer and the gates
+  - [ ] 3.1 Move the era checks to runtime-safe code
+    - Factor the anachronism, blocklist, sensitivity, mechanical style and language checks out of `content-tools/lint` into pure functions in `content`. Both the linter and `living` call these functions.
+    - The linter's results must not change, proved by the existing lint tests.
+    - _Requirements: 6.3, 6.5, 6.6_
+  - [ ] 3.2 Compose the Mistake_Gate
+    - In `living/gates/mistake`, compose `checkLeak` with the sheet's allowed entities and `checkSpecifics` with the sheet's allowed specifics. Add `classifyReply`, the era checks, the language check and the Seen_Text_Index overlap.
+    - Provide sentence-level and whole-text forms. Log every rejection with its class, surface, model and sheet hash.
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 10.2_
+  - [ ] 3.3 Build the Round_Trip_Check
+    - In `living/gates/round-trip`, run `buildExtractionSchema` restricted to the sheet's entities through the `bookkeeping` role.
+    - Compare predicate, subject, object and place under alias resolution. Reject invented and missing facts, and fail closed on extraction errors.
+    - Skip the check for sheets with no Must_Cover facts.
+    - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
+  - [ ] 3.4 Build the Quality_Gate and rubrics
+    - In `living/rubrics`, write one rubric per surface, in the shape of `evals/judge/rubric.ts`.
+    - In `living/gates/quality`, score through the `critic` role with a structured verdict, and apply the `strict` or `standard` thresholds. Notes go only to the writer's retry.
+    - _Requirements: 8.1, 8.2, 8.4, 8.5_
+  - [ ] 3.5 Build the Live_Writer
+    - In `living/writer`, add the job queue in the background band, retries with gate notes, sentence streaming for interactive surfaces, and the fallback renderer (Template Variant, then `fallback-template`, then Record_Text).
+    - Add the per-surface circuit breaker and the metrics log fields.
+    - Prompts put instructions in system content and the sheet as delimited user data, ordered static to dynamic. No player-typed text ever enters a prompt.
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 9.1, 9.2, 9.3, 9.4, 9.5, 14.4, 14.5, 14.6, 19.1, 19.2, 2.6_
+  - [ ] 3.6 Write the fakes
+    - In `living/fakes`, write:
+      - a Fake Writer with modes: good, each Mistake class, invented fact, missing fact, slow, error, malformed, injection echo;
+      - a Fake Extractor that reads the Fake Writer's tagged text;
+      - a Fake Critic with scripted scores;
+      - a seeded Fake Proposer, with valid and adversarial candidates.
+    - _Requirements: 17.4_
+  - [ ] 3.7 Write the property test that Prose never changes state
+    - **Property 1: Prose never changes state**
+    - **Validates: Requirements 2.1, 7.6, 10.5**
+  - [ ] 3.8 Write the property test for entity containment
+    - **Property 6: Entity containment**
+    - **Validates: Requirements 6.1, 6.7**
+  - [ ] 3.9 Write the property test for specifics containment
+    - **Property 7: Specifics containment**
+    - **Validates: Requirements 6.2, 6.7**
+  - [ ] 3.10 Write the property test for era safety
+    - **Property 8: Era safety**
+    - **Validates: Requirements 6.3**
+  - [ ] 3.11 Write the property test for round-trip soundness
+    - **Property 9: Round-trip soundness**
+    - **Validates: Requirements 7.2, 7.3, 7.4**
+  - [ ] 3.12 Write the property test for fallback totality
+    - **Property 10: Fallback totality**
+    - **Validates: Requirements 5.5, 9.1, 9.2, 9.3, 18.1**
+  - [ ] 3.13 Write the property test for freshness
+    - **Property 12: Freshness**
+    - **Validates: Requirements 10.1, 10.2**
+  - [ ] 3.14 Build the adversarial suite
+    - Drive each Mistake class, invented facts, missing facts and injection strings at least 50 times each through the real gates. Assert 100% are blocked and none reach `LivingDisplay`.
+    - _Requirements: 17.4, 19.4, 2.6_
+  - [ ] 3.15 Wire the Composition Root
+    - In `app`, build the Live_Writer over the Gateway and pass the seams to `createGame` when the Living_World is on.
+    - Record `writer`, `critic` and `proposer` calls in record mode.
+    - Add the launcher's `--provenance` flag (off by default) and the local-endpoint gate (`allowRemote` plus `--remote`).
+    - _Requirements: 11.6, 14.7, 18.3_
+  - [ ] 3.16 Checkpoint: the gates are proved
+    - Properties 1, 6–10 and 12 pass, and the adversarial suite is 100% blocked. `pnpm run check` adds no new failures.
+
+- [ ] 4. Surfaces, phase A
+  - [ ] 4.1 Add newspaper articles and headlines
+    - Create one job per article after the edition commits, with the outlet's `prose-style`. The article's asserts are its Must_Cover facts, and the edition's `asserts` are unchanged.
+    - The Record_Text is the composer's paragraph.
+    - Fix the edition Record_Text's masthead, title (`Day N, Day N`) and doubled words, and take the weather from the day. *(asks you first if any existing golden changes)*
+    - Feed `publicTraceArticles` into the newspaper material pool only when the Living_World is on.
+    - _Requirements: 4.1, 4.2, 4.3_
+  - [ ] 4.2 Add HQ cables
+    - Write the starting brief, trace, report and funds replies, Directive issue and resolution, and commendations and reprimands in period cable form. Use a routing header, numbered paragraphs and `cryptonym-pool` names.
+    - The engine's decision fields are Must_Cover facts.
+    - _Requirements: 4.1, 4.4_
+  - [ ] 4.3 Add rumour tellings
+    - Write rumour Propositions wherever the engine already delivers them as text: newspaper rumour articles and Asset reports. Hedged café register. The distortion stays the engine's. Add no new delivery path.
+    - _Requirements: 4.1_
+  - [ ] 4.4 Extend scene text
+    - Keep the Narrator path (Slice Req 20) and add Texture details and openings to avoid to its sheet.
+    - Run the Quality_Gate on cached Location Flavour in the background. A failing cache entry is regenerated for the next visit, never swapped in front of the player.
+    - _Requirements: 4.7, 5.1, 8.6, 10.3, 10.4_
+  - [ ] 4.5 Add the case history
+    - Write a post-game case history from the Debrief view (up to 600 words), with a progress indicator and a fallback to the existing debrief sections.
+    - _Requirements: 4.6, 18.1_
+  - [ ] 4.6 Add the file copy view and keep the shells in parity
+    - Every Document view offers its Record_Text as "the file copy". The terminal and web shells show the same Prose for a game. Narration `off` and `brief` are honoured. With `--provenance`, both shells mark each text as live, authored or record.
+    - _Requirements: 18.2, 18.3, 18.4, 18.5_
+  - [ ] 4.7 Write fallback templates for phase A surfaces
+    - Author `fallback-template` entries for headline, cable, rumour-telling and case-history through the Authoring_Factory once task 7.2 exists, or by hand before then. Lint them like any pack content.
+    - _Requirements: 9.1_
+  - [ ] 4.8 Checkpoint: phase A surfaces work end to end with fakes
+    - The living scenario plays 30 seeds per preset with the Fake Writer and no errors. With the Living_World off, every golden replay is unchanged.
+
+- [ ] 5. Surfaces, phase B
+  - [ ] 5.1 Add Record Facts and dossier narratives
+    - On the living stream, generate HQ Record Facts per NPC: birth year range, birthplace, occupation, address district and descriptor. Compose them into Dossier `asserts` as HQ-sourced Propositions, with the preset's false-belief rate.
+    - Write `dossier-narrative` Prose. Generate nothing when the Living_World is off.
+    - _Requirements: 4.1, 10.7_
+  - [ ] 5.2 Add notices and employer messages
+    - Write `notice` from notice Documents and `employer-message` from `cover-employer-message` events, in their style sheets.
+    - _Requirements: 4.1_
+  - [ ] 5.3 Add walk-in scenes
+    - With `walk-in-opener` enabled, a walk-in opens a Talk Scene on the player's next Station arrival. It starts with a gated opener and continues through the existing voice pipeline.
+    - Genuine versus Dangle stays hidden. Only when the Living_World is on, the walk-in pool excludes Station staff and arrested NPCs.
+    - _Requirements: 4.5_
+  - [ ] 5.4 Make descriptors exclusive
+    - When the Living_World is on, descriptor composition draws at most one fragment per slot and honours `exclusive` tags.
+    - _Requirements: 15.8_
+  - [ ] 5.5 Write the property test for descriptor exclusivity
+    - **Property 23: Descriptor exclusivity**
+    - **Validates: Requirements 15.8**
+  - [ ] 5.7 Build the Conversation_Brief
+    - In `player-view/living/conversation`, build the brief from the Player View. Choose mood and want on the living stream keyed by `(NPC, day, scene index)`. Add the brief to the voice prompt as delimited data.
+    - _Requirements: 20.3, 20.4, 20.9_
+  - [ ] 5.8 Write the property test for brief truth isolation
+    - **Property 26: Conversation brief truth isolation**
+    - **Validates: Requirements 20.3, 20.4**
+  - [ ] 5.9 Add situational openings, length variety and NPC-ended talks
+    - Opening_Beat by situation through the Mistake_Gate's repetition check, reply length by register, and NPC-chosen scene end with a one-line outcome. Reuse the existing Leak and Refusal Guards and extraction unchanged.
+    - _Requirements: 20.5, 20.6, 20.7, 20.10_
+  - [ ] 5.10 Write the property test for conversation freshness
+    - **Property 27: Conversations stay fresh and bounded**
+    - **Validates: Requirements 20.5, 20.6, 20.7, 20.9**
+  - [ ] 5.11 Add Suggested_Replies
+    - Build up to four from the dialogue intents in the catalogue and the Player View. Render them as buttons in the Page and the Terminal shell. Typing stays free.
+    - _Requirements: 20.8_
+  - [ ] 5.12 Write the property test for closed suggestions
+    - **Property 28: Suggested replies are closed**
+    - **Validates: Requirements 20.8**
+  - [ ] 5.6 Checkpoint: phase B surfaces work end to end with fakes
+
+- [ ] 6. World proposals
+  - [ ] 6.1 Build the Protected_Set
+    - `engine/living/protected` builds it from the Plot, the Cell, the mole, Hostile Service officers, Plot items and Channels, pending Plot trace Locations, the ambient gate's Anchor_Slots and witness nodes, and NPCs with a Station relationship.
+    - This is the only living function that reads truth, and its output never reaches a model.
+    - _Requirements: 2.5, 12.4_
+  - [ ] 6.2 Build the Proposal_Menu and the Pacing_Signal
+    - `engine/living/menu` lists the allowed templates, bindable ids and parameter ranges per kind, with the Protected_Set removed. With ambient off, it offers only `rumour`. Templates whose effects carry an Ambient_Hook are left out.
+    - `engine/living/pacing` summarises player-visible pacing only.
+    - _Requirements: 12.2, 12.3, 12.4, 12.7, 12.8, 12.9_
+  - [ ] 6.3 Write the property test for proposer blindness
+    - **Property 16: Proposer blindness**
+    - **Validates: Requirements 12.4, 12.7, 12.9**
+  - [ ] 6.4 Build the Proposal_Verifier
+    - `engine/living/verify` checks the schema, menu membership, Protected_Set exclusion, implicating predicates (Slice Req 40), the daily budget (1, 3 or 5), the noise bounds (preset plus 50% headroom, never double) and staleness. Structural_Changes go through `ambient/solvability.gate`.
+    - Rejections log a reason and leave no trace in state.
+    - _Requirements: 13.1, 13.2, 13.4, 13.6, 2.5_
+  - [ ] 6.5 Apply and commit World Inputs
+    - Add `AdvanceWorldDeps.living.inputs`. At a day boundary, verify and apply the ready candidates through their existing mechanisms, inside the boundary's Turn Transaction.
+    - Write the World_Input_Ledger entry with the menu hash. With no ready candidates, the boundary is unchanged.
+    - _Requirements: 2.4, 13.3, 13.5, 13.7, 11.2_
+  - [ ] 6.6 Write the property test for proposal closure
+    - **Property 15: Proposal closure**
+    - **Validates: Requirements 12.3, 12.5, 13.1**
+  - [ ] 6.7 Write the property test for protected and implication safety
+    - **Property 17: Protected and implication safety**
+    - **Validates: Requirements 2.5, 13.1**
+  - [ ] 6.8 Write the property test for solvability preservation
+    - **Property 18: Solvability preservation**
+    - **Validates: Requirements 13.2**
+  - [ ] 6.9 Write the property test for budgets and noise bounds
+    - **Property 19: Budgets and noise bounds**
+    - **Validates: Requirements 13.1, 13.6**
+  - [ ] 6.10 Write the property test that missing proposals are a no-op
+    - **Property 20: Missing proposals are a no-op**
+    - **Validates: Requirements 13.5**
+  - [ ] 6.11 Build the Proposer
+    - In `living/proposer`, generate the schema per call from the menu, with ids as enums. Send the Pacing_Signal and the restraint rules.
+    - Request once per day in the background band, and drop unparsable candidates individually. Pitches go only into later Fact_Sheets as writing material.
+    - _Requirements: 12.1, 12.5, 12.6, 19.3_
+  - [ ] 6.12 Replay from the Living_Ledgers
+    - Replay applies `worldInputs` in boundary order and never calls the proposer. A ledger entry whose menu hash does not match is a replay error naming the boundary.
+    - _Requirements: 11.5_
+  - [ ] 6.13 Write the property test for ledger replay determinism
+    - **Property 13: Ledger replay determinism**
+    - **Validates: Requirements 11.2, 11.5**
+  - [ ] 6.14 Calibrate with proposals on
+    - Run `probeSeed` with the Fake Proposer at `standard` on the CI sample (30 expert / 15 idle / 15 reckless per preset). Record the result in the README Balance section.
+    - If any band fails, stop and report. Never change a band. *(asks you first)*
+    - _Requirements: 13.8_
+  - [ ] 6.15 Checkpoint: proposals are proved
+
+- [ ] 7. Variety at scale
+  - [ ] 7.1 Register the new content kinds
+    - Register `prose-style`, `cryptonym-pool` and `fallback-template` through the Content Kind Registry, with Field Declarations.
+    - Add the optional `exclusive` tag on Descriptor Fragments.
+    - _Requirements: 10.6, 15.6_
+  - [ ] 7.2 Build the Authoring_Factory
+    - Add `pnpm content factory --brief <file> [--rounds 3] [--stage]` in `content-tools/factory`. It runs the author and a different-model reviewer that writes `<stamp>.review.md`, loops on findings, runs every staging gate in the content-authoring steering file, and writes `SIGN-OFF.md`.
+    - Create `config/authoring.yaml` from its schema, pointing at the local endpoint.
+    - Add the factory command to the pipeline in `.kiro/steering/content-authoring.md`, as the default drafting route.
+    - _Requirements: 15.1, 15.2, 15.3, 15.4, 15.5_
+  - [ ] 7.3 Add the `living` lint profile
+    - Enforce the Variety Targets for the packs the living scenario loads, including an Authored_Fallback for every Prose_Surface.
+    - _Requirements: 15.6_
+  - [ ] 7.4 Add `config/scenario-living.yaml`
+    - Load core, the era pack, the libraries, `coldwar-plots`, `ambient` and `city-vienna`, with `plotSelection.enabled`, `ambient.enabled` and the `living` block. List no default surfaces until they pass their gates (task 8.4).
+    - _Requirements: 1.2, 15.7_
+  - [ ] 7.5 Run the first content batches
+    - Write briefs and run the factory for:
+      - outlet and HQ desk `prose-style` sheets;
+      - `cryptonym-pool`;
+      - fallback templates;
+      - then rumours, incidents, name pools, persona backgrounds, side threads and plot templates.
+    - Each batch goes to the owner as a `SIGN-OFF.md`. *(asks you first: promoting model-written content needs your sign-off)*
+    - _Requirements: 15.4, 15.6_
+
+- [ ] 8. Measurement and release
+  - [ ] 8.1 Build the Variety_Report
+    - Add `pnpm living:variety --scenario <file> --seeds <n> [--prose recorded|fake]` in `evals/living/variety`, with `living.variety.bands.ts` holding the initial bands.
+    - CI runs it with fake prose. Changing a band is owner-approved only.
+    - _Requirements: 16.1, 16.2, 16.3, 16.4_
+  - [ ] 8.2 Build the Living suite
+    - Build 200 sheets per surface from 20 seeds and run them through the live writer and every gate. Report pass rates by gate, attempts, fallback rate, Critic scores and latency p50 and p95 to `logs/evals/living/`.
+    - _Requirements: 17.1, 14.4_
+  - [ ] 8.3 Build the Model_Playtester
+    - It drives `EngineApi` using only rendered player-visible text, answering with option indexes or typed lines, and records transcripts.
+    - The `judge` role scores immersion, repetition and coherence. Run at least 5 games per enabled mode per release candidate.
+    - _Requirements: 17.3_
+  - [ ] 8.4 Apply the Surface_Release_Gates
+    - For each surface, check the gate numbers and give the owner 20 random samples. Add a surface to the living scenario's defaults only after both pass. *(asks you first)*
+    - _Requirements: 17.2_
+  - [ ] 8.5 Add the Outcome Record summary
+    - Add an optional, versioned `living` block of counts: texts by provenance, gate rejections by class, and Proposals accepted and rejected.
+    - _Requirements: 11.7_
+  - [ ] 8.6 Write the documentation
+    - Add a Living World section to the README beside Balance, with the latest suite and Variety results. Update the Status, Roadmap and Specs sections.
+    - Add `docs/living-world.md` with how to run the scenario, the factory, the suite, the playtester and the variety report.
+    - _Requirements: 17.5_
+  - [ ] 8.7 Final checkpoint
+    - All 28 properties pass, and the adversarial suite is 100% blocked. Every existing golden is unchanged, and the calibration bands hold with proposals on. The Variety bands hold.
+    - The owner has run the Living suite and the playtester on the Reference Machine and approved the enabled surfaces.

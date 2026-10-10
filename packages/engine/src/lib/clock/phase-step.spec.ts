@@ -23,6 +23,7 @@ import {
   MISSED_MEETING_TRUST_DROP,
   NEUTRAL_TRUST,
 } from '../action/arrange-meeting.js';
+import { visibleNpcsAt } from '../action/action.js';
 import { STATION_LOCATION_TYPE } from '../action/intercept.js';
 import type { Meeting } from '../action/types.js';
 import type { DeadDrop } from '../city/comms.js';
@@ -37,7 +38,7 @@ import {
 } from '../model/core.js';
 import type { SimEvent, WorldState } from '../model/state.js';
 import { createPrng } from '../prng/prng.js';
-import { newRelationship, type Relationship } from '../recruit/asset.js';
+import { MEETINGS_BEFORE_PITCH, newRelationship, type Relationship } from '../recruit/asset.js';
 import { RETAINER_DECAY_PER_PHASE, RETAINER_GRACE_PHASES } from '../recruit/retainer.js';
 import { CUSTODY_RELEASE_SUSPICION_PER_PHASE } from '../recruit/turn.js';
 import {
@@ -219,6 +220,28 @@ describe('phaseStep — schedules and pinned NPCs (Req 1.2)', () => {
     }
   });
 
+  it('keeps a walk-in at the Station for the rest of that day', () => {
+    const to = addPhases(BASE.time, 1);
+    const station = stationLoc(BASE);
+    const visitor = npcIds(BASE).find((id) => scheduledLocationAt(BASE.npcs[id], to) !== station);
+    expect(visitor).toBeDefined();
+    if (visitor === undefined) {
+      return;
+    }
+    const state = withRel(BASE, {
+      ...newRelationship(visitor),
+      callingAt: { loc: station, day: to.day },
+    });
+    const { state: next } = step(state);
+    expect(next.time.day).toBe(to.day);
+    expect(next.whereabouts[visitor]).toBe(station);
+    expect(visibleNpcsAt(next, station)).toContain(visitor);
+    const own = scheduledLocationAt(next.npcs[visitor], next.time);
+    if (own !== undefined && own !== station) {
+      expect(visibleNpcsAt(next, own)).not.toContain(visitor);
+    }
+  });
+
   it('emits a move once, and not again for a boundary move the schedules hook recorded', () => {
     // Day 0 is a Monday (content weekday 0), day 1 a Tuesday.
     const [locA, locB] = (Object.keys(BASE.city.locations) as LocId[]).sort();
@@ -291,11 +314,28 @@ describe('phaseStep — meetings (Req 1.3, 1.4, 1.8)', () => {
 describe('phaseStep — Cables and Directives (Req 1.5, 1.6, 6.4)', () => {
   it('delivers each due reply as its own Cable Document, with a Dossier for a trace', () => {
     // Two reports due in the same phase would share processDueCables' doc id.
+    // Trace someone whose opening file left a lead unsent, so the reply adds it.
+    const held = new Set<string>();
+    for (const doc of Object.values(BASE.documents)) {
+      if (doc.kind === 'dossier') {
+        for (const id of doc.asserts) {
+          held.add(id);
+        }
+      }
+    }
+    const unsent = [...BASE.station.knowledge.known, ...BASE.station.knowledge.falseBeliefs].find(
+      (prop) => prop.subject.startsWith('npc:') && !held.has(prop.id),
+    );
+    expect(unsent).toBeDefined();
     const now: GameTime = { day: 1, phase: 0 };
     const pending = [
-      submitCable({ kind: 'trace', target: BASE.station.chief }, { day: 0, phase: 1 }, { delayPhases: 4 }),
-      submitCable({ kind: 'report', body: 'first' }, { day: 0, phase: 2 }, { delayPhases: 3 }),
-      submitCable({ kind: 'report', body: 'second' }, { day: 0, phase: 3 }, { delayPhases: 2 }),
+      submitCable(
+        { kind: 'trace', target: (unsent?.subject ?? BASE.station.chief) as NpcId },
+        { day: 0, phase: 1 },
+        { delayPhases: 4 },
+      ),
+      submitCable({ kind: 'report', body: 'The contact kept the meeting.' }, { day: 0, phase: 2 }, { delayPhases: 3 }),
+      submitCable({ kind: 'report', body: 'A second meeting is arranged.' }, { day: 0, phase: 3 }, { delayPhases: 2 }),
     ];
     const state = atTime({ ...BASE, station: { ...BASE.station, pendingCables: pending } }, now);
 
@@ -312,6 +352,44 @@ describe('phaseStep — Cables and Directives (Req 1.5, 1.6, 6.4)', () => {
     expect(dossiers).toHaveLength(1);
     expect(next.station.pendingCables).toEqual([]);
     expect(next.station.standing).toBe(BASE.station.standing + 2 * REPORT_STANDING_DELTA);
+  });
+
+  it('approves a pitch on a developed contact, and asks for more meetings otherwise', () => {
+    const npc = BASE.station.chief;
+    const now: GameTime = { day: 1, phase: 0 };
+    const trace = () =>
+      submitCable({ kind: 'trace', target: npc }, { day: 0, phase: 0 }, { delayPhases: 1 });
+    const developed = atTime(
+      {
+        ...BASE,
+        relationships: {
+          ...BASE.relationships,
+          [npc]: { ...newRelationship(npc), meetings: MEETINGS_BEFORE_PITCH },
+        },
+        station: { ...BASE.station, pendingCables: [trace()] },
+      },
+      now,
+    );
+    const cleared = step(developed);
+    expect(cleared.state.relationships[npc]?.pitchApproved).toBe(true);
+    const approved = Object.values(cleared.state.documents).map((doc) => doc.body).join('\n');
+    expect(approved).toContain('A PITCH IS APPROVED');
+
+    const early = atTime(
+      {
+        ...BASE,
+        relationships: {
+          ...BASE.relationships,
+          [npc]: { ...newRelationship(npc), meetings: 1 },
+        },
+        station: { ...BASE.station, pendingCables: [trace()] },
+      },
+      now,
+    );
+    const held = step(early);
+    expect(held.state.relationships[npc]?.pitchApproved).toBeUndefined();
+    const waiting = Object.values(held.state.documents).map((doc) => doc.body).join('\n');
+    expect(waiting).toContain('DEVELOP THE CONTACT');
   });
 
   it('settles a met Directive and follows its event with HQ Cable', () => {
@@ -606,7 +684,7 @@ describe('phaseStep — funds Cables (Req 1.5)', () => {
     expect(next.station.lastFundsGrant).toEqual({ day: 0, phase: 3 });
     const docId = events.find((e) => e.kind === 'cable');
     const doc = docId?.kind === 'cable' ? next.documents[docId.doc] : undefined;
-    expect(JSON.stringify(doc)).toContain('NO FUNDS RELEASED');
+    expect(JSON.stringify(doc)).toContain('NO FUNDS ARE RELEASED');
   });
 
   it('answers a trace on a non-person target with a no-personal-file Cable and no Dossier', () => {
@@ -633,7 +711,7 @@ describe('phaseStep — funds Cables (Req 1.5)', () => {
     );
     expect(dossiers).toHaveLength(0);
     const doc = cables[0].kind === 'cable' ? next.documents[cables[0].doc] : undefined;
-    expect(JSON.stringify(doc)).toContain('HQ HOLDS NO PERSONAL FILE ON SUBJECT');
+    expect(JSON.stringify(doc)).toContain('HEADQUARTERS HOLDS NO PERSONAL FILE ON THE SUBJECT');
   });
 });
 
@@ -666,6 +744,6 @@ describe('phaseStep — failed Directive (Req 1.6, 6.4)', () => {
     expect(next.station.directives[0].status).toBe('failed');
     const cableEvent = events.find((e) => e.kind === 'cable');
     const doc = cableEvent?.kind === 'cable' ? next.documents[cableEvent.doc] : undefined;
-    expect(JSON.stringify(doc)).toContain('DEADLINE PASSED WITHOUT RESULT');
+    expect(JSON.stringify(doc)).toContain('THE DEADLINE PASSED WITHOUT A RESULT');
   });
 });

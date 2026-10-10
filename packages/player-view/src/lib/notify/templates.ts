@@ -92,9 +92,9 @@ export function meetingNoShowFactLine(): string {
   return 'The other party did not appear at the arranged meeting.';
 }
 
-/** Someone made contact with the player unbidden. */
+/** Someone is waiting at the Station and has asked to be seen. */
 export function walkInFactLine(namer: NotifyNamer, npc: string): string {
-  return `${namer(npc)} has made contact.`;
+  return `${namer(npc)} is waiting at the Station.`;
 }
 
 /** A Dead Drop the player expected serviced was left unserviced. */

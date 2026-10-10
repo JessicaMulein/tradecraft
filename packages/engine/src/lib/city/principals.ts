@@ -177,6 +177,26 @@ export const HOSTILE_ROLE_IDS = ['hostile-resident', 'hostile-case-officer'] as 
 /** The Chief of Station, always present. */
 export const CHIEF_ROLE_ID = 'chief-of-station';
 
+/**
+ * The posting a game belongs to. Drawn once, off the core stream, and then
+ * every office role (Chief, clerk, cipher clerk) takes names from that one
+ * service. `derive(seed, STATION_SERVICE_STREAM)` is that draw.
+ */
+export const STATION_SERVICES = ['american', 'british'] as const;
+
+/** American or British: one service for the whole office. */
+export type StationService = (typeof STATION_SERVICES)[number];
+
+/** `derive(seed, STATION_SERVICE_STREAM)` picks {@link StationService}. Spells `srvc`. */
+export const STATION_SERVICE_STREAM = 0x73727663;
+
+/** Office roles that follow the game's one service. The driver stays a local hire. */
+const OFFICE_ROLE_IDS = new Set([
+  'chief-of-station',
+  'station-clerk',
+  'station-cipher-clerk',
+]);
+
 /** The staff archetypes the Chief's 2–3 staff are drawn from. */
 export const STAFF_ROLE_IDS = [
   'station-clerk',
@@ -236,6 +256,11 @@ export interface GeneratedPrincipals {
    * 5.2).
    */
   readonly registryEntries: readonly EntityEntry[];
+  /**
+   * The service the office belongs to. Office roles draw names from this pool.
+   * Absent only for a caller that did not choose one; generation always sets it.
+   */
+  readonly service: StationService;
 }
 
 // ---------------------------------------------------------------------------
@@ -336,14 +361,29 @@ export function moneyNeedOf(money: number): number {
  * {@link generatePrincipals} redraws a clashing name simply by calling again;
  * every attempt advances the stream deterministically.
  */
+function localRoleId(id: string): string {
+  const slash = id.lastIndexOf('/');
+  return slash === -1 ? id : id.slice(slash + 1);
+}
+
 function buildPersona(
   prng: Prng,
   content: ContentSet,
   archetype: Archetype,
   gender: PersonaGender,
+  service?: StationService,
 ): Persona {
   // Pick a persona pool reference in a stable (sorted) order, then draw one.
-  const poolRefs = [...archetype.personaPools].sort();
+  // Office roles, when a service was drawn for the game, use only that pool.
+  let poolRefs = [...archetype.personaPools].sort();
+  if (service !== undefined && OFFICE_ROLE_IDS.has(localRoleId(archetype.id))) {
+    const matched = poolRefs.filter(
+      (ref) => ref === service || ref.endsWith(`/${service}`),
+    );
+    if (matched.length > 0) {
+      poolRefs = matched;
+    }
+  }
   const ref = prng.pick(poolRefs);
   const library: PersonaLibrary | undefined = resolveRef(content.personaLibraries, ref);
 
@@ -399,13 +439,12 @@ function buildPersona(
 // ---------------------------------------------------------------------------
 
 /**
- * Build a physical descriptor from an archetype's descriptor pools, drawing a
- * period-correct phrase from each pool and from the shared build/grooming notes
- * — but only ever entries whose `fits` tag suits the NPC's `gender`
- * (Requirement 1.7). Every pool an archetype names is guaranteed by the loader
- * to exist (the cross-reference check refuses an unknown pool), so there is no
- * missing-pool fall-back; an empty gender-filtered list simply contributes
- * nothing. A shared build/grooming note is prepended for texture.
+ * Build a physical descriptor from an archetype's descriptor pools. One build
+ * note, one grooming note, one garment and at most one accessory, and only
+ * entries whose `fits` tag suits the NPC's `gender` (Requirement 1.7). The
+ * garment and the accessory are drawn from every pool the archetype names, so
+ * two pools cannot put two coats on the same person. An empty gender-filtered
+ * list contributes nothing.
  *
  * Each call draws afresh from the prng, so the distinctness loop in
  * {@link generatePrincipals} redraws a too-similar descriptor simply by calling
@@ -432,7 +471,9 @@ function buildDescriptor(
     return prng.pick(fitting);
   };
 
-  // One shared build/grooming note, drawn from entries that fit the gender.
+  // One build note and one grooming note. Clothing is one garment and, half
+  // the time, one accessory, drawn from every pool the archetype names. A
+  // second coat or a tunic over a day dress is a contradiction, not variety.
   const build = drawFitting(descriptors.shared.build);
   if (build !== undefined) {
     phrases.push(build);
@@ -442,25 +483,40 @@ function buildDescriptor(
     phrases.push(grooming);
   }
 
+  const garments: string[] = [];
+  const accessories: string[] = [];
   for (const poolId of poolIds) {
     const pool = descriptors.pools[poolId];
     if (pool === undefined) {
-      // Defensive: the loader rejects an unknown pool, so this should not
-      // happen in a loaded pack. Keep the id-as-flavour fall-back so an
-      // in-memory test with a partial descriptor set still produces something.
-      phrases.push(poolId.replace(/-/g, ' '));
       continue;
     }
-    const garment = drawFitting(pool.garments);
-    if (garment !== undefined) {
-      phrases.push(garment);
-    }
-    if (pool.accessories.length > 0 && prng.bool(0.5)) {
-      const accessory = drawFitting(pool.accessories);
-      if (accessory !== undefined) {
-        phrases.push(accessory);
+    for (const phrase of fittingPhrases(
+      pool.garments as Parameters<typeof fittingPhrases>[0],
+      gender,
+    )) {
+      if (!garments.includes(phrase)) {
+        garments.push(phrase);
       }
     }
+    for (const phrase of fittingPhrases(
+      pool.accessories as Parameters<typeof fittingPhrases>[0],
+      gender,
+    )) {
+      if (!accessories.includes(phrase)) {
+        accessories.push(phrase);
+      }
+    }
+  }
+  if (garments.length > 0) {
+    phrases.push(prng.pick(garments));
+  } else if (poolIds.length > 0) {
+    const missing = poolIds.find((poolId) => descriptors.pools[poolId] === undefined);
+    if (missing !== undefined) {
+      phrases.push(missing.replace(/-/g, ' '));
+    }
+  }
+  if (accessories.length > 0 && prng.bool(0.5)) {
+    phrases.push(prng.pick(accessories));
   }
 
   const summary = phrases.length > 0 ? phrases.join(', ') : 'an unremarkable figure';
@@ -792,6 +848,7 @@ function stampNpc(
   archetype: Archetype,
   index: number,
   ctx: UniquenessContext,
+  service?: StationService,
 ): { npc: Npc; registryEntry: EntityEntry; allegiance: NpcAllegiance } {
   // Fixed draw order per NPC so the stream is deterministic: mice, gender,
   // persona (redrawn for name uniqueness), descriptor (redrawn for
@@ -799,13 +856,13 @@ function stampNpc(
   const mice = sampleMice(prng, archetype);
   const gender: PersonaGender = prng.bool(0.5) ? 'female' : 'male';
 
-  let persona = buildPersona(prng, content, archetype, gender);
+  let persona = buildPersona(prng, content, archetype, gender, service);
   for (
     let attempt = 0;
     attempt < MAX_NAME_REDRAWS && !nameIsUnique(persona, ctx);
     attempt += 1
   ) {
-    persona = buildPersona(prng, content, archetype, gender);
+    persona = buildPersona(prng, content, archetype, gender, service);
   }
 
   let descriptor = buildDescriptor(prng, descriptors, archetype, gender);
@@ -860,6 +917,36 @@ function stampNpc(
   return { npc, registryEntry, allegiance: { npc: id, allegiance: { org } } };
 }
 
+function sectorOfLoc(city: City, loc: string): string | undefined {
+  const place = city.locations[loc as keyof typeof city.locations];
+  if (place === undefined) {
+    return undefined;
+  }
+  return city.districts[place.district]?.sector;
+}
+
+/**
+ * Keep one of the leader's meetings outside the Soviet sector. Moves the first
+ * slot only when every slot is already in that sector, and draws nothing.
+ */
+function ensureWesternMeeting(city: City, npc: Npc): Npc {
+  if (npc.schedule.entries.some((entry) => sectorOfLoc(city, entry.loc) !== 'soviet')) {
+    return npc;
+  }
+  const western = Object.values(city.locations)
+    .filter((place) => place.public && sectorOfLoc(city, place.id) !== 'soviet')
+    .sort((a, b) => a.id.localeCompare(b.id));
+  const dest = western[0];
+  const first = npc.schedule.entries[0];
+  if (dest === undefined || first === undefined) {
+    return npc;
+  }
+  return {
+    ...npc,
+    schedule: { entries: [{ ...first, loc: dest.id }, ...npc.schedule.entries.slice(1)] },
+  };
+}
+
 // ---------------------------------------------------------------------------
 // generatePrincipals
 // ---------------------------------------------------------------------------
@@ -873,8 +960,9 @@ function stampNpc(
  * composition — the four Cell roles, the two hostile officers, the Chief, 2–3
  * staff and 2–3 contacts — so the generated world always has a complete Cell to
  * hunt and a Station to answer to. The staff and contact *counts* are drawn
- * from the core stream within their ranges; which staff/contact archetypes fill
- * them is a shuffled, deterministic subset.
+ * from the core stream within their ranges. Staff archetypes are a shuffled
+ * subset. The police liaison is always a starting contact, because an arrest
+ * is a request to them; the other contacts are a shuffled subset.
  *
  * Throws if a required archetype (a Cell role, a hostile officer, the Chief) is
  * absent from the content — that is a pack gap the smoke tests should catch,
@@ -889,7 +977,7 @@ export function generatePrincipals(
   descriptors: DescriptorData,
   city: City,
   orgs: GeneratedOrgs,
-  options?: { readonly cap?: number },
+  options?: { readonly cap?: number; readonly service?: StationService },
 ): GeneratedPrincipals {
   const binder = cityScheduleBinder(city, content);
 
@@ -914,6 +1002,7 @@ export function generatePrincipals(
     return archetype;
   };
 
+  const service = options?.service;
   const stamp = (archetype: Archetype): NpcId => {
     const result = stampNpc(
       prng,
@@ -924,6 +1013,7 @@ export function generatePrincipals(
       archetype,
       index,
       { principals: acceptedPrincipals, fullNames, isPrincipal: true },
+      service,
     );
     index += 1;
     npcs[result.npc.id] = result.npc;
@@ -936,6 +1026,13 @@ export function generatePrincipals(
 
   // Cell: all four roles, leader first (fixed order).
   const cell = CELL_ROLE_IDS.map((roleId) => stamp(require(roleId)));
+  const leaderId = cell[0];
+  if (leaderId !== undefined && npcs[leaderId] !== undefined) {
+    // An arrest is impossible inside the Soviet sector, so the leader keeps
+    // one meeting outside it. No extra draw: the first slot moves only when
+    // every slot already landed in the Soviet sector.
+    npcs[leaderId] = ensureWesternMeeting(city, npcs[leaderId]);
+  }
 
   // Hostile officers: both, resident first (fixed order).
   const hostile = HOSTILE_ROLE_IDS.map((roleId) => stamp(require(roleId)));
@@ -948,12 +1045,14 @@ export function generatePrincipals(
     .slice(0, staffCount);
   const staff = staffArchetypes.map((archetype) => stamp(archetype));
 
-  // Contacts: a drawn 2–3 of the contact archetypes.
-  const contactCount = prng.int(MIN_CONTACTS, MAX_CONTACTS);
-  const contactArchetypes = prng
-    .shuffle(CONTACT_ROLE_IDS.map((id) => require(id)))
-    .slice(0, contactCount);
-  const contacts = contactArchetypes.map((archetype) => stamp(archetype));
+  // Contacts: the police liaison, then 1–2 of the other contact archetypes,
+  // so the roster stays at 2–3 and an arrest can always be requested.
+  const otherContacts = CONTACT_ROLE_IDS.filter((id) => id !== 'police-liaison').map((id) =>
+    require(id),
+  );
+  const extraCount = prng.int(MIN_CONTACTS - 1, MAX_CONTACTS - 1);
+  const extras = prng.shuffle(otherContacts).slice(0, extraCount);
+  const contacts = [require('police-liaison'), ...extras].map((archetype) => stamp(archetype));
 
   const cap = options?.cap;
   if (cap !== undefined && index < cap) {
@@ -972,5 +1071,6 @@ export function generatePrincipals(
     contacts,
     allegiances,
     registryEntries,
+    service: service ?? 'american',
   };
 }

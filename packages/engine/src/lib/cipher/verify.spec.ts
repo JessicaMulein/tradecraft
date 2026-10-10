@@ -38,6 +38,7 @@ import {
   generateIntercepts,
   revealedSpec,
   decryptToFieldMessage,
+  privateFieldMessage,
   type GenerateInterceptsInputs,
   type Intercept,
   type InterceptSource,
@@ -180,7 +181,7 @@ describe('verifySubmission — correct key (Req 9.5)', () => {
       'npc:boris',
     ]);
     // Content matches the parsed true message (ids aside).
-    const parsed = parseFieldMessage(truePlaintext(intercept), fieldCodes);
+    const parsed = parseFieldMessage(privateFieldMessage(intercept), fieldCodes);
     result.propositions.forEach((p, i) => {
       expect({ ...p, id: parsed[i].id }).toEqual(parsed[i]);
     });

@@ -43,6 +43,7 @@ import {
   type PublicText,
 } from '@tradecraft/content';
 
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { createPrng } from '../prng/prng.js';
 import { ScenarioConfigSchema } from '../config/scenario-config.js';
 import { generate, STARTING_ARREST_AUTHORITY, type GenerateInputs } from '../generate.js';
@@ -389,6 +390,22 @@ describe('sceneAt', () => {
     expect(scene.risk).toBe(loc.risk);
     expect(Array.isArray(scene.visible)).toBe(true);
   });
+
+  it('adds the patrol, the papers or the car when the place is in the Soviet sector', () => {
+    const state = world();
+    const soviet = Object.values(state.city.locations).find(
+      (loc) => state.city.districts[loc.district]?.sector === 'soviet',
+    );
+    expect(soviet).toBeDefined();
+    if (soviet === undefined) {
+      return;
+    }
+    const morning = sceneAt({ ...state, time: { ...state.time, phase: 0 } }, soviet.id);
+    expect(morning.description).toContain(soviet.description);
+    expect(morning.description).toContain('foot patrol');
+    const night = sceneAt({ ...state, time: { ...state.time, phase: 3 } }, soviet.id);
+    expect(night.description).toContain('car slows');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -628,7 +645,7 @@ describe('quote and resolve — every action kind is dispatched (slice-integrati
     const broken = resolveAllowed(state, right, CTX);
     expect(broken.next.intercepts[intercept.id]?.broken).toBe(true);
     for (const obs of broken.result.observations) {
-      expect(obs.kind === 'proposition' && obs.source).toEqual({
+      expect(obs.kind === 'proposition' && obs.source).toMatchObject({
         kind: 'intercept',
         id: intercept.id,
       });
@@ -697,11 +714,33 @@ describe('actionLocation — Location-bound and Location-free kinds (slice-integ
 // Each kind can be allowed with the real core pack (slice-integration Req 11.1)
 // ---------------------------------------------------------------------------
 
+function seatOutsideSoviet(state: WorldState, npc: NpcId): WorldState {
+  const places = Object.values(state.city.locations).sort((a, b) => a.id.localeCompare(b.id));
+  const loc = places.find((place) => state.city.districts[place.district]?.sector !== 'soviet');
+  if (loc === undefined) {
+    return state;
+  }
+  const person = state.npcs[npc];
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
+  const entries = [
+    ...person.schedule.entries.filter(
+      (entry) => entry.weekday !== weekday || entry.phase !== state.time.phase,
+    ),
+    { weekday, phase: state.time.phase, loc: loc.id },
+  ];
+  return {
+    ...state,
+    npcs: { ...state.npcs, [npc]: { ...person, schedule: { entries } } },
+    whereabouts: { ...state.whereabouts, [npc]: loc.id },
+  };
+}
+
 describe('reachable with the core pack — arrest, turn-agent, pay, task, feed, confront (slice-integration Req 11.1)', () => {
   it('arrest: granted where the player starts, on enough evidence, with the starting authority', () => {
-    const state = world();
+    const started = world();
+    const npc = npcIdsBesidesLeader(started)[0];
+    const state = seatOutsideSoviet(started, npc);
     expect(state.player.arrestAuthority).toBe(STARTING_ARREST_AUTHORITY);
-    const npc = npcIdsBesidesLeader(state)[0];
     const ctx: ResolverContext = {
       content,
       arrestEvidence: { [npc]: STANDARD.arrest.threshold },
@@ -712,8 +751,9 @@ describe('reachable with the core pack — arrest, turn-agent, pay, task, feed, 
   });
 
   it('turn-agent: pitched at the Station to the person an arrest put in Station Custody', () => {
-    const base = atStation(world());
-    const npc = npcIdsBesidesLeader(base)[0];
+    const started = world();
+    const npc = npcIdsBesidesLeader(started)[0];
+    const base = seatOutsideSoviet(atStation(started), npc);
     const arrestCtx: ResolverContext = {
       content,
       arrestEvidence: { [npc]: STANDARD.arrest.threshold },

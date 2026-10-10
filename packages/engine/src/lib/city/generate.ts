@@ -248,8 +248,14 @@ function stampLocation(
   district: District,
   pools: Record<string, readonly string[]>,
   prng: Prng,
+  usedNames: Set<string>,
 ): Location {
-  const name = renderName(type, pools, prng);
+  let name = renderName(type, pools, prng);
+  if (usedNames.has(name)) {
+    const qualified = `${name}, ${district.name}`;
+    name = usedNames.has(qualified) ? `${qualified} ${index + 1}` : qualified;
+  }
+  usedNames.add(name);
   const id = `loc:${slugify(name, `${type.id}-${index}`)}-${index}` as LocId;
   const aliases: Alias[] = [];
   const description = type.descriptionPool.length > 0 ? prng.pick(type.descriptionPool) : '';
@@ -347,14 +353,18 @@ export function generateCity(
   const locations: Record<LocId, Location> = {};
   const knownLocations: LocId[] = [];
   const crowdModels: Record<string, CrowdModel> = {};
+  const usedNames = new Set<string>();
   let stamped = 0;
 
   for (const type of types) {
     crowdModels[type.id] = crowdModelOf(type);
     const count = counts.get(type.id) ?? 1;
+    const stationType = type.id === 'station-hq' || type.id.endsWith('/station-hq');
     for (let i = 0; i < count; i += 1) {
-      const district = prng.pick(districts);
-      const loc = stampLocation(type, stamped, district, pools, prng);
+      // The Station sits in a Western sector or the Inner City, never the Soviet sector.
+      const western = districts.filter((d) => d.sector !== 'soviet');
+      const district = prng.pick(stationType && western.length > 0 ? western : districts);
+      const loc = stampLocation(type, stamped, district, pools, prng, usedNames);
       locations[loc.id] = loc;
       if (loc.public) {
         knownLocations.push(loc.id);

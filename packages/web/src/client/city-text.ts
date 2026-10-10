@@ -70,6 +70,15 @@ export function hereStatus(status: string | undefined): string | undefined {
   return `Status: ${status}`;
 }
 
+/**
+ * The place never offers this action. The quote is a list of internal action
+ * names, which is not something to show. A closed café or a cable that has to
+ * be sent from the Station keeps its own reason.
+ */
+export function placeWithholds(reason: string | undefined): boolean {
+  return reason !== undefined && reason.includes(' allows only:');
+}
+
 /** Notice fact lines are the ones the travel resolver prints for a posted notice. */
 export function isNoticeFact(line: string): boolean {
   return line.toLowerCase().includes('notice');
@@ -80,10 +89,21 @@ export function isDutyAlert(kind: string | undefined): boolean {
 }
 
 export function statusLine(
-  status: { readonly day: number; readonly phase: string; readonly location: string; readonly budget: number; readonly standing: number },
+  status: {
+    readonly day: number;
+    readonly phase: string;
+    readonly location: string;
+    readonly budget: number;
+    readonly standing: number;
+    readonly date?: string;
+    readonly followed?: string;
+  },
   dutyAlert?: string,
 ): string {
-  const base = `Day ${status.day}, ${status.phase} · ${status.location} · budget ${status.budget} · standing ${status.standing}`;
+  const when = status.date === undefined ? `Day ${status.day}` : status.date;
+  const followed =
+    status.followed === undefined || status.followed.length === 0 ? '' : ` · ${status.followed}`;
+  const base = `${when}, ${status.phase} · ${status.location} · budget ${status.budget} · standing ${status.standing}${followed}`;
   if (dutyAlert === undefined || dutyAlert.length === 0) {
     return base;
   }

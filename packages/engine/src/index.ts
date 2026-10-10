@@ -270,6 +270,7 @@ export {
   RegionalPresetOverridesSchema,
   StationModelSchema,
   STATION_MODELS,
+  scenarioForStore,
   type NarrationMode,
   type StationModel,
   // ScenarioConfig type is re-exported from the state module above.
@@ -324,6 +325,13 @@ export {
   // with the `Weather` event payload re-exported from the state module.
   type Weather as CityWeather,
 } from './lib/city/city.js';
+export {
+  calendarLabel,
+  calendarMonth,
+  dayOffReason,
+  publicHoliday,
+  scheduleWeekdayIndex,
+} from './lib/city/calendar.js';
 
 export {
   // Organisations and Principal NPCs: the real Org/Npc shapes (Req 1.1, 1.3,
@@ -541,6 +549,7 @@ export {
   INTERCEPT_OWNER_KINDS,
   INTERCEPT_ORIGINS,
   OWNER_CIPHER_WEIGHTS,
+  CIPHER_KEYWORDS,
   CIPHER_WEIGHT_ORDER,
   FIXED_HEADER_CRIB,
   type InterceptOwnerKind,
@@ -1178,6 +1187,7 @@ export {
   locationGate,
   namerContextOf,
   predicateNamer,
+  describeProposition,
   renderPropositionLine,
   renderFactLines,
   visibleNpcsAt,
@@ -1498,6 +1508,7 @@ export {
   // `appendRecentTurn` the `RECENT_TURNS`-capped append, and `pitchLever` the
   // lever each pitch Intent presses.
   applyDialogueTurn,
+  pitchAllowed,
   sceneRelationship,
   appendRecentTurn,
   pitchLever,
@@ -1520,6 +1531,8 @@ export {
   // `assetProfileFor` mints a newly recruited NPC's profile from their
   // schedule, org and acquaintances.
   newRelationship,
+  MEETINGS_BEFORE_PITCH,
+  recruitmentProgress,
   assetProfileFor,
   assetStatus,
   isAsset,
@@ -2115,6 +2128,82 @@ export { checkRegionContent, regionRefs } from './lib/region/check.js';
 export { loadRegionContent, regionSources } from './lib/region/load.js';
 export { regionCatalog, type RegionCatalog } from './lib/region/catalog.js';
 export { generateRegion, type GenerateRegionInputs } from './lib/region/generate.js';
+export {
+  createExtensionRegistry,
+  isExtensionKind,
+  type AddOn,
+  type ExtensionRegistry,
+} from './lib/extension/registry.js';
+export { streetOpsRegistry, STREET_OPS_ID, STREET_OPS_VERSION } from './lib/street-ops/addon.js';
+export { runtimeFromLoadedPacks, streetPlayDirs, withStreetPack, STREET_PLAY_PACKS } from './lib/street-ops/play.js';
+export {
+  STREET_OPS_KINDS,
+  streetOpsJsonSchema,
+  GRAPH_FEATURES,
+  SPEED_CLASSES,
+  STREET_PHASES,
+} from './lib/street-ops/content.js';
+export { checkStreetOpsContent, type StreetOpsSource } from './lib/street-ops/check.js';
+export {
+  compileStreetGraph,
+  pinFrontage,
+  validateStreetGraph,
+  gridGraph,
+  DEFAULT_SPEED_M_PER_TICK,
+  RELATIVES,
+  type StreetGraph,
+  type TurnOption,
+  type Directed,
+} from './lib/street-ops/graph.js';
+export {
+  STREET_SLICE_VERSION,
+  emptyStreetOpsState,
+  emptyStreetOpsTruth,
+  migrateStreetOpsState,
+  migrateStreetOpsTruth,
+  type StreetOpsState,
+  type StreetOpsTruth,
+  type KnowledgeSource,
+} from './lib/street-ops/state.js';
+export {
+  STREET_STREAM_BASE,
+  STREET_SUBSTREAMS,
+  streetReplayHeader,
+  streetStream,
+  streetSubstream,
+  type StreetSubstream,
+} from './lib/street-ops/stream.js';
+export { ensureStreetOps, streetOpsOf } from './lib/street-ops/slice.js';
+export {
+  assessBluff,
+  claimsFor,
+  extractSlotClaims,
+  fileStory,
+  findContradictions,
+  PROTECTED_SLOTS,
+} from './lib/street-ops/bluff.js';
+export {
+  VEHICLE_BORDER,
+  avoidanceDelta,
+  detectionChance,
+  randomStop,
+  vehicleBorderExtension,
+  vehicleCheck,
+  SEARCH_LEVELS,
+} from './lib/street-ops/checkpoint.js';
+export {
+  chargeTicks,
+  closeClock,
+  coverVehicle,
+  driveCandidates,
+  navigationAidActive,
+  runtimeFor,
+  runtimeFromScenario,
+  selectStreetGraph,
+  streetRates,
+  type StreetOpsRuntime,
+  type VehicleOffer,
+} from './lib/street-ops/drive.js';
 export { regionTruth } from './lib/region/mystery.js';
 export {
   flushRegionMetrics,
@@ -2126,7 +2215,7 @@ export {
   type RegionTimingPurpose,
   type RegionTimingRecord,
 } from './lib/region/metrics-log.js';
-export { borderCheck, borderFactLine, BORDER_OUTCOMES, BORDER_OUTCOME_RANK } from './lib/border/check.js';
+export { borderCheck, borderFactLine, requiredPapersMissing, BORDER_OUTCOMES, BORDER_OUTCOME_RANK } from './lib/border/check.js';
 export type { BorderOutcome, BorderInput, BorderResult } from './lib/border/check.js';
 export { quoteDepart, resolveDepart } from './lib/travel/depart.js';
 export { decideVisa, quotePapers, quoteVisa, resolvePapers, resolveVisa } from './lib/travel/papers.js';

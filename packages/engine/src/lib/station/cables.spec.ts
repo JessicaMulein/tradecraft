@@ -156,6 +156,19 @@ describe('processDueCables — a report cable', () => {
     expect(result.events[0].kind).toBe('cable');
     expect(balance(result.ledger)).toBe(500); // no money move
   });
+
+  it('leaves Standing unchanged when the report is empty', () => {
+    const pending = submitCable({ kind: 'report', body: '   ' }, T(0, 0), {
+      delayPhases: 4,
+    });
+    expect(pending.reply).toEqual({ kind: 'report', standingDelta: 0 });
+    const result = processDueCables(
+      station([pending], { standing: 2 }),
+      T(1, 0),
+      FUNDS,
+    );
+    expect(result.standing).toBe(2);
+  });
 });
 
 describe('processDueCables — a trace cable', () => {

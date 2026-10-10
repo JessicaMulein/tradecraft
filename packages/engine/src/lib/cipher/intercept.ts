@@ -8,13 +8,14 @@
  * Traffic (task 6.3) — carries a handful of {@link Proposition}s describing what
  * is about to happen. Before it goes on the wire the Cipher Engine:
  *
- * 1. encodes the Propositions to a terse field message with
- *    {@link encodePropositions} (predicate-keyed plaintext, Requirement 9.1);
+ * 1. writes an operational note from the Propositions ({@link operationalPlaintext})
+ *    and keeps the predicate-keyed field message ({@link encodePropositions}) as
+ *    a private copy so a correct break still recovers those facts (Requirement 9.1);
  * 2. draws a {@link CipherKind} weighted by the transmission's **owner** — the
  *    organisation whose tradecraft the traffic reflects (a hostile resident or
- *    the Cell favours numbers broadcasts with strong keys — book and one-time
- *    pad; the Station favours Vigenère; noise owners favour the simple hand
- *    ciphers so the player can triage them, design "Cipher Engine");
+ *    the Cell favours a word-keyed Vigenère a person can work, with a book
+ *    cipher or a one-time pad less often; the Station favours Vigenère; noise
+ *    owners favour the simple hand ciphers so the player can triage them);
  * 3. resolves a drawn {@link CipherSpec} to a {@link CipherKey} and
  *    {@link encrypt}s the field message into the Intercept's ciphertext;
  * 4. at the preset's `tradecraftErrorProbability`, injects an operator mistake
@@ -33,9 +34,9 @@
  * concurrently or later without a dependency here.
  *
  * **Intercept fidelity (Property 9).** For any generated Intercept, resolving
- * its true `spec`, {@link decrypt}ing the ciphertext and {@link parseFieldMessage}
- * -ing the result yields exactly its source Propositions. The tests next to this
- * file check that round-trip directly.
+ * its true `spec` and {@link decrypt}ing the ciphertext yields the operational
+ * note. Parsing the private field message ({@link Intercept.encoded}) yields
+ * exactly its source Propositions. The tests next to this file check both.
  */
 
 import {
@@ -57,6 +58,7 @@ import {
 import type { CipherConventions } from '@tradecraft/content';
 import { encrypt, decrypt, type CipherKey, type CipherKind } from './cipher.js';
 import { encodePropositions, type FieldCodeSource } from './field-message.js';
+import { operationalPlaintext } from './operational.js';
 import {
   resolveCipherSpec,
   BOOK_SCHEMES,
@@ -119,8 +121,8 @@ export type CipherWeights = Readonly<Record<CipherKind, number>>;
 export const OWNER_CIPHER_WEIGHTS: Readonly<
   Record<InterceptOwnerKind, CipherWeights>
 > = {
-  hostile: { caesar: 0, vigenere: 2, columnar: 1, book: 3, otp: 4 },
-  cell: { caesar: 0, vigenere: 2, columnar: 2, book: 3, otp: 3 },
+  hostile: { caesar: 0, vigenere: 4, columnar: 2, book: 2, otp: 1 },
+  cell: { caesar: 0, vigenere: 4, columnar: 2, book: 2, otp: 1 },
   station: { caesar: 1, vigenere: 4, columnar: 2, book: 1, otp: 1 },
   noise: { caesar: 3, vigenere: 3, columnar: 2, book: 1, otp: 1 },
 } as const;
@@ -326,8 +328,10 @@ export interface InterceptMeta {
   readonly length: number;
   /** A stereotyped header crib, present only on a `fixed-header` error. */
   readonly header?: string;
-  /** A call sign derived from the Channel, shown as traffic metadata. */
+  /** A call sign that does not spell the sender's name. */
   readonly callsign?: string;
+  /** A neutral frequency label, such as "Station 4, 6.2 Mc/s". */
+  readonly signal?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -371,6 +375,13 @@ export interface Intercept {
   readonly spec: Truth<CipherSpec>;
   /** The ids of the source Propositions, in message order (ground truth). */
   readonly plaintextProps: Truth<readonly string[]>;
+  /**
+   * The private field message the facts were encoded as (ground truth). The
+   * ciphertext is the operational note, not this string. A correct break parses
+   * this to recover the Propositions. Absent on intercepts minted before that
+   * split, which still carry the field message as their plaintext.
+   */
+  readonly encoded?: Truth<string>;
   /** Why this traffic exists (ground truth: plot, side thread or noise). */
   readonly origin: Truth<InterceptOriginKind>;
   /** An operator mistake the player can exploit, when one was injected (Req 9.4). */
@@ -466,6 +477,11 @@ export interface GenerateInterceptsInputs {
   readonly padIds: readonly string[];
   /** Supplies the content a drawn `book`/`otp` spec refers to, for encryption. */
   readonly keyLookup: CipherKeyLookup;
+  /**
+   * Display names for the people, places and organisations a note may mention.
+   * Absent names are read off the id (`npc:ana` → "Ana").
+   */
+  readonly names?: ReadonlyMap<string, string>;
   /**
    * The Era Pack's cipher conventions, when an Era Pack is loaded
    * (content-expansion Requirement 5.6): the per-owner cipher-kind weights, the
@@ -591,12 +607,44 @@ export function interceptIdOf(transmissionId: string): InterceptId {
   return `int:${slug.length > 0 ? slug : 'tx'}` as InterceptId;
 }
 
-/** A short call sign derived from a Channel id, for traffic metadata. */
+/** Four-letter signs that are not personal names. A digit keeps two channels apart. */
+const TRAFFIC_SIGNS = [
+  'QUOR', 'VELD', 'NORD', 'KITE', 'BRAM', 'LOOM', 'WREN', 'PACT',
+  'HELD', 'MOOR', 'RILL', 'VANE', 'COVE', 'DUSK', 'FERN', 'GULL',
+  'HALE', 'JUTE', 'KELP', 'LARK', 'MIST', 'NAPE', 'OAKS', 'PINE',
+] as const;
+
+function trafficHash(text: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i += 1) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * A call sign for a Channel. It is a fixed function of the Channel id, so the
+ * same channel always signs the same way, and the sign is not the sender's name.
+ */
+export function trafficCallsign(channelId: string): string {
+  const h = trafficHash(channelId);
+  const word = TRAFFIC_SIGNS[h % TRAFFIC_SIGNS.length];
+  return `${word}${(h % 9) + 1}`;
+}
+
+/** A frequency label that does not name the operator. */
+export function trafficSignal(channelId: string): string {
+  const h = trafficHash(`${channelId}#`);
+  const station = (h % 20) + 1;
+  const whole = 3 + (h % 5);
+  const frac = (h >>> 8) % 10;
+  return `Station ${station}, ${whole}.${frac} Mc/s`;
+}
+
+/** A short call sign for traffic metadata. */
 function callsignOf(channel: Channel): string {
-  const local = channel.id.slice(channel.id.indexOf(':') + 1);
-  // Keep the leading alphanumerics, upper-cased, as a terse station sign.
-  const sign = local.replace(/[^A-Za-z0-9]+/g, '').toUpperCase().slice(0, 4);
-  return sign.length > 0 ? sign : 'STN';
+  return trafficCallsign(channel.id);
 }
 
 // ---------------------------------------------------------------------------
@@ -634,15 +682,49 @@ function drawSpec(
   }
 }
 
-/** A short pronounceable keyword for Vigenère/columnar keys. */
+/**
+ * Words a Vigenère or columnar key is drawn from. Four to seven letters, the
+ * sort of word the traffic's subject matter suggests. The workbench does not
+ * list them; it tells the player the key is a word and lets a guess be read
+ * for free.
+ */
+export const CIPHER_KEYWORDS: readonly string[] = [
+  'AGENT',
+  'BRIDGE',
+  'CABLE',
+  'CAFE',
+  'CASTLE',
+  'CIPHER',
+  'COURIER',
+  'COVER',
+  'DANUBE',
+  'DAWN',
+  'DEPOT',
+  'HOTEL',
+  'LIAISON',
+  'MARKET',
+  'NIGHT',
+  'OPERA',
+  'PACKET',
+  'PALACE',
+  'PAPER',
+  'PATROL',
+  'PRATER',
+  'RING',
+  'RIVER',
+  'SECTOR',
+  'SIGNAL',
+  'SPRING',
+  'TRAIN',
+  'VIENNA',
+  'WALTZ',
+  'WHEEL',
+  'WINTER',
+];
+
+/** A word key for Vigenère or columnar. One draw from {@link CIPHER_KEYWORDS}. */
 function drawKeyword(prng: Prng): string {
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const length = prng.int(4, 7);
-  let out = '';
-  for (let i = 0; i < length; i += 1) {
-    out += letters[prng.int(0, 25)];
-  }
-  return out;
+  return prng.pick(CIPHER_KEYWORDS);
 }
 
 /**
@@ -726,6 +808,7 @@ export function generateIntercepts(
 
     const id = interceptIdOf(tx.id);
     const fieldMessage = encodePropositions(tx.propositions, inputs.fieldCodes);
+    const note = operationalPlaintext(tx.propositions, inputs.names);
 
     // --- cipher kind + spec ------------------------------------------------
     const kinds = usableKinds(
@@ -754,7 +837,7 @@ export function generateIntercepts(
     // One roll per eligible Intercept against the preset probability.
     const injectError = prng.bool(clampProbability(inputs.tradecraftErrorProbability));
     let tradecraftError: TradecraftError | undefined;
-    let plaintext = fieldMessage;
+    let plaintext = note;
     let header: string | undefined;
 
     if (injectError) {
@@ -768,12 +851,12 @@ export function generateIntercepts(
         } else {
           // No prior pad to reuse yet: fall back to a fixed-header crib.
           header = drawFixedHeader(prng, inputs.cipherConventions);
-          plaintext = withHeader(fieldMessage, header);
+          plaintext = withHeader(note, header);
           tradecraftError = { kind: 'fixed-header', header };
         }
       } else {
         header = drawFixedHeader(prng, inputs.cipherConventions);
-        plaintext = withHeader(fieldMessage, header);
+        plaintext = withHeader(note, header);
         tradecraftError = { kind: 'fixed-header', header };
       }
     }
@@ -786,6 +869,7 @@ export function generateIntercepts(
       length: ciphertext.length,
       ...(header !== undefined ? { header } : {}),
       callsign: callsignOf(channel),
+      signal: trafficSignal(channel.id),
     };
 
     const intercept: Intercept = {
@@ -798,6 +882,7 @@ export function generateIntercepts(
       ciphertext,
       spec: asTruth(spec),
       plaintextProps: asTruth(tx.propositions.map((p) => p.id)),
+      encoded: asTruth(fieldMessage),
       origin: asTruth(tx.origin),
       ...(tradecraftError !== undefined ? { tradecraftError } : {}),
     };
@@ -846,6 +931,14 @@ export function revealedSpec(intercept: Intercept): CipherSpec {
  * resolve it via {@link resolveCipherSpec} against the same key material the
  * generator used.
  */
+/** The private field message, present on intercepts whose wire text is a note. */
+export function privateFieldMessage(intercept: Intercept): string {
+  if (intercept.encoded === undefined) {
+    throw new Error(`privateFieldMessage: ${intercept.id} has no private field message`);
+  }
+  return revealTruth(intercept.encoded);
+}
+
 export function decryptToFieldMessage(
   intercept: Intercept,
   key: CipherKey,

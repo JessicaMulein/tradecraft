@@ -43,6 +43,7 @@ import {
   type ScenarioConfig,
 } from './config/scenario-config.js';
 import { verifyDiscoveryPaths, type DiscoveryResult } from './city/discovery.js';
+import { visibleNpcsAt } from './action/action.js';
 import { scheduledLocationAt } from './clock/schedules.js';
 import { BACKGROUND_ID_PREFIX } from './noise/background.js';
 import {
@@ -246,6 +247,27 @@ describe('generate — populates the world (steps 1–9)', () => {
     expect(Object.keys(world.orgs).length).toBe(3);
     expect(Object.keys(world.npcs).length).toBeGreaterThan(0);
     expect(world.city.locations[world.player.loc]).toBeDefined();
+  });
+
+  it('starts at one service\'s Station, outside the Soviet sector, with the Chief in the office', () => {
+    const world = generate('alpha', inputs());
+    const here = world.city.locations[world.player.loc];
+    expect(here?.type === 'station-hq' || here?.type.endsWith('/station-hq')).toBe(true);
+    const district = world.city.districts[here.district];
+    expect(district.sector).not.toBe('soviet');
+    expect(world.station.service === 'american' || world.station.service === 'british').toBe(true);
+    const service = world.station.service;
+    for (const id of [world.station.chief, ...world.station.staff]) {
+      const npc = world.npcs[id];
+      const role = npc.archetype.slice(npc.archetype.lastIndexOf('/') + 1);
+      if (role === 'station-driver') {
+        expect(npc.persona.library === 'austrian' || npc.persona.library.endsWith('/austrian')).toBe(true);
+      } else {
+        expect(npc.persona.library === service || npc.persona.library.endsWith(`/${service}`)).toBe(true);
+      }
+    }
+    expect(world.player.contacts).toContain(world.station.chief);
+    expect(visibleNpcsAt(world, world.player.loc)).toContain(world.station.chief);
   });
 
   it('populates the Station block, with a mole only when enabled', () => {

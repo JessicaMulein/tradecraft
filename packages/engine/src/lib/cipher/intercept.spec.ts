@@ -37,7 +37,11 @@ import {
   conventionWeightsFor,
   revealedSpec,
   decryptToFieldMessage,
+  privateFieldMessage,
   OWNER_CIPHER_WEIGHTS,
+  CIPHER_KEYWORDS,
+  trafficCallsign,
+  trafficSignal,
   FIXED_HEADER_CRIB,
   INTERCEPT_OWNER_KINDS,
   type GenerateInterceptsInputs,
@@ -50,6 +54,7 @@ import {
   type FieldCodeLookup,
 } from './field-message.js';
 import { decrypt } from './cipher.js';
+import { operationalPlaintext } from './operational.js';
 
 // ---------------------------------------------------------------------------
 // Test fixtures
@@ -164,7 +169,8 @@ describe('generateIntercepts — fidelity (Req 9.1, Property 9)', () => {
     for (const intercept of Object.values(intercepts)) {
       const key = resolveCipherSpec(revealedSpec(intercept), keyLookup);
       const plain = decryptToFieldMessage(intercept, key);
-      const recovered = parseFieldMessage(plain, fieldCodes);
+      expect(plain).toBe(operationalPlaintext(props(0)));
+      const recovered = parseFieldMessage(privateFieldMessage(intercept), fieldCodes);
       // Both sources carry props(0); the field message does not carry the
       // Sim-internal id (rebuilt as fm:<line>), so compare every other field.
       const expected = parseFieldMessage(
@@ -204,9 +210,10 @@ describe('generateIntercepts — fidelity (Req 9.1, Property 9)', () => {
           const [intercept] = Object.values(intercepts);
           const key = resolveCipherSpec(revealedSpec(intercept), keyLookup);
           const recovered = parseFieldMessage(
-            decryptToFieldMessage(intercept, key),
+            privateFieldMessage(intercept),
             fieldCodes,
           );
+          expect(decryptToFieldMessage(intercept, key)).toBe(operationalPlaintext(props(0)));
           expect(recovered.map((p) => p.predicate)).toEqual([
             'MEETS_AT',
             'USES_CHANNEL',
@@ -236,7 +243,9 @@ describe('generateIntercepts — traffic metadata (Req 25.3)', () => {
     expect(intercept.at).toEqual({ day: 3, phase: 2 });
     expect(intercept.owner).toBe('org:cell');
     expect(intercept.direction).toBe('inbound');
-    expect(intercept.meta.callsign).toBe('B');
+    expect(intercept.meta.callsign).toBe(trafficCallsign('chan:b'));
+    expect(intercept.meta.callsign).not.toBe('B');
+    expect(intercept.meta.signal).toBe(trafficSignal('chan:b'));
     expect(intercept.meta.length).toBe(intercept.ciphertext.length);
   });
 
@@ -302,6 +311,8 @@ describe('generateIntercepts — owner-weighted cipher kind', () => {
     );
     const [intercept] = Object.values(intercepts);
     expect(revealedSpec(intercept).kind).toBe('vigenere');
+    const spec = revealedSpec(intercept);
+    if (spec.kind === 'vigenere') expect(CIPHER_KEYWORDS).toContain(spec.key);
   });
 
   it('hostile never draws caesar (weight 0) over many seeds', () => {
@@ -684,9 +695,10 @@ describe('generateIntercepts — applies loaded cipher conventions (Req 5.6)', (
     for (const intercept of Object.values(intercepts)) {
       const key = resolveCipherSpec(revealedSpec(intercept), keyLookup);
       const recovered = parseFieldMessage(
-        decryptToFieldMessage(intercept, key),
+        privateFieldMessage(intercept),
         fieldCodes,
       );
+      expect(decryptToFieldMessage(intercept, key)).toBe(operationalPlaintext(props(0)));
       expect(recovered.map((p) => p.predicate)).toEqual([
         'MEETS_AT',
         'USES_CHANNEL',

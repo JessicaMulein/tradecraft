@@ -40,6 +40,7 @@ export type { FeedError } from '@tradecraft/engine';
 
 import type { PaperView } from '../region/papers.js';
 import type { CarriageView, DepartureView, RegionMapView } from '../region/views.js';
+import type { StreetView } from '../street/map.js';
 import type {
   CaseFileFilter,
   ClaimView,
@@ -337,12 +338,20 @@ export interface GameFactory {
 /** The status bar's view (owned by the status/Turn Pipeline task). */
 export interface StatusView {
   readonly time: GameTime;
+  /** The calendar date, such as `1 December 1952`. */
+  readonly date?: string;
   readonly location: { readonly id: EntityId; readonly name: string };
   readonly budget: number;
   readonly standing: number;
   readonly ended: boolean;
   /** The city the player is in. Absent in slice mode and while in transit. */
   readonly city?: { readonly id: string; readonly name: string };
+  /**
+   * The warning from the last arrival, when the player was told they may have
+   * been followed. Absent once a later arrival does not repeat it. Not the
+   * hidden tail flag.
+   */
+  readonly followed?: string;
   /** Set while the player is riding a departure. */
   readonly transit?: {
     readonly destination: { readonly id: string; readonly name: string };
@@ -444,6 +453,8 @@ export interface HelpView {
   readonly actions: readonly HelpActionEntry[];
   /** The glossary, in alphabetical order by term. */
   readonly glossary: readonly HelpGlossaryEntry[];
+  /** Attribution lines for a built street graph. Absent when none is loaded. */
+  readonly credits?: readonly string[];
 }
 
 // The end-of-game debrief view (task 20.2). The full shape and the pure
@@ -481,6 +492,12 @@ export interface EngineApi {
 
   /** Every action with its quote; disallowed ones carry a reason. */
   actions(): ActionOption[];
+
+  /**
+   * The talk that opens the station briefing, when the Chief is here and will
+   * talk. Anyone else in the room is not the briefing.
+   */
+  briefingTalk(): Action | undefined;
 
   /** The cost and eligibility of one action (design `ActionQuote`). */
   quote(a: Action): ActionQuote;
@@ -543,6 +560,8 @@ export interface EngineApi {
     here(): HereView;
     journal(): JournalView;
     map(): MapView;
+    /** The street map and the open drive, or null when no street graph is loaded. */
+    street(): StreetView | null;
     city(): CityView;
     stories(): StoriesView;
     duties(): DutiesView;

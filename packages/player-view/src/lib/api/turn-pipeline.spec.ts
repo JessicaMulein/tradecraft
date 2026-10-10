@@ -208,10 +208,14 @@ function withScene(state: WorldState, npc: NpcId = firstNpc(state)): WorldState 
  * clock deps absent, as the other pipeline specs are, so the dialogue turn stays
  * model-free behind its seams.
  */
-function makeSceneEngine(config: TurnPipelineConfig = {}, seed = 'alpha') {
+function makeSceneEngine(
+  config: TurnPipelineConfig = {},
+  seed = 'alpha',
+  prepare?: (state: WorldState, npc: NpcId) => WorldState,
+) {
   const base = world(seed);
   const npc = firstNpc(base);
-  const state = withScene(base, npc);
+  const state = withScene(prepare === undefined ? base : prepare(base, npc), npc);
   const caseFile = new CaseFile();
   const journal = new Journal();
   const notifications = new NotificationStore();
@@ -524,10 +528,32 @@ describe('Turn Pipeline — dialogue turn wiring', () => {
   });
 
   it('debits the Budget for a covered money-pitch offer (Req 15.7)', async () => {
-    const { engine } = makeSceneEngine({
-      classify: () => Promise.resolve('pitch-money'),
-      voice: () => Promise.resolve({ released: ['I will think about it.'], speaker: 'The contact' }),
-    });
+    const { engine } = makeSceneEngine(
+      {
+        classify: () => Promise.resolve('pitch-money'),
+        voice: () => Promise.resolve({ released: ['I will think about it.'], speaker: 'The contact' }),
+      },
+      'alpha',
+      (state, npc) => ({
+        ...state,
+        relationships: {
+          ...state.relationships,
+          [npc]: {
+            npc,
+            trust: 0.4,
+            suspicion: 0,
+            exposure: 0,
+            recruited: false,
+            contacts: 3,
+            channel: true,
+            coverState: 'intact',
+            meetings: 3,
+            pitchApproved: true,
+            lastMeetingDay: -1,
+          },
+        },
+      }),
+    );
 
     const before = balance(engine.state.station.ledger);
     const offer = Math.min(before, 100);

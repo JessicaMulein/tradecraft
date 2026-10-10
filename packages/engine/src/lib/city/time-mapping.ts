@@ -21,9 +21,9 @@
  *   non-overlapping, so every content phase belongs to exactly one engine
  *   phase.
  * - A day counter maps to a weekday by `day mod 7`, with day 0 a Monday
- *   ({@link weekdayForDay}). The slice has no calendar start, so this is a fixed
- *   convention the whole engine shares; a later spec that introduces a real
- *   Start Date can offset it.
+ *   ({@link weekdayForDay}), unless the caller passes the game's start date.
+ *   With a start date, day 0 is that calendar day and the weekday is the real
+ *   one. The Monday count remains for callers that have no start date.
  * - A day maps to a calendar month, and a month to the season whose table the
  *   weather draw reads ({@link monthForDay}, {@link seasonMonths}). Months are a
  *   fixed 30 days for the slice, again a convention a Start Date spec refines.
@@ -33,7 +33,7 @@
  * Movement").
  */
 
-import { PHASES, WEEKDAYS } from '@tradecraft/content';
+import { addDays, parseIsoDate, PHASES, weekdayIndex, WEEKDAYS } from '@tradecraft/content';
 
 import { type GameTime, type Phase } from '../model/core.js';
 
@@ -111,15 +111,22 @@ export const DAYS_PER_MONTH = 30;
 export const MONTHS_PER_YEAR = 12;
 
 /**
- * The weekday a day counter lands on. Day 0 is Monday, so `day mod 7` indexes
- * {@link CONTENT_WEEKDAYS}. A negative `day` is rejected: the clock never runs
- * before day 0.
+ * The weekday a day counter lands on. With no start date, day 0 is Monday and
+ * `day mod 7` indexes {@link CONTENT_WEEKDAYS}. With a start date, day 0 is
+ * that calendar day. A negative `day` is rejected: the clock never runs before
+ * day 0. A start date that does not parse falls back to the Monday count.
  */
-export function weekdayForDay(day: number): Weekday {
+export function weekdayForDay(day: number, startDate?: string): Weekday {
   if (!Number.isInteger(day) || day < 0) {
     throw new RangeError(
       `weekdayForDay(): day must be a non-negative integer, received ${String(day)}`,
     );
+  }
+  if (startDate !== undefined) {
+    const start = parseIsoDate(startDate);
+    if (start !== undefined) {
+      return CONTENT_WEEKDAYS[weekdayIndex(addDays(start, day))];
+    }
   }
   return CONTENT_WEEKDAYS[day % CONTENT_WEEKDAYS.length];
 }

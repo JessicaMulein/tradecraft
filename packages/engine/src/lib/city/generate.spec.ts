@@ -163,6 +163,12 @@ describe('generateCity', () => {
     }
   });
 
+  it('gives every place its own name', () => {
+    const { city } = gen('place-names');
+    const names = Object.values(city.locations).map((loc) => loc.name);
+    expect(new Set(names).size).toBe(names.length);
+  });
+
   it('draws each Location risk from its Location Type baseRisk', () => {
     const { city } = gen('risk-seed');
     for (const loc of Object.values(city.locations)) {

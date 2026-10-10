@@ -29,7 +29,7 @@ import type { ReactElement } from 'react';
 import { Box, Text } from 'ink';
 import type { ActionOption, StatusView } from '@tradecraft/player-view';
 
-import { formatTime } from './time.js';
+import { formatTime, phaseName } from './time.js';
 
 /** Props for {@link StatusBar}. */
 export interface StatusBarProps {
@@ -66,6 +66,13 @@ function cityPrefix(status: StatusView): string {
   }
   return `${status.city.name} · `;
 }
+function statusWhen(status: StatusView): string {
+  if (status.date === undefined) {
+    return formatTime(status.time);
+  }
+  return `${status.date}, ${phaseName(status.time.phase)}`;
+}
+
 function costLabel(option: ActionOption): string {
   const { action, quote } = option;
   const phases = `${quote.phases} ${quote.phases === 1 ? 'phase' : 'phases'}`;
@@ -90,10 +97,15 @@ export function StatusBar({
       <Box>
         <Text>
           {cityPrefix(status)}
-          {formatTime(status.time)} · {whereLabel(status)} · Budget{' '}
+          {statusWhen(status)} · {whereLabel(status)} · Budget{' '}
           {status.budget} · Standing {status.standing}
         </Text>
       </Box>
+      {status.followed !== undefined && status.followed.length > 0 && (
+        <Box>
+          <Text color="yellow">{status.followed}</Text>
+        </Box>
+      )}
       <Box>
         <Text dimColor>Directives: {directiveLabel}</Text>
       </Box>

@@ -51,6 +51,12 @@ describe('runWebLauncher', () => {
     expect(opened).toEqual(h.out.filter((l) => l.startsWith('http://')));
   });
 
+  it('refuses a --record flag with no path', async () => {
+    const h = io();
+    expect(await runWebLauncher(['--record'], h.io)).toBe(1);
+    expect(h.err.join('\n')).toMatch(/--record/);
+  });
+
   it('refuses a host option in config/web.yaml', async () => {
     const h = io({
       readFile: (p) => (p.endsWith('web.yaml') ? 'host: 0.0.0.0\n' : readFileSync(p, 'utf8')),

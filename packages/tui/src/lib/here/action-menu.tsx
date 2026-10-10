@@ -31,7 +31,7 @@
 
 import { useEffect, useReducer, type ReactElement } from 'react';
 import { Box, Text, useInput } from 'ink';
-import type { ActionOption } from '@tradecraft/player-view';
+import { describeCatalogueAction, type ActionOption } from '@tradecraft/player-view';
 
 import { initialMenuState, reduceMenu, type MenuState } from './menu.js';
 
@@ -47,12 +47,43 @@ export interface ActionMenuProps {
    * owning screen gates on the option's `quote.allowed` before acting.
    */
   readonly onChoose?: (option: ActionOption) => void;
+  /**
+   * Names a row from what the player knows. When omitted, the row uses the
+   * shared catalogue phrase.
+   */
+  readonly label?: (option: ActionOption) => string;
 }
 
 /** An allowed action's cost, e.g. "1 phase" or "2 phases, 20". */
 function allowedCost(phases: number, money: number): string {
   const phaseLabel = `${phases} ${phases === 1 ? 'phase' : 'phases'}`;
   return money > 0 ? `${phaseLabel}, ${money}` : phaseLabel;
+}
+
+/** The row name. Street actions use the same phrases as the web shell. */
+function actionLabel(option: ActionOption, label?: (option: ActionOption) => string): string {
+  return label === undefined ? describeCatalogueAction(option.action) : label(option);
+}
+
+/**
+ * One row per allowed action. Disallowed actions collapse to one line per kind
+ * and reason, so twenty copies of the same refusal do not fill the menu.
+ */
+function menuRows(
+  options: readonly ActionOption[],
+  label?: (option: ActionOption) => string,
+): { readonly option: ActionOption; readonly label: string }[] {
+  const rows: { option: ActionOption; label: string }[] = [];
+  const seen = new Set<string>();
+  for (const option of options) {
+    if (!option.quote.allowed) {
+      const key = `${option.action.kind}\0${option.quote.reason ?? ''}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+    }
+    rows.push({ option, label: actionLabel(option, label) });
+  }
+  return rows;
 }
 
 /** The quote summary for a row: the cost when allowed, the reason when not. */
@@ -69,9 +100,11 @@ function quoteLabel(option: ActionOption): string {
 /** One menu row: a cursor marker, the action kind and its quote summary. */
 function ActionRow({
   option,
+  label,
   highlighted,
 }: {
   readonly option: ActionOption;
+  readonly label: string;
   readonly highlighted: boolean;
 }): ReactElement {
   const allowed = option.quote.allowed;
@@ -84,7 +117,7 @@ function ActionRow({
         dimColor={!allowed}
       >
         {highlighted ? '> ' : '  '}
-        {option.action.kind === 'attend-duty' ? 'attend duty' : option.action.kind} — {quoteLabel(option)}
+        {label} — {quoteLabel(option)}
       </Text>
     </Box>
   );
@@ -96,10 +129,11 @@ function ActionRow({
  * when not (Req 21.5). Up/Down move the cursor (wrapping); Enter chooses the
  * highlighted option.
  */
-export function ActionMenu({ options, onChoose }: ActionMenuProps): ReactElement {
+export function ActionMenu({ options, onChoose, label }: ActionMenuProps): ReactElement {
+  const rows = menuRows(options, label);
   const [state, dispatch] = useReducer(
     (s: MenuState, a: Parameters<typeof reduceMenu>[1]) =>
-      reduceMenu(s, a, options.length),
+      reduceMenu(s, a, rows.length),
     initialMenuState(),
   );
 
@@ -107,7 +141,7 @@ export function ActionMenu({ options, onChoose }: ActionMenuProps): ReactElement
   // may offer a different set), so it never points past the end.
   useEffect(() => {
     dispatch({ type: 'clamp' });
-  }, [options.length]);
+  }, [rows.length]);
 
   useInput((_input, key) => {
     if (key.upArrow) {
@@ -119,14 +153,14 @@ export function ActionMenu({ options, onChoose }: ActionMenuProps): ReactElement
       return;
     }
     if (key.return) {
-      const chosen = options[state.index];
+      const chosen = rows[state.index]?.option;
       if (chosen !== undefined) {
         onChoose?.(chosen);
       }
     }
   });
 
-  if (options.length === 0) {
+  if (rows.length === 0) {
     return (
       <Box>
         <Text dimColor>No actions available here.</Text>
@@ -136,13 +170,14 @@ export function ActionMenu({ options, onChoose }: ActionMenuProps): ReactElement
 
   return (
     <Box flexDirection="column">
-      {options.map((option, index) => (
+      {rows.map((row, index) => (
         // The option list is rendered in order and keyed by position; the
         // action kind alone is not unique (two talks at a Location differ only
         // by target), so the stable list index is the key.
         <ActionRow
           key={index}
-          option={option}
+          option={row.option}
+          label={row.label}
           highlighted={index === state.index}
         />
       ))}

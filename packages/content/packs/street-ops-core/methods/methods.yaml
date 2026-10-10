@@ -1,0 +1,7 @@
+items:
+  - id: foot-follow
+    era: { from: 1946, to: 1955 }
+  - id: car-follow
+    era: { from: 1946, to: 1955 }
+  - id: static-watch
+    era: { from: 1946, to: 1955 }

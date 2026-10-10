@@ -43,6 +43,7 @@ import {
   type Truth,
   type UnkId,
 } from '../model/core.js';
+import type { StreetOpsTruth } from '../street-ops/state.js';
 import {
   holdsIn,
   type Allegiance,
@@ -121,6 +122,8 @@ export class TruthDraft implements TruthAccess {
   private readonly store: TruthStore;
   /** The writes made since the draft was opened. */
   private staged: StagedWrites = noWrites();
+  /** Street-ops truth staged until commit. Absent means "leave the store's". */
+  private stagedStreet: StreetOpsTruth | undefined;
   /** `open` until the draft is committed or discarded. */
   private status: 'open' | 'committed' | 'discarded' = 'open';
 
@@ -227,6 +230,17 @@ export class TruthDraft implements TruthAccess {
     this.transaction((tx) => tx.setAllegiance(npc, allegiance));
   }
 
+  /** The staged street slice, or the store's when this turn has not replaced it. */
+  streetOps(): StreetOpsTruth | undefined {
+    return this.stagedStreet ?? this.store.streetOps();
+  }
+
+  /** Stage a replacement street slice. The store changes at {@link commit}. */
+  replaceStreetOps(next: StreetOpsTruth): void {
+    this.assertOpen('write to');
+    this.stagedStreet = next;
+  }
+
   // -- lifecycle ------------------------------------------------------------
 
   /**
@@ -238,8 +252,11 @@ export class TruthDraft implements TruthAccess {
   commit(): void {
     this.assertOpen('commit');
     const staged = this.staged;
+    const street = this.stagedStreet;
     this.store.transaction((tx) => replay(staged, tx));
+    if (street !== undefined) this.store.replaceStreetOps(street);
     this.staged = noWrites();
+    this.stagedStreet = undefined;
     this.status = 'committed';
   }
 
@@ -253,6 +270,7 @@ export class TruthDraft implements TruthAccess {
       return;
     }
     this.staged = noWrites();
+    this.stagedStreet = undefined;
     this.status = 'discarded';
   }
 

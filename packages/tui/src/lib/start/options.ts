@@ -67,7 +67,7 @@ export interface StartState {
 /**
  * The initial start-screen state. A caller may pass defaults — e.g. a seed the
  * Sim already generated, to show it rather than leave the field blank — and the
- * rest fall back to a sensible new-game default (standard difficulty, mole on,
+ * rest fall back to a sensible new-game default (standard difficulty, mole off,
  * full narration), with the cursor on the seed field.
  */
 export function initialStartState(
@@ -77,7 +77,7 @@ export function initialStartState(
     focus: 'seed',
     seed: defaults.seed ?? '',
     preset: defaults.preset ?? 'standard',
-    mole: defaults.mole ?? true,
+    mole: defaults.mole ?? false,
     narration: defaults.narration ?? 'full',
   };
 }

@@ -8,7 +8,7 @@
 
 export { JournalPane, type JournalPaneProps } from './journal-view.js';
 
-export { MapPane, type MapPaneProps } from './map-view.js';
+export { LocalMap, MapPane, type MapPaneProps } from './map-view.js';
 
 export { CityPane, DutiesPane, NoticeLines, StoriesPane } from './city-views.js';
 

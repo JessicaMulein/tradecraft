@@ -89,7 +89,7 @@ import {
   TruthStore,
   type PredicateEvaluatorLookup,
 } from '../truth/truth.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import type { NpcSchedule } from '../city/npc.js';
 import { visibleNpcsAt } from './action.js';
 import {
@@ -247,7 +247,7 @@ function withEmptyWatchedLocation(base: WorldState): WorldState {
 
 /** The current weekday ordinal for a state's day (matches the resolvers' read). */
 function weekdayOf(state: WorldState): number {
-  return CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  return scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
 }
 
 /**

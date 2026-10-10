@@ -15,6 +15,7 @@
  * is therefore a lower bound on what a strong player can reach.
  */
 import {
+  MEETINGS_BEFORE_PITCH,
   revealTruth,
   scheduledLocationAt,
   type Action,
@@ -214,7 +215,7 @@ function nextLeaderSighting(
   travellable.add(game.api.status().location.id);
   for (let k = 0; k <= horizon; k += 1) {
     const at = addPhases(state.time, k);
-    const loc = scheduledLocationAt(leader, at);
+    const loc = scheduledLocationAt(leader, at, state.meta.setting.startDate);
     if (loc !== undefined && travellable.has(loc)) return { loc, at };
   }
   return undefined;
@@ -297,7 +298,9 @@ function bestInformant(state: WorldState, exclude: ReadonlySet<NpcId>): NpcId | 
     if (cell.has(npc.id) || exclude.has(npc.id)) continue;
     const org = revealTruth(npc.trueAllegiance).org;
     if (org === 'org:cell' || org.startsWith('org:hostile')) continue;
-    const score = sightings.filter((s) => scheduledLocationAt(npc, s.at) === s.loc).length;
+    const score = sightings.filter(
+      (s) => scheduledLocationAt(npc, s.at, state.meta.setting.startDate) === s.loc,
+    ).length;
     if (score > 0 && (best === undefined || score > best.score)) {
       best = { id: npc.id, score };
     }
@@ -327,7 +330,7 @@ function nextSighting(
   travellable.add(game.api.status().location.id);
   for (let k = 0; k <= horizon; k += 1) {
     const at = addPhases(state.time, k);
-    const loc = scheduledLocationAt(npc, at);
+    const loc = scheduledLocationAt(npc, at, state.meta.setting.startDate);
     if (loc !== undefined && travellable.has(loc)) return { loc, at };
   }
   return undefined;
@@ -386,13 +389,13 @@ async function workInformant(game: ScriptedGame, rec: Recruitment): Promise<bool
     return false;
   }
 
-  // In a scene with them: two lines of rapport, then the pitch.
   const scene = state.player.scene;
-  if (scene !== undefined && scene.npc === target) {
-    if ((rel?.trust ?? 0) < 0.3) {
-      await drain(game.api.say('intent:reassure'));
-      return true;
-    }
+  const developed = (rel?.meetings ?? 0) >= MEETINGS_BEFORE_PITCH;
+  if (!developed) {
+    if (await developInformant(game, target, rel, scene)) return true;
+  } else if (rel?.pitchApproved !== true) {
+    return requestClearance(game, target, scene);
+  } else if (scene !== undefined && scene.npc === target) {
     const lever = bestLever(state, target);
     const need = revealTruth(state.npcs[target].moneyNeed);
     const offer = lever === 'money' ? Math.min(need, game.api.status().budget) : undefined;
@@ -429,6 +432,56 @@ async function workInformant(game: ScriptedGame, rec: Recruitment): Promise<bool
   rec.given.add(target);
   rec.target = undefined;
   return false;
+}
+
+/** Two reassuring lines on each of three days. Returns false when the person is not in the scene. */
+async function developInformant(
+  game: ScriptedGame,
+  target: NpcId,
+  rel: { readonly meetings?: number; readonly lastMeetingDay?: number; readonly trust?: number } | undefined,
+  scene: { readonly npc: string } | undefined,
+): Promise<boolean> {
+  if (scene !== undefined && scene.npc !== target) {
+    await drain(game.api.endScene());
+    return true;
+  }
+  if (scene === undefined || scene.npc !== target) return false;
+  const meetings = rel?.meetings ?? 0;
+  const metToday = rel?.lastMeetingDay === world(game).time.day;
+  const trust = rel?.trust ?? 0;
+  const goal = 0.16 * (metToday ? meetings : meetings + 1);
+  if (metToday && trust + 0.001 >= goal) {
+    await drain(game.api.endScene());
+    return true;
+  }
+  await drain(game.api.say('intent:reassure'));
+  return true;
+}
+
+/** Leave the scene, cable a trace from the Station, and wait for the reply. */
+async function requestClearance(
+  game: ScriptedGame,
+  target: NpcId,
+  scene: { readonly npc: string } | undefined,
+): Promise<boolean> {
+  if (scene !== undefined) {
+    await drain(game.api.endScene());
+    return true;
+  }
+  const state = world(game);
+  const pending = state.station.pendingCables.some(
+    (cable) => cable.request.kind === 'trace' && cable.request.target === target,
+  );
+  if (pending) return false;
+  const station = stationId(game);
+  if (station === undefined) return false;
+  if (game.api.status().location.id !== station) return travel(game, station);
+  const sent = await tryPlay(
+    game,
+    (a) => a.kind === 'cable' && a.body.kind === 'trace' && a.body.target === target,
+  );
+  if (sent) return true;
+  return tryPlay(game, (a) => a.kind === 'wait' && a.phases === 1);
 }
 
 /** Probe one seed on one preset. */
@@ -472,11 +525,17 @@ export async function probeSeed(
       const handles = leaderHandles(state);
 
       // Arrest the leader the moment the gate opens (never in calibration mode).
-      if (
-        options.calibrate !== true &&
-        (await tryPlay(game, (a) => a.kind === 'arrest' && handles.has(a.npc)))
-      ) {
-        break;
+      // Once the case is strong enough, wait a phase at a time until the leader
+      // is outside the Soviet sector, which is the only place the police will act.
+      if (options.calibrate !== true) {
+        if (await tryPlay(game, (a) => a.kind === 'arrest' && handles.has(a.npc))) {
+          break;
+        }
+        const ready =
+          game.api.caseFile.evidence(leaderOf(state)) >= state.meta.preset.arrest.threshold;
+        if (ready && (await tryPlay(game, (a) => a.kind === 'wait' && a.phases === 1))) {
+          continue;
+        }
       }
 
       // Once the leader is a known entity, ask HQ for its file once.

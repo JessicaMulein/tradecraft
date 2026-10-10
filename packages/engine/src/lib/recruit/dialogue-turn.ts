@@ -11,10 +11,12 @@
  *
  * 1. **Intent (Req 15.5).** {@link applyIntent} moves the scene NPC's trust and
  *    suspicion by the Intent's fixed deltas.
- * 2. **Pitch (Req 15.6, 15.7, 15.8).** A `pitch-*` Intent presses the MICE
- *    lever it names ({@link pitchLever}). {@link resolvePitch} draws the
- *    recruitment coin once on the runtime PRNG, against the Relationship as
- *    step 1 left it.
+ * 2. **Pitch (Req 15.6, 15.7, 15.8).** A `pitch-*` Intent presses one motive.
+ *    It is heard only after {@link MEETINGS_BEFORE_PITCH} days of development
+ *    and a headquarters trace that approved it. Until then the line raises
+ *    suspicion and draws nothing, and no money is paid. Once it is heard,
+ *    {@link resolvePitch} draws the recruitment coin once on the runtime PRNG,
+ *    against the Relationship as step 1 left it.
  *    - Money. On `pitch-money`, a positive offer debits the Budget by the offer,
  *      tagged `pay` with the NPC as the entry's `ref`, whether or not the pitch
  *      lands. The same offer scales the money lever by `min(1, offer /
@@ -52,8 +54,9 @@
  * ## Contract and purity
  *
  * Pure: the function reads only its arguments, never mutates them, and draws
- * only from `rng`. A pitch takes exactly one draw and every other Intent takes
- * none. The PRNG state is not written into the returned state. The Turn
+ * only from `rng`. A pitch headquarters has approved takes exactly one draw.
+ * A pitch made too early, and every other Intent, takes none. The PRNG state
+ * is not written into the returned state. The Turn
  * Pipeline records `rng.state()` at commit, as it does for an action turn.
  *
  * The caller gates the offer. The facade rejects an offer the Budget cannot
@@ -82,12 +85,14 @@ import { hasContactChannel } from '../action/talk.js';
 import { TURN_REPORTED_COVER_SUSPICION } from '../action/turn-agent.js';
 import {
   assetProfileFor,
+  MEETINGS_BEFORE_PITCH,
   newRelationship,
   type MiceLever,
   type Relationship,
 } from './asset.js';
 import { applyIntent, type Intent } from './intent.js';
 import { resolvePitch, type PitchOutcome, type PitchWeights } from './pitch.js';
+import { standingAppointment } from './standing.js';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -196,6 +201,10 @@ function clampUnit(value: number): number {
  * NPC as the entry's `ref`. The facade has already checked the Budget covers
  * the offer, so an uncovered offer throws.
  */
+function offerCovered(state: WorldState, amount: number, npc: NpcId): boolean {
+  return payLedgerEffect(state.station.ledger, amount, state.time, npc) !== INSUFFICIENT;
+}
+
 function debitOffer(state: WorldState, amount: number, npc: NpcId): WorldState {
   const ledger = payLedgerEffect(state.station.ledger, amount, state.time, npc);
   if (ledger === INSUFFICIENT) {
@@ -289,16 +298,28 @@ export function applyDialogueTurn(
     );
   }
 
-  // 1. The Intent moves trust and suspicion (Req 15.5).
-  let rel = applyIntent(sceneRelationship(draft, npcId), input.intent);
+  // 1. The Intent moves trust and suspicion (Req 15.5). A development line
+  // counts as one meeting on this day.
+  let rel = noteMeeting(
+    applyIntent(sceneRelationship(draft, npcId), input.intent),
+    draft.time.day,
+    input.intent,
+  );
   let state = draft;
   let pitch: PitchOutcome | undefined;
 
-  // 2. A pitch draws the recruitment coin on the runtime PRNG (Req 15.6).
+  // 2. A pitch headquarters has approved draws the recruitment coin (Req 15.6).
+  // An earlier pitch is heard as pressure only: no coin, no payment, no recruit.
   const lever = pitchLever(input.intent);
-  if (lever !== undefined) {
+  if (lever === 'money' && offer > 0 && !offerCovered(state, offer, npcId)) {
+    throw new RangeError(
+      `applyDialogueTurn: the Budget cannot cover an offer of ${offer}; ` +
+        'the facade must reject the offer before classification',
+    );
+  }
+  if (lever !== undefined && pitchAllowed(rel)) {
     // Only a money pitch takes the offer: it is paid whether or not the pitch
-    // lands, and it scales the money lever (Req 15.7).
+    // lands, and it scales the money lever (Req 15.7). An early pitch pays nothing.
     const moneyOffer = lever === 'money' ? offer : 0;
     if (moneyOffer > 0) {
       state = debitOffer(state, moneyOffer, npcId);
@@ -307,11 +328,13 @@ export function applyDialogueTurn(
     if (pitch.accepted) {
       // Recruiting someone includes agreeing how to reach them, so an accepted
       // pitch opens the Contact Channel the new Asset is tasked over.
+      const standing = rel.standing ?? standingAppointment(npcId, draft);
       rel = {
         ...rel,
         recruited: true,
         channel: true,
         asset: rel.asset ?? assetProfileFor(npc, draft.npcs),
+        ...(standing === undefined ? {} : { standing }),
       };
       state = withContact(state, npcId);
     } else {
@@ -343,5 +366,30 @@ export function applyDialogueTurn(
     },
     ...(pitch === undefined ? {} : { pitch }),
     events: [],
+  };
+}
+
+/** Lines that develop a person. One such line per day counts as a meeting. */
+const DEVELOPMENT_INTENTS: ReadonlySet<Intent> = new Set([
+  'ask',
+  'probe',
+  'reassure',
+  'small-talk',
+]);
+
+/** Whether headquarters will hear a pitch against this relationship. */
+export function pitchAllowed(rel: Relationship): boolean {
+  return (rel.meetings ?? 0) >= MEETINGS_BEFORE_PITCH && rel.pitchApproved === true;
+}
+
+/** Count one development meeting on `day`, and ignore a second line the same day. */
+function noteMeeting(rel: Relationship, day: number, intent: Intent): Relationship {
+  if (!DEVELOPMENT_INTENTS.has(intent) || rel.lastMeetingDay === day) {
+    return rel;
+  }
+  return {
+    ...rel,
+    meetings: (rel.meetings ?? 0) + 1,
+    lastMeetingDay: day,
   };
 }

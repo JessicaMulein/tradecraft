@@ -45,7 +45,7 @@ describe('StartScreen fields', () => {
     expect(frame).toContain('Seed:');
     expect(frame).toContain('(random');
     expect(frame).toContain('Difficulty: standard');
-    expect(frame).toContain('Internal mole: on');
+    expect(frame).toContain('Internal mole: off');
     expect(frame).toContain('Narration: full');
   });
 
@@ -84,11 +84,11 @@ describe('StartScreen selection and confirm', () => {
     await tick();
     expect(onStart).toHaveBeenCalledTimes(1);
     const opts = firstStartOptions(onStart);
-    expect(opts).toEqual({ preset: 'standard', mole: true, narration: 'full' });
+    expect(opts).toEqual({ preset: 'standard', mole: false, narration: 'full' });
     expect('seed' in opts).toBe(false);
   });
 
-  it('types a seed, picks hard difficulty, turns the mole off and brief narration, then confirms', async () => {
+  it('types a seed, picks hard difficulty, turns the mole on and brief narration, then confirms', async () => {
     const onStart = vi.fn<(opts: NewGameOptions) => void>();
     const { stdin } = render(<StartScreen onStart={onStart} />);
     await tick();
@@ -105,7 +105,7 @@ describe('StartScreen selection and confirm', () => {
     stdin.write(KEY.right);
     await tick();
 
-    // Down to the mole, toggle off.
+    // Down to the mole, toggle on. The screen starts with the mole off.
     stdin.write(KEY.down);
     await tick();
     stdin.write(KEY.right);
@@ -124,7 +124,7 @@ describe('StartScreen selection and confirm', () => {
     expect(firstStartOptions(onStart)).toEqual({
       seed: 'alpha',
       preset: 'hard',
-      mole: false,
+      mole: true,
       narration: 'brief',
     });
   });

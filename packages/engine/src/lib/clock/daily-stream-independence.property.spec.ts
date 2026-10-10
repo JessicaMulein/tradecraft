@@ -308,7 +308,13 @@ describe('Property 37: Daily stream independence (Req 5.1)', () => {
           const result = run(state, phases, runtimeSeed);
           const got = weatherByDay(result);
           for (const day of boundaryDays(start, phases)) {
-            const oracle = weatherForDay(state.meta.seed, state.city, INPUTS.cityData, day);
+            const oracle = weatherForDay(
+              state.meta.seed,
+              state.city,
+              INPUTS.cityData,
+              day,
+              state.meta.setting.startDate,
+            );
             expect(got[day]).toBe(oracle.label);
           }
         }

@@ -46,6 +46,7 @@
  */
 
 import type { LocId, NpcId, Phase, Proposition } from '../model/core.js';
+import { withOrdinaryLife } from '../city/ordinary-life.js';
 import type { WorldState } from '../model/state.js';
 import type { Location } from '../city/city.js';
 import { effectiveLocation } from '../ambient/locations.js';
@@ -54,8 +55,10 @@ import { balance } from '../station/ledger.js';
 import { formatDate, type NamerContext } from '../docs/namer.js';
 import type { Namer } from '@tradecraft/content';
 import type { Prng } from '../prng/prng.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
+import { districtSector, withOccupation } from '../city/occupation.js';
 import { scheduledLocation } from '../city/npc.js';
+import { callingPlace } from '../recruit/asset.js';
 import type { ContentSet, LocationType } from '@tradecraft/content';
 import { attendDutyLocation, quoteAttendDuty, resolveAttendDuty } from '../ambient/cover.js';
 import { quoteTravel, resolveTravel } from './travel.js';
@@ -68,6 +71,7 @@ import {
   resolveLiaisonShare,
 } from '../liaison/exchange.js';
 import { quoteExfiltrate, resolveExfiltrate } from '../region/remote.js';
+import { quoteExtension, resolveExtension } from '../extension/dispatch.js';
 import { quoteRead, resolveRead } from './read.js';
 import {
   quoteSurveil,
@@ -101,13 +105,14 @@ import {
   waitObservations,
 } from './intercept.js';
 import { identityAwareNamer, identityContextOf } from './identify.js';
-import { endConditionFromAbort, type EndCondition } from '../endings/end-conditions.js';
-import type { Action, WaitAction } from './types.js';
+import { endConditionFromAbort } from '../endings/end-conditions.js';
+import { isExtensionAction, type Action, type WaitAction } from './types.js';
 import type {
   ActionQuote,
   ActionResult,
   Observation,
   ResolverContext,
+  ResolveResult,
   SceneDescriptor,
 } from './result.js';
 
@@ -137,6 +142,7 @@ import type {
  * - `wait`: just passes time.
  */
 export function actionLocation(state: WorldState, a: Action): LocId | undefined {
+  if (isExtensionAction(a)) return undefined;
   switch (a.kind) {
     case 'travel':
       return a.to;
@@ -144,6 +150,7 @@ export function actionLocation(state: WorldState, a: Action): LocId | undefined 
     case 'arrange-meeting':
       return a.at;
     case 'talk':
+      return a.breakOff === true ? undefined : state.player.loc;
     case 'approach':
     case 'follow':
     case 'service-drop':
@@ -317,6 +324,48 @@ function entityKind(id: string): 'npc' | 'unk' | 'org' {
   return 'npc';
 }
 
+/** English for a predicate id, so a Fact Line never prints the code. */
+const SPOKEN_PREDICATE: Readonly<Record<string, string>> = {
+  MEMBER_OF: 'belongs to',
+  WORKS_FOR: 'works for',
+  REPORTS_TO: 'reports to',
+  MEETS_AT: 'meets',
+  LOCATED_AT: 'is seen at',
+  TRAVELS_TO: 'travels to',
+  SCHEDULED_FOR: 'is expected',
+  PLANS: 'is planning',
+  TARGETS: 'is targeting',
+  CARRIES: 'is carrying',
+  SUPPLIES: 'supplies',
+  USES_CHANNEL: 'uses the channel',
+  KNOWS: 'knows',
+  SUSPECTS: 'suspects',
+  IS_ALIAS_OF: 'is also known as',
+};
+
+function spokenPredicate(id: string): string {
+  const local = id.slice(id.lastIndexOf('/') + 1);
+  return SPOKEN_PREDICATE[local.toUpperCase()] ?? local.replace(/_/g, ' ').toLowerCase();
+}
+
+/**
+ * One Proposition as a sentence. `name` turns an id into the words the player
+ * already has. Fact Lines use this when a predicate template cannot be filled,
+ * and the Case File uses it so the screen never shows a predicate code.
+ */
+export function describeProposition(
+  prop: Pick<Proposition, 'subject' | 'predicate' | 'object' | 'place'>,
+  name: (id: string) => string,
+): string {
+  const subject = name(prop.subject);
+  const object = typeof prop.object === 'string' ? name(prop.object) : literalText(prop.object);
+  const verb = spokenPredicate(prop.predicate);
+  const placeOnly = verb === 'is seen at' || verb === 'travels to';
+  const line = placeOnly ? `${subject} ${verb} ${prop.place === undefined ? object : name(prop.place)}` : `${subject} ${verb} ${object}`;
+  if (!placeOnly && prop.place !== undefined) return `${line} at ${name(prop.place)}`;
+  return line;
+}
+
 /** Format a Proposition's literal object as display text for a Fact Line. */
 function literalText(object: Proposition['object']): string {
   if (typeof object === 'string') {
@@ -359,12 +408,7 @@ export function renderPropositionLine(
   // template (a Document asserting a Proposition with no `window` where the
   // template wants a `when`, say) — still renders to *something* readable
   // rather than throwing, so a malformed Observation cannot crash a turn.
-  const fallback = (): string => {
-    const subject = namer(prop.subject);
-    const object =
-      typeof prop.object === 'string' ? namer(prop.object) : literalText(prop.object);
-    return `${subject} ${prop.predicate} ${object}`.trim();
-  };
+  const fallback = (): string => describeProposition(prop, (id) => namer(id));
 
   if (predicate === undefined) {
     return fallback();
@@ -405,13 +449,20 @@ export function renderFactLines(
 // Scene descriptor
 // ---------------------------------------------------------------------------
 
-/** The NPCs scheduled at a Location at the current time (Requirement 21.7). */
+/** The NPCs at a Location at the current time (Requirement 21.7). */
 export function visibleNpcsAt(state: WorldState, locId: LocId): NpcId[] {
   // ScheduleEntry.weekday is numeric (0 Monday … 6 Sunday); map the day's
   // string weekday to that index, matching the clock's schedule stepping.
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
+    const calling = callingPlace(state.relationships[npc.id], state.time.day);
+    if (calling !== undefined) {
+      if (calling === locId) {
+        out.push(npc.id);
+      }
+      continue;
+    }
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {
       out.push(npc.id);
     }
@@ -427,9 +478,18 @@ export function sceneAt(state: WorldState, locId: LocId): SceneDescriptor {
     return { loc: locId, description: '', atmosphere: [], risk: 0, visible: [] };
   }
   const ambient = ambientScene(state, locId);
+  const habits = state.player.habits;
+  const own =
+    habits !== undefined &&
+    (habits.flat === locId || habits.cafe === locId || habits.market === locId);
   return {
     loc: locId,
-    description: loc.description,
+    description: withOrdinaryLife(
+      withOccupation(loc.description, districtSector(state.city, locId), state.time.phase),
+      loc.type,
+      state.time.phase,
+      own,
+    ),
     atmosphere: [...loc.atmosphere],
     risk: loc.risk,
     visible: visibleNpcsAt(state, locId),
@@ -528,6 +588,7 @@ export function quote(
 
 /** Quote a single action kind, past the shared Location gate. */
 function quoteKind(state: WorldState, a: Action, ctx: ResolverContext): ActionQuote {
+  if (isExtensionAction(a)) return quoteExtension(state, a, ctx);
   switch (a.kind) {
     case 'travel':
       return quoteTravel(state, a);
@@ -618,12 +679,7 @@ function quoteKind(state: WorldState, a: Action, ctx: ResolverContext): ActionQu
  * left as it was: `resolve` reports the end and the caller writes it to
  * `WorldState.ended` (Req 7.1, 7.4).
  */
-export interface ResolveResult {
-  readonly next: WorldState;
-  readonly result: ActionResult;
-  /** The End Condition the action produced, for the caller to write at commit. */
-  readonly ended?: EndCondition;
-}
+export type { ResolveResult };
 
 /**
  * Resolve an {@link Action} (design `resolve`; pure, draws only from `rng`).
@@ -669,6 +725,7 @@ function resolveBody(
     // State is unchanged; the same object is returned so `next === state`.
     return { next: state, result: emptyResult(state) };
   }
+  if (isExtensionAction(a)) return resolveExtension(state, a, rng, ctx);
 
   switch (a.kind) {
     case 'travel':

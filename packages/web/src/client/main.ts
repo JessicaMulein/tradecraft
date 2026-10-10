@@ -13,15 +13,18 @@ import {
   hereStatus,
   isDutyAlert,
   isNoticeFact,
+  placeWithholds,
   statusLine,
 } from './city-text.js';
 import {
   GROUPS,
+  claimSentence,
   costLabel,
   emptyNames,
   loadNames,
   optionLabel,
   phaseName,
+  tidy,
   type Names,
 } from './labels.js';
 import type { CueInputs, CueManifest, CueMap } from '../shared/cue/types.js';
@@ -47,10 +50,12 @@ interface StateBody {
   turnRunning: boolean;
   status?: {
     time: { day: number; phase: number | string };
+    date?: string;
     location: { name: string };
     budget: number;
     standing: number;
     ended: boolean;
+    followed?: string;
   };
   here?: {
     location: {
@@ -85,9 +90,11 @@ interface TutorialBody {
       intercept?: string;
       duty?: string;
       to?: string;
+      vehicle?: string;
       countersurveillance?: boolean;
       phases?: number;
       target?: string;
+      breakOff?: boolean;
     };
   } | null;
 }
@@ -185,10 +192,12 @@ function render(s: StateBody): void {
   $('status').textContent = statusLine(
     {
       day: st.time.day,
+      date: st.date,
       phase: phaseName(st.time.phase),
       location: st.location.name,
       budget: st.budget,
       standing: st.standing,
+      followed: st.followed,
     },
     dutyAlert,
   );
@@ -252,6 +261,9 @@ function suggested(offered: Offered): boolean {
     return false;
   if (want.duty !== undefined && action['duty'] !== want.duty) return false;
   if (want.to !== undefined && action['to'] !== want.to) return false;
+  if (want.vehicle !== undefined && action['vehicle'] !== want.vehicle) return false;
+  if (want.breakOff === true && action['breakOff'] !== true) return false;
+  if (want.breakOff !== true && action['breakOff'] === true) return false;
   if (
     want.countersurveillance !== undefined &&
     action['countersurveillance'] !== want.countersurveillance
@@ -273,6 +285,7 @@ function renderActions(list: readonly Offered[]): void {
   ul.replaceChildren();
   const byKind = new Map<string, Offered[]>();
   for (const o of list) {
+    if (!o.option.quote.allowed && placeWithholds(o.option.quote.reason)) continue;
     const k = o.option.action.kind;
     byKind.set(k, [...(byKind.get(k) ?? []), o]);
   }
@@ -446,6 +459,7 @@ function travelRow(title: string, opts: readonly Offered[]): HTMLLIElement {
 }
 
 function showParams(o: Offered): Promise<Record<string, unknown> | undefined> {
+  if (o.option.action.kind === 'decrypt') return showCipherForm(o);
   const box = $('params');
   return new Promise((resolve) => {
     const form = document.createElement('form');
@@ -495,6 +509,94 @@ function showParams(o: Offered): Promise<Record<string, unknown> | undefined> {
       done(out);
     });
     (inputs.values().next().value as HTMLElement | undefined)?.focus();
+  });
+}
+
+interface CipherWorkbench {
+  ciphertext: string;
+  coincidence: { overall: number; rows: { length: number; coincidence: number }[] };
+}
+
+function showCipherForm(o: Offered): Promise<Record<string, unknown> | undefined> {
+  const box = $('params');
+  const intercept = String(o.option.action['intercept'] ?? '');
+  return new Promise((resolve) => {
+    const form = document.createElement('form');
+    const note = text(
+      'p',
+      'dim',
+      'A length near 0.065 is a word of that many letters. The trial does not spend a phase. File the reading only when it is language.',
+    );
+    const stats = text('p', '', '…');
+    const cipher = document.createElement('select');
+    for (const kind of ['vigenere', 'columnar', 'caesar', 'book'] as const) {
+      const option = document.createElement('option');
+      option.value = kind;
+      option.textContent = kind;
+      cipher.append(option);
+    }
+    const word = document.createElement('input');
+    word.placeholder = 'word, shift, or a stretch of a public text';
+    const preview = text('p', '', '');
+    const reading = document.createElement('textarea');
+    reading.required = true;
+    reading.placeholder = 'The reading you will file';
+    const useTrial = text('button', '', 'Use this reading') as HTMLButtonElement;
+    useTrial.type = 'button';
+    const ok = text('button', '', 'File it') as HTMLButtonElement;
+    ok.type = 'submit';
+    const cancel = text('button', '', 'Cancel') as HTMLButtonElement;
+    cancel.type = 'button';
+    form.append(note, stats, cipher, word, preview, useTrial, reading, ok, cancel);
+    box.replaceChildren(form);
+    box.hidden = false;
+
+    let ciphertext = '';
+    const refresh = (): void => {
+      if (ciphertext === '') return;
+      const kind = cipher.value;
+      let body: { kind: string; ciphertext: string; shift?: number; text?: string; keyword?: string };
+      if (kind === 'caesar') body = { kind, ciphertext, shift: Number(word.value) || 0 };
+      else if (kind === 'book') body = { kind, ciphertext, text: word.value };
+      else body = { kind, ciphertext, keyword: word.value };
+      void postJson<{ text: string }>('/api/cipher/trial', body)
+        .then((result) => {
+          preview.textContent = result.text;
+        })
+        .catch(() => {
+          preview.textContent = '';
+        });
+    };
+    cipher.addEventListener('change', refresh);
+    word.addEventListener('input', refresh);
+    useTrial.addEventListener('click', () => {
+      reading.value = preview.textContent ?? '';
+    });
+
+    void getJson<{ workbench: CipherWorkbench }>(`/api/views/workbench/${encodeURIComponent(intercept)}`)
+      .then((body) => {
+        ciphertext = body.workbench.ciphertext;
+        const rows = body.workbench.coincidence.rows
+          .map((row) => `${row.length} ${row.coincidence.toFixed(3)}`)
+          .join('  ');
+        stats.textContent = `whole text ${body.workbench.coincidence.overall.toFixed(3)} · ${rows}`;
+        refresh();
+      })
+      .catch(() => {
+        stats.textContent = 'No capture is open.';
+      });
+
+    const done = (v: Record<string, unknown> | undefined): void => {
+      box.hidden = true;
+      box.replaceChildren();
+      resolve(v);
+    };
+    cancel.addEventListener('click', () => done(undefined));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      done({ text: reading.value });
+    });
+    word.focus();
   });
 }
 
@@ -671,7 +773,8 @@ async function choose(o: Offered): Promise<void> {
     a.kind === 'read' && typeof a['doc'] === 'string'
       ? () => openDocument(a['doc'] as string)
       : undefined;
-  await runTurn('/api/act', body, a.kind, after);
+  const turnKind = a.kind === 'talk' && a['breakOff'] === true ? 'break-off' : a.kind;
+  await runTurn('/api/act', body, turnKind, after);
 }
 
 const AID_TITLES: Record<string, string> = {
@@ -683,7 +786,45 @@ const AID_TITLES: Record<string, string> = {
   city: 'City',
   stories: 'Stories',
   duties: 'Cover duties',
+  region: 'Region',
+  departures: 'Departures',
+  papers: 'Papers',
+  carriage: 'Carriage',
+  street: 'Streets',
+  case: 'Case File',
 };
+
+/** The same letter commands as the terminal shell. */
+const VIEW_KEYS: Readonly<Record<string, string>> = {
+  j: 'journal',
+  m: 'map',
+  y: 'city',
+  r: 'stories',
+  k: 'duties',
+  p: 'people',
+  d: 'documents',
+  i: 'intercepts',
+  g: 'street',
+  c: 'case',
+  n: 'region',
+  b: 'departures',
+  a: 'papers',
+  t: 'carriage',
+  '?': 'help',
+};
+
+function openView(name: string): void {
+  if (name === 'documents') {
+    void showDocuments();
+    return;
+  }
+  if (name === 'case') {
+    void showCase();
+    return;
+  }
+  $('doc-list').hidden = true;
+  void showAid(name);
+}
 
 async function showAid(name: string): Promise<void> {
   const box = $('aid');
@@ -715,6 +856,21 @@ async function showAid(name: string): Promise<void> {
       case 'duties':
         content = aids.duties(v);
         break;
+      case 'region':
+        content = aids.region(v);
+        break;
+      case 'departures':
+        content = aids.departures(v);
+        break;
+      case 'papers':
+        content = aids.papers(v);
+        break;
+      case 'carriage':
+        content = aids.carriage(v);
+        break;
+      case 'street':
+        content = aids.street(v);
+        break;
       case 'people':
         content = aids.people(v);
         break;
@@ -738,6 +894,30 @@ async function showAid(name: string): Promise<void> {
       screen = 'city';
       direct();
     }
+  } catch (e) {
+    notice(errText(e));
+  }
+}
+
+async function showCase(): Promise<void> {
+  const box = $('aid');
+  if (!box.hidden && box.dataset['name'] === 'case') {
+    box.hidden = true;
+    return;
+  }
+  try {
+    const body = await getJson<{
+      claims: { id: string; prop: { subject: string; predicate: string; object: unknown; place?: string }; hedged: boolean }[];
+    }>('/api/casefile');
+    const nameOf = (id: string): string =>
+      names.person.get(id) ?? names.loc.get(id) ?? names.doc.get(id) ?? names.drop.get(id) ?? tidy(id);
+    box.replaceChildren(
+      aids.el('h2', '', 'Case File'),
+      aids.caseFile(body.claims, (prop) => claimSentence(prop, nameOf)),
+    );
+    box.dataset['name'] = 'case';
+    box.hidden = false;
+    $('doc-list').hidden = true;
   } catch (e) {
     notice(errText(e));
   }
@@ -786,14 +966,22 @@ async function main(): Promise<void> {
     '#views button',
   )) {
     b.addEventListener('click', () => {
-      const v = b.dataset['view'] ?? 'help';
-      if (v === 'documents') void showDocuments();
-      else {
-        $('doc-list').hidden = true;
-        void showAid(v);
-      }
+      openView(b.dataset['view'] ?? 'help');
     });
   }
+  document.addEventListener('keydown', (event) => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    const target = event.target;
+    if (target instanceof HTMLElement) {
+      const tag = target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    }
+    if ($('game').hidden) return;
+    const view = VIEW_KEYS[event.key];
+    if (view === undefined) return;
+    event.preventDefault();
+    openView(view);
+  });
   $('reader-close').addEventListener('click', () => {
     $('reader').hidden = true;
   });

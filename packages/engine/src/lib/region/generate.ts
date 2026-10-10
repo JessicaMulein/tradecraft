@@ -37,7 +37,7 @@ import {
   type OrgId,
   type Proposition,
 } from '../model/core.js';
-import type { ScenarioConfig } from '../config/scenario-config.js';
+import { scenarioForStore, type ScenarioConfig } from '../config/scenario-config.js';
 import { initAmbient } from '../ambient/init.js';
 import { attachMystery } from './mystery.js';
 import { recordRegionTiming } from './metrics-log.js';
@@ -1490,7 +1490,7 @@ function assemble(
       generatorVersion: GENERATOR_VERSION,
       content: inputs.content.manifest as unknown as ContentManifest,
       preset: inputs.preset,
-      scenario: inputs.scenario,
+      scenario: scenarioForStore(inputs.scenario),
       setting: { city: hub.contentId, startDate: template.eraDate, year, attempt: 0 },
     },
     time: { day: 0, phase: 0 },

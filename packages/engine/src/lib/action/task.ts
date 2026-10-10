@@ -102,7 +102,7 @@ import type { Prng } from '../prng/prng.js';
 import type { TruthReader } from '../truth/truth.js';
 import type { DeadDrop } from '../city/comms.js';
 import { scheduledLocation } from '../city/npc.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { tieAffinityBetween } from '../ambient/ties.js';
 import {
   factInAccess,
@@ -184,7 +184,7 @@ const MEMBERSHIP_PROBE_ID = 'prop:task/membership-probe';
  * `./pay.ts` and `./turn-agent.ts` use.
  */
 function npcsScheduledAt(state: WorldState, locId: LocId): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {
@@ -351,7 +351,7 @@ export function witnessedFacts(
     }
     // A regular hears about what happened at their haunt that day: the
     // Locations the Asset's routine takes them to on the event's weekday.
-    const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(at.day));
+    const weekday = scheduleWeekdayIndex(at.day, state.meta.setting.startDate);
     const haunts = new Set<LocId>(
       npc.schedule.entries.filter((e) => e.weekday === weekday).map((e) => e.loc),
     );

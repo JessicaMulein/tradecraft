@@ -194,6 +194,7 @@ function stubApi(scripts: Scripts = {}): EngineApi {
     newGame: async (_opts: NewGameOptions): Promise<GameView> => gameView(),
     status: statusView,
     actions: (): ActionOption[] => [talkOption()],
+    briefingTalk: () => talkOption().action,
     quote: () => talkOption().quote,
     act: (): TurnStream => scripts.act ?? stream({ kind: 'done' }),
     say: (): TurnStream => scripts.say ?? stream({ kind: 'done' }),
@@ -223,6 +224,7 @@ function stubApi(scripts: Scripts = {}): EngineApi {
       workbench: () => ({ id: 'int:none' }) as never,
       help: helpView,
       debrief: (): DebriefView | null => null,
+      street: () => null,
     },
     notifications: {
       list: () => [],

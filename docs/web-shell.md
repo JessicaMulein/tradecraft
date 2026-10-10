@@ -55,6 +55,16 @@ Scene images are optional. With no image provider configured the shell runs
 without them. A provider can be supplied through `SceneFrameProvider`; results are
 cached under `.cache/frames/`, and a failure never affects play.
 
+## Aids
+
+The page uses the same letters as the terminal shell: `j` journal, `m` map,
+`g` streets, `y` city, `r` stories, `k` duties, `p` people, `d` documents,
+`c` case file, `n` region, `b` departures, `a` papers, `t` carriage,
+`i` intercepts, `?` help. Action names match the terminal menu, including
+drive, hire, plates, departures, papers, visas and liaison. A decrypt action
+opens the cipher form. Streets draws the map you know, with traffic titles
+when a navigation aid marked the street.
+
 ## Tests
 
 `pnpm --filter @tradecraft/web test` covers security, the API and the audio

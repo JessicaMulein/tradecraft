@@ -40,13 +40,18 @@ import { resolveCipherSpec } from './spec.js';
 import {
   revealedSpec,
   decryptToFieldMessage,
+  privateFieldMessage,
   type InterceptOriginKind,
 } from './intercept.js';
 import { parseFieldMessage } from './field-message.js';
 import {
   worldCipherKeyLookup,
   plotTraceInterceptId,
+  membershipOnTheAir,
+  stageTransmissionPropositions,
 } from './world-intercepts.js';
+import type { Proposition } from '../model/core.js';
+import type { StageState } from '../city/plot.js';
 
 // ---------------------------------------------------------------------------
 // Core-pack fixtures
@@ -145,7 +150,8 @@ describe('world Intercept seeding (task 26.3)', () => {
     for (const tx of world.transmissions) {
       const key = resolveCipherSpec(revealedSpec(tx.intercept), keyLookup);
       const plain = decryptToFieldMessage(tx.intercept, key);
-      const recovered = parseFieldMessage(plain, fieldCodes);
+      expect(plain).not.toMatch(/(?:npc|loc|org|chan|doc|unk|drop|item):/);
+      const recovered = parseFieldMessage(privateFieldMessage(tx.intercept), fieldCodes);
       const sourceIds = revealTruth(tx.intercept.plaintextProps);
       // One parsed Proposition per source id (ids are rebuilt as fm:<line>).
       expect(recovered.length).toBe(sourceIds.length);
@@ -194,5 +200,46 @@ describe('world Intercept seeding (task 26.3)', () => {
     }
     // At least one plot transmission trace mapped to a seeded Intercept.
     expect(checked).toBeGreaterThan(0);
+  });
+});
+
+describe('stageTransmissionPropositions', () => {
+  it('carries the shared case membership and leaves a second cell membership off the air', () => {
+    const shared: Proposition = {
+      id: 'prop:library-case/member/npc:leader' as never,
+      subject: 'npc:leader' as never,
+      predicate: 'MEMBER_OF',
+      object: 'org:cell' as never,
+    };
+    const extra: Proposition = {
+      id: 'prop:twist/sample/npc:leader/cell' as never,
+      subject: 'npc:leader' as never,
+      predicate: 'MEMBER_OF',
+      object: 'org:cell-sample-action' as never,
+    };
+    const stage = {
+      id: 'stage:watch' as never,
+      templateId: 'watch',
+      requires: [],
+      produces: [],
+      deadline: { day: 12, phase: 0 },
+      onDisrupted: { delay: 0, reroute: 0, abort: 0 },
+      status: 'pending',
+      traces: [
+        {
+          index: 0,
+          kind: 'transmission',
+          participants: [],
+          evidences: ['LOCATED_AT'],
+          template: 'A call.',
+        },
+      ],
+    } as StageState;
+    const carried = stageTransmissionPropositions([shared, extra], stage);
+    expect(carried.map((prop) => prop.id)).toContain(shared.id);
+    expect(carried.map((prop) => prop.id)).not.toContain(extra.id);
+    expect(membershipOnTheAir([shared, extra], 'npc:leader' as never).map((prop) => prop.id)).toEqual([
+      shared.id,
+    ]);
   });
 });

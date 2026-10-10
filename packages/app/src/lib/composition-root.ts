@@ -48,6 +48,12 @@ import {
   generateGame,
   generateRegion,
   loadRegionContent,
+  runtimeFromLoadedPacks,
+  streetPlayDirs,
+  streetRates,
+  navigationAidActive,
+  withStreetPack,
+  STREET_OPS_KINDS,
   regionCatalog,
   regionSources,
   regionTruth,
@@ -55,6 +61,7 @@ import {
   type AdvanceWorldDeps,
   type GenerateInputs,
   type PostingContext,
+  streetOpsRegistry,
   type ScenarioConfig,
   type WorldState,
 } from '@tradecraft/engine';
@@ -67,7 +74,7 @@ import {
   type ModelsConfig,
   type RecordSource,
 } from '@tradecraft/llm';
-import { buildLiveSeams, LocationFlavourCache } from '@tradecraft/dialogue';
+import { buildLiveSeams, LocationFlavourCache, transcribeBluff } from '@tradecraft/dialogue';
 import {
   ActionLog,
   CaseFile,
@@ -200,13 +207,20 @@ function loadContentSet(
 ): {
   content: ContentSet;
   inputsBase: Omit<GenerateInputs, 'preset' | 'scenario'>;
+  packDirs: readonly string[];
 } {
-  const dirs = scenario.packs.dirs.map((dir) => join(repoRoot, dir));
-  const load = scenario.packs.load;
+  let dirs = scenario.packs.dirs.map((dir) => join(repoRoot, dir));
+  let load = scenario.packs.load;
+  const street = scenario.streetOps?.enabled === true;
+  if (street) {
+    dirs = streetPlayDirs(repoRoot, dirs);
+    load = [...withStreetPack(load, dirs)];
+  }
+  const kinds = street ? [...STREET_OPS_KINDS] : undefined;
 
   const content = scenario.region?.template === undefined
-    ? loadContent(dirs, load)
-    : loadRegionContent(dirs, load);
+    ? loadContent(dirs, load, kinds === undefined ? undefined : { kinds })
+    : loadRegionContent(dirs, load, kinds);
   if (!content.ok) {
     throw new Error(
       `failed to load Content Packs [${load.join(', ')}]: ${describeFirstIssue(content.errors)}`,
@@ -229,6 +243,7 @@ function loadContentSet(
       descriptors,
       publicTexts,
     },
+    packDirs: dirs,
   };
 }
 
@@ -342,6 +357,7 @@ function buildSeams(
   getState: () => WorldState,
   getTruth: () => TruthStore | undefined,
   override: Partial<TurnPipelineConfig> | undefined,
+  streetNames: readonly string[],
 ): Partial<TurnPipelineConfig> {
   if (override !== undefined) {
     return override;
@@ -360,6 +376,7 @@ function buildSeams(
     narrationMode: scenario.narration,
     tokenBudget: scenario.tokenBudget,
     leakGuardRetries: scenario.retries.leakGuard,
+    ...(streetNames.length > 0 ? { streetNames } : {}),
   });
   return {
     classify: live.classify,
@@ -535,7 +552,14 @@ export function createGame(options: CreateGameOptions): Game {
   } = options;
 
   // Step 1: load the Content Set and side files from `scenario.packs` (Req 18.1).
-  const { content, inputsBase } = loadContentSet(repoRoot, scenario);
+  const { content, inputsBase, packDirs } = loadContentSet(repoRoot, scenario);
+  const streetRuntime =
+    scenario.streetOps?.enabled === true
+      ? runtimeFromLoadedPacks(packDirs, new Set(content.manifest.packs.map((pack) => pack.id)), scenario, {
+          ...streetRates(resolvePreset(content, scenario.difficulty.preset)),
+          navigationAid: navigationAidActive(undefined, scenario.streetOps?.navigationAid === true),
+        })
+      : undefined;
 
   // Step 2: build the Gateway (Req 18.4). None is built for a pure Fake-Seams
   // offline run (an override with no gateway option).
@@ -573,6 +597,7 @@ export function createGame(options: CreateGameOptions): Game {
     getState,
     getTruth,
     seamsOverride,
+    streetRuntime?.streetNames ?? [],
   );
 
   // Steps 4–5: the Turn Pipeline. The pipeline assembles the `AdvanceWorldDeps`
@@ -594,6 +619,12 @@ export function createGame(options: CreateGameOptions): Game {
       actionLog,
       extractionQueue,
       ...(evalLog !== undefined ? { evalLog } : {}),
+      ...(gateway === undefined
+        ? {}
+        : {
+            transcribeClaims: (text: string, slots: readonly string[]) =>
+              transcribeBluff(gateway, text, slots).catch(() => undefined),
+          }),
     };
     return createTurnDriver(config);
   };
@@ -614,12 +645,13 @@ export function createGame(options: CreateGameOptions): Game {
   // Step 5: the GameFactory and the facade. The facade starts game-less with the
   // placeholder stores; `newGame`/`load` replace every store in one swap.
   const gameFactory = buildGameFactory(content, inputsBase, scenario, repoRoot, options.posting);
+  const extensions = streetOpsRegistry(scenario, streetRuntime);
   const engine = new PlayerViewEngine({
     state: emptyWorld(content, inputsBase, scenario, repoRoot),
     caseFile: new CaseFile(),
     journal: new Journal(),
     cityData: inputsBase.cityData,
-    ctx: { content },
+    ctx: { content, ...(extensions === undefined ? {} : { extensions }) },
     brief: EMPTY_BRIEF,
     rules: implicationRules([]),
     notifications: new NotificationStore(),

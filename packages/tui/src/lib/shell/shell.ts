@@ -138,10 +138,14 @@ function applyKeyAction(state: ShellState, action: ShellKeyAction): ShellState {
       return { ...state, screen: { kind: 'documents' }, overlay: undefined };
     case 'open-workbench':
       return { ...state, screen: { kind: 'workbench' }, overlay: undefined };
+    case 'open-intercepts':
+      return { ...state, screen: { kind: 'intercepts' }, overlay: undefined };
     case 'open-journal':
       return { ...state, screen: { kind: 'journal' }, overlay: undefined };
     case 'open-map':
       return { ...state, screen: { kind: 'map' }, overlay: undefined };
+    case 'open-streets':
+      return { ...state, screen: { kind: 'streets' }, overlay: undefined };
     case 'open-city':
       return { ...state, screen: { kind: 'city' }, overlay: undefined };
     case 'open-stories':

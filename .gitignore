@@ -54,3 +54,8 @@ vitest.config.*.timestamp*
 # web shell
 soundtrack/web/
 .cache/
+
+# Street data the user fetches, and graphs built from it. Never commit these.
+data/street-sources/
+packs/street-ops-local/
+packages/content/packs/street-ops-local/

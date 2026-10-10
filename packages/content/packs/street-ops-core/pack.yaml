@@ -1,0 +1,12 @@
+# Original demo streets for tests. The geometry is a small invented grid.
+# It is not a tracing of any real map, and it carries no third-party data.
+id: street-ops-core
+version: 1.0.0
+contentSchema: 2
+role: extension
+requires:
+  - id: city-vienna
+    range: "^1.0.0"
+  - id: city-berlin
+    range: "^1.0.0"
+overrides: []

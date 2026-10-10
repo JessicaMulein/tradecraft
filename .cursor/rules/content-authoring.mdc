@@ -1,0 +1,17 @@
+---
+description: "Authoring or changing game content: cities, eras, settings, library packs, plots, side threads, rumours, names, documents, newspapers; using pnpm content author, promote, lint, preview or coverage"
+globs: packages/content/packs/**, content-drafts/**, packages/content-tools/**, config/authoring.yaml
+alwaysApply: false
+---
+
+# Content authoring
+
+**Read `.kiro/steering/content-authoring.md` in full before starting.** It is the process. This rule only summarises it.
+
+- Build on the existing system: Content Packs in `packages/content/packs/`, `pnpm content author | promote | lint | preview | coverage`, Plot Lab and the playability probe. Do not add a new mechanism or content kind outside a spec task.
+- A setting is packs (Era, Library, City, plots), not code. Anything outside 1945–1965 is blocked on the setting-generalization spec, which is not started.
+- Model-written content (yours included) goes to `content-drafts/<pack>/<kind>/<stamp>.yaml` with a Provenance Record (`generated: true`), never straight into a pack.
+- A reviewer that did not write the draft checks it. Then run the gates in a staging copy under `tmp/`, with absolute paths: release lint, preview, coverage, Plot Lab, the balance probe where relevant, and `pnpm run check`.
+- Present `content-drafts/<…>/SIGN-OFF.md` to the owner: plain language, real samples, one line per gate, choices with your recommendation.
+- Promote into the real pack with `--reviewer "Jessica Mulein"` **only after she approves**.
+- Never suppress the blocklist, sensitivity, schema, dangling-reference or provenance lint rules. Never add packs to the shipped `config/scenario.yaml`.

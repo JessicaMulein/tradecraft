@@ -29,7 +29,7 @@
  * Intercepts it has already filed.
  */
 
-import type { GameTime, InterceptId, Proposition } from '@tradecraft/engine';
+import type { ChannelId, GameTime, InterceptId, Proposition } from '@tradecraft/engine';
 
 import type { Claim, ClaimSource } from './casefile.js';
 import { CaseFile } from './casefile.js';
@@ -49,13 +49,15 @@ export interface InterceptBreak {
   readonly propositions: readonly Proposition[];
   /** When the break happened, stamped on each resulting Claim as `observedAt`. */
   readonly observedAt: GameTime;
+  /** The Channel the traffic rode. Messages on one Channel are one voice. */
+  readonly channel?: ChannelId;
 }
 
 /**
  * The {@link ClaimSource} for an Intercept break: `{ kind: 'intercept', id }`.
  */
-export function interceptSource(id: InterceptId): ClaimSource {
-  return { kind: 'intercept', id };
+export function interceptSource(id: InterceptId, channel?: ChannelId): ClaimSource {
+  return channel === undefined ? { kind: 'intercept', id } : { kind: 'intercept', id, channel };
 }
 
 /**
@@ -73,7 +75,7 @@ export function addInterceptClaims(
   caseFile: CaseFile,
   broken: InterceptBreak,
 ): Claim[] {
-  const source = interceptSource(broken.interceptId);
+  const source = interceptSource(broken.interceptId, broken.channel);
   return broken.propositions.map((prop) =>
     caseFile.add({ source, prop, observedAt: broken.observedAt }),
   );

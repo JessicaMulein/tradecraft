@@ -8,6 +8,8 @@
 
 import { addPhases } from '../clock/clock.js';
 import { borderCheck, borderFactLine, type BorderItem, type BorderOutcome } from '../border/check.js';
+import { VEHICLE_BORDER } from '../street-ops/checkpoint.js';
+import { borderWatch, parkedForTravel, travelPlate } from '../street-ops/hooks.js';
 import type { CityId } from '../fidelity/types.js';
 import { timeToPhases, type GameTime, type LocId, type NpcId, type Phase } from '../model/core.js';
 import { createPrng, type Prng } from '../prng/prng.js';
@@ -204,11 +206,8 @@ function postInput(post: BorderPost): { id: string; name: string; strictness: nu
   return { id: post.id, name: post.id, strictness: post.strictness, documents: post.documents };
 }
 
-function watchFor(service: ServiceState | undefined): WatchList {
-  if (service === undefined) {
-    return { persons: [], descriptors: [] };
-  }
-  return service.beliefs.watch;
+function watchFor(state: WorldState, service: ServiceState | undefined): WatchList {
+  return borderWatch(service, state.ext?.streetOps?.notedPlates ?? []);
 }
 
 /**
@@ -268,17 +267,24 @@ export function resolveDepart(
       continue;
     }
     const service = services[post.service];
+    const plate = travelPlate(state);
     const checked = borderCheck(
       {
         post: postInput(post),
         at: action.at,
-        traveller: { identity: 'player', descriptor: 'player', coverFits: true },
+        traveller: {
+          identity: 'player',
+          descriptor: 'player',
+          coverFits: true,
+          ...(plate === undefined ? {} : { vehicle: { plate } }),
+        },
         papers: trip.papers,
         items,
-        watch: watchFor(service),
+        watch: watchFor(state, service),
         rules: rulesOf(region),
       },
       rng,
+      VEHICLE_BORDER,
     );
     lines.push(borderFactLine(checked.outcome, post.id));
     if (checked.phasesAdded > 0) {
@@ -361,10 +367,11 @@ export function resolveDepart(
             traveller: { identity: who, descriptor: who, coverFits: true },
             papers: [],
             items: [],
-            watch: watchFor(service),
+            watch: watchFor(state, service),
             rules: rulesOf(region),
           },
           gate,
+          VEHICLE_BORDER,
         );
         stream = gate.state();
         if (checked.outcome === 'refused' || checked.outcome === 'detained' || checked.outcome === 'seizure') {
@@ -438,7 +445,7 @@ export function resolveDepart(
     scheduled: [...state.scheduled, ...events],
   };
   lines.unshift(`You arrive at ${trip.route.to}.`);
-  const arrived = projectActiveCity(next);
+  const arrived = projectActiveCity(parkedForTravel(next));
   return { next: arrived, result: resultOf(arrived, lines, events) };
 }
 

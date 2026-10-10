@@ -153,6 +153,17 @@ export const DifficultyPresetSchema = z
       })
       .strict()
       .optional(),
+    /**
+     * Street-ops spotting knobs. Absent fields keep the calibrated defaults
+     * (notice base 0.45, regular traffic 0.35).
+     */
+    streetOps: z
+      .object({
+        noticeBase: ProbabilitySchema.optional(),
+        regularRate: ProbabilitySchema.optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type DifficultyPreset = z.infer<typeof DifficultyPresetSchema>;

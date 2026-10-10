@@ -71,6 +71,16 @@ describe('ActionMenu listing', () => {
     expect(lastFrame() ?? '').toContain('needs Station authorisation');
   });
 
+  it('folds repeated refusals into one line per kind', () => {
+    const blocked = {
+      action: { kind: 'cable' as const, body: { kind: 'report' as const } },
+      quote: { allowed: false, reason: 'you can only send a Cable from the Station', phases: 0, money: 0 },
+    };
+    const { lastFrame } = render(<ActionMenu options={[blocked, blocked, blocked]} />);
+    const frame = lastFrame() ?? '';
+    expect(frame.match(/you can only send a Cable from the Station/g)?.length).toBe(1);
+  });
+
   it('shows a hint when there are no actions available', () => {
     const { lastFrame } = render(<ActionMenu options={[]} />);
     expect(lastFrame() ?? '').toContain('No actions available here.');

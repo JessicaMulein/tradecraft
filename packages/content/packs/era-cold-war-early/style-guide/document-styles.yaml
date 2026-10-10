@@ -21,7 +21,7 @@
 #   headline-words value: number   — a headline must be <= N words
 #   manual                         — a reviewer reminder; never fails the lint
 #
-# Period voice, 1945–1965: terse telegraphese on cables; restrained, hedged
+# Period voice, 1945–1965: numbered paragraphs on cables; restrained, hedged
 # officialese on dossiers and seized material; plain, third-person reporting in
 # the newspapers; and clean, non-exclamatory public texts.
 
@@ -111,7 +111,7 @@
   message: 'Close each dossier section with a full stop.'
 
 # =========================================================================
-# CABLE — telegraphese: upper case, STOP as separator, terse
+# CABLE — upper case, numbered paragraphs, a cryptonym when a person is named
 # =========================================================================
 
 - id: style-cable-upper-case
@@ -132,14 +132,15 @@
 - id: style-cable-no-exclamation
   appliesTo: ['document:cable']
   check: no-exclamation
-  message: 'A cable carries no exclamation marks. Use STOP for emphasis.'
+  message: 'A cable carries no exclamation marks.'
 
-- id: style-cable-stop-separator
+- id: style-cable-numbered
   appliesTo: ['document:cable']
   check: manual
   message: >-
-    Reminder: separate clauses with STOP rather than punctuation, and end the
-    message with ENDS. Review the cable for telegraphic form before promoting.
+    Write the cable in numbered paragraphs. Name a person by cryptonym as well
+    as by name. Do not use commercial STOP separators or a destroy-after-reading
+    line on a routine message.
 
 # =========================================================================
 # SEIZED MATERIAL — transcription voice, cautious and impersonal

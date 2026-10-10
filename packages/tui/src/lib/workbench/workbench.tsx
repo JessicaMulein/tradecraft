@@ -33,10 +33,11 @@
 
 import { useReducer, type ReactElement } from 'react';
 import { Box, Text, useInput } from 'ink';
-import type {
-  FrequencyEntry,
-  KeySubmission,
-  WorkbenchView,
+import {
+  trialReading,
+  type FrequencyEntry,
+  type KeySubmission,
+  type WorkbenchView,
 } from '@tradecraft/player-view';
 
 import {
@@ -61,13 +62,13 @@ export interface WorkbenchProps {
 
 /** The metadata header: Channel, owner, direction, length, call sign, error. */
 function WorkbenchHeader({ view }: { readonly view: WorkbenchView }): ReactElement {
-  const callsign = view.callsign !== undefined ? ` · ${view.callsign}` : '';
+  const callsign = view.callsign ?? 'traffic';
+  const signal = view.signal ?? 'an unnamed frequency';
   return (
     <Box flexDirection="column">
-      <Text bold>Intercept {view.id}</Text>
+      <Text bold>{callsign}</Text>
       <Text dimColor>
-        {view.channel} · {view.owner} · {view.direction} · {view.length} chars
-        {callsign}
+        {signal} · {view.direction} · {view.length} chars
       </Text>
       {view.header !== undefined && (
         <Text color="yellow">header crib: {view.header}</Text>
@@ -112,6 +113,27 @@ function FrequencyTable({
   );
 }
 
+function Coincidence({
+  view,
+}: {
+  readonly view: WorkbenchView;
+}): ReactElement {
+  const rows = view.coincidence.rows
+    .map((row) => `${row.length} ${row.coincidence.toFixed(3)}`)
+    .join('  ');
+  return (
+    <Box flexDirection="column">
+      <Text bold>Key length</Text>
+      <Text>
+        whole text {view.coincidence.overall.toFixed(3)} · {rows}
+      </Text>
+      <Text dimColor>
+        Near 0.065 is one alphabet: slide the shift. A length that rises is a word of that many letters. Trying a word below does not spend a phase.
+      </Text>
+    </Box>
+  );
+}
+
 /** The ciphertext and the shift preview read back at the selected shift. */
 function ShiftPreview({
   view,
@@ -140,8 +162,41 @@ const KIND_LABELS: Readonly<Record<KeyKind, string>> = {
   otp: 'One-time pad',
 };
 
+function TrialLine({
+  view,
+  state,
+}: {
+  readonly view: WorkbenchView;
+  readonly state: WorkbenchState;
+}): ReactElement | null {
+  if (state.mode !== 'key' || state.keyKind === 'caesar') return null;
+  const reading = trialOf(view.ciphertext, state);
+  if (reading === '') return null;
+  return (
+    <Box flexDirection="column">
+      <Text bold>Trial reading</Text>
+      <Text>{reading}</Text>
+    </Box>
+  );
+}
+
+function trialOf(ciphertext: string, state: WorkbenchState): string {
+  if (state.keyKind === 'vigenere' || state.keyKind === 'columnar') {
+    return trialReading(ciphertext, { kind: state.keyKind, keyword: state.text });
+  }
+  if (state.keyKind === 'book') return trialReading(ciphertext, { kind: 'book', text: state.text });
+  if (state.keyKind === 'otp') return trialReading(ciphertext, { kind: 'otp', pad: state.text });
+  return '';
+}
+
 /** The entry footer: mode, the key kind or plaintext field, and the submit hint. */
-function EntryPanel({ state }: { readonly state: WorkbenchState }): ReactElement {
+function EntryPanel({
+  view,
+  state,
+}: {
+  readonly view: WorkbenchView;
+  readonly state: WorkbenchState;
+}): ReactElement {
   const submittable = buildSubmission(state) !== undefined;
   if (state.mode === 'plaintext') {
     return (
@@ -152,7 +207,6 @@ function EntryPanel({ state }: { readonly state: WorkbenchState }): ReactElement
       </Box>
     );
   }
-  // Key mode: show the chosen kind and its payload.
   const payload =
     state.keyKind === 'caesar'
       ? `shift ${state.shift}`
@@ -166,6 +220,7 @@ function EntryPanel({ state }: { readonly state: WorkbenchState }): ReactElement
         cipher: {KIND_LABELS[state.keyKind]} · {payload}
       </Text>
       <Text dimColor>{submitHint(submittable)}</Text>
+      <TrialLine view={view} state={state} />
     </Box>
   );
 }
@@ -233,10 +288,13 @@ export function Workbench({ view, onSubmit }: WorkbenchProps): ReactElement {
         <FrequencyTable frequency={view.frequency} />
       </Box>
       <Box marginTop={1}>
+        <Coincidence view={view} />
+      </Box>
+      <Box marginTop={1}>
         <ShiftPreview view={view} shift={state.shift} />
       </Box>
       <Box marginTop={1}>
-        <EntryPanel state={state} />
+        <EntryPanel view={view} state={state} />
       </Box>
     </Box>
   );

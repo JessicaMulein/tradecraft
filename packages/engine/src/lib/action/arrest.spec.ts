@@ -55,10 +55,14 @@ import {
 } from '../endings/end-conditions.js';
 import { createPrng } from '../prng/prng.js';
 import type { StageTrace } from '../city/plot.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { quote, resolve, visibleNpcsAt } from './action.js';
 import {
+  ARREST_LIAISON_REASON,
   ARREST_LINE,
+  ARREST_MISSING_REASON,
   ARREST_PHASE_COST,
+  ARREST_SOVIET_REASON,
   arrestEvidenceOf,
   arrestTargetIsHostile,
   carriesStageMateriel,
@@ -223,7 +227,44 @@ function staged(
     truth: truth(),
     arrestEvidence: { [npc]: arrestEvidence },
   };
-  return { state, npc, ctx };
+  return { state: seatForArrest(state, npc), npc, ctx };
+}
+
+function locationInSector(state: WorldState, soviet: boolean): LocId | undefined {
+  const places = Object.values(state.city.locations).sort((a, b) => a.id.localeCompare(b.id));
+  return places.find((place) => {
+    const sector = state.city.districts[place.district]?.sector;
+    return soviet ? sector === 'soviet' : sector !== 'soviet';
+  })?.id;
+}
+
+/** Put the target at a place the Austrian police can reach, and keep the liaison on the books. */
+function seatForArrest(state: WorldState, npc: NpcId): WorldState {
+  const western = locationInSector(state, false);
+  let next = western === undefined ? state : seatAt(state, npc, western);
+  const liaison = (Object.keys(next.npcs) as NpcId[]).find((id) =>
+    next.npcs[id].archetype.endsWith('police-liaison'),
+  );
+  if (liaison !== undefined && !next.player.contacts.includes(liaison)) {
+    next = { ...next, player: { ...next.player, contacts: [...next.player.contacts, liaison] } };
+  }
+  return next;
+}
+
+function seatAt(state: WorldState, npc: NpcId, loc: LocId): WorldState {
+  const person = state.npcs[npc];
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
+  const entries = [
+    ...person.schedule.entries.filter(
+      (entry) => entry.weekday !== weekday || entry.phase !== state.time.phase,
+    ),
+    { weekday, phase: state.time.phase, loc },
+  ];
+  return {
+    ...state,
+    npcs: { ...state.npcs, [npc]: { ...person, schedule: { entries } } },
+    whereabouts: { ...state.whereabouts, [npc]: loc },
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -273,6 +314,45 @@ describe('arrest — the gate (Req 19.1, 40.4)', () => {
       arrestAuthority: 0,
     });
     expect(quoteArrest(state, { kind: 'arrest', npc }, ctx).allowed).toBe(false);
+  });
+
+  it('is not allowed in the Soviet sector', () => {
+    const base = world();
+    const { state, npc, ctx } = staged(base, hostileOrgId(base), STANDARD.arrest.threshold);
+    const soviet = locationInSector(state, true);
+    expect(soviet).toBeDefined();
+    const held = seatAt(state, npc, soviet as LocId);
+    const quote = quoteArrest(held, { kind: 'arrest', npc }, ctx);
+    expect(quote.allowed).toBe(false);
+    expect(quote.reason).toBe(ARREST_SOVIET_REASON);
+  });
+
+  it('is not allowed until the police liaison is a contact', () => {
+    const base = world();
+    const { state, npc, ctx } = staged(base, hostileOrgId(base), STANDARD.arrest.threshold);
+    const liaison = (Object.keys(state.npcs) as NpcId[]).find((id) =>
+      state.npcs[id].archetype.endsWith('police-liaison'),
+    );
+    expect(liaison).toBeDefined();
+    const without = {
+      ...state,
+      player: { ...state.player, contacts: state.player.contacts.filter((id) => id !== liaison) },
+    };
+    const quote = quoteArrest(without, { kind: 'arrest', npc }, ctx);
+    expect(quote.allowed).toBe(false);
+    expect(quote.reason).toBe(ARREST_LIAISON_REASON);
+  });
+
+  it('is not allowed when the target is nowhere the police can go', () => {
+    const base = world();
+    const { state, npc, ctx } = staged(base, hostileOrgId(base), STANDARD.arrest.threshold);
+    const person = state.npcs[npc];
+    const missing: WorldState = {
+      ...state,
+      npcs: { ...state.npcs, [npc]: { ...person, schedule: { entries: [] } } },
+      whereabouts: { ...state.whereabouts, [npc]: 'absent' },
+    };
+    expect(quoteArrest(missing, { kind: 'arrest', npc }, ctx).reason).toBe(ARREST_MISSING_REASON);
   });
 });
 

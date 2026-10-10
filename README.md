@@ -19,13 +19,13 @@ A deterministic simulation owns all ground truth: who works for whom, where peop
 
 The vertical slice is playable end to end through `pnpm play`: the Turn Pipeline runs the day-boundary hooks (Plot, schedules, the Hostile Service, newspapers, Directives, Cable replies, end detection), every action is dispatched, the App Shell drives the game, and new games, saves and debriefs work.
 
-Follow-on specs that were on the roadmap are in the repo and **off by default**. `content-expansion`, `plot-library`, `ambient-world` and `campaign-career` are implemented. Shipped `config/scenario.yaml` still loads only the `core` pack. Plot library and ambient city stay off unless a scenario sets `plotSelection.enabled` or `ambient.enabled`. Campaign is a separate career loop, not the default `pnpm play` path. `generatorVersion` stays `0.7.0`.
+Follow-on specs that were on the roadmap are in the repo. The plot library is on in the shipped game: every new game draws its operation from `coldwar-plots`. Ambient city life, street ops and the authored cities stay off. `content-expansion`, `ambient-world`, `campaign-career`, `multi-city` and `street-ops` are implemented. The web shell is playable with `pnpm play:web`. Campaign is a separate career loop, not the default `pnpm play` path. `generatorVersion` stays `0.7.0`.
 
 `pnpm run check` still fails before the test suite: engine typecheck has a handful of pre-existing errors, and dependency-cruiser still reports four content-tools lint-rule cycles (unchanged since the initial commit). The tests themselves pass, including the golden replays and the release lint.
 
 The developer playtest (slice-integration task 20) is still to do: full campaigns through `pnpm play` with live models, and an evals run to set the active model profile.
 
-Plot library and ambient both hold the CI bands on the 30/15 sample, including hard ambient (87%) and both-on (83%). Do not turn either flag on in `config/scenario.yaml`. Multi-city tasks 1–15 are done. Single-city play stays the shipped path. A regional posting is `pnpm play --scenario config/scenario-region.yaml` (Vienna, Berlin, and Trieste, 1953).
+The plot library is on for every new game. A 9 Oct 2026 check of the same 30/15 seeds, after the library case shared the brief, the radio and one meeting, held every band: easy 29/30 (median 44%), standard 27/30 (median 44%), hard 25/30 (median 42%), idle 15/15 plot, reckless 15/15 on standard and hard. CI calibration still measures the three core plots and was not retuned. Ambient stays off. Multi-city tasks 1–15 are done. A regional posting is `pnpm play --scenario config/scenario-region.yaml` (Vienna, Berlin, and Trieste, 1953).
 
 ## Requirements
 
@@ -77,15 +77,26 @@ The App Shell owns these global keys on every screen (shown in the in-game help 
 | --- | --- |
 | `c` | Case File |
 | `d` | Documents |
-| `w` | Workbench |
+| `w` | Workbench (terminal). In the browser, a decrypt action opens the cipher form |
+| `i` | Intercepts |
 | `j` | Journal |
 | `m` | Map |
+| `g` | Streets |
+| `y` | City |
+| `r` | Stories |
+| `k` | Cover duties |
 | `p` | People |
-| `f` | Feed composer for the selected turned Asset |
+| `n` | Region map |
+| `b` | Departures |
+| `a` | Papers |
+| `t` | Carriage |
+| `f` | Feed composer for the selected turned Asset (terminal) |
 | `s` | Save |
 | `l` | Load |
 | `?` | Toggle the help overlay |
 | `q` | Quit (confirms first) |
+
+The browser aid bar uses the same letters. Streets (`g`) shows the street map. Intercepts (`i`) lists collected traffic. The action menu in both shells uses the same phrases, including drive, hire, plates, departures, papers, visas and liaison.
 
 Within a scene, `Enter` opens the action menu or submits a typed line and `Esc` goes back (ending a Talk Scene).
 
@@ -115,12 +126,23 @@ Same seed prefix as CI (`calibration-N`, `calibration-idle-N`, `calibration-reck
 
 | Mode | easy expert | standard expert | hard expert | idle | reckless std / hard |
 | --- | --- | --- | --- | --- | --- |
-| core (shipped) | 100% · median 44% · holds | 100% · 48% · holds | 90% · 58% · holds | 15/15 plot | 93% / 100% · holds |
+| core plots | 100% · median 44% · holds | 100% · 48% · holds | 90% · 58% · holds | 15/15 plot | 93% / 100% · holds |
 | ambient on | 100% · 50% · holds | 93% · 46% · holds | 87% · 59% · holds | 15/15 plot | 100% / 100% · holds |
 | plot library on | 100% · 52% · ~53d · holds | 97% · 56% · ~50d · holds | 83% · 57% · ~46d · holds | 15/15 plot | 100% / 100% · holds |
 | both on | 100% · 55% · holds | 93% · 56% · holds | 83% · 57% · holds | 15/15 plot | 100% / 100% · holds |
 
-Core still holds after the expert probe started sweeping the Station every day, inside the two-day intercept retention. Ambient holds on easy, standard, and hard (100% / 93% / 87%, medians 50% / 46% / 59%). Outlet editions are sold at the kiosk with the city paper and come off the rack the next day, and a cover shift can be kept a phase late at a place that cover fits. A missed shift still drops standing with the employer; the suspicion from the miss stays small enough that skipping the day job does not, by itself, put a tail on a player who never takes to the street. The plot library holds every band. Meetings evidence a real contact, a confirm stage carries a second signal before the finale, and a subplot's confirm waits on its own opening instead of firing in the first week. With both flags on, the same bands hold (100% / 93% / 83%, medians 55% / 56% / 57%) on the library clock, about 46–53 days. CI still measures core only. Bands were not retuned. Do not enable either flag in the shipped scenario.
+Core still holds after the expert probe started sweeping the Station every day, inside the two-day intercept retention. Ambient holds on easy, standard, and hard (100% / 93% / 87%, medians 50% / 46% / 59%). Outlet editions are sold at the kiosk with the city paper and come off the rack the next day, and a cover shift can be kept a phase late at a place that cover fits. A missed shift still drops standing with the employer; the suspicion from the miss stays small enough that skipping the day job does not, by itself, put a tail on a player who never takes to the street. The plot library holds every band. Meetings evidence a real contact, a confirm stage carries a second signal before the finale, and a subplot's confirm waits on its own opening instead of firing in the first week. With both flags on, the same bands hold (100% / 93% / 83%, medians 55% / 56% / 57%) on the library clock, about 46–53 days. CI still measures the three core plots. Bands were not retuned. The plot library is on in the shipped scenario. Leave ambient off.
+
+### Authored Vienna (9 Oct 2026)
+
+Same player models and the same seed names as CI, on a smaller sample: 12 expert games and 8 idle and 8 reckless games per preset. The authored city was loaded with its era and name libraries, and the game was placed in `city-vienna/vienna`. The shipped scenario was not changed for this measurement, and the calibration bands were not moved.
+
+| City | easy expert | standard expert | hard expert | idle | reckless easy / std / hard |
+| --- | --- | --- | --- | --- | --- |
+| core (this sample) | 12/12 · median 58% | 12/12 · 55% | 12/12 · 60% | 8/8 plot | 1/8 · 8/8 · 8/8 |
+| city-vienna | 12/12 · median 62% | 12/12 · 60% | 12/12 · 61% | 8/8 plot | 0/8 · 1/8 · 7/8 |
+
+The expert and the idle player hold every band on the authored city. A reckless player on standard is burned in 1 of 8 games there, against a band of at least 60%, while the same seeds are burned in all 8 games on the core city. Hard still holds (7 of 8). The authored Vienna is not ready to replace the shipped city until that standard gap is understood.
 
 Library deadlines accumulate the way slice `buildStages` does: `max(predecessor days) + draw(min, max) + slack`, with sibling alternatives sharing the branch point. Opening `coldwar-plots` stages are 12–20 days, the confirm beat is 6–10, and the finale is 14–22. Side threads stay shorter. `attend-duty` is in the action catalogue. Trace lines are no longer the two recycled sentences.
 
@@ -145,7 +167,7 @@ A pnpm + Nx monorepo of twelve TypeScript packages:
 
 Boundaries are enforced by `.dependency-cruiser.cjs`. Ground-truth values are branded `Truth<T>` in the engine and never cross into `player-view` projections.
 
-Configuration lives in `config/models.yaml` (role → model, two profiles), `config/scenario.yaml` and `config/featured-seeds.json` (written by `pnpm seeds:vet`). Content lives under `packages/content/packs/`. The shipped scenario loads `core` only.
+Configuration lives in `config/models.yaml` (role → model, two profiles), `config/scenario.yaml` and `config/featured-seeds.json` (written by `pnpm seeds:vet`). Content lives under `packages/content/packs/`. The shipped scenario loads `core` and `coldwar-plots`.
 
 ### Content Packs
 
@@ -159,30 +181,47 @@ Packs on disk, beyond `core`:
 | --- | --- | --- |
 | `core` | Predicates, the core city, archetypes, difficulty presets, slice plots | Yes |
 | `ambient` | Civic orgs, cover duties, events, incidents, life, outlets, regard | No on the shipped scenario. `config/scenario-region.yaml` loads it and sets `ambient.enabled`. Regional content loading registers those kinds. Do not add the pack to `config/scenario.yaml`. |
-| `coldwar-plots` | Template-schema-v2 plots and side threads | No. Loaded only when a scenario lists it and sets `plotSelection.enabled`. |
+| `coldwar-plots` | Template-schema-v2 plots and side threads | Yes. `plotSelection.enabled` is on, so a new game draws one of these operations. |
 | `era-cold-war-early` | Era profile | No |
 | `lib-western`, `lib-russian`, `lib-iberian`, `lib-eastern-mediterranean`, `lib-central-europe`, `lib-descriptors`, `lib-archetypes` | Shared name and flavour libraries | No |
 | `city-vienna`, `city-berlin`, `city-istanbul`, `city-lisbon`, `city-trieste` | Authored cities | No. `generate()` can take a city bundle. The launcher resolves `setting.city` when that pack is loaded. |
 
 A Plot or Side Thread stage's traces bind to Locations by **function tag** (a Tag Query like `[function:cafe]`), not by a specific Location Type id. A city satisfies a plot's observable events by tagging *some* public Location for each function the plot needs; the lint's CE-PLOTBIND rule fails a release build whose city cannot, rather than letting it fall over at generation. One upshot: the shipped cities still carry a few Location-Type ids kept from an earlier id-matched binding (e.g. a café typed `core/kaffeehaus`). These are harmless — tag-binding resolves them correctly — so they are left as-is; if you revisit those packs, you can rename them to local-flavor ids in the same pass (it needs a `GENERATOR_VERSION` bump and a golden re-record, so it is not worth doing on its own).
 
+## Add-ons
+
+Street ops is implemented and off by default. Set `streetOps.enabled` to true
+and the launcher loads the street pack, issues a pool car, and lets you
+drive from where you are standing. The shipped graphs are Inner Court (Vienna)
+and a block grid (Berlin). In a regional game the car follows `player.city`:
+you can drive in the city you are in, and a departure checks the car's plate
+at the border. On arrival the drive session closes and the destination city's
+graph is the one you pull out onto. A city with no graph, such as Trieste,
+has no drive. Ambient crackdowns and police pressure still place stops on
+whatever graph you are driving. Fetching a larger graph, the licence prompt,
+and the period-fidelity caveat are in
+[docs/street-ops.md](docs/street-ops.md). Built graphs stay out of git.
+Leave `streetOps.enabled` off in `config/scenario.yaml`.
+
 ## Roadmap
 
 Follow-on order: content-expansion → plot-library → ambient-world → campaign-career → multi-city. Single-city mode stays unchanged. Debrief stays at eight sections.
 
 1. **slice-integration** — assembled the slice into a playable game. Remaining: the developer playtest (task 20 / slice task 24).
-2. **content-expansion** — done. Content Kind Registry, Era and Library packs, five authored city packs, authoring tools. Shipped play still loads `core` only. The launcher resolves a loaded `setting.city`; a city that was not loaded still fails.
-3. **plot-library** — done, opt-in (`plotSelection.enabled`). Template schema v2, `coldwar-plots`, Plot Lab. The 30/15 sample holds (expert 100% / 97% / 83%). Leave it off in the shipped scenario.
+2. **content-expansion** — done. Content Kind Registry, Era and Library packs, five authored city packs, authoring tools. Shipped play loads `core` and `coldwar-plots`. The launcher resolves a loaded `setting.city`; a city that was not loaded still fails.
+3. **plot-library** — on in the shipped game (`plotSelection.enabled`). Template schema v2, `coldwar-plots`, Plot Lab. The 9 Oct 30/15 sample holds (expert 29/30, 27/30, 25/30).
 4. **ambient-world** — done, opt-in (`ambient.enabled`). Living city, duties, gossip, news, couplings. Catalogue reads the `ambient` pack from disk. `attend-duty` is in the action catalogue. The 30/15 sample holds (expert 100% / 93% / 87%), and both-on holds with it (100% / 93% / 83%). Leave it off in the shipped scenario.
 5. **campaign-career** — done. HQ, postings, Review Board, carry-over and arcs. Separate from the default slice loop.
-6. **multi-city** — done. Tasks 1–15 are done: regional content loads, the region world types and streams are in place, `generateRegion` builds a verified region from a template, the region clock advances every city's spine before applying tiered ambient couplings, departures, border checks and travel papers resolve inside a region, services share beliefs, expel a persona non grata, and answer liaison requests, remote tasking, courier reception and handoffs run only when a region is set, an arrest quote in a region also requires jurisdiction, notices from another city wait out the communication latency, save version 4 round-trips the regional world (version 3 still loads in slice mode), and outcome schema 2 carries an optional region block. The player view shows the region map, departures, papers and each person's last known city, the case file filters by city, and the status bar names the city or the transit. The narrator scene descriptor carries the city name and style sheet, and the TUI has a region map, departures board, papers panel and carriage scene. Generation, coarse and full advance, and reconciliation are written to the metrics log. The evals bench measures the fixture four-city region against the Req 19 budgets, with thresholds scaled in CI. Regional eval fixtures cover a border inspection, a liaison meeting and a carriage conversation, and one golden replay is checked in per fixture starter region. The suite passed at the final checkpoint. `pnpm play --scenario config/scenario-region.yaml` starts that region. The turn clock draws each city's spine, runs the service day, and holds remote notices. When that scenario sets `ambient.enabled`, the player's city takes one ambient phase per turn and the other cities take a coarse step. The opening cable names a cell member and a meeting. A note at the meeting and orders elsewhere confirm the leader and the plan; the cable alone does not. People keep a weekly schedule. The note at the meeting names where the orders are, so the case file points at the next city. `pnpm player:train` records the slice plus a short ambient game and a short regional game, and `pnpm player:play --scenario slice|ambient|region` plays saved weights on that game. Slice `generate` is unchanged when `region` is unset. Leave ambient and plot selection off in the shipped scenario. `generatorVersion` stays `0.7.0`.
+6. **multi-city** — done. Tasks 1–15 are done: regional content loads, the region world types and streams are in place, `generateRegion` builds a verified region from a template, the region clock advances every city's spine before applying tiered ambient couplings, departures, border checks and travel papers resolve inside a region, services share beliefs, expel a persona non grata, and answer liaison requests, remote tasking, courier reception and handoffs run only when a region is set, an arrest quote in a region also requires jurisdiction, notices from another city wait out the communication latency, save version 4 round-trips the regional world (version 3 still loads in slice mode), and outcome schema 2 carries an optional region block. The player view shows the region map, departures, papers and each person's last known city, the case file filters by city, and the status bar names the city or the transit. The narrator scene descriptor carries the city name and style sheet, and the TUI has a region map, departures board, papers panel and carriage scene. Generation, coarse and full advance, and reconciliation are written to the metrics log. The evals bench measures the fixture four-city region against the Req 19 budgets, with thresholds scaled in CI. Regional eval fixtures cover a border inspection, a liaison meeting and a carriage conversation, and one golden replay is checked in per fixture starter region. The suite passed at the final checkpoint. `pnpm play --scenario config/scenario-region.yaml` starts that region. The turn clock draws each city's spine, runs the service day, and holds remote notices. When that scenario sets `ambient.enabled`, the player's city takes one ambient phase per turn and the other cities take a coarse step. The opening cable names a cell member and a meeting. A note at the meeting and orders elsewhere confirm the leader and the plan; the cable alone does not. People keep a weekly schedule. The note at the meeting names where the orders are, so the case file points at the next city. `pnpm player:train` records the slice plus a short ambient game and a short regional game, and `pnpm player:play --scenario slice|ambient|region` plays saved weights on that game. The network's action list includes departures, liaison and the street-ops commands, and the tutorial suggests a drive, a turn or parking when those are the next useful step. A policy file has to match this action width; `pnpm player:train` writes one that does. Slice `generate` is unchanged when `region` is unset and `plotSelection` is off. The shipped scenario turns plot selection on and leaves ambient off. `generatorVersion` stays `0.7.0`.
 
-Later specs that already have `requirements.md` / `design.md` / `tasks.md` (none of these are started):
+Later specs that already have `requirements.md` / `design.md` / `tasks.md`:
 
-- **web-shell** — localhost browser client over `player-view`. `pnpm play:web` exists; the spec tasks are unchecked.
-- **street-ops** — street graph, drive sessions, tails, checkpoints, concealment.
-- **setting-generalization** — era profiles, terminology maps, capabilities beyond the early Cold War.
-- **natural-language-commands** — phrasebook matcher and typed-line orchestration.
+- **web-shell** — playable. `pnpm play:web` serves the same player-view game on localhost, with the aid screens (journal, map, city, stories, duties, people, documents, case file, region, departures, papers, carriage, streets, intercepts, help), the soundtrack, and a one-time launch token. See [docs/web-shell.md](docs/web-shell.md). The checklist in `.kiro/specs/web-shell/tasks.md` is still unchecked.
+- **street-ops** — implemented, off by default. Drive sessions, tails, checkpoints, concealment, hire and plates. Inner Court and the Berlin block grid ship with the pack. A local 1953 Vienna pass is gitignored. See [docs/street-ops.md](docs/street-ops.md).
+- **setting-generalization** — era profiles, terminology maps, capabilities beyond the early Cold War. Spec only.
+- **natural-language-commands** — both shells share the street and catalogue phrases. The checklist in `.kiro/specs/natural-language-commands/tasks.md` is still unchecked.
+- **living-world** — local models write the papers, cables, gossip, dossiers, scenes and case history live from engine Fact Sheets, behind mechanical, round-trip and critic gates with authored fallbacks, and propose small world additions from a closed menu the engine verifies before committing. Includes the offline Authoring Factory and variety measurement. Spec only; off by default. See `.kiro/specs/living-world/`.
+- **scene-frames** — AI still pictures for the web shell: scenes, portraits, press photos and quiet moments of tradecraft, made from player-visible facts only, checked by a vision model before anyone sees them, with offline reviewed picture packs and optional live rendering in idle time. Fills in the web-shell still-frame hook and decides its model budget. Spec only; off by default. See `.kiro/specs/scene-frames/`.
 
 ## Specs
 
@@ -197,7 +236,9 @@ Specs live in `.kiro/specs/<name>/` as `requirements.md`, `design.md` and `tasks
 | `ambient-world` | Implemented, opt-in. 30/15 sample holds, including hard. |
 | `campaign-career` | Implemented. |
 | `multi-city` | Implemented. Shipped play stays single-city. `config/scenario-region.yaml` starts central-1953. |
-| `web-shell` | Spec only (launcher command exists). |
-| `street-ops` | Spec only. |
+| `web-shell` | Playable via `pnpm play:web`. Aid screens, soundtrack and launch token are in. Spec tasks unchecked. |
+| `street-ops` | Implemented, off by default. Works with a regional posting when the scenario turns it on. See [docs/street-ops.md](docs/street-ops.md). |
 | `setting-generalization` | Spec only. |
-| `natural-language-commands` | Spec only. |
+| `natural-language-commands` | Shared phrases in both shells. Spec tasks unchecked. |
+| `living-world` | Spec only. Live prose from engine Fact Sheets, verified world proposals and the offline Authoring Factory. Off by default; `config/scenario-living.yaml` arrives with task 7.4. |
+| `scene-frames` | Spec only. Pictures for the web shell from Player View facts, with an offline Darkroom and signed-off picture packs. Off by default; `config/frames.yaml` arrives with task 1.2. |

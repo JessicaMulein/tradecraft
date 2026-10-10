@@ -11,6 +11,7 @@ import { cleanup, render } from 'ink-testing-library';
 import {
   caesarShiftPreview,
   frequencyTable,
+  keyCoincidence,
   type WorkbenchView,
 } from '@tradecraft/player-view';
 
@@ -30,6 +31,7 @@ const view: WorkbenchView = {
   callsign: 'NUM1',
   ciphertext: CIPHERTEXT,
   frequency: frequencyTable(CIPHERTEXT),
+  coincidence: keyCoincidence(CIPHERTEXT),
   shiftPreview: caesarShiftPreview(CIPHERTEXT),
   tradecraftError: { kind: 'fixed-header', header: 'NR' },
   header: 'NR',
@@ -54,13 +56,18 @@ describe('Workbench snapshot', () => {
   it('renders the metadata, frequency table, shift preview and entry panel', () => {
     const { lastFrame } = render(<Workbench view={view} onSubmit={vi.fn()} />);
     expect(plain(lastFrame())).toMatchInlineSnapshot(`
-      "Intercept int:numbers-1
-      chan:numbers · org:hostile · outbound · 5 chars · NUM1
+      "NUM1
+      an unnamed frequency · outbound · 5 chars
       header crib: NR
       tradecraft error: fixed header "NR"
 
       Frequency
       H:1  K:1  O:2  R:1
+
+      Key length
+      whole text 0.100 · 4 0.000  5 0.000  6 0.000  7 0.000
+      Near 0.065 is one alphabet: slide the shift. A length that rises is a word of that many letters.
+      Trying a word below does not spend a phase.
 
       Ciphertext
       KHOOR

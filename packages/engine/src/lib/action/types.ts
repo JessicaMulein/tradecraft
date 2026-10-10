@@ -74,7 +74,7 @@ export type ClaimId = string;
 export type ObservationSource =
   | { readonly kind: 'surveillance'; readonly loc: LocId }
   | { readonly kind: 'document'; readonly id: DocId }
-  | { readonly kind: 'intercept'; readonly id: InterceptId }
+  | { readonly kind: 'intercept'; readonly id: InterceptId; readonly channel?: ChannelId }
   | { readonly kind: 'npc'; readonly npc: NpcId }
   | { readonly kind: 'liaison'; readonly service: ServiceId };
 
@@ -194,10 +194,27 @@ export type Action =
   | ApplyVisaAction
   | LiaisonRequestAction
   | LiaisonShareAction
-  | ExfiltrateAction;
+  | ExfiltrateAction
+  | ExtensionAction;
 
-/** A kind tag of an {@link Action}. */
-export type ActionKind = Action['kind'];
+/**
+ * An add-on action. `kind` is `<addon>.<name>` (for example `street-ops.turn`).
+ * The registered Zod schema validates the other fields. Built-in kinds have no
+ * dot, so a switch on those kinds stays exhaustive.
+ */
+export interface ExtensionAction {
+  readonly kind: `${string}.${string}`;
+  /** Payload fields. The registered schema checks them. */
+  readonly [field: string]: unknown;
+}
+
+/** A built-in kind tag. Namespaced add-on kinds are `${string}.${string}`, not this. */
+export type ActionKind = Exclude<Action['kind'], `${string}.${string}`>;
+
+/** True for an add-on action. Built-in kinds have no dot. */
+export function isExtensionAction(action: Action): action is ExtensionAction {
+  return action.kind.includes('.');
+}
 
 // ---------------------------------------------------------------------------
 // The Meeting data model (design, "Data Models" `Meeting`; owned by task 11.5)
@@ -224,7 +241,9 @@ export type MeetingStatus =
   | 'kept'
   | 'no-show'
   | 'missed'
-  | 'void';
+  | 'void'
+  /** The player called it off after sensing a tail. Trust does not drop. */
+  | 'broken-off';
 
 /**
  * An arranged meeting (the design's `Meeting`; owned by task 11.5's
@@ -255,6 +274,11 @@ export interface Meeting {
 export interface TalkAction {
   readonly kind: 'talk';
   readonly npc: NpcId | UnkId;
+  /**
+   * Call off an accepted meeting with this person. Allowed only after the
+   * player has been told they may have been followed. It does not open a scene.
+   */
+  readonly breakOff?: boolean;
 }
 
 /** Cold-approach an NPC for first contact (owned by task 11.x). */

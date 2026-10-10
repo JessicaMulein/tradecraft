@@ -70,8 +70,8 @@ describe('CaseFileBrowser snapshot', () => {
 
       Filter [source]: source=all · grade=all · entity=all · city=all
 
-      >   npc npc:viktor · npc:viktor core/meets npc:lena @ loc:cafe · grade B2 · corroborated
-          intercept int:7 · npc:lena core/carries a sealed envelope (hedged) · grade ungraded · —
+      >   from Viktor · Viktor meets Lena at Cafe · grade B2 · corroborated
+          from an intercept · Lena is carrying a sealed envelope (hedged) · grade ungraded · —
 
       Grade cursor: A1
       ↑/↓ select · Tab axis · ←/→ filter · x clear · r/c grade · g apply · l link · u unlink"

@@ -36,7 +36,10 @@ import {
   markDocumentRead,
   quote as engineQuote,
   randomSeed,
+  runtimeFor,
+  selectStreetGraph,
   validateFeedItems,
+  calendarLabel,
   type Action,
   type ActionQuote,
   type AdmiraltyGrade,
@@ -53,6 +56,7 @@ import {
 } from '@tradecraft/engine';
 import type { CityData, ContentManifest } from '@tradecraft/content';
 
+import { streetView, type StreetView } from '../street/map.js';
 import { CaseFile } from '../casefile/casefile.js';
 import { addDocumentClaims } from '../casefile/document-claims.js';
 import {
@@ -643,6 +647,7 @@ export class PlayerViewEngine implements EngineApi {
     const place = state.city.locations[state.player.loc];
     return {
       time: state.time,
+      date: calendarLabel(state.meta.setting.startDate, state.time.day),
       location: {
         id: state.player.loc,
         name: place?.name ?? state.player.loc,
@@ -650,6 +655,9 @@ export class PlayerViewEngine implements EngineApi {
       budget: balanceOf(state),
       standing: state.station.standing,
       ended: state.ended !== undefined,
+      ...(state.player.sensedFollowed === true
+        ? { followed: 'You may have been followed.' }
+        : {}),
       ...statusPlace(state),
     };
   }
@@ -686,6 +694,18 @@ export class PlayerViewEngine implements EngineApi {
       this.quoteContext(),
       (target) => this.caseFile.evidence(target),
     );
+  }
+
+  /**
+   * The talk that opens the briefing: the Chief, if the Chief is here and will
+   * talk. Anyone else in the room is not the briefing.
+   */
+  briefingTalk(): Action | undefined {
+    const chief = this.deps.state.station.chief;
+    const option = this.actions().find(
+      (row) => row.action.kind === 'talk' && row.action.npc === chief && row.quote.allowed,
+    );
+    return option?.action;
   }
 
   /**
@@ -880,6 +900,11 @@ export class PlayerViewEngine implements EngineApi {
     here: (): HereView => hereView(this.deps.state, this.deps.cityData),
     journal: (): JournalView => journalView(this.journalStore),
     map: (): MapView => mapView(this.deps.state, this.deps.cityData),
+    street: (): StreetView | null => {
+      const registry = this.deps.ctx.extensions;
+      const graphs = registry === undefined ? [] : (runtimeFor(registry)?.graphs ?? []);
+      return streetView(this.deps.state, selectStreetGraph(graphs, this.deps.state));
+    },
     city: (): CityView => cityView(this.deps.state, this.deps.caseFile, this.notificationStore.list()),
     stories: (): StoriesView => storiesView(this.deps.state),
     duties: (): DutiesView => dutiesView(this.deps.state),
@@ -897,8 +922,10 @@ export class PlayerViewEngine implements EngineApi {
       }
       return view;
     },
-    help: (): HelpView =>
-      helpView(this.deps.state, this.deps.ctx, this.deps.ctx.content.glossary),
+    help: (): HelpView => {
+      const runtime = this.deps.ctx.extensions === undefined ? undefined : runtimeFor(this.deps.ctx.extensions);
+      return helpView(this.deps.state, this.deps.ctx, this.deps.ctx.content.glossary, runtime?.attributions);
+    },
     debrief: (): DebriefView | null => {
       // `debrief()` returns null until the game has ended (design, "`debrief()`
       // returns `null` until `ended` is set"). Once ended, it is the one place

@@ -9,9 +9,10 @@
 # the result (Req 41.1).
 #
 # The defaults below ship the standard game: the `standard` difficulty preset,
-# the `core` pack, full narration, and the starting balance weights. Edit any
-# field here — the loader reports an unknown preset or pack, or a bad value, as
-# a `<file>: <field path>: <message>` line and refuses to start (Req 41.2).
+# the `core` pack plus the plot library, full narration, and the starting
+# balance weights. Edit any field here — the loader reports an unknown preset
+# or pack, or a bad value, as a `<file>: <field path>: <message>` line and
+# refuses to start (Req 41.2).
 
 difficulty:
   # The named preset from a loaded pack's difficulty.yaml. `overrides` is a
@@ -28,8 +29,15 @@ packs:
   # Each entry is a pack directory: the folder that holds its pack.yaml.
   dirs:
     - packages/content/packs/core
+    - packages/content/packs/coldwar-plots
   load:
     - core
+    - coldwar-plots
+
+# Every new game draws its operation from the plot library. Ambient city life
+# stays off.
+plotSelection:
+  enabled: true
 
 # Narrator mode: full | brief | off. `brief` caps Flavour at one sentence;
 # `off` skips the Narrator and shows Fact Lines only.
@@ -93,3 +101,12 @@ interceptRetentionDays: 2
 metrics:
   enabled: true
   path: logs/metrics.jsonl
+
+# Street-ops is off. An enabled: false block is omitted from the stored
+# scenario, so this game matches one built without the add-on.
+streetOps:
+  enabled: false
+  ticksPerPhase: 360
+  narrateSteps: false
+  sightRangeM: 250
+  lostTimeoutPhases: 2

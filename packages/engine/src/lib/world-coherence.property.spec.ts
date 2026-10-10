@@ -19,9 +19,8 @@
  * 3. **Descriptors (Req 1.3, 1.7).** Every descriptor entry an NPC wears fits
  *    its gender, and every two Principals' descriptors differ in at least two
  *    elements (the `MIN_DESCRIPTOR_DIFFERENCE` symmetric-difference rule).
- * 4. **Names (Req 1.7, 1.8).** No two NPCs share a full name across the whole
- *    roster (Principals and Background NPCs), and no two Principals share a
- *    given or family name.
+ * 4. **Names (Req 1.7, 1.8).** No two NPCs share a full name or a surname
+ *    across the whole roster. Principals also keep distinct given names.
  * 5. **Executed traces (Req 3.6).** Every executed trace event has the kind,
  *    participants, place, Channel and materiel its template trace names (the
  *    bound {@link StageTrace} fields task 26.1/26.2 resolved).
@@ -55,7 +54,7 @@ import {
   type PublicText,
 } from '@tradecraft/content';
 
-import { createPrng } from './prng/prng.js';
+import { createPrng, derive } from './prng/prng.js';
 import {
   revealTruth,
   type GameTime,
@@ -64,7 +63,12 @@ import {
 } from './model/core.js';
 import type { SimEvent, WorldState } from './model/state.js';
 import { generateCity } from './city/generate.js';
-import { generateOrgs, generatePrincipals } from './city/principals.js';
+import {
+  generateOrgs,
+  generatePrincipals,
+  STATION_SERVICES,
+  STATION_SERVICE_STREAM,
+} from './city/principals.js';
 import { MIN_DESCRIPTOR_DIFFERENCE } from './city/principals.js';
 import { generatePlot } from './city/plot.js';
 import { generateComms } from './city/comms.js';
@@ -210,7 +214,8 @@ function coreKnowledge(
 
   const prng = createPrng(seed);
   const orgs = generateOrgs(prng);
-  const principals = generatePrincipals(prng, content, descriptors, city, orgs);
+  const service = createPrng(derive(seed, STATION_SERVICE_STREAM)).pick(STATION_SERVICES);
+  const principals = generatePrincipals(prng, content, descriptors, city, orgs, { service });
   const { plot } = generatePlot(prng, content, p, city, orgs, principals, START);
   const comms = generateComms(prng, content, city, orgs, principals, plot, START);
   const knowledge = assignKnowledge(
@@ -516,10 +521,10 @@ describe('Property 33: World coherence (Req 1.3, 1.5, 1.7, 1.8, 3.6, 30.5)', () 
     );
   });
 
-  // (4) Name uniqueness: no two NPCs share a full name across the whole roster
-  //     (Principals and Background NPCs), and no two Principals share a given or
-  //     family name (the stricter Principal-only rule).
-  it('never repeats a full name across the whole roster, nor a given/family name across Principals', () => {
+  // (4) Name uniqueness: no two NPCs share a full name or a surname across the
+  //     whole roster. A repeated surname would read as a family, and none is
+  //     intended. Principals also keep distinct given names.
+  it('never repeats a full name or a surname across the roster', () => {
     fc.assert(
       fc.property(
         fc.constantFrom(...SEEDS),
@@ -545,6 +550,8 @@ describe('Property 33: World coherence (Req 1.3, 1.5, 1.7, 1.8, 3.6, 30.5)', () 
           const npcs = Object.values(world.npcs);
           const fullNames = npcs.map((n) => n.persona.name);
           expect(new Set(fullNames).size).toBe(fullNames.length);
+          const surnames = npcs.map((n) => n.persona.family);
+          expect(new Set(surnames).size).toBe(surnames.length);
 
           // And Principals in particular stay uniquely named across the roster
           // (a direct corollary, kept explicit).

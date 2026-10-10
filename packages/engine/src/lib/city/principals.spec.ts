@@ -163,12 +163,28 @@ describe('generatePrincipals — roster (Req 1.1, 27.1)', () => {
     for (const id of principals.staff) {
       expect(STAFF_ROLE_IDS).toContain(roleOf(id));
     }
-    // 2–3 contacts, drawn from the contact archetypes.
+    // 2–3 contacts, drawn from the contact archetypes. The police liaison is always one of them.
     expect(principals.contacts.length).toBeGreaterThanOrEqual(MIN_CONTACTS);
     expect(principals.contacts.length).toBeLessThanOrEqual(MAX_CONTACTS);
     for (const id of principals.contacts) {
       expect(CONTACT_ROLE_IDS).toContain(roleOf(id));
     }
+    expect(principals.contacts.some((id) => roleOf(id).endsWith('police-liaison'))).toBe(true);
+  });
+
+  it('keeps one of the cell leader’s meetings outside the Soviet sector', () => {
+    fc.assert(
+      fc.property(fc.string({ minLength: 1, maxLength: 12 }), (seed) => {
+        const { city, principals } = gen(seed);
+        const leader = principals.npcs[principals.cell[0]];
+        const outside = leader.schedule.entries.some((entry) => {
+          const place = city.locations[entry.loc];
+          return city.districts[place.district]?.sector !== 'soviet';
+        });
+        expect(outside).toBe(true);
+      }),
+      { numRuns: 20 },
+    );
   });
 
   it('produces 10–14 Principal NPCs (Req 1.1)', () => {
@@ -387,6 +403,30 @@ describe('generatePrincipals — persona (Req 1.3)', () => {
 });
 
 describe('generatePrincipals — descriptor (Req 1.3, 1.7)', () => {
+  it('wears one garment and at most one accessory', () => {
+    const { principals } = gen('garment-seed');
+    for (const npc of Object.values(principals.npcs)) {
+      const gender = npc.persona.gender;
+      const garments = npc.descriptor.phrases.filter((phrase) =>
+        npc.descriptor.pools.some((poolId) => {
+          const pool = descriptors.pools[poolId];
+          return pool !== undefined && fittingPhrases(pool.garments, gender).includes(phrase);
+        }),
+      );
+      const accessories = npc.descriptor.phrases.filter((phrase) =>
+        npc.descriptor.pools.some((poolId) => {
+          const pool = descriptors.pools[poolId];
+          return pool !== undefined && fittingPhrases(pool.accessories, gender).includes(phrase);
+        }),
+      );
+      expect(garments.length).toBeLessThanOrEqual(1);
+      expect(accessories.length).toBeLessThanOrEqual(1);
+      if (gender === 'female') {
+        expect(npc.descriptor.phrases).not.toContain('clean-shaven');
+      }
+    }
+  });
+
   it('builds a non-empty descriptor and records the archetype pools', () => {
     const { principals } = gen('descriptor-seed');
     for (const npc of Object.values(principals.npcs)) {

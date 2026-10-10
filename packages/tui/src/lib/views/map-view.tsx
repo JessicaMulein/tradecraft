@@ -32,6 +32,8 @@ import { phaseName } from '../scene/time.js';
 export interface MapPaneProps {
   /** The Map view — known Districts, Locations, Routes and Dead Drops. */
   readonly map: MapView;
+  /** Known streets, already rendered as text by the player view. */
+  readonly streets?: readonly string[];
 }
 
 /** The element type of {@link MapView.districts} (one District). */
@@ -131,12 +133,15 @@ function DistrictBlock({
  * Location is marked with a cursor. An empty map (nothing known yet) shows a
  * hint.
  */
-export function MapPane({ map }: MapPaneProps): ReactElement {
+export function MapPane({ map, streets = [] }: MapPaneProps): ReactElement {
   if (map.districts.length === 0) {
     return (
       <Box flexDirection="column">
         <Text bold>Map</Text>
         <Text dimColor>No known Locations yet.</Text>
+        {streets.map((line, index) => (
+          <Text key={`${index}:${line}`}>{line}</Text>
+        ))}
       </Box>
     );
   }
@@ -158,6 +163,26 @@ export function MapPane({ map }: MapPaneProps): ReactElement {
           ))}
         </Box>
       )}
+      {streets.length > 0 && (
+        <Box flexDirection="column" marginTop={1}>
+          <Text bold>Streets you know</Text>
+          {streets.map((line, index) => (
+            <Text key={`${index}:${line}`}>{line}</Text>
+          ))}
+        </Box>
+      )}
+    </Box>
+  );
+}
+
+/** The local street map. The lines come from the player view. */
+export function LocalMap({ lines }: { readonly lines: readonly string[] }): ReactElement | null {
+  if (lines.length === 0) return null;
+  return (
+    <Box flexDirection="column" marginTop={1}>
+      {lines.map((line, index) => (
+        <Text key={`${index}:${line}`}>{line}</Text>
+      ))}
     </Box>
   );
 }

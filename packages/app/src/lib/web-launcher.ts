@@ -5,7 +5,7 @@
  * shell never sees anything but `EngineApi`.
  */
 
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { startShellServer, parseShellConfig, type ShellServer } from '@tradecraft/web';
 
@@ -34,9 +34,21 @@ function readYaml(io: LauncherIo, path: string, optional: boolean): unknown {
   return parseYaml(text) as unknown;
 }
 
+function flagValue(argv: readonly string[], flag: string): string | undefined {
+  const index = argv.indexOf(flag);
+  if (index < 0) return undefined;
+  const value = argv[index + 1];
+  if (value === undefined || value.startsWith('--')) return '';
+  return value;
+}
+
 export async function runWebLauncher(argv: readonly string[], io: WebLauncherIo): Promise<number> {
-  const profileIdx = argv.indexOf('--profile');
-  const profile = profileIdx >= 0 ? argv[profileIdx + 1] : undefined;
+  const profile = flagValue(argv, '--profile');
+  const record = flagValue(argv, '--record');
+  if (profile === '' || record === '') {
+    io.err('play:web: --profile and --record each need a value');
+    return 1;
+  }
 
   const configs = loadConfigs(io, profile);
   if (!configs.ok) return 1;
@@ -57,7 +69,15 @@ export async function runWebLauncher(argv: readonly string[], io: WebLauncherIo)
   if (startup === undefined) return 1;
   for (const w of startup.load.warnings) io.err(w);
 
-  const game = createGame({ repoRoot: io.repoRoot, scenario: configs.scenario, models: configs.models, gateway: 'live' });
+  const game = createGame({
+    repoRoot: io.repoRoot,
+    scenario: configs.scenario,
+    models: configs.models,
+    gateway: record === undefined ? 'live' : { record: isAbsolute(record) ? record : join(io.repoRoot, record) },
+  });
+  if (record !== undefined) {
+    io.out(`Recording model calls to ${isAbsolute(record) ? record : join(io.repoRoot, record)}`);
+  }
 
   let server: ShellServer;
   try {

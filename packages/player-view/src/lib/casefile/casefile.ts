@@ -40,6 +40,7 @@
 import {
   compareTime,
   type AdmiraltyGrade,
+  type ChannelId,
   type ClaimId,
   type DocId,
   type EntityId,
@@ -72,7 +73,7 @@ import {
  */
 export type ClaimSource =
   | { readonly kind: 'npc'; readonly npc: NpcId }
-  | { readonly kind: 'intercept'; readonly id: InterceptId }
+  | { readonly kind: 'intercept'; readonly id: InterceptId; readonly channel?: ChannelId }
   | { readonly kind: 'surveillance'; readonly loc: LocId }
   | { readonly kind: 'document'; readonly id: DocId }
   | { readonly kind: 'liaison'; readonly service: `service:${string}` };
@@ -295,6 +296,15 @@ export const MULTI_VALUED_PREDICATES: ReadonlySet<string> = new Set([
   'TRAVELS_TO',
 ]);
 
+/**
+ * A false-flag cover story. The notice and the rumour share this id prefix.
+ * They stay in the file so the player can see the clash, but they are not a
+ * source that confirms or destroys the cell's own membership.
+ */
+function isPlantedCover(claim: Claim): boolean {
+  return claim.prop.id.startsWith('prop:plant/');
+}
+
 /** A predicate id's local name (`core/MEETS_AT` → `MEETS_AT`). */
 function localName(predicate: string): string {
   return predicate.slice(predicate.lastIndexOf('/') + 1);
@@ -329,9 +339,16 @@ export function windowsOverlap(a?: TimeWindow, b?: TimeWindow): boolean {
  * packs still group together.
  */
 function groupKey(prop: Proposition, canon: AliasResolver): string {
-  const slash = prop.predicate.lastIndexOf('/');
-  const local =
-    slash === -1 ? prop.predicate : prop.predicate.slice(slash + 1);
+  const local = localName(prop.predicate);
+  // A meeting of two people is the pair, in either order. A meeting whose
+  // object is a text note stays keyed by its subject, like any other claim.
+  if (local === 'MEETS_AT' && typeof prop.object === 'string') {
+    const a = canon(prop.subject);
+    const b = canon(prop.object);
+    const lo = a < b ? a : b;
+    const hi = a < b ? b : a;
+    return `${lo}\u0000${hi}\u0000meets_at`;
+  }
   return `${canon(prop.subject)}\u0000${local.toLowerCase()}`;
 }
 
@@ -385,6 +402,9 @@ export function computeRelations(
     // Signature of each Claim within the group: alias-resolved object + place.
     const signatures = indices.map((index) => {
       const { prop } = claims[index];
+      if (localName(prop.predicate) === 'MEETS_AT' && typeof prop.object === 'string') {
+        return placeKey(prop.place, canon);
+      }
       return `${objectKey(prop.object, canon)}\u0000${placeKey(prop.place, canon)}`;
     });
     const origins = indices.map((index) => originKey(claims[index].source));
@@ -403,10 +423,17 @@ export function computeRelations(
         if (!windowsOverlap(claims[indices[i]].prop.window, claims[indices[j]].prop.window)) {
           continue;
         }
+        // A planted cover story is a rumour the player can read. It does not
+        // confirm a membership, and it does not erase one that the brief and
+        // the radio already agree on.
+        if (isPlantedCover(claims[indices[j]])) {
+          continue;
+        }
         if (signatures[j] === signatures[i]) {
           // Agreement corroborates only across independent origins: HQ's own
           // Cables and Dossiers repeating each other are one voice, not two.
-          if (origins[j] !== origins[i]) {
+          // A planted cover does not become that second voice.
+          if (!isPlantedCover(claims[index]) && origins[j] !== origins[i]) {
             agrees = true;
           }
         } else if (!multi) {
@@ -461,8 +488,13 @@ export function sourceKey(source: ClaimSource): SourceKey {
  * Two agreeing Claims corroborate only when their origins differ. Every HQ
  * Document (the Cables HQ sends and the Dossiers it files) shares the `hq`
  * origin: HQ restating its own file is one voice, so it can point the player at
- * a suspect but cannot confirm one. Every other source is its own origin (an
- * NPC, an Intercept, a surveilled Location, a newspaper or found Document).
+ * a suspect but cannot confirm one. Every message on one radio Channel is one
+ * voice, the same way HQ's files are: two breaks of the same operator do not
+ * confirm each other. A Channel is recorded on the Claim when the break knows
+ * it. Every transcript from the Station's telephone tap is one voice
+ * (`tap:silver`). Every other source is its own origin (an NPC, a surveilled
+ * Location, a newspaper or found Document, or an Intercept whose Channel was
+ * not recorded).
  */
 export function originKey(source: ClaimSource): string {
   if (
@@ -470,6 +502,12 @@ export function originKey(source: ClaimSource): string {
     (source.id.startsWith('doc:cable/') || source.id.startsWith('doc:dossier/'))
   ) {
     return 'hq';
+  }
+  if (source.kind === 'intercept' && source.channel !== undefined) {
+    return `channel:${source.channel}`;
+  }
+  if (source.kind === 'document' && source.id.startsWith('doc:notice/tap-')) {
+    return 'tap:silver';
   }
   return sourceKey(source);
 }

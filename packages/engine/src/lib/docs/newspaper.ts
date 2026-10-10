@@ -81,6 +81,8 @@ import {
 } from '../model/core.js';
 import { type Prng, createPrng } from '../prng/prng.js';
 import { type Weather as CityWeather } from '../city/city.js';
+import { calendarLabel, type DayOff } from '../city/calendar.js';
+import { weekdayForDay } from '../city/time-mapping.js';
 import type { SimEvent } from '../model/state.js';
 import {
   docId,
@@ -201,7 +203,7 @@ export function cityWeatherItem(day: number, summary: string): NewspaperItem {
     id: `city/weather/${day}`,
     source: 'city-event',
     headline: 'The city at large',
-    summary: `The day stood ${label}; the markets and the ring trams kept their usual hours.`,
+    summary: `the day stood ${label}; the markets and the ring trams kept their usual hours.`,
     asserts: [],
   };
 }
@@ -243,15 +245,40 @@ export function dailyMaterial(
 export interface NewspaperContext extends NamerContext {
   /** The game time the edition is dated (its day is the edition day). */
   readonly date: GameTime;
+  /** The day's weather, in the words the paper prints. */
+  readonly weather?: string;
+  /** Game day 0's calendar date, so the masthead can name a real day. */
+  readonly startDate?: string;
 }
 
 /**
- * The weekday label an edition's masthead prints. Kept content-free (a plain
- * `Day N`), so the composer takes on no calendar dependency; the template's
- * `{weekday}` slot renders this.
+ * The weekday an edition's masthead prints. With a start date it is the real
+ * weekday of that calendar day. Without one, day 0 is Monday.
  */
-function weekdayLabel(date: GameTime): string {
-  return `Day ${date.day}`;
+function weekdayLabel(date: GameTime, startDate?: string): string {
+  const name = weekdayForDay(date.day, startDate);
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+/** The date line: a calendar date when the game has one, otherwise `day N`. */
+function editionDate(date: GameTime, startDate?: string): string {
+  if (startDate === undefined) {
+    return `day ${date.day}`;
+  }
+  return calendarLabel(startDate, date.day);
+}
+
+/** A paper's name, from the template id. The id itself is never printed. */
+function mastheadName(templateId: string): string {
+  const slash = templateId.lastIndexOf('/');
+  const local = slash === -1 ? templateId : templateId.slice(slash + 1);
+  if (local.includes('amtsblatt')) {
+    return 'Amtsblatt';
+  }
+  if (local.includes('tagblatt')) {
+    return 'Wiener Tagblatt';
+  }
+  return 'The city paper';
 }
 
 /**
@@ -335,15 +362,16 @@ export function composeNewspaper(
   // the template body as additional blocks.
   const lead = articles[0];
   const bindings: TemplateBindings = {
-    masthead: template.id,
-    weekday: weekdayLabel(ctx.date),
-    date: formatDate(ctx.date),
+    masthead: mastheadName(template.id),
+    weekday: weekdayLabel(ctx.date, ctx.startDate),
+    date: editionDate(ctx.date, ctx.startDate),
     edition: 'Daily',
     headline: lead?.headline ?? 'The city at large',
-    district: 'the city',
+    district: 'Inner City',
     subject: lead?.summary ?? 'the ordinary business of the day',
     detail: lead?.summary ?? '',
-    'official-office': 'the sector authority',
+    weather: ctx.weather ?? 'quiet',
+    'official-office': 'sector authority',
     // Blotter / notices slots: bound to neutral values so a template that
     // declares them still renders. Optional `{?notice}` sections stay unbound.
     offence: 'a minor disturbance',
@@ -386,6 +414,35 @@ export function composeNewspaper(
   };
 
   return { document, propositions };
+}
+
+/**
+ * The edition for a Sunday or a public holiday. It names the day and carries
+ * no articles, so the masthead's "except Sundays" is what the player finds.
+ */
+export function closedEdition(
+  template: DocumentTemplate,
+  date: GameTime,
+  startDate: string,
+  reason: DayOff,
+): ComposedDocument {
+  const label = calendarLabel(startDate, date.day);
+  const weekday = weekdayLabel(date, startDate);
+  const masthead = mastheadName(template.id);
+  const title = `${masthead} — ${weekday}, ${label}`;
+  const body =
+    reason.kind === 'sunday'
+      ? 'No edition. The paper does not publish on Sunday.'
+      : `No edition. ${label} is ${reason.name}.`;
+  const document: Document = {
+    id: docId('newspaper', `edition/${date.day}`),
+    kind: 'newspaper',
+    title,
+    date,
+    body,
+    asserts: [],
+  };
+  return { document, propositions: [] };
 }
 
 // ---------------------------------------------------------------------------

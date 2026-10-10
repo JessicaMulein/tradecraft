@@ -37,6 +37,7 @@
     - detail
     - official-office
     - notice
+    - weather
   sections:
     - id: masthead-line
       body: >-
@@ -49,10 +50,10 @@
         with the {official-office}.
     - id: around-the-city
       body: >-
-        Around the city: the trams ran to schedule on the ring lines; the
-        markets opened at the usual hour; and the weather over the Danube held
-        fair enough for the barges. Readers are reminded that papers must be
-        shown on request at any sector checkpoint.
+        Around the city the weather was {weather}. The trams ran to schedule
+        on the ring lines, and the markets opened at the usual hour. Readers
+        are reminded that papers must be shown on request at any sector
+        checkpoint.
     - id: notice
       body: >-
         {?notice}A notice to our readers: {notice}{/notice}
@@ -123,8 +124,13 @@
   slots:
     - subject
     - file-ref
+    - cryptonym
     - alias
     - allegiance-apparent
+    - description
+    - birth
+    - employer
+    - history
     - last-seen-place
     - last-seen-date
     - association
@@ -133,13 +139,18 @@
   sections:
     - id: header
       body: >-
-        File reference {file-ref}. Subject: {subject}. This file records
-        apparent information held by the station and is not an assessment of
-        fact. Grade of source material: {source-grade}.
+        File reference {file-ref}. Cryptonym {cryptonym}. Subject: {subject}.
+        This file records apparent information held by the station and is not
+        an assessment of fact. Grade of source material: {source-grade}.
     - id: identity
       body: >-
         Known or reported as {subject}.{?alias} Also reported under the name
         {alias}.{/alias} Apparent allegiance on file: {allegiance-apparent}.
+        Description on file: {description}.
+    - id: history
+      body: >-
+        Reported birth: {birth}. Reported employment: {employer}. Earlier
+        history, uncorroborated: {history}.
     - id: movements
       body: >-
         Last placed at {last-seen-place} on or about {last-seen-date}.{?association}
@@ -150,7 +161,8 @@
         Nothing herein is to be treated as established without corroboration.
 
 # =========================================================================
-# CABLE — period telegraphic style: short, upper-case, STOP as separator
+# CABLE — numbered paragraphs, a reference, and a cryptonym when a person
+# is named. Not commercial-telegram style.
 # =========================================================================
 
 - id: cable-hq-directive
@@ -162,24 +174,24 @@
     - date
     - to-station
     - subject
+    - cryptonym
     - instruction
     - deadline
+    - deadline-no
     - budget-line
+    - funds-no
   sections:
     - id: preamble
       body: >-
-        FROM HEADQUARTERS STOP TO {to-station} STOP {date} STOP {priority} STOP
-        REF {cable-ref} STOP
+        FROM HEADQUARTERS. TO {to-station}. DATED {date}. PRECEDENCE {priority}. REFERENCE {cable-ref}.
     - id: body
       body: >-
-        RE {subject} STOP {instruction} STOP ACKNOWLEDGE SOONEST STOP
+        1. SUBJECT. {subject}.{?cryptonym} CRYPTONYM {cryptonym}.{/cryptonym}
+        {instruction}
     - id: closing
       body: >-
-        {?deadline}DEADLINE {deadline} STOP{/deadline} {?budget-line}FUNDS
-        {budget-line} STOP{/budget-line} ENDS STOP
-    - id: footer
-      body: >-
-        MESSAGE ENDS STOP DESTROY AFTER READING STOP
+        {?deadline}{deadline-no}. DEADLINE. {deadline}.{/deadline} {?budget-line}{funds-no}. FUNDS.
+        {budget-line}.{/budget-line}
 
 - id: cable-field-report
   kind: cable
@@ -189,20 +201,20 @@
     - date
     - from-cover
     - subject
+    - cryptonym
     - observation
     - request
   sections:
     - id: preamble
       body: >-
-        FROM {from-cover} STOP TO HEADQUARTERS STOP {date} STOP REF {cable-ref}
-        STOP
+        FROM {from-cover}. TO HEADQUARTERS. DATED {date}. REFERENCE {cable-ref}.
     - id: report
       body: >-
-        RE {subject} STOP {observation} STOP
+        1. SUBJECT. {subject}.{?cryptonym} CRYPTONYM {cryptonym}.{/cryptonym}
+        2. {observation}.
     - id: request
       body: >-
-        {?request}REQUEST {request} STOP{/request} AWAIT INSTRUCTION STOP ENDS
-        STOP
+        {?request}3. REQUEST. {request}.{/request}
 
 # =========================================================================
 # SEIZED MATERIAL — a document taken from a drop, courier or premises

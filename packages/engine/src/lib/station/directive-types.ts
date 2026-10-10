@@ -12,7 +12,7 @@
  * lives in `./directives.ts`, which state.ts does *not* re-export.
  */
 
-import type { ChannelId, EntityId, GameTime } from '../model/core.js';
+import type { ChannelId, EntityId, GameTime, LocId } from '../model/core.js';
 
 /**
  * A Directive id. The design leaves it a plain string ("may stay a plain
@@ -36,6 +36,8 @@ export type DirectiveId = string;
  * - `arrest`   — arrest the entity (a role, carried as its entity id). Met when
  *   that arrest has landed.
  * - `intercept`— collect an Intercept off `channel`. Met by the intercept log.
+ * - `smuggle` — deliver a named person to a Location. Met from the street-ops
+ *   delivery record. Plot stages do not emit this kind; the add-on registers it.
  *
  * Every kind is a player-PROGRESS objective: whether it is met is read from the
  * Player View / Case File side by the injected objective evaluator (see
@@ -45,9 +47,10 @@ export type DirectiveObjective =
   | { readonly kind: 'identify'; readonly entity: EntityId }
   | { readonly kind: 'recruit'; readonly count: number }
   | { readonly kind: 'arrest'; readonly entity: EntityId }
-  | { readonly kind: 'intercept'; readonly channel: ChannelId };
+  | { readonly kind: 'intercept'; readonly channel: ChannelId }
+  | { readonly kind: 'smuggle'; readonly npc: EntityId; readonly to: LocId };
 
-/** The four Directive objective kinds, as a value for exhaustiveness/tests. */
+/** The station Directive objective kinds. `smuggle` is registered by street-ops and is not in this list. */
 export const DIRECTIVE_OBJECTIVE_KINDS = [
   'identify',
   'recruit',

@@ -15,9 +15,10 @@
  * template's slots from the subject NPC's view-safe name and from the slice's
  * beliefs about the subject alone: the apparent-allegiance line from the slice's
  * `MEMBER_OF` / `WORKS_FOR` propositions (true lead or HQ false belief), an
- * associate from a `MEETS_AT` lead, a last-seen place. No field is read from the
- * NPC record, so a Dossier can neither reveal nor contradict the truth through a
- * field (Requirements 2.2, 33.4). The rendered `body` is fact-layer text;
+ * associate from a `MEETS_AT` lead, a last-seen place. Appearance, cover
+ * history and a reported birth year come from the view-safe persona and
+ * descriptor. True allegiance and MICE are never read (Requirements 2.2,
+ * 33.4). The rendered `body` is fact-layer text;
  * `asserts` names every slice Proposition the Dossier reports, true lead or HQ
  * false belief alike.
  *
@@ -37,6 +38,7 @@ import {
 } from '../model/core.js';
 import type { Npc } from '../city/npc.js';
 import type { KnowledgeSlice } from '../city/knowledge.js';
+import { cryptonym } from './cryptonym.js';
 import {
   docId,
   type ComposedDocument,
@@ -49,6 +51,11 @@ import { compileSections, renderTitle } from './render.js';
 export interface DossierContext extends NamerContext {
   /** The Station's Knowledge Slice (the apparent information HQ holds). */
   readonly stationSlice: KnowledgeSlice;
+  /**
+   * Proposition ids to leave out of this copy. A trace uses this so the reply
+   * carries only the leads the Station has not already sent.
+   */
+  readonly omit?: readonly string[];
 }
 
 /**
@@ -137,12 +144,43 @@ function lastSeenPlaceOf(props: readonly Proposition[]): LocId | undefined {
  * player-perspective namer, and carries no `obtainableAt` — a Dossier is
  * delivered with the Starting Brief, not obtained at a Location.
  */
+/** Appearance the file can show. The descriptor is how the person looks, not a hidden fact. */
+function descriptionOf(subject: Npc): string {
+  const phrases = subject.descriptor.phrases.filter((phrase) => phrase.trim().length > 0);
+  if (phrases.length > 0) {
+    return phrases.join('; ');
+  }
+  const summary = subject.descriptor.summary.trim();
+  return summary.length > 0 ? summary : 'no description is on the file';
+}
+
+/** A life note from the persona. It is the cover history the file already holds. */
+function historyOf(subject: Npc): string {
+  const background = subject.persona.background.trim();
+  return background.length > 0 ? background : 'no earlier history is on the file';
+}
+
+/**
+ * A reported birth year in the adult range for 1952. It is labelled as
+ * reported and is not written into the truth store.
+ */
+function reportedBirth(id: string): string {
+  let n = 0;
+  for (let i = 0; i < id.length; i += 1) {
+    n = (n + id.charCodeAt(i)) % 23;
+  }
+  return String(1908 + n);
+}
+
 export function composeDossier(
   template: DocumentTemplate,
   subject: Npc,
   ctx: DossierContext,
 ): ComposedDocument {
-  const asserted = slicePropsAbout(ctx.stationSlice, subject.id);
+  const omitted = new Set(ctx.omit ?? []);
+  const asserted = slicePropsAbout(ctx.stationSlice, subject.id).filter(
+    (prop) => !omitted.has(prop.id),
+  );
   const associate = associateOf(asserted);
   const place = lastSeenPlaceOf(asserted);
   const allegiance = apparentAllegianceLine(asserted, ctx.orgs);
@@ -165,6 +203,11 @@ export function composeDossier(
   const bindings: TemplateBindings = {
     subject: subject.id,
     'file-ref': fileRef,
+    cryptonym: cryptonym(subject.id),
+    description: descriptionOf(subject),
+    birth: reportedBirth(subject.id),
+    employer: 'not named on this file',
+    history: historyOf(subject),
     'allegiance-apparent': allegiance,
     'source-grade': 'C3',
     assessment:

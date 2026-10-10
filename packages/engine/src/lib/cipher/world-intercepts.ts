@@ -52,6 +52,7 @@ import {
 import {
   type ChannelId,
   type DocId,
+  type EntityId,
   type GameTime,
   type Proposition,
   type PropId,
@@ -432,7 +433,41 @@ export function stageTransmissionPropositions(
 ): Proposition[] {
   const carried = stagePropositions(pool, stage).filter((p) => p.predicate !== 'TARGETS');
   const plans = pool.filter((p) => p.predicate === 'PLANS' && !carried.includes(p));
-  return [...carried, ...plans];
+  // The shared case (membership of the leader and the person they meet) has to
+  // ride on the traffic the Station actually collects, not only on the one
+  // message whose sender happens to be that person.
+  const caseFacts = pool.filter(
+    (p) => p.id.startsWith('prop:library-case/') && !carried.includes(p) && !plans.includes(p),
+  );
+  const merged = [...carried, ...plans, ...caseFacts];
+  return merged.filter((p) => !extraCellMembership(p, pool));
+}
+
+/**
+ * A false-flag plot records the operation's own cell as a second membership.
+ * The person is already a member of the cell the brief names. Sending both
+ * makes the two disagree, and a disagreed membership counts for nothing.
+ * Keep the brief's cell and leave the extra one off the air, whichever
+ * message it would have ridden.
+ */
+/** The membership a message may carry for one person: the cell the brief names. */
+export function membershipOnTheAir(pool: readonly Proposition[], subject: EntityId): Proposition[] {
+  return pool.filter(
+    (prop) =>
+      prop.predicate === 'MEMBER_OF' && prop.subject === subject && !extraCellMembership(prop, pool),
+  );
+}
+
+function extraCellMembership(prop: Proposition, pool: readonly Proposition[]): boolean {
+  if (prop.predicate !== 'MEMBER_OF' || prop.object === 'org:cell') {
+    return false;
+  }
+  return pool.some(
+    (other) =>
+      other.predicate === 'MEMBER_OF' &&
+      other.subject === prop.subject &&
+      other.object === 'org:cell',
+  );
 }
 
 /**

@@ -1,0 +1,89 @@
+# Named sources for street data. This file is the only place a source is named.
+# The fetch command prints the licence below and refuses to run until
+# --accept-licence names the same source. Nothing fetched from these sources
+# is committed. Output goes to data/street-sources/ and packs/street-ops-local/,
+# both git-ignored.
+#
+# Vienna in the early Cold War is not a modern map. OpenStreetMap describes the
+# streets as they are now. A 1950s game needs the period-name pass and hand
+# overrides for renames, closed bridges, one-ways and rebuilt blocks. The
+# shipped Inner Court graph is period-authored and is not built from this data.
+# A built Vienna graph stays modern-base until the Period Report has nothing
+# unchecked inside its Verified Area.
+
+sources:
+  - name: openstreetmap
+    kind: geometry
+    method: overpass
+    url: https://overpass-api.de/api/interpreter
+    query: '[out:json][timeout:60];way["highway"]["name"]({south},{west},{north},{east});out geom;'
+    licence: ODbL-1.0
+    licenceText: >
+      OpenStreetMap data is available under the Open Database License
+      (ODbL) 1.0. You must credit OpenStreetMap contributors. Share-alike
+      applies to a database you make from this data.
+    attribution: "© OpenStreetMap contributors"
+    urlPattern: https://www.openstreetmap.org/copyright
+
+  - name: wien-geschichte
+    kind: period-names
+    city: city-vienna/vienna
+    method: mediawiki
+    url: https://www.geschichtewiki.wien.gv.at/api.php
+    licence: OGD-and-CC-BY-NC-ND-4.0
+    licenceText: >
+      Wien Geschichte Wiki entry data (names, dates, predecessor links,
+      coordinates) is published by the City of Vienna as open government
+      data. Article text and images are not fetched. Text added after 15
+      December 2013 and images are CC BY-NC-ND 4.0. Czeike lexicon text is
+      not freely licensed. This command stores only the facts named above.
+    attribution: "Datenquelle: Stadt Wien – data.wien.gv.at; Wien Geschichte Wiki"
+    stores: [name, from, to, predecessors, coordinates]
+
+  - name: wien-bombenschaden
+    kind: imagery
+    city: city-vienna/vienna
+    method: wms
+    layer: BOMBENSCHADENOGD
+    url: https://data.wien.gv.at/daten/wms
+    licence: CC-BY-4.0
+    licenceText: >
+      City of Vienna war-damage plan (about 1946), layer BOMBENSCHADENOGD.
+      Creative Commons Attribution 4.0. Attribution is required.
+    attribution: "Datenquelle: Stadt Wien – data.wien.gv.at"
+
+  - name: wien-aerial-1956
+    kind: imagery
+    city: city-vienna/vienna
+    method: wmts
+    layer: lb1956
+    url: https://maps.wien.gv.at/wmts
+    licence: CC-BY-4.0
+    licenceText: >
+      City of Vienna aerial photo plan of 1956, WMTS layer lb1956.
+      Creative Commons Attribution 4.0. Attribution is required.
+    attribution: "Datenquelle: Stadt Wien – data.wien.gv.at"
+
+  - name: wien-aerial-1938
+    kind: imagery
+    city: city-vienna/vienna
+    method: wmts
+    layer: lb1938
+    url: https://maps.wien.gv.at/wmts
+    licence: CC-BY-4.0
+    licenceText: >
+      City of Vienna aerial photo plan of 1938, WMTS layer lb1938.
+      Creative Commons Attribution 4.0. Attribution is required.
+    attribution: "Datenquelle: Stadt Wien – data.wien.gv.at"
+
+  - name: wien-plan-1912
+    kind: imagery
+    city: city-vienna/vienna
+    method: wms
+    layer: GENLPLAN1912OGD
+    url: https://data.wien.gv.at/daten/wms
+    licence: CC-BY-4.0
+    licenceText: >
+      City of Vienna general city plan of 1912, WMS layer GENLPLAN1912OGD.
+      Creative Commons Attribution 4.0. Attribution is required.
+    attribution: "Datenquelle: Stadt Wien – data.wien.gv.at"

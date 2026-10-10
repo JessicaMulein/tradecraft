@@ -111,7 +111,7 @@ import {
 import type { SimEvent, WorldState } from '../model/state.js';
 import { scheduledLocation } from '../city/npc.js';
 import type { PlotState, StageState } from '../city/plot.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { newRelationship, type Custody, type Relationship } from '../recruit/asset.js';
 import {
   detectEnd,
@@ -144,7 +144,8 @@ export const WRONGFUL_STANDING_PENALTY = 2;
 export const WRONGFUL_ALERTNESS_COVER_SUSPICION = 0.1;
 
 /** The Fact Line a correct arrest plays. */
-export const ARREST_LINE = 'You make the arrest. They are taken into custody.';
+export const ARREST_LINE =
+  'You ask the police liaison to make the arrest. They are taken into custody.';
 
 /**
  * The Fact Line a wrongful arrest plays. It is **identical in form** to a
@@ -153,7 +154,18 @@ export const ARREST_LINE = 'You make the arrest. They are taken into custody.';
  * surface through the Station, not a tell in the scene text.
  */
 export const WRONGFUL_ARREST_LINE =
-  'You make the arrest. They are taken into custody.';
+  'You ask the police liaison to make the arrest. They are taken into custody.';
+
+/** Shown when the police liaison is in the world and is not one of the player's contacts. */
+export const ARREST_LIAISON_REASON =
+  'an arrest has to be requested through the police liaison';
+
+/** Shown when the target's current place is in the Soviet sector. */
+export const ARREST_SOVIET_REASON =
+  'the Austrian police cannot make an arrest in the Soviet sector';
+
+/** Shown when the target is not at a place the police can go to. */
+export const ARREST_MISSING_REASON = 'the Austrian police cannot find them';
 
 // ---------------------------------------------------------------------------
 // Local helpers (kept local to avoid an action.ts import cycle)
@@ -167,7 +179,7 @@ export const WRONGFUL_ARREST_LINE =
  * use.
  */
 function npcsScheduledAt(state: WorldState, locId: LocId): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {
@@ -326,14 +338,17 @@ export function carriesStageMateriel(plot: PlotState, npc: NpcId): boolean {
  *   `arrest.threshold` ({@link arrestEvidenceOf} ≥ {@link arrestThresholdOf}).
  *
  * Both are Player-View figures (the view-side `evidenceCount` and the player's
- * own authority), so the gate reveals no ground truth (design: "`quote` decides
- * eligibility … from Player View and Case File data only"). The cost is
+ * own authority). The sector check reads the same schedule the clock uses to
+ * place people, and the refusal is the liaison's answer. The cost is
  * {@link ARREST_PHASE_COST} phases and no money. An arrest is a request the
- * Station's officers carry out, not an action at the player's Location, so it
+ * police liaison carries out, not an action at the player's Location, so it
  * has no `actionLocation` and the shared Location gate in `./action.ts` does
- * not apply. In a slice game these two checks are the whole gate. In a region
- * the published jurisdiction map must also name the station's own service, or
- * a liaison service whose trust meets the preset threshold.
+ * not apply. In a slice game the evidence checks are the start of the gate.
+ * The request also needs the police liaison as a contact when that person
+ * exists, and the target's current place must be outside the Soviet sector:
+ * the Austrian police will not cross the sector line. In a region the
+ * published jurisdiction map must also name the station's own service, or a
+ * liaison service whose trust meets the preset threshold.
  */
 export function quoteArrest(
   state: WorldState,
@@ -366,7 +381,56 @@ export function quoteArrest(
       money: 0,
     };
   }
+  const liaison = policeLiaisonOf(state);
+  if (liaison !== undefined && !state.player.contacts.includes(liaison)) {
+    return { allowed: false, reason: ARREST_LIAISON_REASON, phases: 0, money: 0 };
+  }
+  const npc = resolveTargetNpc(a.npc, ctx);
+  const place = npc === undefined ? undefined : currentPlace(state, npc);
+  if (place === undefined) {
+    return { allowed: false, reason: ARREST_MISSING_REASON, phases: 0, money: 0 };
+  }
+  if (sectorOf(state, place) === 'soviet') {
+    return { allowed: false, reason: ARREST_SOVIET_REASON, phases: 0, money: 0 };
+  }
   return { allowed: true, phases: ARREST_PHASE_COST, money: 0 };
+}
+
+function localArchetype(id: string): string {
+  const slash = id.lastIndexOf('/');
+  return slash === -1 ? id : id.slice(slash + 1);
+}
+
+/** The police liaison, when the world has one. Id-sorted, so the choice is stable. */
+function policeLiaisonOf(state: WorldState): NpcId | undefined {
+  const ids = (Object.keys(state.npcs) as NpcId[]).sort();
+  return ids.find((id) => localArchetype(state.npcs[id]?.archetype ?? '') === 'police-liaison');
+}
+
+function sectorOf(state: WorldState, loc: LocId): string | undefined {
+  const place = state.city.locations[loc];
+  if (place === undefined) {
+    return undefined;
+  }
+  return state.city.districts[place.district]?.sector;
+}
+
+/** Where the target is this phase: the schedule, then the clock's whereabouts. */
+function currentPlace(state: WorldState, npc: NpcId): LocId | undefined {
+  const person = state.npcs[npc];
+  if (person === undefined) {
+    return undefined;
+  }
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
+  const scheduled = scheduledLocation(person.schedule, weekday, state.time.phase);
+  if (scheduled !== undefined) {
+    return scheduled;
+  }
+  const where = state.whereabouts[npc];
+  if (where === undefined || where === 'absent') {
+    return undefined;
+  }
+  return where;
 }
 
 // ---------------------------------------------------------------------------

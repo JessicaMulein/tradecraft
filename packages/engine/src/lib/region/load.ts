@@ -11,6 +11,7 @@ import { join, relative, sep } from 'node:path';
 import {
   loadContent,
   type ContentError,
+  type ContentKindRegistration,
   type ContentSet,
   type LoadResult,
 } from '@tradecraft/content';
@@ -109,8 +110,11 @@ export function regionSources(
 export function loadRegionContent(
   dirs: readonly string[],
   selected: readonly string[],
+  extraKinds?: readonly ContentKindRegistration[],
 ): LoadResult<ContentSet> {
-  const loaded = loadContent(dirs, selected, { kinds: [...REGION_KINDS, ...AMBIENT_KINDS] });
+  const loaded = loadContent(dirs, selected, {
+    kinds: [...REGION_KINDS, ...AMBIENT_KINDS, ...(extraKinds ?? [])],
+  });
   const packIds = new Set<string>(selected);
   if (loaded.ok) {
     for (const pack of loaded.value.manifest.packs) {

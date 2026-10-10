@@ -1,0 +1,11 @@
+# A folded map sold at the trafik. The segments are the invented demo grid.
+items:
+  - id: folded-city-map
+    title: Folded city map
+    era: { from: 1946, to: 1955 }
+    segments: [court-lane, lamp-cut, sector-road, paper-alley, spur]
+    at: city-vienna/trafik-graben
+    price: 2
+    aliases:
+      - { segment: spur, street: Spur Footpath }
+    errors: [Spur Lane is drawn as a footpath]

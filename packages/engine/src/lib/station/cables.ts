@@ -81,8 +81,20 @@ export const DEFAULT_FUNDS_CAP = 1000;
  */
 export const FUNDS_COOLDOWN_DAYS = 2;
 
-/** The Standing a filed `report` moves (design: "report adjusts Standing"). */
+/** The Standing a filed `report` moves when the report says something. */
 export const REPORT_STANDING_DELTA = 1;
+
+/** How many letters a report must contain before HQ treats it as filed. */
+const REPORT_MIN_LETTERS = 8;
+
+/**
+ * Standing for a report. A blank or token cable adds nothing. A report with a
+ * real sentence is filed and moves Standing by {@link REPORT_STANDING_DELTA}.
+ */
+export function reportStandingDelta(body: string): number {
+  const letters = body.replace(/[^A-Za-z]/g, '');
+  return letters.length >= REPORT_MIN_LETTERS ? REPORT_STANDING_DELTA : 0;
+}
 
 /** Phases in a day — the delay is counted in phases, the cooldown in days. */
 const PHASES_PER_DAY = 4;
@@ -127,7 +139,7 @@ function replySpecFor(request: CableRequest): CableReplySpec {
     case 'funds':
       return { kind: 'funds', requested: request.amount };
     case 'report':
-      return { kind: 'report', standingDelta: REPORT_STANDING_DELTA };
+      return { kind: 'report', standingDelta: reportStandingDelta(request.body) };
   }
 }
 

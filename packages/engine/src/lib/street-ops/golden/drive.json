@@ -1,0 +1,13 @@
+{
+  "seed": "street-ops-golden",
+  "path": ["court-lane", "lamp-cut", "sector-road", "paper-alley"],
+  "lines": [
+    "You reach the junction on Court Lane.",
+    "left onto Lamp Cut.",
+    "A grey sedan, partial plate TRA was on Lamp Cut.",
+    "left onto Sector Road.",
+    "The sector-line checkpoint holds you for a second look.",
+    "left onto Paper Alley.",
+    "On the route you noted: A grey sedan, partial plate TRA was on Lamp Cut."
+  ]
+}

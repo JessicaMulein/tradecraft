@@ -42,6 +42,7 @@ import {
   type TruthAccess,
   type UnkId,
   type WorldState,
+  type ExtensionRegistry,
 } from '@tradecraft/engine';
 import type { ContentSet } from '@tradecraft/content';
 
@@ -70,6 +71,8 @@ export interface ResolverProjectionInput {
   readonly brief: BriefView;
   /** The predicate implication rules the arrest-evidence count applies. */
   readonly rules: ImplicationRules;
+  /** Present only when an add-on is enabled. */
+  readonly extensions?: ExtensionRegistry;
 }
 
 /**
@@ -92,7 +95,7 @@ export function projectResolverContext(
   input: ResolverProjectionInput,
   truth: TruthAccess | undefined,
 ): ResolverContext {
-  const { state, caseFile, content, brief, rules } = input;
+  const { state, caseFile, content, brief, rules, extensions } = input;
 
   // Held Case File Claims, as the bare Proposition each asserts, keyed by id —
   // what `confront`/`feed` read by Claim id.
@@ -133,6 +136,7 @@ export function projectResolverContext(
     arrestEvidence,
     turnEvidence,
     cipherKeys: worldCipherKeyLookup(state.meta.seed, state.documents),
+    ...(extensions === undefined ? {} : { extensions }),
   };
 }
 

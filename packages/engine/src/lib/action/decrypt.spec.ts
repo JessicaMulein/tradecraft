@@ -337,7 +337,7 @@ describe('resolveDecrypt: a correct submission', () => {
         kind: 'proposition',
         prop,
         at: state.time,
-        source: { kind: 'intercept', id: INTERCEPT.id },
+        source: { kind: 'intercept', id: INTERCEPT.id, channel: INTERCEPT.channel },
       })),
     );
     // Exactly the Intercept's plaintext Propositions, by their true ids.

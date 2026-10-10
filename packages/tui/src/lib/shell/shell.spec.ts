@@ -40,8 +40,10 @@ describe('reduceShell key routing', () => {
     expect(reduceShell(base, { type: 'key', key: 'c' }).screen).toEqual({ kind: 'case-file' });
     expect(reduceShell(base, { type: 'key', key: 'd' }).screen).toEqual({ kind: 'documents' });
     expect(reduceShell(base, { type: 'key', key: 'w' }).screen).toEqual({ kind: 'workbench' });
+    expect(reduceShell(base, { type: 'key', key: 'i' }).screen).toEqual({ kind: 'intercepts' });
     expect(reduceShell(base, { type: 'key', key: 'j' }).screen).toEqual({ kind: 'journal' });
     expect(reduceShell(base, { type: 'key', key: 'm' }).screen).toEqual({ kind: 'map' });
+    expect(reduceShell(base, { type: 'key', key: 'g' }).screen).toEqual({ kind: 'streets' });
     expect(reduceShell(base, { type: 'key', key: 'y' }).screen).toEqual({ kind: 'city' });
     expect(reduceShell(base, { type: 'key', key: 'r' }).screen).toEqual({ kind: 'stories' });
     expect(reduceShell(base, { type: 'key', key: 'k' }).screen).toEqual({ kind: 'duties' });

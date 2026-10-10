@@ -268,6 +268,11 @@ export {
   interceptListView,
   workbenchView,
   frequencyTable,
+  keyCoincidence,
+  trialReading,
+  type KeyCoincidence,
+  type CoincidenceRow,
+  type TrialAttempt,
   caesarShift,
   caesarShiftPreview,
   CAESAR_SHIFTS,
@@ -363,6 +368,26 @@ export {
   type OfficerView,
 } from './lib/campaign/api.js';
 export { paperViews, type PaperView } from './lib/region/papers.js';
+export { describeCatalogueAction, describeStreetAction, STREET_PHRASES } from './lib/street/phrasebook.js';
+export {
+  emptyKnownNames,
+  knownNames,
+  labelPlayerAction,
+  lookupName,
+  tidyId,
+  type KnownNames,
+} from './lib/aids/action-label.js';
+export { claimSentence } from './lib/casefile/sentence.js';
+export {
+  driveView,
+  renderLocalMap,
+  renderNetwork,
+  streetMapView,
+  streetView,
+  type DriveView,
+  type StreetMapView,
+  type StreetView,
+} from './lib/street/map.js';
 export { liaisonViews, type LiaisonServiceView, type TrustBand } from './lib/region/liaison.js';
 export {
   carriageView,

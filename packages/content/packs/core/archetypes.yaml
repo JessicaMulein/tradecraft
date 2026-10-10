@@ -178,10 +178,18 @@
   wariness: { min: 0.6, max: 0.9 }
   personaPools: [american, british]
   descriptorPools: [bourgeois-dress, officer-bearing]
+  # Weekday office hours. Generation keeps the whole office on one service.
   schedule:
     - { weekday: monday, phase: morning, at: [function:station] }
-    - { weekday: wednesday, phase: afternoon, at: [function:embassy] }
-    - { weekday: friday, phase: evening, at: [function:hotel-bar] }
+    - { weekday: monday, phase: afternoon, at: [function:station] }
+    - { weekday: tuesday, phase: morning, at: [function:station] }
+    - { weekday: tuesday, phase: afternoon, at: [function:station] }
+    - { weekday: wednesday, phase: morning, at: [function:station] }
+    - { weekday: wednesday, phase: afternoon, at: [function:station] }
+    - { weekday: thursday, phase: morning, at: [function:station] }
+    - { weekday: thursday, phase: afternoon, at: [function:station] }
+    - { weekday: friday, phase: morning, at: [function:station] }
+    - { weekday: friday, phase: afternoon, at: [function:station] }
   fallback: [function:station]
   knowledgeHooks:
     - directives
@@ -202,8 +210,15 @@
   descriptorPools: [office-dress]
   schedule:
     - { weekday: monday, phase: morning, at: [function:station] }
-    - { weekday: tuesday, phase: midday, at: [function:station] }
+    - { weekday: monday, phase: afternoon, at: [function:station] }
+    - { weekday: tuesday, phase: morning, at: [function:station] }
+    - { weekday: tuesday, phase: afternoon, at: [function:station] }
+    - { weekday: wednesday, phase: morning, at: [function:station] }
+    - { weekday: wednesday, phase: afternoon, at: [function:station] }
+    - { weekday: thursday, phase: morning, at: [function:station] }
     - { weekday: thursday, phase: afternoon, at: [function:station] }
+    - { weekday: friday, phase: morning, at: [function:station] }
+    - { weekday: friday, phase: afternoon, at: [function:station] }
   fallback: [function:station]
   knowledgeHooks:
     - case-file-summaries
@@ -223,8 +238,15 @@
   descriptorPools: [office-dress]
   schedule:
     - { weekday: monday, phase: morning, at: [function:station] }
+    - { weekday: monday, phase: evening, at: [function:station] }
+    - { weekday: tuesday, phase: morning, at: [function:station] }
+    - { weekday: tuesday, phase: evening, at: [function:station] }
+    - { weekday: wednesday, phase: morning, at: [function:station] }
     - { weekday: wednesday, phase: evening, at: [function:station] }
-    - { weekday: friday, phase: night, at: [function:station] }
+    - { weekday: thursday, phase: morning, at: [function:station] }
+    - { weekday: thursday, phase: evening, at: [function:station] }
+    - { weekday: friday, phase: morning, at: [function:station] }
+    - { weekday: friday, phase: evening, at: [function:station] }
   fallback: [function:station]
   knowledgeHooks:
     - cipher-keys
@@ -240,7 +262,7 @@
     coercion: { min: 0.2, max: 0.5 }
     ego: { min: 0.1, max: 0.4 }
   wariness: { min: 0.3, max: 0.6 }
-  personaPools: [austrian, american]
+  personaPools: [austrian]
   descriptorPools: [worker-clothes, office-dress]
   schedule:
     - { weekday: monday, phase: morning, at: [function:station] }

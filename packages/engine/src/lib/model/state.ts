@@ -30,6 +30,7 @@
 
 import type { DifficultyPreset as ContentDifficultyPreset } from '@tradecraft/content';
 import type { AmbientState } from '../ambient/state.js';
+import type { StreetOpsState } from '../street-ops/state.js';
 import type { CarryState } from '../carry/types.js';
 import type { LibrarySelection, PlotStateV2 } from '../plotgen/types.js';
 import { z } from 'zod';
@@ -1095,6 +1096,8 @@ export interface WorldState {
     readonly org: OrgId;
     readonly chief: NpcId;
     readonly staff: readonly NpcId[];
+    /** The service this office belongs to. One per game. */
+    readonly service?: 'american' | 'british';
     readonly mole?: Truth<NpcId>;
     readonly knowledge: KnowledgeSlice;
     readonly directives: readonly Directive[];
@@ -1148,6 +1151,17 @@ export interface WorldState {
     readonly cover: CoverIdentity;
     readonly coverSuspicion: Truth<number>;
     readonly tailed: Truth<boolean>;
+    /**
+     * The player was told, on the last arrival, that they may have been
+     * followed. Set from that warning. It is not the hidden tail flag.
+     */
+    readonly sensedFollowed?: boolean;
+    /** The player's own flat, café, and market, when the city has them. */
+    readonly habits?: {
+      readonly flat?: LocId;
+      readonly cafe?: LocId;
+      readonly market?: LocId;
+    };
     readonly known: {
       readonly entities: readonly EntityId[];
       readonly channels: readonly ChannelId[];
@@ -1247,6 +1261,14 @@ export interface WorldState {
    * generation.
    */
   readonly carry?: Truth<CarryState>;
+
+  /**
+   * Add-on slices. Absent when no add-on has written state, so a slice world
+   * and a disabled street-ops game stay key-identical to a build without it.
+   */
+  readonly ext?: {
+    readonly streetOps?: StreetOpsState;
+  };
 
   readonly ended?: {
     readonly outcome: Outcome;

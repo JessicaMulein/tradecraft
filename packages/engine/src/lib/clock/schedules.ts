@@ -78,7 +78,7 @@ import {
 } from '../model/core.js';
 import { type Prng } from '../prng/prng.js';
 import { type Npc, scheduledLocation } from '../city/npc.js';
-import { weekdayOf, CONTENT_WEEKDAYS } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import type { EventId, SimEvent } from '../model/state.js';
 
 // ---------------------------------------------------------------------------
@@ -130,8 +130,12 @@ function schedulesEventId(tag: string, at: GameTime, seq: number): EventId {
  * has no entry for that weekday+phase (the NPC is "off schedule" / wherever it
  * was).
  */
-export function scheduledLocationAt(npc: Npc, time: GameTime): LocId | undefined {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayOf(time));
+export function scheduledLocationAt(
+  npc: Npc,
+  time: GameTime,
+  startDate?: string,
+): LocId | undefined {
+  const weekday = scheduleWeekdayIndex(time.day, startDate);
   return scheduledLocation(npc.schedule, weekday, time.phase);
 }
 
@@ -147,10 +151,11 @@ export function scheduledLocationAt(npc: Npc, time: GameTime): LocId | undefined
 export function whereaboutsAt(
   npcs: Readonly<Record<NpcId, Npc>>,
   time: GameTime,
+  startDate?: string,
 ): Record<NpcId, LocId | 'absent'> {
   const out: Record<NpcId, LocId | 'absent'> = {};
   for (const id of (Object.keys(npcs) as NpcId[]).sort()) {
-    out[id] = scheduledLocationAt(npcs[id], time) ?? 'absent';
+    out[id] = scheduledLocationAt(npcs[id], time, startDate) ?? 'absent';
   }
   return out;
 }
@@ -181,14 +186,15 @@ export function advanceSchedules(
   npcs: Readonly<Record<NpcId, Npc>>,
   from: GameTime,
   to: GameTime,
+  startDate?: string,
 ): readonly SimEvent[] {
   const events: SimEvent[] = [];
   let seq = 0;
   const ids = (Object.keys(npcs) as NpcId[]).sort();
   for (const id of ids) {
     const npc = npcs[id];
-    const before = scheduledLocationAt(npc, from);
-    const after = scheduledLocationAt(npc, to);
+    const before = scheduledLocationAt(npc, from, startDate);
+    const after = scheduledLocationAt(npc, to, startDate);
     // A movement needs two concrete, distinct Locations. No entry at either end
     // (or the same Location at both) is not a move between Locations.
     if (before === undefined || after === undefined || before === after) {
@@ -356,6 +362,8 @@ export function rollWalkIn(
 export interface SchedulesWorld {
   /** The NPCs — Principal, or Principal + Background — keyed by id. */
   readonly npcs: Readonly<Record<NpcId, Npc>>;
+  /** Game day 0's calendar date, so a holiday uses the Sunday column. */
+  readonly startDate?: string;
 }
 
 /**
@@ -400,7 +408,7 @@ export function schedulesDayBoundaryHook(
     // day. On day 0 there is no previous day, so no boundary movement.
     if (ctx.time.day > 0) {
       const prevNight: GameTime = { day: ctx.time.day - 1, phase: 3 };
-      events.push(...advanceSchedules(world.npcs, prevNight, ctx.time));
+      events.push(...advanceSchedules(world.npcs, prevNight, ctx.time, world.startDate));
     }
 
     const prng = makePrng(ctx.dailyStreamSeed);

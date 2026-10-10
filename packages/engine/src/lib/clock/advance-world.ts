@@ -280,7 +280,7 @@ function setWeather(
   t: GameTime,
   push: (events: readonly SimEvent[]) => void,
 ): WorldState {
-  const city = weatherForDay(seed, state.city, deps.cityData, t.day);
+  const city = weatherForDay(seed, state.city, deps.cityData, t.day, state.meta.setting.startDate);
   const weather: Weather = { summary: city.label };
   push([
     {

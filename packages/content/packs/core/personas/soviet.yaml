@@ -4,8 +4,9 @@
 # authentic Russian given names and family names in FICTIONAL combinations;
 # none names a real person of the period, and no entry depicts a real official.
 # Name pools are split by culture AND gender (Requirement 1.7); the culture is
-# tagged `russian` for the slicer. Family names here are given in the masculine
-# form in both pools for simplicity of the fictional combinations.
+# tagged `russian` for the slicer. Women's family names take the feminine form
+# where the surname declines. Serov and Kalugin are omitted: those are the
+# surnames of a KGB chairman and a well-known KGB general.
 
 id: soviet
 namePools:
@@ -30,8 +31,6 @@ namePools:
       - Lebedev
       - Zhukovsky
       - Panov
-      - Serov
-      - Kalugin
       - Ostrovsky
       - Yudin
       - Belov
@@ -52,16 +51,14 @@ namePools:
       - Antonina
     family:
       - Marchenko
-      - Voronin
-      - Lebedev
-      - Zhukovsky
-      - Panov
-      - Serov
-      - Kalugin
-      - Ostrovsky
-      - Yudin
-      - Belov
-      - Travkin
+      - Voronina
+      - Lebedeva
+      - Zhukovskaya
+      - Panova
+      - Ostrovskaya
+      - Yudina
+      - Belova
+      - Travkina
       - Gorelik
 voiceTraits:
   - correct and watchful, giving nothing away for free

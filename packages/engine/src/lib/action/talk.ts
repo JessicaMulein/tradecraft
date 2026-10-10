@@ -62,6 +62,7 @@
 
 import {
   asTruth,
+  compareTime,
   revealTruth,
   type LocId,
   type NpcId,
@@ -71,7 +72,7 @@ import type { WorldState } from '../model/state.js';
 import type { Prng } from '../prng/prng.js';
 import { scheduledLocation } from '../city/npc.js';
 import { regardDelta } from '../ambient/memory.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import type { TruthReader } from '../truth/truth.js';
 import {
   firstContact,
@@ -114,7 +115,7 @@ export const TALK_PHASE_COST = 1;
  * and form a cycle — the same local-helper pattern `./surveil.ts` uses.
  */
 function npcsScheduledAt(state: WorldState, locId: LocId): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {
@@ -250,6 +251,18 @@ function firstContactNpc(npc: WorldState['npcs'][NpcId]): FirstContactNpc {
  * and no money. The shared Location gate in `./action.ts` handles the player's
  * Location being open and allowing `talk`.
  */
+function meetingToBreak(state: WorldState, npc: NpcId) {
+  const due = Object.values(state.meetings)
+    .filter(
+      (meeting) =>
+        meeting.status === 'accepted' &&
+        meeting.npc === npc &&
+        compareTime(meeting.slot, state.time) > 0,
+    )
+    .sort((a, b) => compareTime(a.slot, b.slot));
+  return due[0];
+}
+
 export function quoteTalk(
   state: WorldState,
   a: TalkAction,
@@ -258,6 +271,25 @@ export function quoteTalk(
   const npc = resolveTarget(state, truth, a.npc);
   if (npc === undefined) {
     return { allowed: false, reason: `no such person ${a.npc}`, phases: 0, money: 0 };
+  }
+  if (a.breakOff === true) {
+    if (state.player.sensedFollowed !== true) {
+      return {
+        allowed: false,
+        reason: 'you have not been warned of a tail',
+        phases: 0,
+        money: 0,
+      };
+    }
+    if (meetingToBreak(state, npc) === undefined) {
+      return {
+        allowed: false,
+        reason: 'you have no meeting with them to break off',
+        phases: 0,
+        money: 0,
+      };
+    }
+    return { allowed: true, phases: 0, money: 0 };
   }
   const here = npcsScheduledAt(state, state.player.loc);
   if (!here.includes(npc)) {
@@ -286,10 +318,36 @@ export function resolveTalk(
   render: (state: WorldState, observations: readonly Observation[]) => string[],
   truth?: TruthReader,
 ): { next: WorldState; result: ActionResult } {
+  const resolved = resolveTarget(state, truth, a.npc);
+  if (a.breakOff === true && resolved !== undefined) {
+    const meeting = meetingToBreak(state, resolved);
+    const line = 'You break off the meeting. You can arrange another time.';
+    const observations: Observation[] = [{ kind: 'message', line }];
+    const next =
+      meeting === undefined
+        ? state
+        : {
+            ...state,
+            meetings: {
+              ...state.meetings,
+              [meeting.id]: { ...meeting, status: 'broken-off' as const },
+            },
+          };
+    return {
+      next,
+      result: {
+        observations,
+        factLines: render(next, observations),
+        scene: sceneDescriptorAt(next, next.player.loc),
+        events: [],
+        claimsAdded: [],
+      },
+    };
+  }
   const observations: Observation[] = [{ kind: 'message', line: TALK_SCENE_LINE }];
   // An Unidentified Subject is talked to as the person they are, so the scene
   // opens on them (the Player View still names them by descriptor).
-  const npc = resolveTarget(state, truth, a.npc) ?? a.npc;
+  const npc = resolved ?? a.npc;
   const result: ActionResult = {
     observations,
     factLines: render(state, observations),

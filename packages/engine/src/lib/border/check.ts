@@ -42,6 +42,8 @@ export interface BorderTraveller {
   readonly descriptor: string;
   /** False when the cover has no business across this border. */
   readonly coverFits?: boolean;
+  /** Set when the traveller is in a car. The street-ops extension then runs the vehicle check. */
+  readonly vehicle?: { readonly plate: string };
 }
 
 export interface BorderRules {
@@ -130,6 +132,13 @@ function contraband(item: BorderItem, threshold: number): boolean {
   return item.cash !== undefined && item.cash > threshold;
 }
 
+/** True when a required document is missing or out of date. */
+export function requiredPapersMissing(input: BorderInput): boolean {
+  return input.post.documents.some(
+    (kind) => !input.papers.some((paper) => paperCovers(paper, kind, input.at, input.traveller.identity)),
+  );
+}
+
 /**
  * One border check. A registered extension replaces the four steps and still
  * returns one outcome from the fixed set.
@@ -145,9 +154,7 @@ export function borderCheck(
   }
   const watch = watchOf(input.watch);
   const listed = onWatch(watch, input.traveller);
-  const missing = input.post.documents.some(
-    (kind) => !input.papers.some((paper) => paperCovers(paper, kind, input.at, input.traveller.identity)),
-  );
+  const missing = requiredPapersMissing(input);
   if (missing) {
     if (listed === 'identity') {
       return detained(input, []);

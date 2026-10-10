@@ -1,0 +1,39 @@
+---
+description: "How to write, change or execute Kiro specs (.kiro/specs/<name>/requirements.md, design.md, tasks.md) from Cursor: spec phases, running one task at a time, ticking checkboxes, traceability"
+globs: .kiro/specs/**
+alwaysApply: false
+---
+
+# Working on Kiro specs from Cursor
+
+Kiro specs drive this repo. Cursor can do the same work, but it has to follow the workflow Kiro would. Read `.kiro/steering/spec-conventions.md` for this repo's exact document formats.
+
+## The three documents
+
+1. `requirements.md`: what and why. User stories plus numbered EARS acceptance criteria.
+2. `design.md`: how. Interfaces, data models, numbered Correctness Properties, error handling and testing.
+3. `tasks.md`: the build plan. Checkbox tasks, each citing the requirements it serves.
+
+`tasks.meta.json` is Kiro's execution log. Do not edit or create it.
+
+## Writing or changing a spec
+
+- Go in order: requirements, then design, then tasks. Never write tasks for requirements that do not exist.
+- After writing or changing **requirements**, give the owner a short plain-language summary: what a player or developer will get, what is out of scope, and any choice that needs her (with your recommendation). Continue to design and tasks once she agrees. Design and tasks need her only if they change what the feature does.
+- Keep requirement and property numbers stable (see the steering file). Other specs cite them.
+- Read every spec named in the Overview's dependencies, and check the code, before writing claims about "what exists today".
+
+## Executing tasks
+
+When asked to do task `N.M` of spec `<name>`:
+
+1. Read `AGENTS.md`, the steering files, and all three documents of the spec, plus the parts of any spec it depends on.
+2. Do **only that sub-task**, unless asked to do the whole group or to keep going. Build exactly what it says, where it says.
+3. Write the tests it names. A `**Property N**` task is a fast-check property test of that design property.
+4. Run the package's tests (`pnpm --filter @tradecraft/<package> test`) and `pnpm run check`. `README.md` lists the failures that already exist. Add no new ones.
+5. Tick the box (`- [ ]` to `- [x]`) only when the tests pass. Tick a parent group only when every sub-task is ticked.
+6. Stop and report in plain language: what now works, what you tested, and anything surprising.
+
+If a task is wrong or impossible as written, do not improvise a different design in code. Fix the spec first (tasks, then design or requirements if needed), say what you changed and why, then implement.
+
+When a spec's state changes (started, done or opt-in), update the Status, Roadmap and Specs sections of `README.md` in the same change.

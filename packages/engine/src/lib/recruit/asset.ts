@@ -198,6 +198,65 @@ export interface Relationship {
   readonly custody?: Custody;
   /** Set when an exfiltration resettles the Asset. Detection no longer tracks them. */
   readonly resettled?: boolean;
+  /**
+   * The visitor is at `loc` for this day only, waiting to be seen. Set when
+   * someone walks into the Station. The next day they go back to their own
+   * schedule.
+   */
+  readonly callingAt?: { readonly loc: LocId; readonly day: number };
+  /**
+   * How many different days the player has spent developing this person.
+   * A pitch is not heard until this reaches {@link MEETINGS_BEFORE_PITCH}.
+   */
+  readonly meetings?: number;
+  /** The day of the latest development meeting. Further talk that day does not add another. */
+  readonly lastMeetingDay?: number;
+  /**
+   * Headquarters has answered a trace and approved a pitch. Set only after
+   * enough development meetings. The hidden motive profile is never copied here.
+   */
+  readonly pitchApproved?: boolean;
+  /**
+   * The standing time the player agreed with a recruited agent. View-safe:
+   * a weekday, a phase, and a place the player already knows.
+   */
+  readonly standing?: {
+    readonly weekday: string;
+    readonly phase: 0 | 1 | 2 | 3;
+    readonly at: LocId;
+  };
+}
+
+/** Meetings on different days before headquarters will hear a pitch. */
+export const MEETINGS_BEFORE_PITCH = 3;
+
+/**
+ * What the player can be told about a recruitment in progress. Absent when
+ * there is nothing to say. It never includes the hidden motive profile.
+ */
+export function recruitmentProgress(rel: Relationship | undefined): string | undefined {
+  if (rel === undefined || rel.recruited) {
+    return undefined;
+  }
+  if (rel.pitchApproved === true) {
+    return 'Headquarters has approved a pitch.';
+  }
+  const meetings = rel.meetings ?? 0;
+  if (meetings <= 0) {
+    return undefined;
+  }
+  if (meetings < MEETINGS_BEFORE_PITCH) {
+    return `Met on ${meetings} of ${MEETINGS_BEFORE_PITCH} days. A pitch waits on more meetings and a trace.`;
+  }
+  return 'Met often enough. Cable headquarters for a trace before a pitch.';
+}
+
+/** Where a visitor is waiting today, if they walked in on this day. */
+export function callingPlace(rel: Relationship | undefined, day: number): LocId | undefined {
+  if (rel?.callingAt !== undefined && rel.callingAt.day === day) {
+    return rel.callingAt.loc;
+  }
+  return undefined;
 }
 
 /**

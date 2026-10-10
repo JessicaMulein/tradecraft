@@ -24,9 +24,12 @@ import type {
   ContentManifest,
   ContentSet,
 } from '@tradecraft/content';
+import { StreetGraphSchema, validateStreetGraph } from '@tradecraft/engine';
 
 import type { ParsedPack } from './parsed-files.js';
+import { itemsOf } from './parsed-files.js';
 import { quantityCheck, feasibleCheck, plotBindCheck, idStableCheck } from './stability-rules.js';
+import { fidelityWarning } from '../street/street.js';
 
 /** The Lint Profiles (design, "Pack Linter"). */
 export type LintProfile = 'draft' | 'release';
@@ -120,6 +123,83 @@ const notYetImplemented = (): LintFinding[] => [];
  * own `check` ({@link ../stability-rules}); CE-FEASIBLE additionally receives
  * loader-backed findings on a failed load, under the same rule id.
  */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+/** Warn when a modern street graph is newer than the city's period window. */
+function streetBaseCheck(ctx: { readonly packs: readonly ParsedPack[] }): LintFinding[] {
+  const periods = new Map<string, number>();
+  for (const pack of ctx.packs) {
+    for (const file of pack.files) {
+      const { items } = itemsOf(file.content);
+      for (const item of items) {
+        if (!isRecord(item) || typeof item.id !== 'string' || !isRecord(item.period) || typeof item.period.to !== 'number') continue;
+        periods.set(item.id, item.period.to);
+      }
+    }
+  }
+  const findings: LintFinding[] = [];
+  for (const pack of ctx.packs) {
+    for (const file of pack.files) {
+      const { items, pathAt } = itemsOf(file.content);
+      items.forEach((item, index) => {
+        if (!isRecord(item) || !Array.isArray(item.segments)) return;
+        const warning = fidelityWarning(
+          item as { fidelity?: string; sources?: { retrieved?: string }[] },
+          typeof item.city === 'string' ? periods.get(item.city) : undefined,
+        );
+        if (warning === undefined) return;
+        findings.push({
+          rule: 'CE-STREET-BASE',
+          severity: 'warning',
+          pack: pack.id,
+          file: file.relPath,
+          path: pathAt(index),
+          message: warning,
+        });
+      });
+    }
+  }
+  return findings;
+}
+
+function streetGraphCheck(ctx: LintContext): LintFinding[] {
+  const findings: LintFinding[] = [];
+  for (const pack of ctx.packs) {
+    for (const file of pack.files) {
+      if (!file.relPath.startsWith('graphs/')) continue;
+      const { items, pathAt } = itemsOf(file.content);
+      items.forEach((item, index) => {
+        const parsed = StreetGraphSchema.safeParse(item);
+        if (!parsed.success) return;
+        const hub = parsed.data.frontages[0]?.location;
+        const problems = [...validateStreetGraph(parsed.data, hub)];
+        const flags = new Map<string, boolean>();
+        for (const segment of parsed.data.segments) {
+          const key = `${segment.from}>${segment.to}`;
+          const previous = flags.get(key);
+          if (previous !== undefined && previous !== segment.oneWay) {
+            problems.push(`segment ${segment.id} disagrees about one-way with another segment`);
+          }
+          flags.set(key, segment.oneWay);
+        }
+        for (const problem of problems) {
+          findings.push({
+            rule: 'CE-STREET-GRAPH',
+            severity: 'error',
+            pack: pack.id,
+            file: file.relPath,
+            path: pathAt(index),
+            message: problem,
+          });
+        }
+      });
+    }
+  }
+  return findings;
+}
+
 export const LINT_RULES: readonly LintRule[] = [
   { id: 'CE-SCHEMA', defect: 'Schema violation', severity: 'error', suppressible: false, check: notYetImplemented },
   { id: 'CE-REF', defect: 'Dangling or cross-city reference', severity: 'error', suppressible: false, check: notYetImplemented },
@@ -150,6 +230,20 @@ export const LINT_RULES: readonly LintRule[] = [
   { id: 'CE-PROVENANCE', defect: 'Generated content missing reviewer or review time', severity: 'error', suppressible: false, check: notYetImplemented },
   { id: 'CE-STYLE', defect: 'Mechanical Style Guide rule broken', severity: 'warning', suppressible: true, check: notYetImplemented },
   { id: 'CE-IDSTABLE', defect: 'Id removed against the Baseline Manifest within a major version', severity: 'error', suppressible: false, check: idStableCheck },
+  {
+    id: 'CE-STREET-BASE',
+    defect: 'Modern street graph newer than the period window',
+    severity: 'warning',
+    suppressible: true,
+    check: streetBaseCheck,
+  },
+  {
+    id: 'CE-STREET-GRAPH',
+    defect: 'Street graph is not drivable',
+    severity: 'error',
+    suppressible: false,
+    check: streetGraphCheck,
+  },
 ];
 
 /** The rule table indexed by id, for mapping and output. */

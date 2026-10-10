@@ -19,6 +19,30 @@ function traffic(
 }
 
 describe('breakTraffic', () => {
+  it('reads a German cable, including a word-key Vigenère', () => {
+    const plain =
+      'FRIEDRICH PICHLER TRIFFT TAMARA PANOV BEI CAFE MOHNBLUME TAG 4 MORGENS';
+    const caesar = encrypt(plain, { kind: 'caesar', shift: 7 });
+    expect(breakTraffic(traffic(caesar))?.submission).toEqual({
+      kind: 'plaintext',
+      text: plain,
+    });
+    const keyed = encrypt(plain, { kind: 'vigenere', keyword: 'DANUBE' });
+    expect(breakTraffic(traffic(keyed))?.submission).toEqual({
+      kind: 'plaintext',
+      text: plain,
+    });
+  });
+
+  it('tries period words when a German cable carries no date', () => {
+    const plain = 'ANNA BERGER GESEHEN CAFE MOZART HEUTE';
+    const ciphertext = encrypt(plain, { kind: 'vigenere', keyword: 'WINTER' });
+    expect(breakTraffic(traffic(ciphertext))?.submission).toEqual({
+      kind: 'plaintext',
+      text: plain,
+    });
+  });
+
   it('reads a Caesar shift off the ciphertext', () => {
     const ciphertext = encrypt(PLAIN, { kind: 'caesar', shift: 5 });
     const result = breakTraffic(traffic(ciphertext));

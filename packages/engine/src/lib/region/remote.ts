@@ -9,6 +9,7 @@
 
 import { addPhases } from '../clock/clock.js';
 import { borderCheck } from '../border/check.js';
+import { VEHICLE_BORDER } from '../street-ops/checkpoint.js';
 import { chooseResponse } from '../hostile/detection.js';
 import { asTruth, revealTruth, type GameTime, type LocId, type NpcId } from '../model/core.js';
 import type { Prng } from '../prng/prng.js';
@@ -190,6 +191,7 @@ function crossBorder(
         rules,
       },
       rng,
+      VEHICLE_BORDER,
     );
     if (checked.outcome === 'seizure') {
       seized = true;

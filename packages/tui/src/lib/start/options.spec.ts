@@ -15,12 +15,12 @@ import {
 } from './options.js';
 
 describe('initialStartState', () => {
-  it('defaults to a blank seed, standard difficulty, mole on, full narration, seed focused', () => {
+  it('defaults to a blank seed, standard difficulty, mole off, full narration, seed focused', () => {
     expect(initialStartState()).toEqual<StartState>({
       focus: 'seed',
       seed: '',
       preset: 'standard',
-      mole: true,
+      mole: false,
       narration: 'full',
     });
   });
@@ -116,7 +116,7 @@ describe('reduceStart seed editing', () => {
 describe('toNewGameOptions', () => {
   it('drops an empty seed so the Sim generates one (Req 1.6)', () => {
     const opts = toNewGameOptions(initialStartState());
-    expect(opts).toEqual({ preset: 'standard', mole: true, narration: 'full' });
+    expect(opts).toEqual({ preset: 'standard', mole: false, narration: 'full' });
     expect('seed' in opts).toBe(false);
   });
 

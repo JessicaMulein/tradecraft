@@ -305,6 +305,8 @@ export interface LiveSeamDeps {
   readonly truth?: TruthStore;
   /** The narration mode (`full` | `brief` | `off`). Defaults to `full`. */
   readonly narrationMode?: NarrationMode;
+  /** Street and landmark names from a loaded street graph. Omitted when street-ops is off. */
+  readonly streetNames?: readonly string[];
   /** The city style sheet for the Narrator prompt, if the pack supplies one. */
   readonly styleSheet?: string;
   /**
@@ -489,7 +491,7 @@ export function buildNarrateSeam(gateway: Gateway, deps: LiveSeamDeps): NarrateS
     const registry = registryFromWorld(state);
     const leak: LeakContext = { registry, allowed: knownEntities(state) };
     const labels = ambientEventLabels(state);
-    const allowed = [...labels, ...knownCityNames(state)];
+    const allowed = [...labels, ...knownCityNames(state), ...(deps.streetNames ?? [])];
     const specifics: SpecificsContext = {
       factLines: result.factLines,
       sceneDescriptor: [describeScene(state), ...labels].join(' '),

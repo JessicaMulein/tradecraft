@@ -13,7 +13,7 @@
 import fc from 'fast-check';
 
 import type { GameTime } from '../model/core.js';
-import { checkDirectives, type DirectiveStationSlice } from './directives.js';
+import { checkDirectives, issueFollowOn, openingDirectives, type DirectiveStationSlice } from './directives.js';
 import type { Directive } from './directive-types.js';
 
 const T = (day: number, phase: 0 | 1 | 2 | 3 = 0): GameTime => ({ day, phase });
@@ -180,5 +180,26 @@ describe('checkDirectives — determinism (Req 1.2)', () => {
         },
       ),
     );
+  });
+});
+
+describe('the desk orders', () => {
+  it('opens the game with one order and sends the next when that order closes', () => {
+    const opening = openingDirectives(30);
+    expect(opening).toHaveLength(1);
+    expect(opening[0]?.objective).toEqual({ kind: 'recruit', count: 1 });
+    expect(opening[0]?.status).toBe('open');
+
+    const closed = [{ ...opening[0], status: 'met' as const }];
+    const follow = issueFollowOn(closed, T(12));
+    expect(follow?.directive.objective).toEqual({ kind: 'recruit', count: 2 });
+    expect(follow?.directive.deadline.day).toBe(26);
+    expect(follow?.event.kind).toBe('directive');
+    if (follow?.event.kind === 'directive') {
+      expect(follow.event.status).toBe('issued');
+    }
+
+    expect(issueFollowOn(opening, T(1))).toBeUndefined();
+    expect(issueFollowOn([directive({ status: 'met' })], T(6))).toBeUndefined();
   });
 });

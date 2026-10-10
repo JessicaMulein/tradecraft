@@ -122,12 +122,14 @@ describe('core pack documents.yaml', () => {
     }
   });
 
-  it('writes cables in telegraphic style, using STOP as a separator', () => {
+  it('writes cables as numbered paragraphs, without a commercial STOP', () => {
     const cables = templates.filter((t) => t.kind === 'cable');
     expect(cables.length).toBeGreaterThanOrEqual(1);
     for (const cable of cables) {
       const text = cable.sections.map((s) => s.body).join(' ');
-      expect(text).toContain('STOP');
+      expect(text).toContain('1.');
+      expect(text).not.toContain('STOP');
+      expect(text).not.toContain('DESTROY AFTER READING');
     }
   });
 });

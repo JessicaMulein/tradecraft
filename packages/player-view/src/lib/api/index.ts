@@ -97,6 +97,14 @@ export {
 } from './workbench-views.js';
 
 export {
+  keyCoincidence,
+  trialReading,
+  type KeyCoincidence,
+  type CoincidenceRow,
+  type TrialAttempt,
+} from './cipher-trial.js';
+
+export {
   PlayerViewEngine,
   type PlayerViewEngineDeps,
   type TurnIntent,

@@ -72,12 +72,12 @@ describe('CaseFileBrowser listing', () => {
     const { lastFrame } = render(<CaseFileBrowser claims={CLAIMS} />);
     const frame = lastFrame() ?? '';
     // NPC Claim: source, prop with place, grade, relation.
-    expect(frame).toContain('npc npc:viktor');
-    expect(frame).toContain('npc:viktor core/meets npc:lena @ loc:cafe');
+    expect(frame).toContain('from Viktor');
+    expect(frame).toContain('Viktor meets Lena at Cafe');
     expect(frame).toContain('grade B2');
     expect(frame).toContain('corroborated');
     // Intercept Claim: source, literal object, hedge flag, ungraded.
-    expect(frame).toContain('intercept int:7');
+    expect(frame).toContain('from an intercept');
     expect(frame).toContain('a sealed envelope');
     expect(frame).toContain('(hedged)');
     expect(frame).toContain('grade ungraded');

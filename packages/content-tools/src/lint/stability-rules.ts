@@ -287,6 +287,32 @@ export function quantityCheck(ctx: LintContext): LintFinding[] {
     }
   }
 
+  for (const pack of ctx.packs) {
+    const graphs = countKind(pack, 'graphs');
+    if (graphs < 1) continue;
+    const where = manifestFile(pack);
+    const streetTargets: readonly [string, string, number, number][] = [
+      ['street-vehicles', 'vehicles', 6, countKind(pack, 'vehicles')],
+      ['street-maneuvers', 'evasion maneuvers', 8, countKind(pack, 'maneuvers')],
+      ['street-tails', 'tail profiles', 3, countKind(pack, 'tails')],
+      ['street-stories', 'story templates', 10, countKind(pack, 'street-stories')],
+      ['street-checkpoints', 'checkpoint kinds', 1, countKind(pack, 'checkpoints')],
+    ];
+    for (const [id, description, min, actual] of streetTargets) {
+      if (actual < min) {
+        findings.push(
+          finding(
+            'CE-QUANTITY',
+            pack.id,
+            where,
+            'items',
+            `${id}: ${description} shortfall — require ${min}, found ${actual}`,
+          ),
+        );
+      }
+    }
+  }
+
   return findings;
 }
 

@@ -404,6 +404,8 @@ describe('PlayerViewEngine — Case File and status', () => {
     const { api, state } = engine();
     const status = api.status();
     expect(status.time).toEqual(state.time);
+    expect(status.date).toMatch(/1952/);
+    expect(api.views.scene().date).toBe(status.date);
     expect(status.location.id).toBe(state.player.loc);
     expect(status.standing).toBe(state.station.standing);
     expect(status.ended).toBe(false);

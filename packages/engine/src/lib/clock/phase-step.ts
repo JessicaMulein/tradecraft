@@ -130,7 +130,8 @@ import type { Meeting } from '../action/types.js';
 import type { DeadDrop } from '../city/comms.js';
 import type { Npc } from '../city/npc.js';
 import { composeCable, type CableFields } from '../docs/cable.js';
-import { composeDossier } from '../docs/dossier.js';
+import { composeDossier, slicePropsAbout } from '../docs/dossier.js';
+import { MEETINGS_BEFORE_PITCH } from '../recruit/asset.js';
 import { docId, type ComposedDocument, type Document } from '../docs/document.js';
 import type { NamerContext } from '../docs/namer.js';
 import {
@@ -152,6 +153,7 @@ import { MADE_FACT_LINE } from '../action/surveil.js';
 import { ambientPhase } from '../ambient/tick.js';
 import type { Prng } from '../prng/prng.js';
 import {
+  callingPlace,
   inStationCustody,
   isAsset,
   newRelationship,
@@ -173,7 +175,7 @@ import {
   type FundsPolicy,
 } from '../station/cables.js';
 import type { Directive } from '../station/directive-types.js';
-import { checkDirectives, type ObjectiveEvaluator } from '../station/directives.js';
+import { checkDirectives, issueFollowOn, type ObjectiveEvaluator } from '../station/directives.js';
 import { advanceSchedules, scheduledLocationAt } from './schedules.js';
 
 // ---------------------------------------------------------------------------
@@ -354,11 +356,12 @@ function stepSchedules(state: WorldState, from: GameTime, to: GameTime): SubStep
 
   for (const id of sortedIds(state.npcs)) {
     const npc = state.npcs[id];
-    const pin = pinnedPlace(state, id, to, station);
+    const calling = callingPlace(state.relationships[id], to.day);
+    const pin = pinnedPlace(state, id, to, station) ?? calling;
     if (pin === undefined) {
       free[id] = npc;
     }
-    const place = pin ?? scheduledLocationAt(npc, to) ?? 'absent';
+    const place = pin ?? scheduledLocationAt(npc, to, state.meta.setting.startDate) ?? 'absent';
     if (state.whereabouts[id] !== place) {
       whereabouts ??= { ...state.whereabouts };
       whereabouts[id] = place;
@@ -366,8 +369,10 @@ function stepSchedules(state: WorldState, from: GameTime, to: GameTime): SubStep
   }
 
   const recordedAtFrom = (id: NpcId): LocId | 'absent' =>
-    state.whereabouts[id] ?? scheduledLocationAt(state.npcs[id], from) ?? 'absent';
-  const events = advanceSchedules(free, from, to).filter(
+    state.whereabouts[id] ??
+    scheduledLocationAt(state.npcs[id], from, state.meta.setting.startDate) ??
+    'absent';
+  const events = advanceSchedules(free, from, to, state.meta.setting.startDate).filter(
     (event) => event.kind !== 'npc-moved' || recordedAtFrom(event.npc) === event.from,
   );
 
@@ -544,16 +549,23 @@ function stepCables(state: WorldState, to: GameTime, deps: PhaseStepDeps): SubSt
 
   const sink = openSink(state);
   const namer = namerContextOf(state);
+  const held = heldPropositionIds(state);
   const events: SimEvent[] = [];
+  let relationships = state.relationships;
   for (const reply of processed.replies) {
     const ref = freshCableRef(sink, to, 'R');
-    const dossier = traceDossier(state, reply, ref, to, deps.content, namer);
+    const fileHeld = replyHasFile(state, reply.traceTarget, held);
+    const dossier = traceDossier(state, reply, ref, to, deps.content, namer, held);
     if (dossier !== undefined) {
       addComposed(sink, dossier);
+      for (const prop of dossier.propositions) {
+        held.add(prop.id);
+      }
     }
+    relationships = grantPitch(relationships, reply);
     const cable = composeCable(
       templateFor(deps.content, CABLE_TEMPLATE_ID),
-      replyFields(reply, ref, dossier !== undefined),
+      replyFields(reply, ref, dossier !== undefined, fileHeld, pitchLine(relationships, reply)),
       { ...namer, date: to },
     );
     addComposed(sink, cable);
@@ -572,6 +584,7 @@ function stepCables(state: WorldState, to: GameTime, deps: PhaseStepDeps): SubSt
   return {
     state: {
       ...state,
+      relationships,
       station,
       documents: sink.documents,
       documentPropositions: sink.documentPropositions,
@@ -594,6 +607,7 @@ function traceDossier(
   at: GameTime,
   content: ContentSet,
   namer: NamerContext,
+  held: ReadonlySet<string>,
 ): ComposedDocument | undefined {
   const target = reply.traceTarget;
   if (reply.pending.reply.kind !== 'trace' || target === undefined || !target.startsWith('npc:')) {
@@ -603,9 +617,15 @@ function traceDossier(
   if (subject === undefined) {
     return undefined;
   }
+  const about = slicePropsAbout(state.station.knowledge, subject.id);
+  const fresh = about.filter((prop) => !held.has(prop.id));
+  if (fresh.length === 0) {
+    return undefined;
+  }
   const composed = composeDossier(templateFor(content, DOSSIER_TEMPLATE_ID), subject, {
     ...namer,
     stationSlice: state.station.knowledge,
+    omit: about.filter((prop) => held.has(prop.id)).map((prop) => prop.id),
   });
   return {
     document: { ...composed.document, id: traceDossierId(ref), date: at },
@@ -613,17 +633,47 @@ function traceDossier(
   };
 }
 
+/** Proposition ids already printed in a dossier the Station has delivered. */
+function heldPropositionIds(state: WorldState): Set<string> {
+  const held = new Set<string>();
+  for (const doc of Object.values(state.documents)) {
+    if (doc.kind !== 'dossier') {
+      continue;
+    }
+    for (const propId of doc.asserts) {
+      held.add(propId);
+    }
+  }
+  return held;
+}
+
+/** Whether HQ has already sent at least one lead about this trace's subject. */
+function replyHasFile(state: WorldState, target: string | undefined, held: ReadonlySet<string>): boolean {
+  if (target === undefined || !target.startsWith('npc:')) {
+    return false;
+  }
+  const subject = state.npcs[target as NpcId];
+  if (subject === undefined) {
+    return false;
+  }
+  return slicePropsAbout(state.station.knowledge, subject.id).some((prop) => held.has(prop.id));
+}
+
 /** The telegraphic fields of a reply Cable, by request kind. */
-function replyFields(reply: CableReply, ref: string, withDossier: boolean): CableFields {
+function replyFields(
+  reply: CableReply,
+  ref: string,
+  withDossier: boolean,
+  fileHeld: boolean,
+  pitch: 'approved' | 'develop' | 'none',
+): CableFields {
   switch (reply.pending.reply.kind) {
     case 'trace':
       return {
         cableRef: ref,
         // The subject is the traced entity's id, so the namer prints its name.
         subject: reply.traceTarget ?? 'TRACE REQUEST',
-        instruction: withDossier
-          ? 'TRACE COMPLETED STOP HQ FILE ON SUBJECT FOLLOWS AS DOSSIER STOP TREAT AS LEADS ONLY'
-          : 'TRACE COMPLETED STOP HQ HOLDS NO PERSONAL FILE ON SUBJECT',
+        instruction: traceInstruction(withDossier, fileHeld, pitch),
       };
     case 'funds':
       return reply.didGrantFunds
@@ -637,15 +687,74 @@ function replyFields(reply: CableReply, ref: string, withDossier: boolean): Cabl
             cableRef: ref,
             subject: 'FUNDS REQUEST',
             instruction:
-              'NO FUNDS RELEASED AT THIS TIME STOP RESUBMIT AFTER THE CURRENT PERIOD',
+              '2. NO FUNDS ARE RELEASED. 3. THE REQUEST MAY BE SENT AGAIN AFTER THE CURRENT PERIOD.',
           };
     case 'report':
       return {
         cableRef: ref,
         subject: 'FIELD REPORT',
-        instruction: 'YOUR REPORT IS RECEIVED STOP CONTINUE AS INSTRUCTED',
+        instruction:
+          reply.pending.reply.standingDelta > 0
+            ? '2. THE REPORT IS NOTED. IT ADDS TO THE FILE. 3. STANDING WITH HEADQUARTERS IS RAISED.'
+            : '2. THE REPORT ADDS NOTHING. 3. STANDING IS UNCHANGED.',
       };
   }
+}
+
+/**
+ * Approve a pitch when a person-trace comes back and the contact has already
+ * been developed. Other replies leave the relationships unchanged.
+ */
+function grantPitch(
+  relationships: WorldState['relationships'],
+  reply: CableReply,
+): WorldState['relationships'] {
+  const target = reply.traceTarget;
+  if (reply.pending.reply.kind !== 'trace' || target === undefined || !target.startsWith('npc:')) {
+    return relationships;
+  }
+  const rel = relationships[target as NpcId];
+  if (rel === undefined || (rel.meetings ?? 0) < MEETINGS_BEFORE_PITCH) {
+    return relationships;
+  }
+  return { ...relationships, [target]: { ...rel, pitchApproved: true } };
+}
+
+/** The pitch sentence a person-trace adds. An organisation trace adds none. */
+function pitchLine(
+  relationships: WorldState['relationships'],
+  reply: CableReply,
+): 'approved' | 'develop' | 'none' {
+  const target = reply.traceTarget;
+  if (reply.pending.reply.kind !== 'trace' || target === undefined || !target.startsWith('npc:')) {
+    return 'none';
+  }
+  return relationships[target as NpcId]?.pitchApproved === true ? 'approved' : 'develop';
+}
+
+/** What HQ says when a trace comes back. */
+function traceInstruction(
+  withDossier: boolean,
+  fileHeld: boolean,
+  pitch: 'approved' | 'develop' | 'none',
+): string {
+  let base: string;
+  if (withDossier && fileHeld) {
+    base = '2. THE TRACE IS COMPLETE. FURTHER LEADS FOLLOW IN THE DOSSIER. 3. TREAT THEM AS LEADS ONLY.';
+  } else if (withDossier) {
+    base = '2. THE TRACE IS COMPLETE. THE FILE ON THE SUBJECT FOLLOWS. 3. TREAT IT AS LEADS ONLY.';
+  } else if (fileHeld) {
+    base = '2. THE TRACE IS COMPLETE. 3. HEADQUARTERS HOLDS NOTHING FURTHER. THE FILE ALREADY WITH YOU IS COMPLETE.';
+  } else {
+    base = '2. THE TRACE IS COMPLETE. 3. HEADQUARTERS HOLDS NO PERSONAL FILE ON THE SUBJECT.';
+  }
+  if (pitch === 'approved') {
+    return `${base} 4. A PITCH IS APPROVED. LEAD WITH THE MOTIVE THE MEETINGS AND THE FILE SUGGEST.`;
+  }
+  if (pitch === 'develop') {
+    return `${base} 4. DEVELOP THE CONTACT OVER FURTHER MEETINGS BEFORE ANY PITCH.`;
+  }
+  return base;
 }
 
 // ---------------------------------------------------------------------------
@@ -663,25 +772,32 @@ function stepDirectives(state: WorldState, to: GameTime, deps: PhaseStepDeps): S
     return { state, events: [] };
   }
   const checked = checkDirectives(state.station, to, deps.objectives(state));
-  if (checked.events.length === 0) {
+  const follow = issueFollowOn(checked.directives, to);
+  if (checked.events.length === 0 && follow === undefined) {
     return { state, events: [] };
   }
 
-  const byId = new Map<string, Directive>(checked.directives.map((d) => [d.id, d]));
+  const directives = follow === undefined ? checked.directives : [...checked.directives, follow.directive];
+  const byId = new Map<string, Directive>(directives.map((d) => [d.id, d]));
   const sink = openSink(state);
   const namer = namerContextOf(state);
-  const events: SimEvent[] = [];
-  for (const event of checked.events) {
-    events.push(event);
-    if (event.kind !== 'directive' || event.status === 'issued') {
+  const events: SimEvent[] = [...checked.events];
+  if (follow !== undefined) {
+    events.push(follow.event);
+  }
+  for (const event of events) {
+    if (event.kind !== 'directive') {
       continue;
     }
     const ref = freshCableRef(sink, to, 'D');
-    const cable = composeCable(
-      templateFor(deps.content, CABLE_TEMPLATE_ID),
-      directiveFields(byId.get(event.directive), event.status, ref),
-      { ...namer, date: to },
-    );
+    const fields =
+      event.status === 'issued'
+        ? issuedFields(byId.get(event.directive), ref)
+        : directiveFields(byId.get(event.directive), event.status, ref);
+    const cable = composeCable(templateFor(deps.content, CABLE_TEMPLATE_ID), fields, {
+      ...namer,
+      date: to,
+    });
     addComposed(sink, cable);
     events.push(cableEvent(cable.document.id, to));
   }
@@ -691,13 +807,26 @@ function stepDirectives(state: WorldState, to: GameTime, deps: PhaseStepDeps): S
       ...state,
       station: {
         ...state.station,
-        directives: checked.directives,
+        directives,
         standing: checked.standing,
       },
       documents: sink.documents,
       documentPropositions: sink.documentPropositions,
     },
     events,
+  };
+}
+
+/** The telegraphic fields of the Cable that assigns a new Directive. */
+function issuedFields(directive: Directive | undefined, ref: string): CableFields {
+  const raw = directive === undefined ? 'A NEW ORDER FOLLOWS' : directive.text.toUpperCase();
+  const text = raw.trim().replace(/\.+$/, '');
+  const day = directive === undefined ? '' : ` 3. DEADLINE DAY ${directive.deadline.day}.`;
+  return {
+    cableRef: ref,
+    priority: 'PRIORITY',
+    subject: 'DIRECTIVE',
+    instruction: `2. ${text}.${day}`,
   };
 }
 
@@ -713,8 +842,8 @@ function directiveFields(
     subject: directive === undefined ? 'DIRECTIVE' : `DIRECTIVE ${directive.text.toUpperCase()}`,
     instruction:
       status === 'met'
-        ? 'OBJECTIVE ACHIEVED STOP STANDING WITH HQ RAISED'
-        : 'DEADLINE PASSED WITHOUT RESULT STOP STANDING WITH HQ REDUCED',
+        ? '2. THE OBJECTIVE IS MET. 3. STANDING WITH HEADQUARTERS IS RAISED.'
+        : '2. THE DEADLINE PASSED WITHOUT A RESULT. 3. STANDING WITH HEADQUARTERS IS REDUCED.',
   };
 }
 

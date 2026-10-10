@@ -10,6 +10,7 @@ import {
   hereStatus,
   isNoticeFact,
   mapStatus,
+  placeWithholds,
   statusLine,
   storiesLines,
 } from './city-text.js';
@@ -17,6 +18,12 @@ import {
 const clock = { day: 3, phase: 'afternoon', location: 'The Riverside Café', budget: 1200, standing: 4 };
 
 describe('web city aids', () => {
+  it('hides an action the place never offers and keeps a reason the player can use', () => {
+    expect(placeWithholds('the Station allows only: travel, talk, wait')).toBe(true);
+    expect(placeWithholds('the Café Central is closed in this phase')).toBe(false);
+    expect(placeWithholds(undefined)).toBe(false);
+  });
+
   it('snapshots the City, Stories and Duties lines', () => {
     expect(cityLines([{ id: 'evt:fair', name: 'Harvest fair' }])).toEqual(['Harvest fair']);
     expect(cityLines([])).toEqual(['Nothing you have heard about yet.']);
@@ -36,8 +43,14 @@ describe('web city aids', () => {
     expect(isNoticeFact('A notice is posted: Curfew.')).toBe(true);
     expect(isNoticeFact('You arrive at the café.')).toBe(false);
     expect(statusLine(clock)).toBe('Day 3, afternoon · The Riverside Café · budget 1200 · standing 4');
+    expect(statusLine({ ...clock, followed: 'You may have been followed.' })).toContain(
+      'You may have been followed.',
+    );
     expect(statusLine(clock, 'Your employer expects you for Office hours.')).toBe(
       'Day 3, afternoon · The Riverside Café · budget 1200 · standing 4 · Duty: Your employer expects you for Office hours.',
+    );
+    expect(statusLine({ ...clock, date: '4 December 1952' })).toBe(
+      '4 December 1952, afternoon · The Riverside Café · budget 1200 · standing 4',
     );
   });
 });

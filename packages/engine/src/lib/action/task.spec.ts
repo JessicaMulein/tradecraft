@@ -90,7 +90,7 @@ import {
   TASK_REPORT_LINE,
 } from './task.js';
 import { compareTime } from '../model/core.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 
 // ---------------------------------------------------------------------------
 // Core-pack fixtures (mirrors pay.spec.ts)
@@ -475,7 +475,7 @@ describe('witnessedFacts', () => {
 
   /** The base world with ASSET's routine on `at`'s weekday taking them to `loc`. */
   function regularAt(state: WorldState, loc: LocId, at: GameTime): WorldState {
-    const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(at.day));
+    const weekday = scheduleWeekdayIndex(at.day, state.meta.setting.startDate);
     const npc = state.npcs[ASSET];
     return {
       ...state,

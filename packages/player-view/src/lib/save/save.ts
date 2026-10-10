@@ -182,6 +182,10 @@ export interface TruthSnapshotData {
   readonly claimTruths: readonly ClaimTruthRecord[];
   /** `[item, origin]` entries, sorted by item id. Absent when no origin was recorded. */
   readonly itemOrigins?: readonly (readonly [string, string])[];
+  /** Add-on truth. Absent when no add-on has written a slice. */
+  readonly ext?: {
+    readonly streetOps?: NonNullable<TruthStoreData['ext']>['streetOps'];
+  };
 }
 
 /**
@@ -206,6 +210,7 @@ export function toTruthSnapshot(data: TruthStoreData): TruthSnapshotData {
             a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0,
           ),
         }),
+    ...(data.ext === undefined ? {} : { ext: data.ext }),
   };
 }
 
@@ -223,6 +228,7 @@ export function fromTruthSnapshot(snapshot: TruthSnapshotData): TruthStoreData {
     ...(snapshot.itemOrigins === undefined
       ? {}
       : { itemOrigins: new Map(snapshot.itemOrigins) as Map<string, EntityId> }),
+    ...(snapshot.ext === undefined ? {} : { ext: snapshot.ext }),
   };
 }
 
@@ -503,6 +509,12 @@ const TruthSnapshotSchema: z.ZodType<TruthSnapshotData> = z
     identities: z.array(z.tuple([z.string(), z.string()])).readonly(),
     claimTruths: z.array(ClaimTruthRecordShape).readonly(),
     itemOrigins: z.array(z.tuple([z.string(), z.string()])).readonly().optional(),
+    ext: z
+      .object({
+        streetOps: z.unknown().optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict() as unknown as z.ZodType<TruthSnapshotData>;
 

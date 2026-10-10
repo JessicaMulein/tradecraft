@@ -92,7 +92,9 @@ import {
   createPrng,
   isIntent,
   nextUnkId,
+  PROTECTED_SLOTS,
   resolve as resolveAction,
+  runtimeFor,
   TruthDraft,
   worldCipherKeyLookup,
   type Action,
@@ -708,6 +710,14 @@ export interface TurnPipelineConfig {
    */
   readonly evaluateExtraction?: EvaluateExtraction;
   /**
+   * Bookkeeping transcription for a typed street bluff. Omitted means the
+   * resolver's local parser reads the text. The call returns slot claims only.
+   */
+  readonly transcribeClaims?: (
+    text: string,
+    slots: readonly string[],
+  ) => Promise<readonly { readonly slot: string; readonly value: string }[] | undefined>;
+  /**
    * Capture the speaker's knowledge at a dialogue turn (Req 17.2). Omitted means
    * the empty slice is captured (the documented knowledge-slice projection gap).
    */
@@ -1128,7 +1138,14 @@ export function createTurnDriver(
     const turnCtx =
       truthDraft !== undefined
         ? projectResolverContext(
-            { state: pre, caseFile, content: ctx.content, brief, rules },
+            {
+              state: pre,
+              caseFile,
+              content: ctx.content,
+              brief,
+              rules,
+              ...(ctx.extensions === undefined ? {} : { extensions: ctx.extensions }),
+            },
             truthDraft,
           )
         : ctx;
@@ -1148,13 +1165,32 @@ export function createTurnDriver(
     let phasesSpent = 0;
     let factLines: readonly string[] = [];
 
+    let played = action;
+    if (
+      config.transcribeClaims !== undefined &&
+      action.kind === 'street-ops.bluff' &&
+      typeof action.text === 'string' &&
+      action.propositions === undefined
+    ) {
+      const runtime = ctx.extensions === undefined ? undefined : runtimeFor(ctx.extensions);
+      const templateId = typeof action.template === 'string' ? action.template : undefined;
+      const template = runtime?.stories.find((story) => story.id === templateId);
+      const slots = [...new Set([...(template?.slots ?? []), ...PROTECTED_SLOTS, 'destination', 'document'])];
+      try {
+        const propositions = await config.transcribeClaims(action.text, slots);
+        if (propositions !== undefined && propositions.length > 0) played = { ...action, propositions };
+      } catch {
+        // The resolver's local parser reads the typed text.
+      }
+    }
+
     try {
       // Step 5: resolve. `resolve` returns the next state, the result (its
       // Observations and Fact Lines) and the End Condition the action produced
       // (an arrest of the Cell leader, a materiel seizure). The result's
       // Proposition Observations are the Claims this turn will record at commit
       // (recorded there, so a pre-commit throw files none; design step 5).
-      const resolved = resolveAction(pre, action, rng, turnCtx);
+      const resolved = resolveAction(pre, played, rng, turnCtx);
       result = resolved.result;
       ended = resolved.ended;
 

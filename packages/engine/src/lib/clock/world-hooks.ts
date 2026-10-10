@@ -62,6 +62,7 @@ import { isInterceptableKind, type Channel } from '../city/comms.js';
 import type { Npc } from '../city/npc.js';
 import type { StageState, StageTrace } from '../city/plot.js';
 import { newRelationship } from '../recruit/asset.js';
+import { STATION_LOCATION_TYPE } from '../action/intercept.js';
 import {
   buildTransmissions,
   generateIntercepts,
@@ -74,10 +75,14 @@ import {
   plotTransmissionId,
   cellTrafficTransmissionId,
   publicTextIdsOf,
+  membershipOnTheAir,
   stagePropositions,
   stageTransmissionPropositions,
 } from '../cipher/world-intercepts.js';
-import { composeNewspaper, dailyMaterial } from '../docs/newspaper.js';
+import { closedEdition, composeNewspaper, dailyMaterial, type NewspaperItem } from '../docs/newspaper.js';
+import { fileTapTranscripts } from '../docs/tap.js';
+import { dayOffReason } from '../city/calendar.js';
+import { weatherForDay } from '../city/city.js';
 import { falseFlagRumours, withFalseFlagRumour } from '../plotgen/twists.js';
 import { publicTextLocations } from '../docs/public-text.js';
 import type { NamerContext } from '../docs/namer.js';
@@ -217,12 +222,15 @@ const plotHook: WorldHook = (draft, ctx) => {
     world,
     ctx,
   );
-  const afterPlot: WorldState = {
-    ...draft,
-    plot: result.plot,
-    transmissions,
-    scheduled: queueObservable(draft.scheduled, result.events, ctx.time),
-  };
+  const afterPlot: WorldState = fileTapTranscripts(
+    {
+      ...draft,
+      plot: result.plot,
+      transmissions,
+      scheduled: queueObservable(draft.scheduled, result.events, ctx.time),
+    },
+    result.events,
+  );
 
   // The abort check reads the Plot the day left (Req 4.5).
   const abort = worldAbortCheck(afterPlot, ctx.time);
@@ -445,12 +453,18 @@ function routineCellTraffic(draft: WorldState, ctx: WorldHookContext): Intercept
       continue;
     }
     const at: GameTime = { day, phase };
-    const sender = pool.filter((p) => p.predicate === 'MEMBER_OF' && p.subject === channel.owner);
+    const sender = membershipOnTheAir(pool, channel.owner);
     // One detail of the next step per message, drawn on the runtime stream.
     // The operation's intent (PLANS/TARGETS) is never in routine traffic: it
     // goes out only in the stage transmission that sets a step in motion.
+    // Membership rides only as the signature above, so a second cell does not
+    // sneak out as the day's detail.
     const details = stagePropositions(pool, next).filter(
-      (p) => !sender.includes(p) && p.predicate !== 'PLANS' && p.predicate !== 'TARGETS',
+      (p) =>
+        !sender.includes(p) &&
+        p.predicate !== 'PLANS' &&
+        p.predicate !== 'TARGETS' &&
+        p.predicate !== 'MEMBER_OF',
     );
     const detail = details.length === 0 ? [] : [details[ctx.rng.int(0, details.length - 1)]];
     // The go-order: on the day before a step executes (or that day), the
@@ -607,17 +621,58 @@ interface WalkInOutcome {
   readonly npc?: NpcId;
 }
 
+/** Roles that might come to the Station unannounced. Colleagues and the cell do not. */
+const WALK_IN_ROLES = new Set(['contact', 'civilian', 'hostile-officer']);
+
+/**
+ * People who might walk into the Station: a civilian, a contact, or an officer
+ * from the other service. The Station's own staff already work there, and the
+ * cell's working members do not present themselves at the front door.
+ */
+function walkInCandidates(draft: WorldState): NpcId[] {
+  const staff = new Set<string>([draft.station.chief, ...draft.station.staff]);
+  const ids: NpcId[] = [];
+  for (const id of (Object.keys(draft.npcs) as NpcId[]).sort()) {
+    if (staff.has(id)) {
+      continue;
+    }
+    const npc = draft.npcs[id];
+    if (npc === undefined || !WALK_IN_ROLES.has(npc.role)) {
+      continue;
+    }
+    const status = npc.status === undefined ? 'active' : revealTruth(npc.status);
+    if (status === 'arrested' || status === 'fled') {
+      continue;
+    }
+    ids.push(id);
+  }
+  return ids;
+}
+
+/** The Station's Location: the lowest-id `station-hq`, if the city has one. */
+function stationHq(draft: WorldState): LocId | undefined {
+  let found: LocId | undefined;
+  for (const loc of Object.values(draft.city.locations)) {
+    const isStation =
+      loc.type === STATION_LOCATION_TYPE || loc.type.endsWith(`/${STATION_LOCATION_TYPE}`);
+    if (isStation && (found === undefined || loc.id < found)) {
+      found = loc.id;
+    }
+  }
+  return found;
+}
+
 /**
  * Roll the day's Walk-in on the daily stream, deferring to the slice's
- * {@link rollWalkIn} so the draw order and defaults are unchanged. The eligible
- * pool is the Draft's NPCs.
+ * {@link rollWalkIn} so the draw order and defaults are unchanged. The pool is
+ * the people who might actually come to the door.
  */
 function rollDailyWalkIn(
   draft: WorldState,
   prng: Prng,
   at: GameTime,
 ): WalkInOutcome {
-  const result = rollWalkIn(prng, draft.npcs, at);
+  const result = rollWalkIn(prng, draft.npcs, at, { candidates: walkInCandidates(draft) });
   return { events: result.events, npc: result.npc };
 }
 
@@ -632,12 +687,17 @@ function withContactChannel(draft: WorldState, npc: NpcId): WorldState {
     ? draft.player.contacts
     : [...draft.player.contacts, npc];
   const rel = draft.relationships[npc] ?? newRelationship(npc);
+  const station = stationHq(draft);
+  const callingAt = station === undefined ? rel.callingAt : { loc: station, day: draft.time.day };
+  const whereabouts =
+    station === undefined ? draft.whereabouts : { ...draft.whereabouts, [npc]: station };
   return {
     ...draft,
     player: { ...draft.player, contacts },
+    whereabouts,
     relationships: {
       ...draft.relationships,
-      [npc]: { ...rel, channel: true },
+      [npc]: { ...rel, channel: true, ...(callingAt === undefined ? {} : { callingAt }) },
     },
   };
 }
@@ -670,7 +730,7 @@ function boundaryMoves(
     if (pin === undefined) {
       free[id] = npc;
     }
-    const place = pin ?? scheduledLocationAt(npc, to) ?? 'absent';
+    const place = pin ?? scheduledLocationAt(npc, to, draft.meta.setting.startDate) ?? 'absent';
     if (draft.whereabouts[id] !== place) {
       whereabouts ??= { ...draft.whereabouts };
       whereabouts[id] = place;
@@ -678,8 +738,8 @@ function boundaryMoves(
   }
 
   const recordedAtFrom = (id: NpcId): LocId | 'absent' =>
-    draft.whereabouts[id] ?? scheduledLocationAt(draft.npcs[id], from) ?? 'absent';
-  const events = advanceSchedules(free, from, to).filter(
+    draft.whereabouts[id] ?? scheduledLocationAt(draft.npcs[id], from, draft.meta.setting.startDate) ?? 'absent';
+  const events = advanceSchedules(free, from, to, draft.meta.setting.startDate).filter(
     (event) =>
       event.kind !== 'npc-moved' || recordedAtFrom(event.npc) === event.from,
   );
@@ -753,18 +813,65 @@ const hostileTickHook: WorldHook = (draft, ctx) => {
 // ---------------------------------------------------------------------------
 
 /**
- * The `newspaper` hook. Composes the day's edition from `dailyMaterial(day)`
- * plus the scratch's newspaper plants and arrest articles (Req 3.8) on the
- * daily stream, writes the composed Document, its Propositions,
- * `newspapers[day]` and the Document's obtainable Locations, and emits the
- * player-visible `newspaper` event (Req 2.5).
- *
- * The city-event filler is built from no weather summary here — `advanceWorld`
- * owns the weather `day-start` event; the edition's "around the city" article
- * uses the neutral phrase `dailyMaterial` falls back to. The Plot and Side
- * Thread public traces are left to a later spec's richer material; the slice's
- * edition prints the city filler, the day's plants and the arrest articles,
- * which is what the Hostile tick produced for this day.
+ * One public article for each plot stage that executed today. The template's
+ * `publicTraceArticles` are taken in stage order, so a later stage prints the
+ * next line and a quiet day prints none.
+ */
+function editionPlotTraces(
+  draft: WorldState,
+  content: AdvanceWorldDeps['content'],
+  day: number,
+): NewspaperItem[] {
+  const template = plotTemplateOf(content, draft.plot.template);
+  const articles = template?.publicTraceArticles ?? [];
+  if (articles.length === 0) {
+    return [];
+  }
+  const executed = draft.plot.stages.filter((stage) => stage.status === 'executed');
+  const items: NewspaperItem[] = [];
+  for (const stage of executed) {
+    if (stage.deadline.day !== day) {
+      continue;
+    }
+    const text = articles[executed.indexOf(stage)];
+    if (text === undefined) {
+      continue;
+    }
+    const clause = text.split('—')[0]?.trim() || text.split('.')[0]?.trim() || 'From the city desk';
+    items.push({
+      id: `plot/${draft.plot.template}/${stage.id}`,
+      source: 'plot-trace',
+      headline: clause,
+      summary: text,
+      asserts: [],
+    });
+  }
+  return items;
+}
+
+/** The loaded plot template for a generated plot id, namespaced or local. */
+function plotTemplateOf(
+  content: AdvanceWorldDeps['content'],
+  id: string,
+): { readonly publicTraceArticles: readonly string[] } | undefined {
+  const direct = content.plotTemplates.get(id);
+  if (direct !== undefined) {
+    return direct;
+  }
+  for (const [key, value] of content.plotTemplates) {
+    if (key.endsWith(`/${id}`) || id.endsWith(`/${key}`)) {
+      return value;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * The `newspaper` hook. Composes the day's edition from the day's weather, any
+ * public plot line a stage left today, and the scratch's plants and arrest
+ * articles (Req 3.8) on the daily stream. Writes the composed Document, its
+ * Propositions, `newspapers[day]` and the Document's obtainable Locations, and
+ * emits the player-visible `newspaper` event (Req 2.5).
  */
 const newspaperHook: WorldHook = (draft, ctx) => {
   const template = newspaperTemplate(ctx.deps);
@@ -772,10 +879,19 @@ const newspaperHook: WorldHook = (draft, ctx) => {
     return { state: draft, events: [] };
   }
 
+  const startDate = draft.meta.setting.startDate;
+  const weather = weatherForDay(
+    draft.meta.seed,
+    draft.city,
+    ctx.deps.cityData,
+    ctx.time.day,
+    startDate,
+  ).label;
+  const closed = dayOffReason(startDate, ctx.time.day);
   const material = dailyMaterial(
     ctx.time.day,
-    undefined,
-    [],
+    { summary: weather },
+    editionPlotTraces(draft, ctx.deps.content, ctx.time.day),
     [],
     [],
   );
@@ -794,15 +910,18 @@ const newspaperHook: WorldHook = (draft, ctx) => {
     orgs: draft.orgs,
   };
   const daily = createPrng(ctx.dailyStreamSeed);
-  const composed = withFalseFlagRumour(
-    composeNewspaper(
-      template,
-      withPlants,
-      { ...namer, date: ctx.time },
-      daily,
-    ),
-    ctx.time.day === 1 ? falseFlagRumours(draft) : [],
-  );
+  const composed =
+    closed === undefined
+      ? withFalseFlagRumour(
+          composeNewspaper(
+            template,
+            withPlants,
+            { ...namer, date: ctx.time, weather, startDate },
+            daily,
+          ),
+          ctx.time.day === 1 ? falseFlagRumours(draft) : [],
+        )
+      : closedEdition(template, ctx.time, startDate, closed);
 
   const obtainableAt = publicTextLocations(draft.city);
   const document =

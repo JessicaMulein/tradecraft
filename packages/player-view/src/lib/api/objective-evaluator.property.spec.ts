@@ -361,6 +361,8 @@ function oracle(objective: DirectiveObjective, records: Records): boolean {
       return oracleArrested(objective.entity, records);
     case 'identify':
       return oracleIdentified(objective.entity, records);
+    case 'smuggle':
+      return false;
   }
 }
 

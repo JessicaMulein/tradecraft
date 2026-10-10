@@ -91,7 +91,7 @@ export interface CheckDirectivesResult {
  */
 function directiveEventId(
   directive: DirectiveId,
-  status: 'met' | 'failed',
+  status: 'issued' | 'met' | 'failed',
   at: GameTime,
 ): EventId {
   return `directive-evt:${directive}:${status}:${at.day}:${at.phase}`;
@@ -105,7 +105,7 @@ function directiveEventId(
  */
 function directiveEvent(
   directive: DirectiveId,
-  status: 'met' | 'failed',
+  status: 'issued' | 'met' | 'failed',
   at: GameTime,
 ): SimEvent {
   return {
@@ -163,4 +163,95 @@ export function checkDirectives(
   });
 
   return { directives, standing, events };
+}
+
+// ---------------------------------------------------------------------------
+// The desk's standing orders
+// ---------------------------------------------------------------------------
+
+/**
+ * The orders HQ issues, in order. Each asks the player to develop a source.
+ * None of them names a person the player has not already found.
+ */
+const DIRECTIVE_LADDER: readonly {
+  readonly id: DirectiveId;
+  readonly text: string;
+  readonly count: number;
+  readonly reward: number;
+  readonly span: number;
+}[] = [
+  {
+    id: 'dir:develop-a-source',
+    text: 'Develop one source and report the recruitment',
+    count: 1,
+    reward: 2,
+    span: 12,
+  },
+  {
+    id: 'dir:develop-a-second-source',
+    text: 'Develop a second source and report the recruitment',
+    count: 2,
+    reward: 2,
+    span: 14,
+  },
+  {
+    id: 'dir:develop-a-third-source',
+    text: 'Develop a third source and report the recruitment',
+    count: 3,
+    reward: 2,
+    span: 14,
+  },
+];
+
+/** The first order, dated from day 0. The deadline sits inside the operation. */
+export function openingDirectives(horizonDay: number): readonly Directive[] {
+  const first = DIRECTIVE_LADDER[0];
+  if (first === undefined) {
+    return [];
+  }
+  const day = Math.max(8, Math.min(16, Math.floor(horizonDay / 3) || 8));
+  return [
+    {
+      id: first.id,
+      text: first.text,
+      objective: { kind: 'recruit', count: first.count },
+      deadline: { day, phase: 0 },
+      reward: first.reward,
+      status: 'open',
+    },
+  ];
+}
+
+/**
+ * The next order, once the ladder's current one has closed. A desk that was
+ * never on this ladder (a test directive, an empty list) is left alone.
+ */
+export function issueFollowOn(
+  existing: readonly Directive[],
+  at: GameTime,
+): { readonly directive: Directive; readonly event: SimEvent } | undefined {
+  if (existing.some((directive) => directive.status === 'open')) {
+    return undefined;
+  }
+  const onLadder = existing.some((directive) =>
+    DIRECTIVE_LADDER.some((step) => step.id === directive.id),
+  );
+  if (!onLadder) {
+    return undefined;
+  }
+  const next = DIRECTIVE_LADDER.find(
+    (step) => !existing.some((directive) => directive.id === step.id),
+  );
+  if (next === undefined) {
+    return undefined;
+  }
+  const directive: Directive = {
+    id: next.id,
+    text: next.text,
+    objective: { kind: 'recruit', count: next.count },
+    deadline: { day: at.day + next.span, phase: 0 },
+    reward: next.reward,
+    status: 'open',
+  };
+  return { directive, event: directiveEvent(directive.id, 'issued', at) };
 }

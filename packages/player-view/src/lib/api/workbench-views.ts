@@ -45,6 +45,8 @@ import type {
   WorldState,
 } from '@tradecraft/engine';
 
+import { keyCoincidence, type KeyCoincidence } from './cipher-trial.js';
+
 // ---------------------------------------------------------------------------
 // Caesar shift preview arithmetic
 // ---------------------------------------------------------------------------
@@ -181,6 +183,8 @@ export interface InterceptListEntry {
   readonly length: number;
   /** The call sign derived from the Channel, when present. */
   readonly callsign?: string;
+  /** A neutral frequency label, when the capture carries one. */
+  readonly signal?: string;
   /** Whether an exploitable tradecraft error is attached (Requirement 9.4). */
   readonly hasTradecraftError: boolean;
 }
@@ -219,6 +223,7 @@ function interceptListEntry(intercept: Intercept): InterceptListEntry {
     ...(intercept.meta.callsign !== undefined
       ? { callsign: intercept.meta.callsign }
       : {}),
+    ...(intercept.meta.signal !== undefined ? { signal: intercept.meta.signal } : {}),
     hasTradecraftError: intercept.tradecraftError !== undefined,
   };
 }
@@ -269,12 +274,19 @@ export interface WorkbenchView {
   readonly length: number;
   /** The call sign derived from the Channel, when present. */
   readonly callsign?: string;
+  /** A neutral frequency label, when the capture carries one. */
+  readonly signal?: string;
   /** A stereotyped header crib, present only on a `fixed-header` error. */
   readonly header?: string;
   /** The enciphered field message the player works on. */
   readonly ciphertext: string;
   /** The letter-frequency table of the ciphertext (Requirement 9.6). */
   readonly frequency: readonly FrequencyEntry[];
+  /**
+   * Index of coincidence for the whole text and for key lengths 4–7. A length
+   * whose value rises toward 0.065 is the one to try a word against.
+   */
+  readonly coincidence: KeyCoincidence;
   /** The caesar shift preview over all 26 shifts (Requirement 9.6). */
   readonly shiftPreview: readonly ShiftPreviewRow[];
   /** The exploitable tradecraft error, when one is attached (Requirement 9.4). */
@@ -306,11 +318,13 @@ export function workbenchView(
     ...(intercept.meta.callsign !== undefined
       ? { callsign: intercept.meta.callsign }
       : {}),
+    ...(intercept.meta.signal !== undefined ? { signal: intercept.meta.signal } : {}),
     ...(intercept.meta.header !== undefined
       ? { header: intercept.meta.header }
       : {}),
     ciphertext: intercept.ciphertext,
     frequency: frequencyTable(intercept.ciphertext),
+    coincidence: keyCoincidence(intercept.ciphertext),
     shiftPreview: caesarShiftPreview(intercept.ciphertext),
     ...(intercept.tradecraftError !== undefined
       ? { tradecraftError: intercept.tradecraftError }

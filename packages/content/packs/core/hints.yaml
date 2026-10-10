@@ -31,13 +31,18 @@
   trigger: first-meeting
   text: >-
     A face-to-face meeting carries detection risk. Pick a crowded, open
-    Location and a quiet phase to keep it discreet.
+    Location and a quiet phase. If you think you were followed on the way,
+    break the meeting off. A meeting you keep is written up as a contact
+    report.
 
 - id: hint-first-recruitment
   trigger: first-recruitment
   text: >-
-    Recruitment turns on a person's motive. Read their MICE profile and lead
-    with the lever that fits before you make the pitch.
+    Recruitment takes more than one conversation. Meet them on several days,
+    cable headquarters for a trace, and wait until the reply approves a pitch.
+    Then lead with the motive the meetings and the file suggest: money, belief,
+    pressure or pride. Once they are recruited, they keep a standing time, and
+    you can meet them then without arranging it.
 
 - id: hint-first-document
   trigger: first-document
@@ -80,3 +85,4 @@
   text: >-
     You now hold enough corroborated evidence to request an arrest. A wrongful
     arrest costs authority, so be sure the Case File names the right person.
+    The Austrian police cannot make the arrest in the Soviet sector.

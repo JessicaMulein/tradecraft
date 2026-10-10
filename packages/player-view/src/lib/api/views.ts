@@ -46,6 +46,8 @@ import {
   sceneAt,
   travelCost,
   visibleNpcsAt,
+  calendarLabel,
+  recruitmentProgress,
   weatherForDay,
   STATION_LOCATION_TYPE,
   type AllegianceCategory,
@@ -175,6 +177,8 @@ export interface SceneView {
     readonly risk: number;
   };
   readonly time: GameTime;
+  /** The calendar date, such as `1 December 1952`. */
+  readonly date?: string;
   /** The day's weather label (e.g. "cold and clear"). */
   readonly weather: string;
   readonly crowd: CrowdLevel;
@@ -228,7 +232,13 @@ export interface HereView {
 export function weatherNow(state: WorldState, cityData: CityData): CityWeather {
   // `weatherForDay` lives on the city module; re-derived here so the view stays
   // a pure function of state + content with no stored weather to keep in sync.
-  return weatherForDay(state.meta.seed, state.city, cityData, state.time.day);
+  return weatherForDay(
+    state.meta.seed,
+    state.city,
+    cityData,
+    state.time.day,
+    state.meta.setting.startDate,
+  );
 }
 
 /**
@@ -345,6 +355,7 @@ export function sceneView(
       risk: descriptor.risk,
     },
     time: state.time,
+    date: calendarLabel(state.meta.setting.startDate, state.time.day),
     weather: weatherNow(state, cityData).label,
     crowd: crowdNow(state, cityData, loc),
     visible: visibleHere(state, loc),
@@ -930,6 +941,13 @@ export interface PersonEntry {
   readonly claimsAsSource: number;
   /** The city the player last saw them in. Absent until a sighting names one. */
   readonly lastKnownCity?: { readonly id: string; readonly name: string };
+  /**
+   * How a recruitment stands: meetings so far, or that a pitch is approved.
+   * Absent when there is nothing to say. Never the hidden motive profile.
+   */
+  readonly recruitment?: string;
+  /** The standing meeting with a recruited agent. Absent for anyone else. */
+  readonly standing?: string;
 }
 
 /** A known organisation on the People view (design: "a parallel list of known organisations"). */
@@ -1047,6 +1065,19 @@ function knownPeopleNpcs(state: WorldState): NpcId[] {
  * and the two Claim counts. It never reads `npc.apparentAllegiance`, the true
  * allegiance, the MICE profile or the relationship suspicion.
  */
+const STANDING_PHASE = ['morning', 'afternoon', 'evening', 'night'] as const;
+
+/** The sentence for a recruited agent's standing meeting, when one was agreed. */
+function standingText(state: WorldState, npc: NpcId): string | undefined {
+  const slot = state.relationships[npc]?.standing;
+  if (slot === undefined) return undefined;
+  const place = state.city.locations[slot.at]?.name;
+  if (place === undefined) return undefined;
+  const phase = STANDING_PHASE[slot.phase] ?? 'afternoon';
+  const day = slot.weekday.charAt(0).toUpperCase() + slot.weekday.slice(1);
+  return `Every ${day} ${phase} at ${place}.`;
+}
+
 export function peopleView(state: WorldState, caseFile: CaseFile): PeopleView {
   const claims = caseFile.list();
   const canon: AliasResolver = caseFile.aliases();
@@ -1093,6 +1124,8 @@ export function peopleView(state: WorldState, caseFile: CaseFile): PeopleView {
 
     const label = personLabel(state, npc);
     const knownCity = lastKnownCity(state, npc, visibleNpcsAt(state, state.player.loc).includes(npc), concerning);
+    const recruitment = recruitmentProgress(state.relationships[npc]);
+    const standing = standingText(state, npc);
     return {
       id: label.id,
       identified: isIdentified(state, npc),
@@ -1105,6 +1138,8 @@ export function peopleView(state: WorldState, caseFile: CaseFile): PeopleView {
       claimsAsSubject,
       claimsAsSource,
       ...(knownCity === undefined ? {} : { lastKnownCity: knownCity }),
+      ...(recruitment === undefined ? {} : { recruitment }),
+      ...(standing === undefined ? {} : { standing }),
     };
   });
 

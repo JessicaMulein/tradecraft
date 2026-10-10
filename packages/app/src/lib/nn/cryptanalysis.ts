@@ -16,7 +16,7 @@
  * two captures are read against each other.
  */
 
-import { decrypt, type KeySubmission } from '@tradecraft/engine';
+import { CIPHER_KEYWORDS, decrypt, type KeySubmission } from '@tradecraft/engine';
 
 /** One capture, as the Workbench lists it. */
 export interface TrafficCopy {
@@ -69,6 +69,36 @@ const PREFIXES = ['npc', 'loc', 'org', 'unk', 'item', 'doc', 'chan', 'evt'];
 
 const FIELD_CODE_SET = new Set<string>(FIELD_CODES);
 
+/** Verbs and phase words on an operational German cable. */
+const CABLE_WORDS = new Set<string>([
+  'GEHOERT',
+  'ARBEITET',
+  'MELDET',
+  'TRIFFT',
+  'GESEHEN',
+  'REIST',
+  'ERWARTET',
+  'PLANT',
+  'ZIEL',
+  'TRAEGT',
+  'LIEFERT',
+  'KANAL',
+  'KENNT',
+  'VERMUTET',
+  'ALIAS',
+  'MORGENS',
+  'NACHMITTAGS',
+  'ABENDS',
+  'NACHTS',
+]);
+
+/** The phase word that follows `TAG n` on a cable, by its letter count. */
+const PHASE_CRIB: Readonly<Record<number, readonly string[]>> = {
+  6: ['ABENDS', 'NACHTS'],
+  7: ['MORGENS'],
+  11: ['NACHMITTAGS'],
+};
+
 const SEARCH_LIMIT = 100_000;
 
 interface Anchor {
@@ -120,7 +150,30 @@ function breakCaesar(traffic: TrafficCopy): BreakResult | undefined {
   return undefined;
 }
 
+function breakByWord(
+  traffic: TrafficCopy,
+  kind: 'vigenere' | 'columnar',
+): BreakResult | undefined {
+  for (const word of CIPHER_KEYWORDS) {
+    if (word.length < 4 || word.length > 7) continue;
+    let plain: string;
+    try {
+      plain =
+        kind === 'vigenere'
+          ? decrypt(traffic.ciphertext, { kind: 'vigenere', keyword: word })
+          : decrypt(traffic.ciphertext, { kind: 'columnar', key: word });
+    } catch {
+      continue;
+    }
+    const field = recovered(traffic, plain);
+    if (field !== undefined) return done(kind, field);
+  }
+  return undefined;
+}
+
 function breakVigenere(traffic: TrafficCopy): BreakResult | undefined {
+  const byWord = breakByWord(traffic, 'vigenere');
+  if (byWord !== undefined) return byWord;
   const anchors = anchorsOf(traffic.ciphertext, traffic.header, []);
   if (anchors.length === 0) return undefined;
   for (let length = 4; length <= 7; length += 1) {
@@ -157,6 +210,8 @@ function breakBook(
 }
 
 function breakColumnar(traffic: TrafficCopy): BreakResult | undefined {
+  const byWord = breakByWord(traffic, 'columnar');
+  if (byWord !== undefined) return byWord;
   for (let length = 4; length <= 7; length += 1) {
     for (const order of permutations(length)) {
       let plain: string;
@@ -365,6 +420,7 @@ function anchorsOf(
     }
     lineStart = false;
   }
+  anchors.push(...cableCribs(ciphertext));
   if (headerLetters.length > 0) {
     const first = onlyLetters(ciphertext.split('\n')[0] ?? '');
     if (first.length === headerLetters.length) {
@@ -400,7 +456,69 @@ function recovered(traffic: TrafficCopy, plain: string): string | undefined {
     if (!body.startsWith(prefix)) return undefined;
     body = body.slice(prefix.length);
   }
-  return looksLikeFieldMessage(body) ? body : undefined;
+  if (looksLikeFieldMessage(body) || looksLikeCable(body)) return body;
+  return undefined;
+}
+
+/**
+ * A cable: uppercase words, one fact a line, with a verb the operational
+ * notes actually use. Digits and spaces stay in the clear, as on the wire.
+ */
+function looksLikeCable(text: string): boolean {
+  const lines = text.split('\n').filter((line) => line.length > 0);
+  if (lines.length === 0 || text.includes('\u0000')) return false;
+  let verbs = 0;
+  for (const line of lines) {
+    if (!/^[A-Z0-9 ]+$/.test(line)) return false;
+    const words = line.split(' ').filter((word) => word.length > 0);
+    if (words.length < 3) return false;
+    if (words.some((word) => CABLE_WORDS.has(word))) verbs += 1;
+  }
+  return verbs > 0;
+}
+
+/**
+ * `TAG 4 MORGENS` keeps the digit in the clear. The three-letter word before
+ * it and the phase word after it are cribs, and a phase word of seven letters
+ * or more covers a keyword of length 4–7 by itself.
+ */
+function cableCribs(ciphertext: string): Anchor[] {
+  const tokens: { readonly letters: string; readonly pos: number; readonly kind: 'word' | 'number' }[] = [];
+  let i = 0;
+  let pos = 0;
+  while (i < ciphertext.length) {
+    const ch = ciphertext[i];
+    if (ch >= '0' && ch <= '9') {
+      while (i < ciphertext.length && ciphertext[i] >= '0' && ciphertext[i] <= '9') i += 1;
+      tokens.push({ letters: '', pos, kind: 'number' });
+      continue;
+    }
+    if (!isLetterChar(ch)) {
+      i += 1;
+      continue;
+    }
+    const start = pos;
+    let run = '';
+    while (i < ciphertext.length && isLetterChar(ciphertext[i])) {
+      run += ciphertext[i];
+      i += 1;
+      pos += 1;
+    }
+    tokens.push({ letters: run, pos: start, kind: 'word' });
+  }
+  const anchors: Anchor[] = [];
+  for (let t = 0; t < tokens.length; t += 1) {
+    if (tokens[t].kind !== 'number') continue;
+    const before = tokens[t - 1];
+    const after = tokens[t + 1];
+    if (before === undefined || after === undefined) continue;
+    if (before.kind !== 'word' || after.kind !== 'word') continue;
+    const phase = PHASE_CRIB[after.letters.length];
+    if (phase === undefined || before.letters.length !== 3) continue;
+    anchors.push({ pos: before.pos, cipher: before.letters, candidates: ['TAG'] });
+    anchors.push({ pos: after.pos, cipher: after.letters, candidates: phase });
+  }
+  return anchors;
 }
 
 /** A field message: field codes, entity ids, and the sigils the wire format uses. */

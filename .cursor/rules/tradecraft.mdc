@@ -1,0 +1,21 @@
+---
+description: "Tradecraft project rules: where the rules live and which to read for each kind of task"
+alwaysApply: true
+---
+
+# Tradecraft: read the right rules first
+
+This repo is developed with Kiro specs. Cursor works on the same specs, so it follows the same rules. **The source of truth is `AGENTS.md` and `.kiro/steering/`.** These Cursor rules only point to those files. If a Cursor rule and a steering file disagree, the steering file wins.
+
+Before starting, read the files that match the task:
+
+| Task | Read in full first |
+| --- | --- |
+| Anything | `AGENTS.md` (how to work with the owner; what never breaks) |
+| Writing, changing or executing a spec in `.kiro/specs/` | `.kiro/steering/spec-conventions.md`, then the spec's `requirements.md`, `design.md` and `tasks.md` |
+| Adding or changing content, a city, an era, a setting, plots, names or documents | `.kiro/steering/content-authoring.md` |
+| Commands, packages, architecture and status | `README.md` |
+
+Any other file in `.kiro/steering/` is a project rule too. Check the folder; Kiro decides when to load each file from its front matter (`inclusion: always`, `fileMatch` or `manual`).
+
+The owner directs intent and taste, not implementation. Do the design work yourself, check it with the repo's own tools, and report in plain language. See `AGENTS.md`.

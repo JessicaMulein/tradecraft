@@ -34,11 +34,15 @@
 import { asTruth, revealTruth, type LocId } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import { borderCheck, borderFactLine } from '../border/check.js';
+import { VEHICLE_BORDER } from '../street-ops/checkpoint.js';
+import { borderWatch } from '../street-ops/hooks.js';
 import { projectActiveCity } from '../region/play-clock.js';
 import type { SectorLine } from '../region/world.js';
 import { applyRecogniserPass, npcsAt } from '../carry/recognise.js';
 import { MADE_FACT_LINE } from './surveil.js';
 import { travelCost } from '../city/city.js';
+import { districtSector, sectorCheckpointLine, withOccupation } from '../city/occupation.js';
+import { withOrdinaryLife } from '../city/ordinary-life.js';
 import { effectiveRoutes, observeLocation } from '../ambient/locations.js';
 import { scaleHighRiskSuspicion } from '../ambient/cover.js';
 import { greetingLine } from '../ambient/memory.js';
@@ -155,6 +159,12 @@ export function resolveTravel(
 ): { next: WorldState; result: ActionResult } {
   let state = projectActiveCity(incoming);
   const to = a.to;
+  const from = state.player.loc;
+  const checkpoint = sectorCheckpointLine(
+    districtSector(state.city, from),
+    districtSector(state.city, to),
+    state.time.phase,
+  );
   const dest = state.city.locations[to];
   const crossing = sectorCrossing(state, state.player.loc, to);
   let borderLine: string | undefined;
@@ -231,6 +241,9 @@ export function resolveTravel(
       loc: to,
       coverSuspicion: asTruth(nextCoverSuspicion),
       tailed: asTruth(nextTailed),
+      // The reminder is the warning the player just heard, or its absence.
+      // It is not the hidden tail flag.
+      sensedFollowed: suspicionDelta > 0,
     },
   };
   const arrived = observeLocation(moved, to);
@@ -244,7 +257,7 @@ export function resolveTravel(
     state.time,
     to,
   );
-  const arrivedResult = travelResult(recognised.next, to, suspicionDelta, recognised);
+  const arrivedResult = travelResult(recognised.next, to, suspicionDelta, recognised, checkpoint);
   const result = borderLine === undefined
     ? arrivedResult
     : { ...arrivedResult, factLines: [borderLine, ...arrivedResult.factLines] };
@@ -298,14 +311,19 @@ function inspectSector(
     };
   }
   const papers = selectedTravelPapers(state);
+  const plate = state.ext?.streetOps?.vehicles?.find((item) => item.id === state.ext?.streetOps?.session?.vehicle)?.plate;
   const checked = borderCheck(
     {
       post: { id: post.id, name: post.id, strictness: post.strictness, documents: post.documents },
       at: state.time,
-      traveller: { identity: 'player', descriptor: state.player.cover.title },
+      traveller: {
+        identity: 'player',
+        descriptor: state.player.cover.title,
+        ...(plate === undefined ? {} : { vehicle: { plate } }),
+      },
       papers,
       items: [],
-      watch: asTruth({ persons: [], descriptors: [] }),
+      watch: asTruth(borderWatch(undefined, state.ext?.streetOps?.notedPlates ?? [])),
       rules: {
         watchListSensitivity: rules.watchListSensitivity,
         detentionPhases: rules.detentionPhases,
@@ -313,6 +331,7 @@ function inspectSector(
       },
     },
     rng,
+    VEHICLE_BORDER,
   );
   const lineText = borderFactLine(checked.outcome, post.id);
   const suspicion = revealTruth(state.player.coverSuspicion) + checked.suspicionDelta;
@@ -359,6 +378,7 @@ function travelResult(
   to: LocId,
   suspicionDelta: number,
   recognised: ReturnType<typeof applyRecogniserPass>,
+  checkpoint?: string,
 ): ActionResult {
   const loc = next.city.locations[to];
   const name = loc?.name ?? to;
@@ -372,7 +392,13 @@ function travelResult(
     ...recognised.seenBefore,
     ...(recognised.made ? [MADE_FACT_LINE] : []),
   ];
-  const factLines = [line, ...(greeting === undefined ? [] : [greeting]), ...notices, ...extra];
+  const factLines = [
+    ...(checkpoint === undefined ? [] : [checkpoint]),
+    line,
+    ...(greeting === undefined ? [] : [greeting]),
+    ...notices,
+    ...extra,
+  ];
   const observations: ActionResult['observations'] = [
     { kind: 'message', line },
     ...extra.map((text) => ({ kind: 'message' as const, line: text })),
@@ -397,9 +423,18 @@ function sceneDescriptorAt(state: WorldState, to: LocId): ActionResult['scene'] 
   if (loc === undefined) {
     return { loc: to, description: '', atmosphere: [], risk: 0, visible: [] };
   }
+  const habits = state.player.habits;
+  const own =
+    habits !== undefined &&
+    (habits.flat === to || habits.cafe === to || habits.market === to);
   return {
     loc: to,
-    description: loc.description,
+    description: withOrdinaryLife(
+      withOccupation(loc.description, districtSector(state.city, to), state.time.phase),
+      loc.type,
+      state.time.phase,
+      own,
+    ),
     atmosphere: [...loc.atmosphere],
     risk: loc.risk,
     visible: [],

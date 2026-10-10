@@ -710,7 +710,14 @@ export async function playWinByArrest(game: ScriptedGame): Promise<WinByArrestRu
       await game.play(option, (t) => (t.kind === 'decrypt' ? { ...t, submission: key } : t));
     }
     if (arrestOption() === undefined && !game.over) {
-      await wait(game, 4);
+      const pending = game.api.actions().find(
+        (option) =>
+          option.action.kind === 'arrest' &&
+          option.action.npc === suspect &&
+          !option.quote.allowed,
+      );
+      const policeAreWaiting = pending?.quote.reason?.includes('Soviet') === true;
+      await wait(game, policeAreWaiting ? 1 : 4);
     }
   }
 

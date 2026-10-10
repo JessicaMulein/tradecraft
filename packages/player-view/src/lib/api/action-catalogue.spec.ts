@@ -44,6 +44,7 @@ import {
   asTruth,
   generate,
   newRelationship,
+  scheduleWeekdayIndex,
   visibleNpcsAt,
   ScenarioConfigSchema,
   type ChannelId,
@@ -491,10 +492,34 @@ function implicatingProps(state: WorldState, npc: NpcId): Proposition[] {
   ];
 }
 
+function seatOutsideSoviet(state: WorldState, npc: NpcId): WorldState {
+  const places = Object.values(state.city.locations).sort((a, b) => a.id.localeCompare(b.id));
+  const loc = places.find(
+    (place) => place.id !== state.player.loc && state.city.districts[place.district]?.sector !== 'soviet',
+  );
+  if (loc === undefined) {
+    return state;
+  }
+  const person = state.npcs[npc];
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
+  const entries = [
+    ...person.schedule.entries.filter(
+      (entry) => entry.weekday !== weekday || entry.phase !== state.time.phase,
+    ),
+    { weekday, phase: state.time.phase, loc: loc.id },
+  ];
+  return {
+    ...state,
+    npcs: { ...state.npcs, [npc]: { ...person, schedule: { entries } } },
+    whereabouts: { ...state.whereabouts, [npc]: loc.id },
+  };
+}
+
 describe('buildActionCatalogue — arrest', () => {
   it('offers an arrest for a person the Case File holds evidence against, present or not', () => {
-    const w = world();
-    const target = absentKnownNpc(w);
+    const started = world();
+    const target = absentKnownNpc(started);
+    const w = seatOutsideSoviet(started, target);
     const threshold = w.meta.preset.arrest.threshold;
     const ctx: ResolverContext = { content, arrestEvidence: { [target]: threshold } };
 
@@ -512,8 +537,9 @@ describe('buildActionCatalogue — arrest', () => {
 
 describe('PlayerViewEngine — quotes read the Case File projection', () => {
   it('quotes and offers an arrest once the Case File case score reaches the threshold', () => {
-    const w = world();
-    const target = absentKnownNpc(w);
+    const started = world();
+    const target = absentKnownNpc(started);
+    const w = seatOutsideSoviet(started, target);
     const props = implicatingProps(w, target);
 
     // Two Documents assert each Proposition, so every Claim is corroborated.

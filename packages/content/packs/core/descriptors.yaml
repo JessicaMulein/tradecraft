@@ -40,7 +40,7 @@ shared:
     - { text: a careful marcel wave, fits: female }
     - { text: greying hair worn in a tight bun, fits: female }
   grooming:
-    - clean-shaven
+    - { text: clean-shaven, fits: male }
     - { text: a clipped moustache, fits: male }
     - { text: a day's grey stubble, fits: male }
     - { text: a pencil moustache, fits: male }

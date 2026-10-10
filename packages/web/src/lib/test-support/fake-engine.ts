@@ -118,6 +118,11 @@ export function createFakeEngine(): FakeEngine {
       },
       help: () => ({ actions: [], glossary: [] }),
       debrief: () => null,
+      region: () => null,
+      departures: () => [],
+      papers: () => [],
+      carriage: () => null,
+      street: () => null,
     },
     notifications: {
       list: () => [],

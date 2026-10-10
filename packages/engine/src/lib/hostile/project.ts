@@ -691,7 +691,9 @@ function lastKnownLocation(
     return where;
   }
   const record = draft.npcs[npc];
-  return record === undefined ? undefined : scheduledLocationAt(record, at);
+  return record === undefined
+    ? undefined
+    : scheduledLocationAt(record, at, draft.meta.setting.startDate);
 }
 
 /**
@@ -778,7 +780,7 @@ function falseSighting(
   }
   const scheduled = new Set<LocId>();
   for (let phase = 0; phase < 4; phase += 1) {
-    const loc = scheduledLocationAt(record, { day, phase: phase as Phase });
+    const loc = scheduledLocationAt(record, { day, phase: phase as Phase }, draft.meta.setting.startDate);
     if (loc !== undefined) {
       scheduled.add(loc);
     }

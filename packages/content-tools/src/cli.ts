@@ -22,6 +22,7 @@ import { runCoverage } from './coverage/index.js';
 import { runLint } from './lint/index.js';
 import { runAuthor, runPromote } from './author/index.js';
 import { runPreview } from './preview/index.js';
+import { runStreet } from './street/cli.js';
 
 /** The subcommands the CLI dispatches to. */
 export const CONTENT_COMMANDS = [
@@ -30,6 +31,8 @@ export const CONTENT_COMMANDS = [
   'coverage',
   'author',
   'promote',
+  'street-data',
+  'street-graph',
 ] as const;
 
 /** A single `pnpm content` subcommand name. */
@@ -43,6 +46,8 @@ Commands:
   coverage   write a coverage report for the content set (--seeds, --out)
   author     draft new content with the offline Authoring Aid
   promote    promote a reviewed draft into its pack
+  street-data fetch a named street source (--source, --accept-licence, --city, --area)
+  street-graph build, period or review-sheets from fetched files
 
 Run "pnpm content <command> --help" for command-specific options.`;
 
@@ -96,6 +101,9 @@ export async function runCli(argv: readonly string[]): Promise<CliResult> {
         // when the draft was promoted and non-zero when the merged set did not
         // lint clean (Req 16.8).
         return { exitCode: runPromote(options) };
+      case 'street-data':
+      case 'street-graph':
+        return { exitCode: await runStreet([command, ...rest], process.cwd()) };
     }
   } catch (err) {
     process.stderr.write(`${err instanceof Error ? err.message : String(err)}\n`);

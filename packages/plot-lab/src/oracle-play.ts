@@ -25,6 +25,7 @@ import {
   resolve,
   revealedSpec,
   revealTruth,
+  scheduledLocationAt,
   ScenarioConfigSchema,
   stationCollection,
   TruthDraft,
@@ -124,6 +125,29 @@ function travel(state: WorldState, loc: LocId, rng: Prng, ctx: ResolverContext):
     return state;
   }
   return act(state, { kind: 'travel', to: loc, countersurveillance: false }, rng, ctx);
+}
+
+/** A clock time in the next two weeks when the leader is outside the Soviet sector. */
+function westernArrestTime(bench: Bench): { day: number; phase: Phase } | undefined {
+  const npc = bench.world.npcs[bench.leader];
+  if (npc === undefined) {
+    return undefined;
+  }
+  const start = bench.world.meta.setting.startDate;
+  for (let day = 0; day < 14; day += 1) {
+    for (const phase of [0, 1, 2, 3] as const) {
+      const loc = scheduledLocationAt(npc, { day, phase }, start);
+      if (loc === undefined) {
+        continue;
+      }
+      const place = bench.world.city.locations[loc];
+      const sector = place === undefined ? undefined : bench.world.city.districts[place.district]?.sector;
+      if (sector !== 'soviet') {
+        return { day, phase };
+      }
+    }
+  }
+  return undefined;
 }
 
 function leaderWindow(bench: Bench, kind: 'surveil' | 'follow'): { day: number; phase: Phase; loc: LocId } | undefined {
@@ -339,7 +363,9 @@ function playVerb(
         gated,
       );
     }
-    return act(there, { kind: 'arrest', npc: bench.leader }, rng, gated);
+    const opened = westernArrestTime(bench);
+    const when = opened === undefined ? there : at(there, opened.day, opened.phase);
+    return act(when, { kind: 'arrest', npc: bench.leader }, rng, gated);
   }
   if (verb === 'wait') {
     return act(state, { kind: 'wait', phases: 1 }, rng, ctx);

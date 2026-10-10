@@ -38,6 +38,14 @@ describe('StatusBar', () => {
     expect(frame).toContain('The Riverside Café');
     expect(frame).toContain('Budget 1200');
     expect(frame).toContain('Standing 4');
+    expect(frame).not.toContain('followed');
+  });
+
+  it('reminds the player of a tail warning without a hidden flag', () => {
+    const { lastFrame } = render(
+      <StatusBar status={{ ...status, followed: 'You may have been followed.' }} />,
+    );
+    expect(lastFrame() ?? '').toContain('You may have been followed.');
   });
 
   it('lists the open Directives, and "none" when there are none', () => {

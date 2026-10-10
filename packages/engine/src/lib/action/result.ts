@@ -12,12 +12,14 @@
  */
 
 import type { GameTime, LocId, NpcId, Proposition } from '../model/core.js';
-import type { ClaimId, SimEvent } from '../model/state.js';
+import type { ClaimId, SimEvent, WorldState } from '../model/state.js';
 import type { ContentSet } from '@tradecraft/content';
 import type { UnkId } from '../model/core.js';
 import type { TruthAccess } from '../truth/truth.js';
 import type { CipherKeyLookup } from '../cipher/spec.js';
 import type { ObservationSource } from './types.js';
+import type { ExtensionRegistry } from '../extension/registry.js';
+import type { EndCondition } from '../endings/end-conditions.js';
 
 /**
  * The cost and eligibility of an {@link import('./types.js').Action}, as shown
@@ -120,6 +122,21 @@ export interface ActionResult {
   readonly openScene?: TalkSceneRequest;
   readonly events: readonly SimEvent[];
   readonly claimsAdded: readonly ClaimId[];
+}
+
+/**
+ * What {@link import('./action.js').resolve} returns (slice-integration design,
+ * "`resolve` returns `ended`"): the next world, the action result, and the
+ * end condition when the action ended the game.
+ *
+ * `ended` is set by two action kinds only: a correct arrest of the Cell leader,
+ * and a `service-drop` in `seize` mode. It is absent for every other action
+ * and for a disallowed one. `resolve` does not write `WorldState.ended`.
+ */
+export interface ResolveResult {
+  readonly next: WorldState;
+  readonly result: ActionResult;
+  readonly ended?: EndCondition;
 }
 
 /**
@@ -234,4 +251,9 @@ export interface ResolverContext {
    * material for verification and never crosses into a Player View projection.
    */
   readonly cipherKeys?: CipherKeyLookup;
+  /**
+   * Add-on actions. Absent when no add-on is enabled, so a slice context
+   * stays the slice shape.
+   */
+  readonly extensions?: ExtensionRegistry;
 }

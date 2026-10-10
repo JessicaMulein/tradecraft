@@ -110,9 +110,16 @@ import type {
   ScenarioConfig,
   ContentManifest,
 } from './model/state.js';
+import { scenarioForStore } from './config/scenario-config.js';
 import { generateCity } from './city/generate.js';
 import { DAILY_STREAM_BASE } from './city/city.js';
-import { generateOrgs, generatePrincipals } from './city/principals.js';
+import { habitsOf } from './city/ordinary-life.js';
+import {
+  generateOrgs,
+  generatePrincipals,
+  STATION_SERVICES,
+  STATION_SERVICE_STREAM,
+} from './city/principals.js';
 import { generatePlot } from './city/plot.js';
 import { initAmbient } from './ambient/init.js';
 import { anchorsOf, storedWitnesses, verifierResult } from './ambient/solvability.js';
@@ -120,6 +127,7 @@ import { graphFromWitnesses, registerRegionGraph } from './region/verify.js';
 import type { BindCity } from './plotgen/bind.js';
 import { SELECT_STREAM } from './plotgen/index.js';
 import { bindCityFromView, buildLibrarySession, LibrarySelectionError, slicePlotOf } from './plotgen/library.js';
+import { applyLibraryCase, libraryCaseExtras } from './plotgen/library-case.js';
 import { materialiseTwists, twistGroundTruth } from './plotgen/twists.js';
 import { libraryPreset } from './plotgen/preset.js';
 import { fillLookalikeShare, type LookalikeFill } from './plotgen/sidethread.js';
@@ -183,7 +191,8 @@ import { cityView, type CityView } from './setting/city-view.js';
 import { NO_USAGE_SINK, type UsageSink } from './setting/usage-sink.js';
 import { parseIsoDate } from '@tradecraft/content';
 import { composePublicTexts } from './docs/public-text.js';
-import { composeDossier } from './docs/dossier.js';
+import { composeDossier, slicePropsAbout } from './docs/dossier.js';
+import { openingDirectives } from './station/directives.js';
 import type { ComposedDocument, Document } from './docs/document.js';
 import type { NamerContext } from './docs/namer.js';
 import { createLedger } from './station/ledger.js';
@@ -677,13 +686,17 @@ function runCoreStream(
   const hostileName =
     ctx === undefined ? undefined : serviceDisplayName(content.services, ctx.service);
   const orgs = generateOrgs(prng, hostileName);
+  const service = createPrng(derive(worldSeed, STATION_SERVICE_STREAM)).pick(STATION_SERVICES);
   const principals = generatePrincipals(
     prng,
     content,
     descriptors,
     city,
     orgs,
-    scenario.plotSelection?.enabled === true ? { cap: 22 } : undefined,
+    {
+      ...(scenario.plotSelection?.enabled === true ? { cap: 22 } : {}),
+      service,
+    },
   );
 
   // Step 3/4 — the Plot (stage DAG). A posting selects from its history.
@@ -722,6 +735,10 @@ function runCoreStream(
     orgs: orgs.orgs,
   };
   const cableTemplate = requireTemplate(content, CABLE_TEMPLATE_ID);
+  const deadlineDay = plot.stages.reduce(
+    (max, stage) => Math.max(max, stage.deadline.day),
+    0,
+  );
   const briefResult = generateStartingBrief(
     worldSeed,
     content,
@@ -732,6 +749,12 @@ function runCoreStream(
     cableTemplate,
     namerCtx,
     { startingBudget: preset.startingBudget },
+    {
+      posting: principals.service,
+      threat: openingThreat(plot.template),
+      deadlineDay,
+      orderDay: openingDirectives(deadlineDay)[0]?.deadline.day,
+    },
   );
 
   // Step 8 (continued) — Dossiers on the Station-slice subjects, so the brief
@@ -739,12 +762,20 @@ function runCoreStream(
   // asserts the apparent facts the Station slice holds about its subject.
   const dossierTemplate = requireTemplate(content, DOSSIER_TEMPLATE_ID);
   const dossierSubjects = dossierSubjectIds(knowledge.station.known, knowledge.station.falseBeliefs, principals);
-  const dossiers = dossierSubjects.map((id) =>
-    composeDossier(dossierTemplate, principals.npcs[id], {
+  const dossiers = dossierSubjects.map((id) => {
+    const leads = slicePropsAbout(knowledge.station, id);
+    const sorted = [...leads].sort((a, b) => {
+      if (a.id < b.id) return -1;
+      if (a.id > b.id) return 1;
+      return 0;
+    });
+    const withheld = sorted.length >= 2 ? sorted[sorted.length - 1] : undefined;
+    return composeDossier(dossierTemplate, principals.npcs[id], {
       ...namerCtx,
       stationSlice: knowledge.station,
-    }),
-  );
+      ...(withheld === undefined ? {} : { omit: [withheld.id] }),
+    });
+  });
   const brief: StartingBrief = {
     ...briefResult.brief,
     dossiers: dossiers.map((d) => d.document.id),
@@ -1100,7 +1131,7 @@ function assembleWorld(
       // replaces the skeleton alias in state.ts, the cast falls away.
       content: content.manifest as unknown as ContentManifest,
       preset,
-      scenario,
+      scenario: scenarioForStore(scenario),
       // The setting selection the setting step produced (content-expansion
       // task 3.8): the city, the Start Date (game day 0), the Game Year and the
       // setting attempt the stream was derived at. Stored so a save restores
@@ -1132,7 +1163,7 @@ function assembleWorld(
     // Every NPC starts where its schedule puts it at the start time, or
     // `absent` when the schedule names no Location then. `foldNoise` recomputes
     // this once the Background NPCs join the roster.
-    whereabouts: whereaboutsAt(npcs, START),
+    whereabouts: whereaboutsAt(npcs, START, setting.startDate),
     // Relationships are owned by task 18; none exist at generation.
     relationships: {},
     // No NPC has told the player anything yet: every Told List starts empty.
@@ -1159,12 +1190,15 @@ function assembleWorld(
       org: stationOrg,
       chief: core.principals.chief,
       staff: core.principals.staff,
+      service: core.principals.service,
       ...(core.knowledge.mole === undefined
         ? {}
         : { mole: core.knowledge.mole.npc }),
       knowledge: core.knowledge.station,
-      // Directives are owned by task 10.2; the brief carries none yet.
-      directives: [],
+      // The desk's first order. Later orders follow when this one closes.
+      directives: openingDirectives(
+        core.plot.stages.reduce((max, stage) => Math.max(max, stage.deadline.day), 0),
+      ),
       standing: 0,
       ledger: createLedger(preset.startingBudget),
       // Pending cables are owned by task 10.2.
@@ -1196,6 +1230,7 @@ function assembleWorld(
       // neutral value, written as branded truth. Task 11.3/19.3 drive them.
       coverSuspicion: asTruth(0),
       tailed: asTruth(false),
+      habits: habitsOf(core.city),
       known: {
         entities: core.brief.knownEntities,
         channels: knownChannels,
@@ -1222,7 +1257,10 @@ function assembleWorld(
     scheduled: [],
   };
 
-  return library === undefined ? world : materialiseTwists(world);
+  if (library === undefined) {
+    return world;
+  }
+  return applyLibraryCase(materialiseTwists(world), plotPropositions(core));
 }
 
 /**
@@ -1261,10 +1299,19 @@ function applyMole(
  * generated city stamps at least one public Location, so this is always a real
  * id.
  */
+/** A named job for the opening cable, from the plot template, without naming the leader. */
+function openingThreat(template: string): string {
+  const id = template.slice(template.lastIndexOf('/') + 1);
+  if (id === 'cipher-theft') return 'A REGISTRY COMPONENT MAY BE A TARGET';
+  if (id === 'emigre-abduction') return 'AN EMIGRE MAY BE TAKEN ACROSS THE SECTOR LINE';
+  if (id === 'liaison-compromise') return 'A LIAISON OFFICER MAY BE UNDER APPROACH';
+  return 'A HOSTILE CELL IS WORKING THE CITY';
+}
+
 function startingLocation(core: CoreStreamResult): LocId {
   const locations = Object.values(core.city.locations);
   const station = locations
-    .filter((loc) => loc.type === 'station')
+    .filter((loc) => loc.type === 'station-hq' || loc.type.endsWith('/station-hq'))
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))[0];
   if (station !== undefined) {
     return station.id;
@@ -1519,7 +1566,7 @@ function foldNoise(
     npcs,
     // The Background NPCs start where their schedules put them, like the core
     // NPCs; the core NPCs' positions are unchanged by the recompute.
-    whereabouts: whereaboutsAt(npcs, coreWorld.time),
+    whereabouts: whereaboutsAt(npcs, coreWorld.time, coreWorld.meta.setting.startDate),
     sideThreads: [...coreWorld.sideThreads, ...noise.sideThreads.sideThreads],
     ...(noise.libraryThreads === undefined ? {} : { libraryThreads: noise.libraryThreads }),
     channels,
@@ -2107,7 +2154,7 @@ function seedTransmissions(
     documents: world.documents,
     preset: inputs.preset,
     fieldCodes: inputs.content.predicates.fieldCodes,
-    plotPropositions: plotPropositions(core),
+    plotPropositions: [...plotPropositions(core), ...libraryCaseExtras(world)],
     start: START,
   });
   return { ...world, transmissions: [...seeded.transmissions] };
@@ -2147,7 +2194,7 @@ export function seedTruthStore(
 ): TruthStore {
   // Core + mole ground truth (already deduped by id), then the Side Threads'
   // true Propositions in generation order — a fixed, deterministic sequence.
-  const facts: Proposition[] = [...knowledge.truthFacts];
+  const facts: Proposition[] = [...knowledge.truthFacts, ...libraryCaseExtras(world)];
   for (const thread of world.sideThreads) {
     facts.push(...thread.propositions);
   }

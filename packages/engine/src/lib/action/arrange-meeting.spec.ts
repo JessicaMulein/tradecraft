@@ -60,6 +60,7 @@ import {
   ARRANGE_PHASE_COST,
   type Meeting,
 } from './arrange-meeting.js';
+import { quoteTalk, resolveTalk } from './talk.js';
 import type { Observation, ResolverContext } from './result.js';
 import type { ArrangeMeetingAction } from './types.js';
 
@@ -407,6 +408,34 @@ describe('resolveMeetingAtSlot — the slot (Req 24.2, 24.4)', () => {
     expect(result.events.some((e) => e.kind === 'meeting-due')).toBe(true);
     expect((next.meetings[meeting.id] as Meeting).status).toBe('kept');
     expect(trustDelta).toBe(0);
+    const report = Object.values(next.documents).find((doc) => doc.title.startsWith('Contact report'));
+    expect(report?.body).toContain('Met ');
+    expect(report?.asserts).toEqual([]);
+  });
+
+  it('lets the player break off a future meeting after a tail warning', () => {
+    const base = world();
+    const npc = base.player.contacts[0];
+    if (npc === undefined) {
+      throw new Error('the generated world has no contact');
+    }
+    const slot: GameTime = { day: base.time.day + 1, phase: 0 };
+    const meeting = acceptedMeeting(npc, base.player.loc, slot);
+    const state: WorldState = {
+      ...base,
+      player: { ...base.player, sensedFollowed: true },
+      meetings: { ...base.meetings, [meeting.id]: meeting },
+    };
+    const action = { kind: 'talk' as const, npc, breakOff: true as const };
+    expect(quoteTalk(state, action, undefined).allowed).toBe(true);
+    const broken = resolveTalk(state, action, renderLines);
+    expect(broken.result.openScene).toBeUndefined();
+    expect(broken.next.meetings[meeting.id]?.status).toBe('broken-off');
+    const quiet: WorldState = {
+      ...state,
+      player: { ...state.player, sensedFollowed: false },
+    };
+    expect(quoteTalk(quiet, action, undefined).allowed).toBe(false);
   });
 
   it('player absent: applies the missed-meeting penalty and reports the trust drop (Req 24.4)', () => {

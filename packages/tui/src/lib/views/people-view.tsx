@@ -119,6 +119,8 @@ export function PersonDetail({ person }: PersonDetailProps): ReactElement {
       )}
       <Text>Asset: {person.asset ? 'yes' : 'no'}</Text>
       <Text>Rapport: {person.rapport}</Text>
+      {person.recruitment === undefined ? null : <Text>{person.recruitment}</Text>}
+      {person.standing === undefined ? null : <Text>{person.standing}</Text>}
       <Text>
         Claims: {person.claimsAsSubject} about · {person.claimsAsSource} from
       </Text>

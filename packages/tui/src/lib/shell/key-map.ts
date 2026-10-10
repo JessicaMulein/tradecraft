@@ -32,8 +32,10 @@ export type ShellKeyAction =
   | 'open-case-file'
   | 'open-documents'
   | 'open-workbench'
+  | 'open-intercepts'
   | 'open-journal'
   | 'open-map'
+  | 'open-streets'
   | 'open-city'
   | 'open-stories'
   | 'open-duties'
@@ -69,8 +71,10 @@ export const KEY_MAP: readonly KeyBinding[] = [
   { key: 'c', action: 'open-case-file', description: 'Case File' },
   { key: 'd', action: 'open-documents', description: 'Documents' },
   { key: 'w', action: 'open-workbench', description: 'Workbench' },
+  { key: 'i', action: 'open-intercepts', description: 'Intercepts' },
   { key: 'j', action: 'open-journal', description: 'Journal' },
   { key: 'm', action: 'open-map', description: 'Map' },
+  { key: 'g', action: 'open-streets', description: 'Streets' },
   { key: 'y', action: 'open-city', description: 'City' },
   { key: 'r', action: 'open-stories', description: 'Stories' },
   { key: 'k', action: 'open-duties', description: 'Cover duties' },

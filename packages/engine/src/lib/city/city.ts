@@ -47,6 +47,7 @@ import {
   type Weekday,
 } from './time-mapping.js';
 import type { CityData } from '@tradecraft/content';
+import { calendarMonth } from './calendar.js';
 
 // ---------------------------------------------------------------------------
 // Ids
@@ -485,8 +486,9 @@ function weightedIndex(prng: Prng, weights: readonly number[]): number {
  * stream (Requirement 21.6; design "Weather comes from the daily stream through
  * `city.yaml` weather tables").
  *
- * The day's calendar month (from the city's `startMonth`) selects the season
- * table; the condition is a single weighted draw from that table on
+ * The day's calendar month selects the season table. A start date uses the real
+ * month; without one, the city's `startMonth` and the 30-day month count do.
+ * The condition is a single weighted draw from that table on
  * `derive(seed, 0x20000 + day)`. Same seed and day ⇒ identical weather, and the
  * draw is isolated on its own stream so it cannot perturb world generation.
  *
@@ -498,8 +500,10 @@ export function weatherForDay(
   city: City,
   cityData: CityData,
   day: number,
+  startDate?: string,
 ): Weather {
-  const month = monthForDay(day, city.startMonth);
+  const fromCalendar = startDate === undefined ? undefined : calendarMonth(startDate, day);
+  const month = fromCalendar ?? monthForDay(day, city.startMonth);
   const season = seasonForMonth(cityData, month);
   if (season === undefined) {
     throw new Error(

@@ -334,8 +334,8 @@ describe('drawSetting (Req 9.2, 9.8)', () => {
     it('uses the fixed default date when no era is loaded', () => {
       const coreSet = makeSet({});
       const sel = drawSetting(coreSet, { city: 'core' }, createPrng(settingStreamSeed('s', 0)));
-      expect(sel.startDate).toBe('1950-01-01');
-      expect(sel.year).toBe(1950);
+      expect(sel.startDate).toBe('1952-12-01');
+      expect(sel.year).toBe(1952);
     });
 
     it('honours a fixed Core City Start Date even with no era', () => {

@@ -220,7 +220,7 @@ describe('advanceWorld — Day Boundary (Req 2.1, 2.6, 2.7, 2.8)', () => {
 
   it('sets the day-start weather from the daily stream and the city tables (Req 2.6)', () => {
     const start = atTime(BASE, { day: 0, phase: 3 });
-    const expected = weatherForDay(SEED, BASE.city, INPUTS.cityData, 1);
+    const expected = weatherForDay(SEED, BASE.city, INPUTS.cityData, 1, BASE.meta.setting.startDate);
 
     const result = run(start, 1);
     const dayStart = result.events.find((e) => e.kind === 'day-start');

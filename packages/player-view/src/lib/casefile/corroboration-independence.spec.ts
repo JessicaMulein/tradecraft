@@ -229,6 +229,10 @@ function permute<T>(items: readonly T[], keys: readonly number[]): T[] {
  * their object and place, both resolved through the alias classes. Written
  * independently of `computeRelations` so it is a genuine cross-check. */
 function signature(claim: Claim, canon: AliasResolver): string {
+  const placeKey = claim.prop.place === undefined ? '' : `p:${canon(claim.prop.place)}`;
+  if (local(claim) === 'MEETS_AT' && typeof claim.prop.object === 'string') {
+    return placeKey;
+  }
   const object = claim.prop.object;
   const objectKey =
     typeof object === 'string'
@@ -236,16 +240,22 @@ function signature(claim: Claim, canon: AliasResolver): string {
       : object.kind === 'time'
         ? `w:${object.value.day}.${object.value.phase}`
         : `${object.kind}:${object.value}`;
-  const placeKey = claim.prop.place === undefined ? '' : `p:${canon(claim.prop.place)}`;
   return `${objectKey}\u0000${placeKey}`;
 }
 
-/** The alias-resolved subject+predicate (local name) group key. */
+/** The alias-resolved subject+predicate (local name) group key. A meeting of two people is the pair, either way round. */
 function group(claim: Claim, canon: AliasResolver): string {
   const slash = claim.prop.predicate.lastIndexOf('/');
-  const local =
+  const name =
     slash === -1 ? claim.prop.predicate : claim.prop.predicate.slice(slash + 1);
-  return `${canon(claim.prop.subject)}\u0000${local.toLowerCase()}`;
+  if (name === 'MEETS_AT' && typeof claim.prop.object === 'string') {
+    const a = canon(claim.prop.subject);
+    const b = canon(claim.prop.object);
+    const lo = a < b ? a : b;
+    const hi = a < b ? b : a;
+    return `${lo}\u0000${hi}\u0000meets_at`;
+  }
+  return `${canon(claim.prop.subject)}\u0000${name.toLowerCase()}`;
 }
 
 /** A game time as a phase ordinal. */

@@ -255,7 +255,11 @@ export function resolveDecrypt(
       [a.intercept]: { ...intercept, broken: true },
     },
   };
-  const source: ObservationSource = { kind: 'intercept', id: a.intercept };
+  const source: ObservationSource = {
+    kind: 'intercept',
+    id: a.intercept,
+    channel: intercept.channel,
+  };
   const observations: Observation[] = verdict.propositions.map(
     (prop): Observation => ({
       kind: 'proposition',

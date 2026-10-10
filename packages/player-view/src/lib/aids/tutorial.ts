@@ -18,6 +18,7 @@ import type { EngineApi } from '../api/types.js';
 export interface TutorialSuggestion {
   readonly rule:
     | 'arrest'
+    | 'break-off'
     | 'read'
     | 'decrypt'
     | 'duty'
@@ -27,6 +28,9 @@ export interface TutorialSuggestion {
     | 'claim-site'
     | 'follow'
     | 'talk'
+    | 'drive'
+    | 'turn'
+    | 'park'
     | 'wait';
   readonly text: string;
   /** The fields a shell uses to highlight the matching catalogue row. */
@@ -40,6 +44,8 @@ export interface TutorialSuggestion {
     readonly countersurveillance?: boolean;
     readonly phases?: number;
     readonly target?: string;
+    readonly vehicle?: string;
+    readonly breakOff?: boolean;
   };
 }
 
@@ -115,6 +121,18 @@ export function tutorialSuggestion(
       'arrest',
       `The case against ${labelOf(arrest.npc)} is strong enough to take to an arrest.`,
       { kind: 'arrest', npc: arrest.npc },
+    );
+  }
+
+  const breakOff = allowed.find(
+    (option) =>
+      option.action.kind === 'talk' && option.action.breakOff === true,
+  );
+  if (breakOff !== undefined && breakOff.action.kind === 'talk') {
+    return suggest(
+      'break-off',
+      `You may have been followed. Break off the meeting with ${labelOf(breakOff.action.npc)} before you walk into it.`,
+      { kind: 'talk', npc: breakOff.action.npc, breakOff: true },
     );
   }
 
@@ -290,6 +308,31 @@ export function tutorialSuggestion(
       kind: talk.kind,
       npc: talk.npc,
     });
+  }
+
+  const drive = allowed.find((option) => option.action.kind === 'street-ops.drive');
+  if (drive !== undefined && drive.action.kind === 'street-ops.drive') {
+    const vehicle = drive.action['vehicle'];
+    return suggest(
+      'drive',
+      'Take the car. Turn through the streets, then park when you are done.',
+      {
+        kind: 'street-ops.drive',
+        ...(typeof vehicle === 'string' ? { vehicle } : {}),
+      },
+    );
+  }
+
+  const turn = allowed.find((option) => option.action.kind === 'street-ops.turn');
+  if (turn !== undefined && turn.action.kind === 'street-ops.turn') {
+    const street = turn.action['street'];
+    const text = typeof street === 'string' ? `Turn onto ${street}.` : 'Carry on down the street.';
+    return suggest('turn', text, { kind: 'street-ops.turn' });
+  }
+
+  const park = allowed.find((option) => option.action.kind === 'street-ops.park');
+  if (park !== undefined) {
+    return suggest('park', 'Park and get out.', { kind: 'street-ops.park' });
   }
 
   const wait = allowed.find(

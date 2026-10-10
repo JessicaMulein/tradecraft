@@ -380,6 +380,16 @@ export interface GenerateStartingBriefOptions {
   readonly directives?: readonly BriefDirective[];
   /** The game time the brief Cable is dated. Defaults to day 0, morning. */
   readonly date?: GameTime;
+  /** The service the player is posted to. Names the office in the opening cable. */
+  readonly posting?: 'american' | 'british';
+  /** The job the cable names, without identifying the cell leader. */
+  readonly threat?: string;
+  /** The day the operation's last stage comes due. */
+  readonly deadlineDay?: number;
+  /** The day the desk's first order comes due, named in the opening cable. */
+  readonly orderDay?: number;
+  /** The station roll-call, already in cable style. */
+  readonly colleagues?: string;
 }
 
 /** The result of generating the Starting Brief: the brief and its Cable Document. */
@@ -423,6 +433,50 @@ function briefCableRef(seed: string): string {
  * content. The brief Cable carries no `obtainableAt` (it is delivered, not
  * obtained at a Location), and asserts exactly the leads.
  */
+function openingInstruction(options: GenerateStartingBriefOptions): string {
+  const posting = options.posting === 'british' ? 'THE BRITISH STATION' : 'THE AMERICAN STATION';
+  const threat = (options.threat ?? 'A HOSTILE CELL IS WORKING THE CITY').replace(/\.+$/, '');
+  const due =
+    options.deadlineDay === undefined
+      ? 'CORROBORATE BEFORE ANY ACTION'
+      : `CORROBORATE AND REPORT BEFORE DAY ${options.deadlineDay}`;
+  const lines = [
+    `2. YOU ARE POSTED TO ${posting}.`,
+    `3. ${threat}.`,
+    `4. ${due}.`,
+  ];
+  if (options.orderDay !== undefined) {
+    lines.push(
+      `5. DEVELOP ONE SOURCE AND REPORT THE RECRUITMENT BEFORE DAY ${options.orderDay}.`,
+    );
+  }
+  if (options.colleagues !== undefined && options.colleagues.length > 0) {
+    lines.push(`${lines.length + 2}. YOU HAVE MET THE STATION. ${options.colleagues}.`);
+  }
+  return lines.join(' ');
+}
+
+function postTitle(archetype: string): string {
+  if (archetype.endsWith('chief-of-station')) return 'CHIEF OF STATION';
+  if (archetype.endsWith('station-cipher-clerk')) return 'CIPHER CLERK';
+  if (archetype.endsWith('station-clerk')) return 'REGISTRY CLERK';
+  if (archetype.endsWith('station-driver')) return 'DRIVER';
+  return 'STAFF';
+}
+
+/** The colleagues the opening cable introduces, chief first, then staff by id. */
+function colleagueRoll(principals: GeneratedPrincipals): string {
+  const staff = [...principals.staff].filter((id) => id !== principals.chief).sort();
+  const ids = [principals.chief, ...staff];
+  const parts: string[] = [];
+  for (const id of ids) {
+    const npc = principals.npcs[id];
+    if (npc === undefined) continue;
+    parts.push(`${postTitle(npc.archetype)} ${npc.persona.name.toUpperCase()}`);
+  }
+  return parts.join(', ');
+}
+
 export function generateStartingBrief(
   seed: string,
   content: ContentSet,
@@ -454,9 +508,10 @@ export function generateStartingBrief(
       priority: 'IMMEDIATE',
       toStation: 'STATION',
       subject: 'STARTING BRIEF',
-      instruction:
-        'ASSUME COVER AND REPORT TO STATION STOP WORK THE LEADS ON FILE STOP ' +
-        'CORROBORATE BEFORE ANY ACTION',
+      instruction: openingInstruction({
+        ...options,
+        colleagues: options.colleagues ?? colleagueRoll(principals),
+      }),
       budgetLine: `${preset.startingBudget} DRAWN ON STATION ACCOUNT`,
     },
     { ...namerCtx, date, asserts: leadProps },
@@ -482,7 +537,7 @@ export function generateStartingBrief(
     deadDrops: [comms.stationDrop],
     directives,
     budget: preset.startingBudget,
-    contacts: [...principals.contacts],
+    contacts: [principals.chief, ...principals.staff, ...principals.contacts],
     cable: cableDocId,
   };
 

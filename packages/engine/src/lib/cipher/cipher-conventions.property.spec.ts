@@ -70,7 +70,7 @@ import {
   generateIntercepts,
   conventionWeightsFor,
   revealedSpec,
-  decryptToFieldMessage,
+  privateFieldMessage,
   interceptIdOf,
   FIXED_HEADER_CRIB,
   INTERCEPT_OWNER_KINDS,
@@ -406,9 +406,8 @@ describe('Property 15 — cipher conventions applied (Req 5.6)', () => {
           );
 
           for (const intercept of Object.values(intercepts)) {
-            const key = resolveCipherSpec(revealedSpec(intercept), keyLookup);
             const recovered = parseFieldMessage(
-              decryptToFieldMessage(intercept, key),
+              privateFieldMessage(intercept),
               fieldCodes,
             );
             // Every source carries props(0): MEETS_AT then USES_CHANNEL.

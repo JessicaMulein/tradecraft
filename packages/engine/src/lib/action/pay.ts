@@ -39,7 +39,7 @@
 import type { LocId, NpcId } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import { scheduledLocation } from '../city/npc.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { INSUFFICIENT, payLedgerEffect } from '../station/ledger.js';
 import { isAsset, newRelationship } from '../recruit/asset.js';
 import { payEffect } from '../recruit/retainer.js';
@@ -67,7 +67,7 @@ export const PAY_LINE = 'You settle up. The money changes hands.';
  * form a cycle — the same local-helper pattern `./talk.ts`/`./confront.ts` use.
  */
 function npcsScheduledAt(state: WorldState, locId: LocId): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {

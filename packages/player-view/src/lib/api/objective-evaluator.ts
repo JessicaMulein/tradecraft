@@ -22,7 +22,8 @@
  *
  * ## Which side each objective reads
  *
- * The switch is exhaustive over {@link DIRECTIVE_OBJECTIVE_KINDS} (Req 6.1).
+ * The switch is exhaustive over {@link DirectiveObjective}. The station kinds are
+ * {@link DIRECTIVE_OBJECTIVE_KINDS}. `smuggle` is the street-ops kind (Req 6.1, street-ops Req 9.8).
  *
  * | Objective          | Met when | Source |
  * |--------------------|----------|--------|
@@ -30,6 +31,7 @@
  * | `recruit(count)`   | at least `count` Relationships are `recruited` | the player's recorded recruitments (Req 6.3) |
  * | `arrest(entity)`   | the entity is in `player.arrests`, by its id or by the `unk:` id the player knows it by | the player's recorded arrests (Req 6.3) |
  * | `intercept(chan)`  | some collected Intercept in `WorldState.intercepts` is on `chan` | the player's collected Intercepts (Req 6.3) |
+ * | `smuggle(npc, to)` | a street delivery names that person and location | the street-ops delivery record |
  *
  * Objective evaluation does not depend on `at`: a progress objective is met the
  * moment the progress is recorded and stays met. The parameter is part of the
@@ -116,6 +118,10 @@ export function buildObjectiveEvaluator(
         return isArrested(objective.entity, arrestRecord, unkIds);
       case 'intercept':
         return interceptChannels.has(objective.channel);
+      case 'smuggle':
+        return (state.ext?.streetOps?.deliveries ?? []).some(
+          (delivery) => delivery.npc === objective.npc && delivery.loc === objective.to,
+        );
     }
   };
 }

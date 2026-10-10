@@ -63,7 +63,7 @@ import {
 import { PHASES_PER_DAY } from '../model/core.js';
 import type { SimEvent, WorldState } from '../model/state.js';
 import { scheduledLocation } from '../city/npc.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { isAsset } from '../recruit/asset.js';
 import { feedViewOf, validateFeedItems } from './feed-validation.js';
 import type { ActionQuote, ActionResult, Observation, ResolverContext } from './result.js';
@@ -122,7 +122,7 @@ export function nextHandlerContact(state: WorldState, agent: NpcId): GameTime {
     const abs = start + step;
     const day = Math.floor(abs / PHASES_PER_DAY);
     const phase = (abs % PHASES_PER_DAY) as Phase;
-    const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(day));
+    const weekday = scheduleWeekdayIndex(day, state.meta.setting.startDate);
     const agentLoc =
       agentNpc === undefined
         ? undefined
@@ -153,7 +153,7 @@ export function nextHandlerContact(state: WorldState, agent: NpcId): GameTime {
 
 /** The NPCs scheduled at a Location at the current time, by id (local copy). */
 function npcsScheduledAt(state: WorldState, locId: LocId): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {

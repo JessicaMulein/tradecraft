@@ -61,7 +61,7 @@ import type {
   TurnStream,
   CaseFileFilter,
 } from '@tradecraft/player-view';
-import { TALK_TUTORIAL, tutorialSuggestion } from '@tradecraft/player-view';
+import { knownNames, labelPlayerAction, TALK_TUTORIAL, tutorialSuggestion } from '@tradecraft/player-view';
 
 /**
  * The engine action a turn is taken on. `player-view` re-exports the action
@@ -86,6 +86,7 @@ import {
   DeparturesPane,
   DutiesPane,
   JournalPane,
+  LocalMap,
   MapPane,
   PapersPane,
   PeoplePane,
@@ -150,8 +151,7 @@ function composeOptions(api: EngineApi): ComposeOptions {
  * the Chief itself.
  */
 function chiefTalkAction(api: EngineApi): Action | undefined {
-  const talk = api.actions().find((option) => option.action.kind === 'talk');
-  return talk?.action;
+  return api.briefingTalk();
 }
 
 /**
@@ -220,7 +220,7 @@ export function AppShell({ api, defaults }: AppShellProps): ReactElement {
   const act = useCallback(
     (action: Action): void => {
       // Opening a Talk Scene is tracked so later lines route to `say`.
-      if (action.kind === 'talk' || action.kind === 'approach') {
+      if ((action.kind === 'talk' && action.breakOff !== true) || action.kind === 'approach') {
         setTalkNpc(action.npc as EntityId);
       }
       void consume(() => api.act(action));
@@ -473,6 +473,25 @@ function ScreenView({
       );
     }
 
+    case 'intercepts': {
+      const rows = api.views.intercepts().intercepts;
+      return (
+        <Box flexDirection="column">
+          <Text bold>Intercepts</Text>
+          {rows.length === 0 ? (
+            <Text dimColor>No intercepts collected yet. Listen in from the Station.</Text>
+          ) : (
+            rows.map((row) => (
+              <Text key={row.id}>
+                {row.callsign ?? 'traffic'}{row.signal !== undefined ? ` · ${row.signal}` : ''} · {row.direction} · {row.length} groups
+                {row.hasTradecraftError ? ' · operator error' : ''}
+              </Text>
+            ))
+          )}
+        </Box>
+      );
+    }
+
     case 'workbench': {
       const id = screen.intercept ?? api.views.intercepts().intercepts[0]?.id;
       if (id === undefined) {
@@ -497,7 +516,28 @@ function ScreenView({
       return <JournalPane journal={api.views.journal()} />;
 
     case 'map':
-      return <MapPane map={api.views.map()} />;
+      return <MapPane map={api.views.map()} streets={api.views.street()?.network ?? []} />;
+
+    case 'streets': {
+      const street = api.views.street();
+      if (street === null) {
+        return (
+          <Box flexDirection="column">
+            <Text bold>Streets</Text>
+            <Text dimColor>No street map is loaded.</Text>
+          </Box>
+        );
+      }
+      return (
+        <Box flexDirection="column">
+          <Text bold>Streets</Text>
+          <LocalMap lines={street.localMap} />
+          {street.network.map((line, index) => (
+            <Text key={`${index}:${line}`}>{line}</Text>
+          ))}
+        </Box>
+      );
+    }
 
     case 'city':
       return <CityPane view={api.views.city()} />;
@@ -595,6 +635,7 @@ function RegionalCaseFile({ api }: { readonly api: EngineApi }): ReactElement {
   return (
     <CaseFileBrowser
       claims={api.caseFile.list(filter)}
+      names={knownNames(api)}
       cities={cities}
       onFilter={setFilter}
       onGrade={(id: ClaimId, grade: AdmiraltyGrade) => api.caseFile.grade(id, grade)}
@@ -653,6 +694,7 @@ function SceneScreen({
         </Box>
         <Box flexDirection="column">
           <HerePane here={api.views.here()} />
+          <LocalMap lines={api.views.street()?.localMap ?? []} />
         </Box>
       </Box>
       {suggestion !== undefined && (
@@ -676,6 +718,7 @@ function SceneScreen({
         <Box marginTop={1}>
           <ActionMenu
             options={options}
+            label={(option) => labelPlayerAction(option.action, knownNames(api))}
             onChoose={(option) => {
               if (option.quote.allowed) {
                 onAct(option.action);

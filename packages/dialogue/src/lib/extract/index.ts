@@ -38,3 +38,5 @@ export {
   type ExtractResult,
   type UnparsedNote,
 } from './extract.js';
+
+export { transcribeBluff } from './bluff-transcript.js';

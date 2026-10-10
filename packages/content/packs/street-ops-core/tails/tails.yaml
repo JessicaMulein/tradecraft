@@ -1,0 +1,16 @@
+items:
+  - id: foreign-box
+    service: era-cold-war-early/hostile-foreign-directorate
+    discipline: 0.7
+    team: 3
+    methods: [car-follow, static-watch]
+  - id: apparat-box
+    service: era-cold-war-early/hostile-security-apparat
+    discipline: 0.85
+    team: 4
+    methods: [foot-follow, car-follow]
+  - id: directorate-patrol
+    service: city-vienna/city-security-directorate
+    discipline: 0.4
+    team: 2
+    methods: [static-watch]

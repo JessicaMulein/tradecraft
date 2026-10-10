@@ -12,6 +12,7 @@ import { cleanup, render } from 'ink-testing-library';
 import {
   caesarShiftPreview,
   frequencyTable,
+  keyCoincidence,
   type KeySubmission,
   type WorkbenchView,
 } from '@tradecraft/player-view';
@@ -43,6 +44,7 @@ const view: WorkbenchView = {
   callsign: 'NUM1',
   ciphertext: CIPHERTEXT,
   frequency: frequencyTable(CIPHERTEXT),
+  coincidence: keyCoincidence(CIPHERTEXT),
   shiftPreview: caesarShiftPreview(CIPHERTEXT),
   tradecraftError: { kind: 'fixed-header', header: 'NR' },
   header: 'NR',
@@ -61,11 +63,11 @@ describe('Workbench rendering', () => {
   it('shows the Intercept metadata, ciphertext and call sign', () => {
     const { lastFrame } = render(<Workbench view={view} onSubmit={vi.fn()} />);
     const frame = lastFrame() ?? '';
-    expect(frame).toContain('int:numbers-1');
-    expect(frame).toContain('chan:numbers');
-    expect(frame).toContain('org:hostile');
-    expect(frame).toContain('outbound');
     expect(frame).toContain('NUM1');
+    expect(frame).toContain('an unnamed frequency');
+    expect(frame).toContain('outbound');
+    expect(frame).not.toContain('int:numbers-1');
+    expect(frame).not.toContain('chan:numbers');
     expect(frame).toContain('KHOOR');
   });
 

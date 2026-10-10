@@ -40,7 +40,14 @@
 
 import { useReducer, type ReactElement } from 'react';
 import { Box, Text, useInput } from 'ink';
-import type { CaseFileFilter, ClaimView } from '@tradecraft/player-view';
+import {
+  claimSentence,
+  emptyKnownNames,
+  tidyId,
+  type CaseFileFilter,
+  type ClaimView,
+  type KnownNames,
+} from '@tradecraft/player-view';
 
 import {
   formatGrade,
@@ -77,47 +84,33 @@ export interface CaseFileBrowserProps {
   readonly onLink?: (a: ClaimId, b: ClaimId) => void;
   /** Signalled to unlink two Claims (`caseFile.unlink`). */
   readonly onUnlink?: (a: ClaimId, b: ClaimId) => void;
+  /** People, places and documents the player can already name. */
+  readonly names?: KnownNames;
 }
 
 /** The player-facing label for a Claim's source, naming the originating thing. */
-function sourceLabel(source: ClaimView['source']): string {
+function sourceLabel(source: ClaimView['source'], names: KnownNames): string {
   switch (source.kind) {
     case 'npc':
-      return `npc ${source.npc}`;
+      return `from ${lookup(names, source.npc)}`;
     case 'intercept':
-      return `intercept ${source.id}`;
+      return 'from an intercept';
     case 'surveillance':
-      return `surveillance ${source.loc}`;
+      return `seen at ${lookup(names, source.loc)}`;
     case 'document':
-      return `document ${source.id}`;
+      return `in ${lookup(names, source.id)}`;
     default:
-      return 'unknown';
+      return 'from an unknown source';
   }
 }
 
-/** Render a Proposition's object (an entity id or a literal) readably. */
-function objectLabel(object: ClaimView['prop']['object']): string {
-  if (typeof object === 'string') {
-    return object;
-  }
-  switch (object.kind) {
-    case 'amount':
-      return String(object.value);
-    case 'time':
-      return `day ${object.value.day} phase ${object.value.phase}`;
-    case 'text':
-    default:
-      return object.value;
-  }
+function lookup(names: KnownNames, id: string): string {
+  return names.person.get(id) ?? names.loc.get(id) ?? names.doc.get(id) ?? names.drop.get(id) ?? tidyId(id);
 }
 
-/**
- * Render a Claim's Proposition as a readable `subject predicate object` line,
- * with the place appended when the Proposition carries one.
- */
-function propLabel(prop: ClaimView['prop']): string {
-  const base = `${prop.subject} ${prop.predicate} ${objectLabel(prop.object)}`;
-  return prop.place === undefined ? base : `${base} @ ${prop.place}`;
+/** Render a Claim as a sentence, using the names the player already has. */
+function propLabel(prop: ClaimView['prop'], names: KnownNames): string {
+  return claimSentence(prop, names);
 }
 
 /** The relation marker shown beside a Claim. */
@@ -136,10 +129,12 @@ function relationLabel(relation: ClaimView['relation']): string {
 /** One Claim row: cursor marker, anchor marker, source, prop, flags and grade. */
 function ClaimRow({
   claim,
+  names,
   focused,
   anchored,
 }: {
   readonly claim: ClaimView;
+  readonly names: KnownNames;
   readonly focused: boolean;
   readonly anchored: boolean;
 }): ReactElement {
@@ -151,7 +146,7 @@ function ClaimRow({
       <Text color={focused ? 'cyan' : undefined}>
         {focused ? '> ' : '  '}
         {anchor}
-        {sourceLabel(claim.source)} · {propLabel(claim.prop)}
+        {sourceLabel(claim.source, names)} · {propLabel(claim.prop, names)}
         {hedge} · grade {grade} · {relationLabel(claim.relation)}
       </Text>
     </Box>
@@ -182,6 +177,7 @@ export function CaseFileBrowser({
   onGrade,
   onLink,
   onUnlink,
+  names = emptyKnownNames(),
 }: CaseFileBrowserProps): ReactElement {
   const [state, dispatch] = useReducer(
     reduceCaseFile,
@@ -295,6 +291,7 @@ export function CaseFileBrowser({
             <ClaimRow
               key={claim.id}
               claim={claim}
+              names={names}
               focused={index === state.cursor}
               anchored={claim.id === state.linkAnchor}
             />

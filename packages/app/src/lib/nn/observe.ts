@@ -4,8 +4,8 @@
  * Ground truth stays in the engine. This module reads the status bar, the
  * Case File, the map, the people list, documents and intercepts, plus whether
  * a talk scene is open (the conversation the player is in). A collected
- * intercept is offered for decrypt only after {@link breakTraffic} recovers a
- * field message from the Workbench: the ciphertext, a fixed-header crib, a
+ * intercept is offered for decrypt only after {@link breakTraffic} recovers
+ * the note from the Workbench: the ciphertext, a fixed-header crib, a
  * reused pad's other capture, and public texts the player can open.
  */
 
@@ -297,6 +297,13 @@ export function observe(
     phasesSinceIntercept: ordinal - memory.lastInterceptOrdinal,
     topSuspectTraced: bestId !== undefined && memory.traced.has(bestId),
     approachesToday: memory.approachesByDay.get(status.time.day) ?? 0,
+    pitchApproved: people.some((person) =>
+      (person.recruitment ?? '').includes('approved a pitch'),
+    ),
+    recruitTrace: people.some((person) =>
+      (person.recruitment ?? '').startsWith('Met often enough'),
+    ),
+    followed: status.followed !== undefined,
   };
 
   const actions: ActionView[] = [];
@@ -325,6 +332,8 @@ export function observe(
     cableFunds: false,
     riskyDirectTravel: false,
     waitPhases: 0,
+    cableTraceRecruit: false,
+    breakOff: false,
     ...patch,
   });
 
@@ -417,12 +426,14 @@ export function observe(
           action.kind === 'cable' &&
           action.body.kind === 'trace' &&
           action.body.target === bestId,
+        cableTraceRecruit: traceTarget(action, people),
         cableFunds: action.kind === 'cable' && action.body.kind === 'funds',
         riskyDirectTravel:
           action.kind === 'travel' &&
           !action.countersurveillance &&
           destRisk >= 0.45,
         waitPhases: action.kind === 'wait' ? action.phases : 0,
+        breakOff: action.kind === 'talk' && action.breakOff === true,
       };
       actions.push({
         move:
@@ -518,6 +529,19 @@ function trafficOf(game: ScriptedGame): TrafficCopy[] {
     });
   }
   return copies;
+}
+
+function traceTarget(
+  action: Action,
+  people: readonly { readonly id: string; readonly recruitment?: string }[],
+): boolean {
+  if (action.kind !== 'cable' || action.body.kind !== 'trace') return false;
+  const target = action.body.target;
+  return people.some(
+    (person) =>
+      person.id === target &&
+      (person.recruitment ?? '').startsWith('Met often enough'),
+  );
 }
 
 function libraryOf(game: ScriptedGame): ReadableText[] {

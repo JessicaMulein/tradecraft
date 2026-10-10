@@ -93,6 +93,42 @@ describe('ClaimSource', () => {
     expect(a).not.toBe(b);
   });
 
+  it('treats one radio channel as one voice, and a meeting in either order as one fact', () => {
+    const channel = originKey({ kind: 'intercept', id: 'int:1', channel: 'chan:a' });
+    expect(originKey({ kind: 'intercept', id: 'int:2', channel: 'chan:a' })).toBe(channel);
+    expect(originKey({ kind: 'intercept', id: 'int:3', channel: 'chan:b' })).not.toBe(channel);
+    const tap = originKey({ kind: 'document', id: 'doc:notice/tap-one' });
+    expect(originKey({ kind: 'document', id: 'doc:notice/tap-two' })).toBe(tap);
+    expect(tap).toBe('tap:silver');
+
+    const cf = new CaseFile();
+    const watched = cf.add({
+      source: { kind: 'surveillance', loc: 'loc:cafe' },
+      prop: prop('npc:a', 'MEETS_AT', 'npc:b', { place: 'loc:cafe' }),
+      observedAt: T0,
+    });
+    const heard = cf.add({
+      source: { kind: 'npc', npc: 'npc:informer' },
+      prop: prop('npc:b', 'MEETS_AT', 'npc:a', { place: 'loc:cafe' }),
+      observedAt: T0,
+    });
+    expect(cf.get(watched.id)?.relation).toBe('corroborated');
+    expect(cf.get(heard.id)?.relation).toBe('corroborated');
+
+    const first = cf.add({
+      source: { kind: 'intercept', id: 'int:1', channel: 'chan:a' },
+      prop: prop('npc:a', 'MEMBER_OF', 'org:cell'),
+      observedAt: T0,
+    });
+    const second = cf.add({
+      source: { kind: 'intercept', id: 'int:2', channel: 'chan:a' },
+      prop: prop('npc:a', 'MEMBER_OF', 'org:cell'),
+      observedAt: T0,
+    });
+    expect(cf.get(first.id)?.relation).toBe('none');
+    expect(cf.get(second.id)?.relation).toBe('none');
+  });
+
   it('records a Claim from each source kind', () => {
     const cf = new CaseFile();
     const inputs: ClaimInput[] = [
@@ -168,6 +204,28 @@ describe('corroboration and conflict', () => {
     const b = cf.add({ source: docSource('doc:news-1'), prop: prop('npc:x', 'MEMBER_OF', 'org:station'), observedAt: T1 });
     expect(cf.get(a.id)?.relation).toBe('conflicted');
     expect(cf.get(b.id)?.relation).toBe('conflicted');
+  });
+
+  it('keeps an agreed membership when a planted cover story names another org', () => {
+    const cf = new CaseFile();
+    const brief = cf.add({
+      source: docSource('doc:cable/brief'),
+      prop: prop('npc:x', 'MEMBER_OF', 'org:cell'),
+      observedAt: T0,
+    });
+    const radio = cf.add({
+      source: { kind: 'intercept', id: 'int:1' as never },
+      prop: prop('npc:x', 'MEMBER_OF', 'org:cell'),
+      observedAt: T1,
+    });
+    const plant = cf.add({
+      source: docSource('doc:newspaper/edition-1'),
+      prop: { ...prop('npc:x', 'MEMBER_OF', 'org:front'), id: 'prop:plant/sample/npc:x' as never },
+      observedAt: T2,
+    });
+    expect(cf.get(brief.id)?.relation).toBe('corroborated');
+    expect(cf.get(radio.id)?.relation).toBe('corroborated');
+    expect(cf.get(plant.id)?.relation).toBe('conflicted');
   });
 
   it('does not relate Claims that differ in subject or predicate', () => {

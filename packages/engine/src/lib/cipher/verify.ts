@@ -54,7 +54,7 @@
  * The function is pure and deterministic and draws nothing.
  */
 
-import type { Proposition } from '../model/core.js';
+import { revealTruth, type Proposition } from '../model/core.js';
 import { decrypt, type CipherKey } from './cipher.js';
 import {
   parseFieldMessage,
@@ -121,8 +121,12 @@ export function verifySubmission(
     return REJECTED;
   }
 
-  // Correct break: parse the true message and re-tag with the true source ids.
-  const recovered = parseFieldMessage(truePlain, fieldCodes);
+  // Correct break: the note on the wire is words. The facts come from the
+  // private field message, never from reading the English back as truth.
+  // Intercepts minted before that split still carry the field message as the
+  // plaintext, so those parse the decrypted text.
+  const machine = intercept.encoded === undefined ? truePlain : revealTruth(intercept.encoded);
+  const recovered = parseFieldMessage(machine, fieldCodes);
   const sourceIds = intercept.plaintextProps;
   const propositions = recovered.map((prop, i) =>
     i < sourceIds.length ? { ...prop, id: sourceIds[i] } : prop,

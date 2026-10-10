@@ -61,10 +61,10 @@ const STANDARD: DifficultyPreset = {
   hintsDefault: true,
 };
 
-/** A resolution context that knows the standard preset and the core pack. */
+/** A resolution context that knows the standard preset and the shipped packs. */
 const CONTEXT: ScenarioResolutionContext = {
   presets: new Map([['standard', STANDARD]]),
-  availablePackIds: new Set(['core']),
+  availablePackIds: new Set(['core', 'coldwar-plots']),
 };
 
 /** A Regional Preset keyed to the standard Difficulty Preset (Req 20.2). */
@@ -130,9 +130,10 @@ describe('the shipped config/scenario.yaml', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
 
-    // It selects standard, loads core and runs full narration (design default).
+    // It selects standard, loads core plus the plot library, and runs full narration.
     expect(result.value.scenario.difficulty.preset).toBe('standard');
-    expect(result.value.scenario.packs.load).toEqual(['core']);
+    expect(result.value.scenario.packs.load).toEqual(['core', 'coldwar-plots']);
+    expect(result.value.scenario.plotSelection?.enabled).toBe(true);
     expect(result.value.scenario.narration).toBe('full');
     expect(result.value.scenario.mole).toBe(false);
 
@@ -140,6 +141,7 @@ describe('the shipped config/scenario.yaml', () => {
     expect(result.value.preset).toEqual(STANDARD);
     // No region section: slice mode, no regional preset.
     expect(result.value.scenario.region).toBeUndefined();
+    expect(result.value.scenario.streetOps?.enabled).toBe(false);
     expect(result.value.regionalPreset).toBeUndefined();
   });
 

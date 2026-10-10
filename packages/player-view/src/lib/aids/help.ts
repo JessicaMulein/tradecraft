@@ -107,6 +107,7 @@ export function helpView(
   state: WorldState,
   ctx: ResolverContext,
   glossary: ReadonlyMap<string, GlossaryTerm>,
+  credits?: readonly string[],
 ): HelpView {
   const locId = state.player.loc;
   const place = state.city.locations[locId];
@@ -125,6 +126,7 @@ export function helpView(
     location: { id: locId, name },
     actions,
     glossary: glossaryEntries(glossary),
+    ...(credits !== undefined && credits.length > 0 ? { credits } : {}),
   };
 }
 

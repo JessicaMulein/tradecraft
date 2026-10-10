@@ -60,6 +60,11 @@ import {
   asTruth,
 } from '../model/core.js';
 import type { EvaluatorKind } from '@tradecraft/content';
+import {
+  emptyStreetOpsTruth,
+  migrateStreetOpsTruth,
+  type StreetOpsTruth,
+} from '../street-ops/state.js';
 
 // ---------------------------------------------------------------------------
 // Allegiance and ClaimTruthRecord
@@ -398,6 +403,13 @@ export interface TruthStoreData {
   readonly claimTruths: readonly ClaimTruthRecord[];
   /** Item id → the entity that holds it before any HANDS_OVER. */
   readonly itemOrigins?: ReadonlyMap<string, EntityId>;
+  /**
+   * Add-on truth. Absent until an add-on writes a slice, so a snapshot of a
+   * store that never used street-ops matches one from before the slice existed.
+   */
+  readonly ext?: {
+    readonly streetOps?: StreetOpsTruth;
+  };
 }
 
 /**
@@ -549,6 +561,7 @@ export class TruthStore implements TruthAccess {
   private readonly identities: Map<UnkId, NpcId>;
   private claimTruthList: ClaimTruthRecord[];
   private readonly itemOrigins: Map<string, EntityId>;
+  private streetTruth: StreetOpsTruth | undefined;
 
   private constructor(
     predicates: PredicateEvaluatorLookup,
@@ -560,6 +573,7 @@ export class TruthStore implements TruthAccess {
     this.identities = new Map(data.identities);
     this.claimTruthList = [...data.claimTruths];
     this.itemOrigins = new Map(data.itemOrigins ?? []);
+    this.streetTruth = data.ext?.streetOps === undefined ? undefined : migrateStreetOpsTruth(data.ext.streetOps);
   }
 
   /**
@@ -642,7 +656,27 @@ export class TruthStore implements TruthAccess {
       identities: new Map(this.identities),
       claimTruths: [...this.claimTruthList],
       ...(this.itemOrigins.size === 0 ? {} : { itemOrigins: new Map(this.itemOrigins) }),
+      ...(this.streetTruth === undefined ? {} : { ext: { streetOps: this.streetTruth } }),
     };
+  }
+
+  /** The street-ops truth slice, or absent when the add-on has not written one. */
+  streetOps(): StreetOpsTruth | undefined {
+    return this.streetTruth;
+  }
+
+  /**
+   * Install the empty street-ops slice when a save has none. A second call
+   * leaves an existing slice in place.
+   */
+  ensureStreetOps(): StreetOpsTruth {
+    if (this.streetTruth === undefined) this.streetTruth = emptyStreetOpsTruth();
+    return this.streetTruth;
+  }
+
+  /** Replace the street-ops truth slice. Teams live here, not on the player view. */
+  replaceStreetOps(next: StreetOpsTruth): void {
+    this.streetTruth = next;
   }
 
   // -- writes ---------------------------------------------------------------

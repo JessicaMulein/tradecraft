@@ -263,7 +263,13 @@ export function weatherTagsOf(world: WorldState): ReadonlySet<string> {
     return new Set();
   }
   try {
-    const weather = weatherForDay(world.meta.seed, city as City, tables, world.time.day);
+    const weather = weatherForDay(
+      world.meta.seed,
+      city as City,
+      tables,
+      world.time.day,
+      world.meta.setting.startDate,
+    );
     return weatherTagsFor(weather.condition, tables);
   } catch {
     return new Set();

@@ -15,7 +15,7 @@ import { asTruth, revealTruth, type GameTime, type LocId, type NpcId } from '../
 import type { SimEvent, WorldState } from '../model/state.js';
 import type { Prng } from '../prng/prng.js';
 import { scheduledLocation } from '../city/npc.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import type { CarryState } from './types.js';
 
 export interface RecogniserPass {
@@ -39,7 +39,7 @@ export function seenBeforeFactLine(
 
 /** NPCs scheduled at `loc` at `at`, in id order. */
 export function npcsAt(state: WorldState, loc: LocId, at: GameTime): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(at.day));
+  const weekday = scheduleWeekdayIndex(at.day, state.meta.setting.startDate);
   const ids: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, at.phase) === loc) {

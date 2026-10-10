@@ -1,0 +1,46 @@
+items:
+  - id: staff-saloon
+    name: Staff saloon
+    era: { from: 1946, to: 1955 }
+    speed: normal
+    seats: 4
+    conspicuousness: 0.3
+    spots:
+      - { id: boot, capacity: 1, search: 0.4, endurance: 45, reachedBy: [boot, undercarriage] }
+  - id: embassy-sedan
+    name: Embassy sedan
+    era: { from: 1948, to: 1955 }
+    speed: normal
+    seats: 4
+    conspicuousness: 0.7
+    spots: []
+  - id: covered-van
+    name: Covered van
+    era: { from: 1945, to: 1955 }
+    speed: slow
+    seats: 2
+    conspicuousness: 0.4
+    spots:
+      - { id: crate, capacity: 2, search: 0.7, endurance: 60, reachedBy: [boot, undercarriage] }
+  - id: pool-coupe
+    name: Pool coupe
+    era: { from: 1947, to: 1955 }
+    speed: fast
+    seats: 2
+    conspicuousness: 0.5
+    spots: []
+  - id: night-taxi
+    name: Night taxi
+    era: { from: 1946, to: 1955 }
+    speed: normal
+    seats: 4
+    conspicuousness: 0.2
+    spots:
+      - { id: under-seat, capacity: 1, search: 0.5, endurance: 20, reachedBy: [interior, boot] }
+  - id: ministry-wagen
+    name: Ministry wagen
+    era: { from: 1949, to: 1955 }
+    speed: normal
+    seats: 5
+    conspicuousness: 0.6
+    spots: []

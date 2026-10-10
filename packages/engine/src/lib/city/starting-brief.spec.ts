@@ -326,7 +326,11 @@ describe('generateStartingBrief — delivered as a Cable Document (Req 26.4)', (
 
   it('renders a telegraphic brief Cable carrying the budget line', () => {
     const { brief: b, cable } = brief('alpha');
-    expect(cable.document.body).toContain('STOP');
+    expect(cable.document.body).toContain('1. SUBJECT.');
+    expect(cable.document.body).toContain('2. YOU ARE POSTED');
+    expect(cable.document.body).toContain('YOU HAVE MET THE STATION');
+    expect(cable.document.body).toMatch(/\d+\. FUNDS\./);
+    expect(cable.document.body).not.toContain('STOP');
     expect(cable.document.body).toContain('FROM HEADQUARTERS');
     expect(cable.document.body).toContain(String(b.budget));
   });
@@ -373,7 +377,11 @@ describe('generateStartingBrief — the opening package (Req 26.1)', () => {
       expect(b.deadDrops).toEqual([g.comms.stationDrop]);
       expect(b.deadDrops.length).toBeGreaterThanOrEqual(1);
       expect(b.budget).toBe(STANDARD.startingBudget);
-      expect(b.contacts).toEqual([...g.principals.contacts]);
+      expect(b.contacts).toEqual([
+        g.principals.chief,
+        ...g.principals.staff,
+        ...g.principals.contacts,
+      ]);
     }
   });
 

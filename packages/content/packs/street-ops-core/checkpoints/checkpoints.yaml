@@ -1,0 +1,15 @@
+items:
+  - id: sector-line
+    borderCheck: secondary
+    thoroughness: 0.6
+    hours: [morning, afternoon, evening]
+  - id: document-halt
+    borderCheck: pass
+    thoroughness: 0.3
+    hours: [morning, afternoon, evening, night]
+  - id: roadblock
+    borderCheck: secondary
+    thoroughness: 0.5
+    hours: [morning, afternoon, evening, night]
+    watchesAvoidance: true
+    avoidanceSuspicion: 0.1

@@ -288,8 +288,43 @@ export const ScenarioConfigSchema = z
      * deep-merge onto the Regional Preset for the selected Difficulty Preset.
      */
     region: RegionConfigSchema.optional(),
+    /**
+     * Street-ops driving. Absent or `enabled: false` registers nothing, and
+     * the stored scenario omits the block so a disabled game matches one
+     * that was built without the add-on.
+     */
+    streetOps: z
+      .object({
+        enabled: z.boolean().default(false),
+        ticksPerPhase: z.number().int().min(1).default(360),
+        speedMPerTick: z
+          .object({
+            slow: z.number().positive().default(5),
+            normal: z.number().positive().default(10),
+            fast: z.number().positive().default(16),
+          })
+          .strict()
+          .default({ slow: 5, normal: 10, fast: 16 }),
+        narrateSteps: z.boolean().default(false),
+        sightRangeM: z.number().int().positive().default(250),
+        lostTimeoutPhases: z.number().int().min(1).default(2),
+        checkpointVisibleDefaultM: z.number().int().positive().default(120),
+        navigationAid: z.boolean().default(false),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 
 /** The validated scenario config, before difficulty resolution. */
 export type ScenarioConfig = z.infer<typeof ScenarioConfigSchema>;
+
+/**
+ * Drop a disabled street-ops block so the stored scenario matches a scenario
+ * that never had one. An enabled block is kept.
+ */
+export function scenarioForStore(scenario: ScenarioConfig): ScenarioConfig {
+  if (scenario.streetOps?.enabled !== false) return scenario;
+  const { streetOps: _disabled, ...rest } = scenario;
+  return rest;
+}

@@ -363,22 +363,40 @@ function buildDescriptor(
     phrases.push(grooming);
   }
 
+  const garments: string[] = [];
+  const accessories: string[] = [];
   for (const poolId of poolIds) {
     const pool = descriptors.pools[poolId];
     if (pool === undefined) {
-      phrases.push(poolId.replace(/-/g, ' '));
       continue;
     }
-    const garment = drawFitting(pool.garments);
-    if (garment !== undefined) {
-      phrases.push(garment);
-    }
-    if (pool.accessories.length > 0 && prng.bool(0.5)) {
-      const accessory = drawFitting(pool.accessories);
-      if (accessory !== undefined) {
-        phrases.push(accessory);
+    for (const phrase of fittingPhrases(
+      pool.garments as Parameters<typeof fittingPhrases>[0],
+      gender,
+    )) {
+      if (!garments.includes(phrase)) {
+        garments.push(phrase);
       }
     }
+    for (const phrase of fittingPhrases(
+      pool.accessories as Parameters<typeof fittingPhrases>[0],
+      gender,
+    )) {
+      if (!accessories.includes(phrase)) {
+        accessories.push(phrase);
+      }
+    }
+  }
+  if (garments.length > 0) {
+    phrases.push(prng.pick(garments));
+  } else if (poolIds.length > 0) {
+    const missing = poolIds.find((poolId) => descriptors.pools[poolId] === undefined);
+    if (missing !== undefined) {
+      phrases.push(missing.replace(/-/g, ' '));
+    }
+  }
+  if (accessories.length > 0 && prng.bool(0.5)) {
+    phrases.push(prng.pick(accessories));
   }
 
   const summary = phrases.length > 0 ? phrases.join(', ') : 'an unremarkable figure';
@@ -540,15 +558,14 @@ function stampBackgroundNpc(
   archetype: Archetype,
   index: number,
   usedNames: ReadonlySet<string>,
+  usedFamilies: ReadonlySet<string>,
 ): { npc: Npc; registryEntry: EntityEntry } {
   const mice = sampleMice(prng, archetype);
   const gender: PersonaGender = prng.bool(0.5) ? 'female' : 'male';
+  const taken = (persona: Persona): boolean =>
+    usedNames.has(persona.name) || usedFamilies.has(persona.family);
   let persona = buildPersona(prng, content, archetype, gender);
-  for (
-    let attempt = 0;
-    attempt < MAX_BACKGROUND_NAME_REDRAWS && usedNames.has(persona.name);
-    attempt += 1
-  ) {
+  for (let attempt = 0; attempt < MAX_BACKGROUND_NAME_REDRAWS && taken(persona); attempt += 1) {
     persona = buildPersona(prng, content, archetype, gender);
   }
   const descriptor = buildDescriptor(prng, descriptors, archetype, gender);
@@ -745,6 +762,14 @@ export function generateBackgroundNpcs(
   // `npc:bg-i`'s resolution dependent only on names fixed before it, so the
   // count-independent `npc:bg-i` superset invariant holds.
   const usedNames = new Set<string>(principalNames);
+  const usedFamilies = new Set<string>();
+  for (const full of principalNames) {
+    const parts = full.trim().split(/\s+/);
+    const family = parts[parts.length - 1];
+    if (family !== undefined && family.length > 0) {
+      usedFamilies.add(family);
+    }
+  }
   const stamped: Array<{ npc: Npc; registryEntry: EntityEntry }> = [];
   for (let i = 0; i < count; i += 1) {
     const archetype = archetypes[i % archetypes.length];
@@ -756,8 +781,10 @@ export function generateBackgroundNpcs(
       archetype,
       i,
       usedNames,
+      usedFamilies,
     );
     usedNames.add(result.npc.persona.name);
+    usedFamilies.add(result.npc.persona.family);
     stamped.push(result);
   }
 

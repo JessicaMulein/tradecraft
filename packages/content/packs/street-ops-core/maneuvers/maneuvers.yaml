@@ -1,0 +1,49 @@
+items:
+  - id: cut-one-way
+    era: { from: 1946, to: 1955 }
+    requires: [one-way]
+    quality: 0.6
+    ticks: 3
+    suspicion: 0.3
+  - id: reverse-spur
+    era: { from: 1946, to: 1955 }
+    requires: [dead-end]
+    quality: 0.7
+    ticks: 4
+    suspicion: 0.4
+  - id: park-and-walk
+    era: { from: 1946, to: 1955 }
+    requires: [parking]
+    quality: 0.4
+    ticks: 2
+    suspicion: 0.1
+  - id: tram-cut
+    era: { from: 1946, to: 1955 }
+    requires: [tram]
+    quality: 0.8
+    ticks: 5
+    suspicion: 0.5
+  - id: checkpoint-slip
+    era: { from: 1946, to: 1955 }
+    requires: [checkpoint]
+    quality: 0.5
+    ticks: 3
+    suspicion: 0.6
+  - id: contraflow-dash
+    era: { from: 1946, to: 1955 }
+    requires: [contraflow]
+    quality: 0.9
+    ticks: 4
+    suspicion: 0.8
+  - id: quiet-park
+    era: { from: 1946, to: 1955 }
+    requires: [parking]
+    quality: 0.3
+    ticks: 2
+    suspicion: 0.05
+  - id: sector-bluff
+    era: { from: 1946, to: 1955 }
+    requires: [checkpoint]
+    quality: 0.55
+    ticks: 6
+    suspicion: 0.2

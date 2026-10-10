@@ -42,6 +42,7 @@ import {
   generateIntercepts,
   revealedSpec,
   decryptToFieldMessage,
+  privateFieldMessage,
   INTERCEPT_OWNER_KINDS,
   type GenerateInterceptsInputs,
   type Intercept,
@@ -49,6 +50,7 @@ import {
   type InterceptSource,
 } from './intercept.js';
 import { parseFieldMessage, type FieldCodeLookup } from './field-message.js';
+import { operationalPlaintext } from './operational.js';
 import { verifySubmission } from './verify.js';
 import type { CipherKind } from './cipher.js';
 
@@ -251,8 +253,9 @@ describe('Property 9 — round-trip fidelity (Req 9.1)', () => {
             tradecraftErrorProbability: withError ? 1 : 0,
           });
 
+          expect(truePlaintext(intercept)).toBe(operationalPlaintext(sourceProps));
           const recovered = parseFieldMessage(
-            truePlaintext(intercept),
+            privateFieldMessage(intercept),
             fieldCodes,
           );
 
@@ -287,8 +290,9 @@ describe('Property 9 — round-trip fidelity (Req 9.1)', () => {
           });
           expect(revealedSpec(intercept).kind).toBe(cipher);
 
+          expect(truePlaintext(intercept)).toBe(operationalPlaintext(sourceProps));
           const recovered = parseFieldMessage(
-            truePlaintext(intercept),
+            privateFieldMessage(intercept),
             fieldCodes,
           );
           expect(recovered.map(content)).toEqual(sourceProps.map(content));

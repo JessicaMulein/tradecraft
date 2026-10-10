@@ -1,0 +1,72 @@
+# Invented Inner Court and Sector Crossing. Not a real street map.
+items:
+  - id: inner-court
+    city: city-vienna/vienna
+    origin: authored
+    junctions:
+      - { id: court, name: Lamp Court, x: 0, y: 0, district: city-vienna/innere-stadt }
+      - { id: lamp, name: Lamp End, x: 90, y: 0, district: city-vienna/innere-stadt }
+      - { id: sector, name: Sector Corner, x: 90, y: 80, district: city-vienna/innere-stadt }
+      - { id: paper, name: Paper Corner, x: 0, y: 80, district: city-vienna/innere-stadt }
+      - { id: spur-end, name: Spur End, x: 160, y: 80, district: city-vienna/innere-stadt }
+    segments:
+      - id: court-lane
+        street: Court Lane
+        from: court
+        to: lamp
+        lengthM: 90
+        speed: normal
+        oneWay: false
+        lanes: 2
+        traffic: { morning: 3, afternoon: 4, evening: 2, night: 1 }
+        features: [tram]
+      - id: lamp-cut
+        street: Lamp Cut
+        from: lamp
+        to: sector
+        lengthM: 80
+        speed: normal
+        oneWay: false
+        lanes: 2
+        traffic: { morning: 2, afternoon: 3, evening: 2, night: 1 }
+      - id: sector-road
+        street: Sector Road
+        from: sector
+        to: paper
+        lengthM: 90
+        speed: slow
+        oneWay: false
+        lanes: 2
+        traffic: { morning: 4, afternoon: 4, evening: 3, night: 1 }
+      - id: paper-alley
+        street: Paper Alley
+        from: paper
+        to: court
+        lengthM: 80
+        speed: normal
+        oneWay: false
+        lanes: 1
+        traffic: { morning: 1, afternoon: 2, evening: 2, night: 1 }
+      - id: spur
+        street: Spur Lane
+        from: sector
+        to: spur-end
+        lengthM: 70
+        speed: slow
+        oneWay: true
+        lanes: 1
+        traffic: { morning: 1, afternoon: 1, evening: 1, night: 0 }
+    frontages:
+      - { location: city-vienna/cafe-mohnblume, segment: court-lane, at: 0.4, side: right }
+      - { location: city-vienna/trafik-graben, segment: paper-alley, at: 0.6, side: left }
+    checkpoints:
+      - id: sector-crossing
+        kind: sector-line
+        segment: sector-road
+        at: 0.5
+        service: city-vienna/city-security-directorate
+        visibleM: 120
+        hours: [morning, afternoon, evening]
+    routes:
+      - id: ring-check
+        junctions: [lamp, sector, paper, court]

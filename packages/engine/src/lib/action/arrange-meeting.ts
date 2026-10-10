@@ -90,9 +90,11 @@ import type {
 } from '../model/state.js';
 import type { Prng } from '../prng/prng.js';
 import { scheduledLocation } from '../city/npc.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { sigmoid } from '../recruit/first-contact.js';
 import { regardDelta } from '../ambient/memory.js';
+import { docId, slugify } from '../docs/document.js';
+import type { Document } from '../docs/document.js';
 import { hasContactChannel } from './talk.js';
 import type { ActionQuote, ActionResult, Observation } from './result.js';
 import type { ArrangeMeetingAction, Meeting, MeetingStatus } from './types.js';
@@ -319,7 +321,7 @@ function clamp01(value: number): number {
 /** The NPCs scheduled at a Location at a given time, by id (local copy, so this
  * module does not import `./action.ts` and form a cycle). */
 function scheduledAt(state: WorldState, locId: LocId, t: GameTime): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(t.day));
+  const weekday = scheduleWeekdayIndex(t.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, t.phase) === locId) {
@@ -374,7 +376,7 @@ export function scheduleConflictAt(
   at: LocId,
   slot: GameTime,
 ): number {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(slot.day));
+  const weekday = scheduleWeekdayIndex(slot.day, state.meta.setting.startDate);
   const where = scheduledLocation(state.npcs[npc]?.schedule ?? { entries: [] }, weekday, slot.phase);
   if (where === undefined || where === at) {
     return 0;
@@ -637,9 +639,15 @@ export function resolveMeetingAtSlot(
       visibility: 'player',
       meeting: meeting.id,
     };
-    const next = withMeeting(state, kept);
+    const met = withMeeting(state, kept);
+    const report = contactReport(met, meeting);
+    const next: WorldState = {
+      ...met,
+      documents: { ...met.documents, [report.id]: report },
+    };
     const observations: Observation[] = [
       { kind: 'message', line: 'You meet as arranged.' },
+      { kind: 'message', line: 'You write a short contact report.' },
     ];
     return {
       next,
@@ -709,6 +717,23 @@ export function resolveMeetingAtSlot(
 }
 
 /** Write a Meeting back into the meetings map. */
+const PHASE_WORD = ['morning', 'afternoon', 'evening', 'night'] as const;
+
+/** The paperwork a kept meeting leaves in the file. It asserts nothing new. */
+function contactReport(state: WorldState, meeting: Meeting): Document {
+  const name = state.npcs[meeting.npc]?.persona.name ?? 'the contact';
+  const place = state.city.locations[meeting.at]?.name ?? 'the meeting place';
+  const phase = PHASE_WORD[meeting.slot.phase] ?? 'the day';
+  return {
+    id: docId('cable', `contact-${slugify(meeting.id)}`),
+    kind: 'cable',
+    title: `Contact report: ${name}`,
+    date: meeting.slot,
+    body: `Met ${name} at ${place}, ${phase}, day ${meeting.slot.day}. What was said is filed with the case.`,
+    asserts: [],
+  };
+}
+
 function withMeeting(state: WorldState, meeting: Meeting): WorldState {
   return {
     ...state,

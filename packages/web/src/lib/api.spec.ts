@@ -126,6 +126,11 @@ describe('read API', () => {
       'city',
       'stories',
       'duties',
+      'region',
+      'departures',
+      'papers',
+      'carriage',
+      'street',
     ]) {
       const res = await h.request({ path: `/api/views/${name}` });
       expect(res.status, name).toBe(200);

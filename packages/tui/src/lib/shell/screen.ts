@@ -89,8 +89,10 @@ export type Screen =
   | { readonly kind: 'case-file' }
   | { readonly kind: 'documents'; readonly open?: DocId }
   | { readonly kind: 'workbench'; readonly intercept?: InterceptId }
+  | { readonly kind: 'intercepts' }
   | { readonly kind: 'journal' }
   | { readonly kind: 'map' }
+  | { readonly kind: 'streets' }
   | { readonly kind: 'city' }
   | { readonly kind: 'stories' }
   | { readonly kind: 'duties' }

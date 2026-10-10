@@ -61,7 +61,7 @@ import type { LocId, NpcId, Proposition } from '../model/core.js';
 import type { WorldState } from '../model/state.js';
 import type { Prng } from '../prng/prng.js';
 import { scheduledLocation } from '../city/npc.js';
-import { CONTENT_WEEKDAYS, weekdayForDay } from '../city/time-mapping.js';
+import { scheduleWeekdayIndex } from '../city/calendar.js';
 import { newRelationship, type CoverState } from '../recruit/asset.js';
 import {
   agendaShiftFor,
@@ -91,7 +91,7 @@ export const CONFRONT_PHASE_COST = 1;
  * use.
  */
 function npcsScheduledAt(state: WorldState, locId: LocId): NpcId[] {
-  const weekday = CONTENT_WEEKDAYS.indexOf(weekdayForDay(state.time.day));
+  const weekday = scheduleWeekdayIndex(state.time.day, state.meta.setting.startDate);
   const out: NpcId[] = [];
   for (const npc of Object.values(state.npcs)) {
     if (scheduledLocation(npc.schedule, weekday, state.time.phase) === locId) {

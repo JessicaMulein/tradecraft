@@ -16,6 +16,7 @@ import {
   CLAIM_SOURCE_KINDS,
   NARRATION_MODES,
   isValidSaveName,
+  trialReading,
   tutorialSuggestion,
   type EngineApi,
 } from '@tradecraft/player-view';
@@ -110,6 +111,11 @@ const SIMPLE_VIEWS = [
   'city',
   'stories',
   'duties',
+  'region',
+  'departures',
+  'papers',
+  'carriage',
+  'street',
 ] as const;
 
 type Handler = (req: Request, res: Response) => Promise<void> | void;
@@ -269,7 +275,7 @@ export function buildRouter(s: ShellState): Router {
       wrap((_req, res) => {
         requireStarted();
         const view = (api.views[name] as () => unknown)();
-        sendJson(res, { [name]: view });
+        sendJson(res, { [name]: view === undefined ? null : view });
       }),
     );
   }
@@ -339,6 +345,44 @@ export function buildRouter(s: ShellState): Router {
     strict: true,
     type: 'application/json',
   });
+
+  const TrialBody = z.discriminatedUnion('kind', [
+    z.strictObject({
+      kind: z.literal('caesar'),
+      ciphertext: z.string().max(8000),
+      shift: z.number().int().min(0).max(25),
+    }),
+    z.strictObject({
+      kind: z.literal('vigenere'),
+      ciphertext: z.string().max(8000),
+      keyword: z.string().max(40),
+    }),
+    z.strictObject({
+      kind: z.literal('columnar'),
+      ciphertext: z.string().max(8000),
+      keyword: z.string().max(40),
+    }),
+    z.strictObject({
+      kind: z.literal('book'),
+      ciphertext: z.string().max(8000),
+      text: z.string().max(8000),
+    }),
+    z.strictObject({
+      kind: z.literal('otp'),
+      ciphertext: z.string().max(8000),
+      pad: z.string().max(8000),
+    }),
+  ]);
+
+  router.post(
+    '/cipher/trial',
+    body,
+    wrap((req, res) => {
+      requireStarted();
+      const attempt = parseWith(TrialBody, req.body ?? {});
+      sendJson(res, { text: trialReading(attempt.ciphertext, attempt) });
+    }),
+  );
 
   router.post(
     '/quote',
