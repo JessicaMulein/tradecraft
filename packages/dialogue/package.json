@@ -20,6 +20,6 @@
     "@tradecraft/engine": "workspace:*",
     "@tradecraft/llm": "workspace:*",
     "tslib": "^2.3.0",
-    "zod": "^4.6.5"
+    "zod": "^4.6.6"
   }
 }
